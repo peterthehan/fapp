@@ -10,14 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.HomeActivity"
-    tools:showIn="@layout/activity_home">
+    tools:showIn="@layout/activity_search">
 
-    <GridView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/homeGrid"
+        android:text="temp button"
+        android:id="@+id/button"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:numColumns="auto_fit"
-        android:choiceMode="none" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

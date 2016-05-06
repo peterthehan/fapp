@@ -6,5 +6,5 @@
     <include layout="@layout/content_searchbar"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
-    <include layout="@layout/content_home" />
+    <include layout="@layout/content_search" />
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.poop.poopapp;
+package com.poop.poopapp.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.poop.poopapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
