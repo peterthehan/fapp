@@ -1,0 +1,3 @@
+rootProject.name = 'PoopProject'
+
+include ':app'
