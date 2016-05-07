@@ -25,13 +25,13 @@ class PoopProject extends Component {
 
   // this is called one time when the object is loaded
   componentDidMount() {
-    // create a temporary item variable
-    let temporaryItems = Array.apply(null, Array(pictures.length)).map((v, i) => {
+    // set the value for the item array
+    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
       // each element in the array has 2 variables, id and src
       return { id: i, src: pictures[i] }
     });
-    // set the items array of the PoopProject object equal to the temporaryItems array
-    this.setState({ temporaryItems });
+    // update the items value of the PoopProject object
+    this.setState({ items });
   }
 
   // this is what the PoopProject object is rendered as on screen
