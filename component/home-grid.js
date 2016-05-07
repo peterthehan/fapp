@@ -27,8 +27,7 @@ class HomeGrid extends Component {
         data = { this.state.items }
         itemsPerRow = { 3 }
         itemMargin = { 1 }
-        renderItem = { this.renderItem }
-      />
+        renderItem = { this.renderItem } />
     );
   }
 
@@ -39,12 +38,11 @@ class HomeGrid extends Component {
         style = {{ width: itemSize, height: itemSize }}
         onPress = { () => {
           // Do Something
-        }}>
+        }} >
         <Image
           resizeMode = "cover"
           style = {{ flex: 1 }}
-          source = {{ uri: item.src }}
-        />
+          source = {{ uri: item.src }} />
       </TouchableOpacity>
     )
   }
