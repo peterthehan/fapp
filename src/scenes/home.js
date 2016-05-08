@@ -1,9 +1,10 @@
 'use strict';
 
-import React from 'react';
-import { Text, View } from 'react-native';
-
 import HomeGrid from '../home-grid';
+import {
+  Component,
+  View,
+} from 'react-native';
 import SearchBar from '../search-bar';
 
 var pictures = [
@@ -27,17 +28,16 @@ var pictures = [
   "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg",
 ];
 
-class HomeScene extends React.Component {
+class HomeScene extends Component {
 
   render() {
     return(
       <View>
         <SearchBar />
-        <HomeGrid items = { pictures } />
+        <HomeGrid items = {pictures}/>
       </View>
     );
   }
-
 }
 
 module.exports = HomeScene;

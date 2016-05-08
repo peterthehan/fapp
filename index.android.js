@@ -1,38 +1,90 @@
 'use strict';
 
-import React from 'react';
-import { AppRegistry, StyleSheet, Text } from 'react-native';
-import Router from 'react-native-simple-router';
+import React, {
+  AppRegistry,
+  AsyncStorage,
+  Component,
+  Navigator,
+  Text,
+  View
+} from 'react-native';
 
-import LoginScene from './component/scene/login-scene'
+import Login from './src/scenes/login';
+import Home from './src/scenes/home';
 
-// Your route object should contain at least:
-// - The name of the route (which will become the navigation bar title)
-// - The component object for the page to render
-const firstRoute = {
-  name: 'POOP',
-  component: LoginScene,
-};
+import Header from './src/components/header';
 
-class PoopApp extends React.Component {
+import Firebase from 'firebase';
+let app = new Firebase("poopapp1.firebaseio.com");
+
+import styles from './src/styles/common-styles.js';
+
+// reference: http://www.sitepoint.com/authentication-in-react-native-with-firebase/
+class PoopApp extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      component: null,
+      loaded: false
+    };
+  }
+
+  componentWillMount() {
+    AsyncStorage.getItem('user_data').then((user_data_json) => {
+      let user_data = JSON.parse(user_data_json);
+      let component = {component: Login};
+      if(user_data != null) {
+        app.authWithCustomToken(user_data.token, (error, authData) => {
+          if(error) {
+            this.setState(component);
+          } else {
+            this.setState({component: Home});
+          }
+        });
+      } else {
+        this.setState(component);
+      }
+    });
+  }
+
   render() {
-    return (
-      <Router
-        firstRoute = {firstRoute}
-        headerStyle = {styles.header}
-        titleStyle = {styles.title}
-      />
-    );
+    if(this.state.component) {
+      return (
+        // reference: https://medium.com/@dabit3/react-native-navigator-navigating-like-a-pro-in-react-native-3cb1b6dc1e30#.q5hyx676n
+        <Navigator
+          initialRoute = {{component: this.state.component}}
+          configureScene = {(route, routeStack) => {
+            if(route.type == 'index1') {
+              return Navigator.SceneConfigs.FloatFromRight
+            } else if(route.type == 'index2') {
+              return Navigator.SceneConfigs.FloatFromLeft
+            } else {
+              return Navigator.SceneConfigs.FadeAndroid
+            }
+          }}
+          /*
+          configureScene = {() => {
+            return Navigator.SceneConfigs.FloatFromRight;
+          }}
+          */
+          renderScene = {(route, navigator) => {
+            if(route.component) {
+              return React.createElement(route.component, {navigator});
+            }
+          }}
+        />
+      );
+    } else {
+      return (
+        <View style = {styles.container}>
+          <Header text = "React Native Firebase Auth" loaded = {this.state.loaded}/>
+          <View style = {styles.body}>
+          </View>
+        </View>
+      );
+    }
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#4CAF50',
-  },
-  title: {
-    textAlign: 'center',
-  },
-});
 
 AppRegistry.registerComponent('PoopProject', () => PoopApp);
