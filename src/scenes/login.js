@@ -1,7 +1,6 @@
 'use strict';
 
 import React, {
-  AppRegistry,
   AsyncStorage,
   Component,
   StyleSheet,
@@ -21,7 +20,7 @@ let app = new Firebase("poopapp1.firebaseio.com");
 
 import styles from '../styles/common-styles.js';
 
-export default class login extends Component {
+export default class Login extends Component {
 
   constructor(props) {
     super(props);
@@ -91,4 +90,4 @@ export default class login extends Component {
   }
 }
 
-AppRegistry.registerComponent('login', () => login);
+module.exports = Login;

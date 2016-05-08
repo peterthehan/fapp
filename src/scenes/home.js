@@ -28,7 +28,7 @@ var pictures = [
   "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg",
 ];
 
-class HomeScene extends Component {
+class Home extends Component {
 
   render() {
     return(
@@ -40,4 +40,4 @@ class HomeScene extends Component {
   }
 }
 
-module.exports = HomeScene;
+module.exports = Home;

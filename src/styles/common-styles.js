@@ -19,19 +19,16 @@ module.exports = StyleSheet.create({
     borderWidth: 1
   },
   transparent_button: {
-    marginTop: 10,
-    padding: 15
+    margin: 6,
+    padding: 12
   },
   transparent_button_text: {
-    color: '#0485A9',
+    color: '#529ecc',
     fontSize: 16
   },
   primary_button: {
     margin: 10,
-    paddingTop: 12,
-    paddingBottom: 12,
-    paddingLeft: 12,
-    paddingRight: 12,
+    padding: 12,
     borderColor: 'transparent',
     backgroundColor: '#529ecc'
   },

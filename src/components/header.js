@@ -1,7 +1,6 @@
 'use strict';
 
 import React, {
-  AppRegistry,
   Component,
   StyleSheet,
   Text,
@@ -11,7 +10,7 @@ import React, {
 
 import GiftedSpinner from 'react-native-gifted-spinner';
 
-export default class header extends Component {
+export default class Header extends Component {
 
   render() {
     return (
@@ -47,4 +46,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('header', () => header);
+module.exports = Header;

@@ -1,7 +1,6 @@
 'use strict';
 
 import React, {
-  AppRegistry,
   Component,
   Text,
   TextInput,
@@ -18,7 +17,7 @@ let app = new Firebase("poopapp1.firebaseio.com");
 
 import styles from '../styles/common-styles.js';
 
-export default class signup extends Component {
+export default class Signup extends Component {
 
   constructor(props) {
     super(props);
@@ -52,7 +51,7 @@ export default class signup extends Component {
             button_styles = {styles.primary_button}
             button_text_styles = {styles.primary_button_text}/>
           <Button
-            text = "Already have an account?"
+            text = "Already have an account"
             onpress = {this.goToLogin.bind(this)}
             button_styles = {styles.transparent_button}
             button_text_styles = {styles.transparent_button_text}/>
@@ -102,4 +101,4 @@ export default class signup extends Component {
   }
 }
 
-AppRegistry.registerComponent('signup', () => signup);
+module.exports = Signup;

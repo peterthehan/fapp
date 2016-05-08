@@ -1,14 +1,13 @@
 'use strict';
 
 import React, {
-  AppRegistry,
   Component,
   Text,
   TouchableHighlight,
   View
 } from 'react-native';
 
-export default class button extends Component {
+export default class Button extends Component {
 
   render() {
     return (
@@ -28,4 +27,4 @@ export default class button extends Component {
   }
 }
 
-AppRegistry.registerComponent('button', () => button);
+module.exports = Button;
