@@ -1,12 +1,9 @@
 'use strict';
 
-const React = require('react-native');
+import React, { Image, TouchableOpacity } from 'react-native';
+import Dimensions from 'Dimensions';
+import GridView from 'react-native-grid-view';
 
-const { Image, TouchableOpacity, } = React;
-
-const GridView = require('react-native-grid-view');
-
-const Dimensions = require('Dimensions');
 const windowSize = Dimensions.get('window');
 
 class HomeGrid extends React.Component {

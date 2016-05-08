@@ -1,7 +1,6 @@
 'use strict';
 
-const React = require('react-native');
-const { TextInput } = React;
+import React, { TextInput } from 'react-native';
 
 class SearchBar extends React.Component {
 

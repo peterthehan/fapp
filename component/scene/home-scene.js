@@ -1,11 +1,9 @@
 'use strict';
 
-const React = require('react-native');
-const { View, Text } = React;
+import React, { Text, View } from 'react-native';
 
-const HomeGrid = require('../home-grid');
-const SearchBar = require('../search-bar');
-const StatusBar = require('../base/status-bar');
+import HomeGrid from '../home-grid';
+import SearchBar from '../search-bar';
 
 var pictures = [
   "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
@@ -33,10 +31,6 @@ class HomeScene extends React.Component {
   render() {
     return(
       <View>
-        <StatusBar
-          title = {'Home'}
-          backgroundColor = '#2196F3'
-          textColor = 'white' />
         <SearchBar />
         <HomeGrid items = { pictures } />
       </View>

@@ -1,9 +1,37 @@
 'use strict';
 
-const React = require('react-native');
-const { AppRegistry } = React;
+import React, { AppRegistry, StyleSheet, Text } from 'react-native';
+import Router from 'react-native-simple-router';
 
 import LoginScene from './component/scene/login-scene'
-import HomeScene from './component/scene/home-scene'
 
-AppRegistry.registerComponent('PoopProject', () => LoginScene);
+// Your route object should contain at least:
+// - The name of the route (which will become the navigation bar title)
+// - The component object for the page to render
+const firstRoute = {
+  name: 'POOP',
+  component: LoginScene,
+};
+
+class PoopApp extends React.Component {
+  render() {
+    return (
+      <Router
+        firstRoute = {firstRoute}
+        headerStyle = {styles.header}
+        titleStyle = {styles.title}
+      />
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#4CAF50',
+  },
+  title: {
+    textAlign: 'center',
+  },
+});
+
+AppRegistry.registerComponent('PoopProject', () => PoopApp);

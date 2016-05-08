@@ -1,7 +1,6 @@
 'use strict';
 
-const React = require('react-native');
-const { StyleSheet, Text, View, TouchableHighlight } = React;
+import React, { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 class Button extends React.Component {
   render() {
