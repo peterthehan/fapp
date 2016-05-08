@@ -2,7 +2,6 @@
 
 const React = require('react-native');
 const { Image, TouchableOpacity } = React;
-
 const PhotoGrid = require('react-native-photo-grid');
 
 class HomeGrid extends React.Component {

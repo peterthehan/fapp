@@ -7,12 +7,27 @@ const HomeGrid = require('../home-grid');
 const SearchBar = require('../search-bar');
 
 var pictures = [
-  "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
-  "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
-  "http://www.latoro.com/wallpapers/food/18747-desktop-wallpapers-japanese-cuisine.jpg",
-  "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
-  "http://ww2.kqed.org/quest/wp-content/uploads/sites/39/2012/08/starbucks.jpg",
-  "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg",
+  "http://i.imgur.com/MurQperr.jpg",
+  "http://i.imgur.com/rINxvmK.jpg",
+  "http://i.imgur.com/8l7QwvJ.jpg",
+  "http://i.imgur.com/mgUKRJB.jpg",
+  "http://i.imgur.com/ToIVlrR.jpg",
+  "http://i.imgur.com/2uPjOqH.jpg",
+  "http://i.imgur.com/5bvLfS4.jpg",
+  "http://i.imgur.com/zrhfInt.jpg",
+  "http://i.imgur.com/DGhq3m9.jpg",
+  "http://i.imgur.com/BVHklgj.jpg",
+  "http://i.imgur.com/vqJ4V5Q.jpg",
+  "http://i.imgur.com/UWfsuSa.jpg",
+  "http://i.imgur.com/Vjd7HLN.jpg",
+  "http://i.imgur.com/v4ib0gR.jpg",
+  "http://i.imgur.com/L2wRR4D.jpg",
+  "http://i.imgur.com/aKlzFVh.jpg",
+  "http://i.imgur.com/g8Mfhww.jpg",
+  "http://i.imgur.com/9c4c1hA.jpg",
+  "http://i.imgur.com/toBpa4D.jpg",
+  "http://i.imgur.com/oAicSUg.jpg",
+  "http://i.imgur.com/JqlPIqU.jpg"
 ];
 
 class HomeScene extends React.Component {

@@ -2,10 +2,8 @@
 
 const React = require('react-native');
 const { StyleSheet, View, Text, TextInput } = React;
-
 const Button = require('../base/button');
 const Dimensions = require('Dimensions');
-
 const windowSize = Dimensions.get('window');
 
 class LoginScene extends React.Component {
