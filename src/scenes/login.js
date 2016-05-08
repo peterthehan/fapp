@@ -3,6 +3,7 @@
 import React, {
   AsyncStorage,
   Component,
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -20,6 +21,8 @@ let app = new Firebase("poopapp1.firebaseio.com");
 
 import styles from '../styles/common-styles.js';
 
+const backgroundImage = '../images/coco_color_0.jpg';
+
 export default class Login extends Component {
 
   constructor(props) {
@@ -34,20 +37,26 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View style = {styles.container}>
+      <Image
+        source = {require('../images/coco_color_20.jpg')}
+        style={styles.backgroundImage}>
         <Header text = "POOP" loaded = {this.state.loaded}/>
         <View style = {styles.body}>
           <TextInput
             style = {styles.textinput}
             onChangeText = {(text) => this.setState({email: text})}
             value = {this.state.email}
-            placeholder = {"Email Address"}/>
+            placeholder = {"Email Address"}
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'/>
           <TextInput
             style = {styles.textinput}
             onChangeText = {(text) => this.setState({password: text})}
             value = {this.state.password}
             secureTextEntry = {true}
-            placeholder = {"Password"}/>
+            placeholder = {"Password"}
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'/>
           <Button
             text = "Log in"
             onpress = {this.login.bind(this)}
@@ -59,7 +68,7 @@ export default class Login extends Component {
             button_styles = {styles.transparent_button}
             button_text_styles = {styles.transparent_button_text}/>
         </View>
-      </View>
+      </Image>
     );
   }
 
