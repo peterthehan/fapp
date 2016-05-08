@@ -1,8 +1,13 @@
 'use strict';
 
 const React = require('react-native');
-const { Image, TouchableOpacity } = React;
-const PhotoGrid = require('react-native-photo-grid');
+
+const { Image, TouchableOpacity, } = React;
+
+const GridView = require('react-native-grid-view');
+
+const Dimensions = require('Dimensions');
+const windowSize = Dimensions.get('window');
 
 class HomeGrid extends React.Component {
 
@@ -21,30 +26,30 @@ class HomeGrid extends React.Component {
   }
 
   render() {
-    return(
-      <PhotoGrid
-        data = { this.state.items }
+    return (
+      <GridView
+        items = { this.state.items }
         itemsPerRow = { 3 }
-        itemMargin = { 1 }
         renderItem = { this.renderItem } />
     );
   }
 
-  renderItem(item, itemSize) {
-    return(
+  renderItem(item) {
+    return (
       <TouchableOpacity
         key = { item.id }
-        style = {{ width: itemSize, height: itemSize }}
+        style = {{width: windowSize.width / 3, height: windowSize.width / 3}}
         onPress = { () => {
-          // Do Something
+          console.warn("Pressed image " + item.id);
         }} >
         <Image
           resizeMode = "cover"
           style = {{ flex: 1 }}
           source = {{ uri: item.src }} />
       </TouchableOpacity>
-    )
+    );
   }
+
 }
 
-export default HomeGrid;
+module.exports = HomeGrid;

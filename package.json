@@ -8,6 +8,7 @@
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "^0.25.1",
-    "react-native-photo-grid": "^0.0.1"
+    "react-native-grid-view": "^0.3.7",
+    "react-native-simple-router": "^0.9.1"
   }
 }
