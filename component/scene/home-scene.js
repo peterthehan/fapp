@@ -1,10 +1,10 @@
-import React, {
-  Component,
-  View,
-  Text,
-} from 'react-native';
-import HomeGrid from './home-grid'
-import SearchBar from './search-bar'
+'use strict';
+
+const React = require('react-native');
+const { View, Text } = React;
+
+const HomeGrid = require('../home-grid');
+const SearchBar = require('../search-bar');
 
 var pictures = [
   "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
@@ -15,7 +15,8 @@ var pictures = [
   "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg",
 ];
 
-class HomeScene extends Component {
+class HomeScene extends React.Component {
+
   constructor() {
     super();
     this.state = {

@@ -1,15 +1,15 @@
-import React, {
-  Component,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-} from 'react-native';
-import Button from 'react-native-button';
-import Dimensions from 'Dimensions';
-var windowSize = Dimensions.get('window');
+'use strict';
 
-class LoginScene extends Component {
+const React = require('react-native');
+const { StyleSheet, View, Text, TextInput } = React;
+
+const Button = require('../base/button');
+const Dimensions = require('Dimensions');
+
+const windowSize = Dimensions.get('window');
+
+class LoginScene extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -36,7 +36,10 @@ class LoginScene extends Component {
         <TextInput
           style = {styles.input}
           onChangeText = {(password) => this.setState({password})} />
-        <Button onPress={this.buttonClicked.bind(this)}>Log In</Button>
+        <Button
+          onPress={this.buttonClicked.bind(this)}
+          color={'#2196F3'}
+          text={'Log In'} />
       </View>
     );
   }
@@ -47,15 +50,13 @@ class LoginScene extends Component {
   }
 }
 
-
-
 var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
   },
   label: {
-    color: 'blue',
+    color: '#2196F3',
   },
   input: {
     width: windowSize.width,

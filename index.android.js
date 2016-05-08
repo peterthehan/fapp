@@ -1,8 +1,8 @@
+'use strict';
 
-import React, {
-  AppRegistry,
-} from 'react-native';
+const React = require('react-native');
+const { AppRegistry } = React;
 
-import LoginScene from './component/login-scene'
+import LoginScene from './component/scene/login-scene'
 
 AppRegistry.registerComponent('PoopProject', () => LoginScene);

@@ -1,11 +1,11 @@
-import React, {
-  Component,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import PhotoGrid from 'react-native-photo-grid';
+'use strict';
 
-class HomeGrid extends Component {
+const React = require('react-native');
+const { Image, TouchableOpacity } = React;
+
+const PhotoGrid = require('react-native-photo-grid');
+
+class HomeGrid extends React.Component {
 
   constructor() {
     super();
