@@ -1,6 +1,7 @@
 'use strict';
 
-import React, { Text, View } from 'react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 
 import HomeGrid from '../home-grid';
 import SearchBar from '../search-bar';

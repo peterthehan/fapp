@@ -1,6 +1,7 @@
 'use strict';
 
-import React, { Image, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
 import Dimensions from 'Dimensions';
 import GridView from 'react-native-grid-view';
 

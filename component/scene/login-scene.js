@@ -1,6 +1,7 @@
 'use strict';
 
-import React, { PropTypes, StyleSheet, Text, TextInput, View } from 'react-native';
+import React from 'react';
+import { PropTypes, StyleSheet, Text, TextInput, View } from 'react-native';
 import Dimensions from 'Dimensions';
 
 import Button from '../base/button';

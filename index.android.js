@@ -1,6 +1,7 @@
 'use strict';
 
-import React, { AppRegistry, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { AppRegistry, StyleSheet, Text } from 'react-native';
 import Router from 'react-native-simple-router';
 
 import LoginScene from './component/scene/login-scene'

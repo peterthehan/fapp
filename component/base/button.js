@@ -1,6 +1,7 @@
 'use strict';
 
-import React, { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 class Button extends React.Component {
   render() {
