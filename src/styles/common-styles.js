@@ -6,16 +6,19 @@ import React, {
 
 module.exports = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  backgroundImage: {
     flex: 1,
+    width: null,
+    height: null
   },
   body: {
     flex: 9,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   textinput: {
     height: 40,
-    borderColor: 'red',
     borderWidth: 1
   },
   transparent_button: {
@@ -23,7 +26,7 @@ module.exports = StyleSheet.create({
     padding: 12
   },
   transparent_button_text: {
-    color: '#529ecc',
+    color: '#fff',
     fontSize: 16
   },
   primary_button: {
