@@ -1,7 +1,7 @@
 'use strict';
 
 import HomeGrid from '../home-grid';
-import {
+import React, {
   Component,
   View,
 } from 'react-native';
