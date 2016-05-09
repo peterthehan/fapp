@@ -15,10 +15,11 @@ module.exports = StyleSheet.create({
   },
   body: {
     flex: 9,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   textinput: {
     height: 40,
+    color: 'white',
     borderWidth: 1
   },
   transparent_button: {
