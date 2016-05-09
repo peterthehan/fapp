@@ -3,9 +3,12 @@
 import HomeGrid from '../home-grid';
 import React, {
   Component,
-  View,
+  ScrollView,
+  View
 } from 'react-native';
 import SearchBar from '../search-bar';
+
+import styles from '../styles/common-styles.js';
 
 var pictures = [
   "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
@@ -25,16 +28,18 @@ var pictures = [
   "http://www.latoro.com/wallpapers/food/18747-desktop-wallpapers-japanese-cuisine.jpg",
   "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
   "http://ww2.kqed.org/quest/wp-content/uploads/sites/39/2012/08/starbucks.jpg",
-  "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg",
+  "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg"
 ];
 
 class Home extends Component {
 
   render() {
     return(
-      <View>
+      <View style = {styles.container}>
         <SearchBar />
-        <HomeGrid items = {pictures}/>
+        <ScrollView>
+          <HomeGrid items = {pictures}/>
+        </ScrollView>
       </View>
     );
   }
