@@ -19,9 +19,8 @@ import Home from './home';
 import Firebase from 'firebase';
 let app = new Firebase("poopapp1.firebaseio.com");
 
-import styles from '../styles/common-styles.js';
-
-const backgroundImage = '../images/coco_color_0.jpg';
+import ButtonStyles from '../styles/button-styles';
+import HeaderStyles from '../styles/header-styles';
 
 export default class Login extends Component {
 
@@ -38,19 +37,19 @@ export default class Login extends Component {
   render() {
     return (
       <Image
-        source = {require('../images/coco_color_20.jpg')}
-        style={styles.backgroundImage}>
+        source = {require('../images/coco_color_40.jpg')}
+        style={HeaderStyles.backgroundImage}>
         <Header text = "POOP" loaded = {this.state.loaded}/>
-        <View style = {styles.body}>
+        <View style = {HeaderStyles.body}>
           <TextInput
-            style = {styles.textinput}
+            style = {HeaderStyles.textinput}
             onChangeText = {(text) => this.setState({email: text})}
             value = {this.state.email}
             placeholder = {"Email Address"}
             placeholderTextColor = 'white'
             underlineColorAndroid = 'white'/>
           <TextInput
-            style = {styles.textinput}
+            style = {HeaderStyles.textinput}
             onChangeText = {(text) => this.setState({password: text})}
             value = {this.state.password}
             secureTextEntry = {true}
@@ -60,13 +59,13 @@ export default class Login extends Component {
           <Button
             text = "Log in"
             onpress = {this.login.bind(this)}
-            button_styles = {styles.primary_button}
-            button_text_styles = {styles.primary_button_text}/>
+            button_styles = {ButtonStyles.primary_button}
+            button_text_styles = {ButtonStyles.primary_button_text}/>
           <Button
             text = "Create an account"
             onpress = {this.goToSignup.bind(this)}
-            button_styles = {styles.transparent_button}
-            button_text_styles = {styles.transparent_button_text}/>
+            button_styles = {ButtonStyles.transparent_button}
+            button_text_styles = {ButtonStyles.transparent_button_text}/>
         </View>
       </Image>
     );
