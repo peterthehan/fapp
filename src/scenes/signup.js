@@ -2,6 +2,7 @@
 
 import React, {
   Component,
+  Image,
   Text,
   TextInput,
   View
@@ -15,7 +16,8 @@ import Login from './login';
 import Firebase from 'firebase';
 let app = new Firebase("poopapp1.firebaseio.com");
 
-import styles from '../styles/common-styles.js';
+import ButtonStyles from '../styles/button-styles';
+import HeaderStyles from '../styles/header-styles';
 
 export default class Signup extends Component {
 
@@ -31,32 +33,40 @@ export default class Signup extends Component {
 
   render() {
     return (
-      <View style = {styles.container}>
-        <Header text = "POOP" loaded = {this.state.loaded}/>
-        <View style = {styles.body}>
-          <TextInput
-            style = {styles.textinput}
-            onChangeText = {(text) => this.setState({email: text})}
-            value = {this.state.email}
-            placeholder = {"Email Address"}/>
-          <TextInput
-            style = {styles.textinput}
-            onChangeText = {(text) => this.setState({password: text})}
-            value = {this.state.password}
-            secureTextEntry = {true}
-            placeholder = {"Password"}/>
-          <Button
-            text = "Sign up"
-            onpress = {this.signup.bind(this)}
-            button_styles = {styles.primary_button}
-            button_text_styles = {styles.primary_button_text}/>
-          <Button
-            text = "Already have an account"
-            onpress = {this.goToLogin.bind(this)}
-            button_styles = {styles.transparent_button}
-            button_text_styles = {styles.transparent_button_text}/>
+      <Image
+        source = {require('../images/coco_color_40.jpg')}
+        style={HeaderStyles.backgroundImage}>
+        <View style = {HeaderStyles.container}>
+          <Header text = "POOP" loaded = {this.state.loaded}/>
+          <View style = {HeaderStyles.body}>
+            <TextInput
+              style = {HeaderStyles.textinput}
+              onChangeText = {(text) => this.setState({email: text})}
+              value = {this.state.email}
+              placeholder = {"Email Address"}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+            <TextInput
+              style = {HeaderStyles.textinput}
+              onChangeText = {(text) => this.setState({password: text})}
+              value = {this.state.password}
+              secureTextEntry = {true}
+              placeholder = {"Password"}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+            <Button
+              text = "Sign up"
+              onpress = {this.signup.bind(this)}
+              button_styles = {ButtonStyles.primary_button}
+              button_text_styles = {ButtonStyles.primary_button_text}/>
+            <Button
+              text = "Already have an account"
+              onpress = {this.goToLogin.bind(this)}
+              button_styles = {ButtonStyles.transparent_button}
+              button_text_styles = {ButtonStyles.transparent_button_text}/>
+          </View>
         </View>
-      </View>
+      </Image>
     );
   }
 

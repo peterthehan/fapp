@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
   header_text: {
-    color: '#000',
+    color: '#FFF',
     fontSize: 18
   }
 });
