@@ -17,7 +17,8 @@ module.exports = StyleSheet.create({
   },
   textinput: {
     height: 40,
-    borderWidth: 1
+    borderWidth: 1,
+    color: 'white'
   },
   image: {
     width: 100,

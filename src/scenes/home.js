@@ -8,7 +8,7 @@ import React, {
 } from 'react-native';
 import SearchBar from '../search-bar';
 
-import styles from '../styles/common-styles.js';
+import HeaderStyles from '../styles/header-styles';
 
 var pictures = [
   "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
@@ -35,7 +35,7 @@ class Home extends Component {
 
   render() {
     return(
-      <View style = {styles.container}>
+      <View style = {HeaderStyles.container}>
         <SearchBar />
         <ScrollView>
           <HomeGrid items = {pictures}/>
