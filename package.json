@@ -10,6 +10,8 @@
     "react": "^0.14.8",
     "react-native": "^0.25.1",
     "react-native-gifted-spinner": "0.0.3",
-    "react-native-grid-view": "^0.3.7"
+    "react-native-grid-view": "^0.3.7",
+    "react-native-onesignal": "^1.1.1",
+    "react-native-push-notification": "^1.0.6"
   }
 }

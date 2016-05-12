@@ -32,21 +32,21 @@ var pictures = [
 ];
 
 class Home extends Component {
-	
+
   constructor(props) {
     super(props);
     this.state = {
       refreshing: false,
     };
   }
-	
+
   _onRefresh() {
 	this.setState({refreshing: true});
     setTimeout(() => {
       // Do some stuff
       this.setState({refreshing: false});
     }, 5000);
-  
+
   }
 
   render() {
@@ -66,8 +66,21 @@ class Home extends Component {
 		}>
           <HomeGrid items = {pictures}/>
         </ScrollView>
+        <Button
+          text = "Create Event"
+          onpress = {this.createEvent.bind(this)}
+          button_styles = {ButtonStyles.primary_button}
+          button_text_styles = {ButtonStyles.primary_button_text}/>
+              <HomeGrid items = {pictures}/>
       </View>
     );
+  }
+
+  createEvent() {
+    this.props.navigator.push({
+      component: Event,
+      type: 'index1'
+    });
   }
 }
 
