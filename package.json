@@ -1,6 +1,6 @@
 {
   "name": "PoopProject",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
@@ -10,6 +10,7 @@
     "react": "^0.14.8",
     "react-native": "^0.25.1",
     "react-native-gifted-spinner": "0.0.3",
-    "react-native-grid-view": "^0.3.7"
+    "react-native-grid-view": "^0.3.7",
+    "react-native-scrollable-tab-view": "^0.4.2"
   }
 }

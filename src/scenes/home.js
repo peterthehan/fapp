@@ -32,21 +32,21 @@ var pictures = [
 ];
 
 class Home extends Component {
-	
+
   constructor(props) {
     super(props);
     this.state = {
       refreshing: false,
     };
   }
-	
+
   _onRefresh() {
 	this.setState({refreshing: true});
     setTimeout(() => {
       // Do some stuff
       this.setState({refreshing: false});
     }, 5000);
-  
+
   }
 
   render() {
@@ -54,16 +54,16 @@ class Home extends Component {
       <View style = {HeaderStyles.container}>
         <SearchBar />
         <ScrollView refreshControl={
-			<RefreshControl
-				refreshing={this.state.refreshing}
-				onRefresh={this._onRefresh.bind(this)}
-				tintColor="blue"
-				title="Loading..."
-				titleColor="black"
-				colors={['#ffffff', '#b3b3b3', '#808080']}
-				progressBackgroundColor="black"
-			/>
-		}>
+    			<RefreshControl
+    				refreshing={this.state.refreshing}
+    				onRefresh={this._onRefresh.bind(this)}
+    				tintColor="blue"
+    				title="Loading..."
+    				titleColor="black"
+    				colors={['#ffffff', '#b3b3b3', '#808080']}
+    				progressBackgroundColor="black"
+    			/>
+		    }>
           <HomeGrid items = {pictures}/>
         </ScrollView>
       </View>
