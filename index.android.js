@@ -10,7 +10,7 @@ import React, {
 } from 'react-native';
 
 import Login from './src/scenes/login';
-import Home from './src/scenes/home';
+import Main from './src/scenes/main';
 
 import Header from './src/components/header';
 
@@ -39,7 +39,7 @@ class PoopApp extends Component {
           if(error) {
             this.setState(component);
           } else {
-            this.setState({component: Home});
+            this.setState({component: Main});
           }
         });
       } else {
