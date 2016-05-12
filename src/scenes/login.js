@@ -14,7 +14,7 @@ import Button from '../components/button';
 import Header from '../components/header';
 
 import Signup from './signup';
-import Home from './home';
+import Main from './main';
 
 import Firebase from 'firebase';
 let app = new Firebase("poopapp1.firebaseio.com");
@@ -85,7 +85,7 @@ export default class Login extends Component {
         alert('Login Failed. Please try again');
       } else {
         AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-        this.props.navigator.push({component: Home});
+        this.props.navigator.push({component: Main});
       }
     });
   }
