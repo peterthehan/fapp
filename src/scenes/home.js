@@ -54,33 +54,20 @@ class Home extends Component {
       <View style = {HeaderStyles.container}>
         <SearchBar />
         <ScrollView refreshControl={
-			<RefreshControl
-				refreshing={this.state.refreshing}
-				onRefresh={this._onRefresh.bind(this)}
-				tintColor="blue"
-				title="Loading..."
-				titleColor="black"
-				colors={['#ffffff', '#b3b3b3', '#808080']}
-				progressBackgroundColor="black"
-			/>
-		}>
+    			<RefreshControl
+    				refreshing={this.state.refreshing}
+    				onRefresh={this._onRefresh.bind(this)}
+    				tintColor="blue"
+    				title="Loading..."
+    				titleColor="black"
+    				colors={['#ffffff', '#b3b3b3', '#808080']}
+    				progressBackgroundColor="black"
+    			/>
+		    }>
           <HomeGrid items = {pictures}/>
         </ScrollView>
-        <Button
-          text = "Create Event"
-          onpress = {this.createEvent.bind(this)}
-          button_styles = {ButtonStyles.primary_button}
-          button_text_styles = {ButtonStyles.primary_button_text}/>
-              <HomeGrid items = {pictures}/>
       </View>
     );
-  }
-
-  createEvent() {
-    this.props.navigator.push({
-      component: Event,
-      type: 'index1'
-    });
   }
 }
 
