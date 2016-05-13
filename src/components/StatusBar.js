@@ -1,7 +1,13 @@
 'use strict';
-const React = require('react-native');
-const styles = require('../styles/header-styles.js')
-const { StyleSheet, Text, View } = React;
+import React, {
+  Component,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  View
+} from 'react-native';
+import HeaderStyles from '../styles/header-styles';
 class StatusBar extends React.Component {
   render() {
     return (

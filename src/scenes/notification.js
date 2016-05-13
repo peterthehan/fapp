@@ -9,8 +9,9 @@ import React, {
   View
 } from 'react-native';
 import Button from '../components/button';
-import ListItem from '../components/button';
-import StatusBar from '../components/header';
+import ListItem from '../components/ListItem';
+import StatusBar from '../components/StatusBar';
+import Header from '../components/header';
 import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
@@ -21,21 +22,21 @@ class Notification extends Component {
 
   constructor() {
     super();
+    const ds = new ListView.DataSource({
+    rowHasChanged: (row1, row2) => row1 !== row2,
+  });
     this.state = {
-      dataSource: new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      })
+      dataSource: ds.cloneWithRows([
+        'Post 1'])
+
     };
+
   }
 
-  componentDidMount() {
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows([{ title: 'add your events' }])
-    })
-  }
 
-  listenForItems(events) {
-    itemsRef.on('value', (snap) => {
+
+ listenForItems(events) {
+    events.on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((child) => {
@@ -51,24 +52,46 @@ class Notification extends Component {
   }
   _renderItem(item) {
     return (
-      <ListItem item={item} onPress={() => {}} />
+    //  <ListItem item={item} onPress={this.generate} /> 
+        <Text>afdasjfdklsa</Text>
     );
+  }
+  generate(){
+    alert("asdfafasf");
   }
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar title="Events" />
+        <Header text = "event" loaded = {'true'}/>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={this._renderItem.bind(this)}
+          renderRow={(rowData) => this._renderItem(rowData)}
           style={styles.listview}/>
         <Button
           text="Add"
-          onPress={() => {}}
+          onPress={this.createEvent.bind(this)}
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}/>
       </View>
     );
+  }
+  createEvent(){
+    this.setState({loaded: false}); //TODO
+
+    /*app.authWithPassword({
+      "email": this.state.email,
+      "password": this.state.password
+      },
+      (error, user_data) => {
+      this.setState({loaded: true});
+
+      if(error) {
+        alert('createEvent Failed. Please try again');
+      } else {
+        AsyncStorage.setItem('user_data', JSON.stringify(user_data));
+        this.props.navigator.push({component: notification.js});
+      }
+    });*/
   }
 }
 module.exports = Notification;
