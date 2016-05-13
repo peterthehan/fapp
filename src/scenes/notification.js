@@ -12,6 +12,8 @@ import Button from '../components/button';
 import ListItem from '../components/button';
 import StatusBar from '../components/header';
 import Firebase from 'firebase';
+import ButtonStyles from '../styles/button-styles';
+import HeaderStyles from '../styles/header-styles';
 const styles = require('../styles/header-styles.js');
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
@@ -28,7 +30,7 @@ class Notification extends Component {
 
   componentDidMount() {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows([{ title: 'Pizza' }])
+      dataSource: this.state.dataSource.cloneWithRows([{ title: 'add your events' }])
     })
   }
 
@@ -62,7 +64,7 @@ class Notification extends Component {
           style={styles.listview}/>
         <Button
           text="Add"
-          onPress={() => {}} />
+          onPress={() => {}}
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}/>
       </View>
