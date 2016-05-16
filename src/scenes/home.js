@@ -41,12 +41,11 @@ class Home extends Component {
   }
 
   _onRefresh() {
-	this.setState({refreshing: true});
+  	this.setState({refreshing: true});
     setTimeout(() => {
       // Do some stuff
       this.setState({refreshing: false});
     }, 5000);
-
   }
 
   render() {
