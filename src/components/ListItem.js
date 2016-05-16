@@ -7,6 +7,7 @@ import React, {
   TextInput,
   View
 } from 'react-native';
+const styles = require('../styles/header-styles.js');
 
 class ListItem extends React.Component {
   render() {

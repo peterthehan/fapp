@@ -52,8 +52,8 @@ class Notification extends Component {
   }
   _renderItem(item) {
     return (
-    //  <ListItem item={item} onPress={this.generate} /> 
-        <Text>afdasjfdklsa</Text>
+      <ListItem item={item} onPress={() => {}} />
+
     );
   }
   generate(){
@@ -65,7 +65,7 @@ class Notification extends Component {
         <Header text = "event" loaded = {'true'}/>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => this._renderItem(rowData)}
+          renderRow={this._renderItem.bind(this)}
           style={styles.listview}/>
         <Button
           text="Add"
@@ -76,7 +76,8 @@ class Notification extends Component {
     );
   }
   createEvent(){
-    this.setState({loaded: false}); //TODO
+    //this.setState({loaded: false});
+    alert("add clicked");
 
     /*app.authWithPassword({
       "email": this.state.email,

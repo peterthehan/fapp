@@ -7,7 +7,7 @@ import React, {
   TextInput,
   View
 } from 'react-native';
-import HeaderStyles from '../styles/header-styles';
+const styles = require('../styles/header-styles.js');
 class StatusBar extends React.Component {
   render() {
     return (
