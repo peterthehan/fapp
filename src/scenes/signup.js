@@ -27,7 +27,10 @@ export default class Signup extends Component {
     this.state = {
       loaded: true,
       email: '',
-      password: ''
+      password: '',
+      firstName: '',
+      lastName: '',
+
     };
   }
 
@@ -54,6 +57,20 @@ export default class Signup extends Component {
               placeholder = {"Password"}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
+            <TextInput
+              style = {HeaderStyles.textinput}
+              onChangeText = {(text) => this.setState({firstName: text})}
+              value = {this.state.firstName}
+              placeholder = {"First Name"}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+            <TextInput
+                style = {HeaderStyles.textinput}
+                onChangeText = {(text) => this.setState({lastName: text})}
+                value = {this.state.lastName}
+                placeholder = {"Last Name"}
+                placeholderTextColor = 'white'
+                underlineColorAndroid = 'white'/>
             <Button
               text = "Sign up"
               onpress = {this.signup.bind(this)}
@@ -92,12 +109,22 @@ export default class Signup extends Component {
             alert("Error creating user:");
         }
       } else {
+        var ref = app.child("users");
+        var uid = userData.uid;
+        ref.child(uid).set({
+            email: this.state.email,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            profilePic: "",
+        });
         alert('Your account was created!');
       }
 
       this.setState({
         email: '',
         password: '',
+        firstName: '',
+        lastName: '',
         loaded: true
       });
     });

@@ -40,7 +40,7 @@ class HomeGrid extends Component {
       <TouchableOpacity
         key = {item.id}
         style = {{width: windowSize.width / 3, height: windowSize.width / 3}}
-        onPress = { () => {console.warn("Pressed image " + item.id);}} >
+        onPress = {() => {alert("Pressed image " + item.id);}} >
         <Image
           resizeMode = "cover"
           style = {{flex: 1}}
