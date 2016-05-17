@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   ListView,
   TouchableHighlight,
   StyleSheet,
@@ -16,27 +17,26 @@ import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
 const styles = require('../styles/header-styles.js');
-let eventsRef = new Firebase("poopapp1.firebaseio.com");
-let events = eventsRef.child('event');
+const FirebaseUrl = 'poopapp1.firebaseio.com';
+
 class Notification extends Component {
 
-  constructor() {
-    super();
-    const ds = new ListView.DataSource({
-    rowHasChanged: (row1, row2) => row1 !== row2,
-  });
+  constructor(props) {
+    super(props);
     this.state = {
-      dataSource: ds.cloneWithRows([
-        'Post 1'])
-
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1,row2) => row1 != row2,
+      })
     };
-
+    this.notification = this.getRef().child('notification');
   }
 
+  getRef() {
+    return new Firebase(FirebaseUrl);
+  }
 
-
- listenForItems(events) {
-    events.on('value', (snap) => {
+  listenForItems(notification) {
+    notification.on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((child) => {
@@ -50,10 +50,23 @@ class Notification extends Component {
       });
     });
   }
+
+  componentDidMount() {
+    this.listenForItems(this.notification);
+  }
+
   _renderItem(item) {
+    const onPress = ()=>{
+      Alert.alert(
+        'Complete!',
+        null,
+        [
+          {text: 'Complete',onPress:(text)=>this.notification.child(item._key).remove()}
+        ]
+      )
+    }
     return (
       <ListItem item={item} onPress={() => {}} />
-
     );
   }
   generate(){
@@ -61,38 +74,34 @@ class Notification extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <Header text = "event" loaded = {'true'}/>
+      <View style={styles.container2}>
+
+        <StatusBar title="Notification" />
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)}
           style={styles.listview}/>
         <Button
-          text="Add"
-          onPress={this.createEvent.bind(this)}
+          text="addTest"
+          onPress={this.add.bind(this)}
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}/>
       </View>
     );
   }
-  createEvent(){
-    //this.setState({loaded: false});
-    alert("add clicked");
-
-    /*app.authWithPassword({
-      "email": this.state.email,
-      "password": this.state.password
-      },
-      (error, user_data) => {
-      this.setState({loaded: true});
-
-      if(error) {
-        alert('createEvent Failed. Please try again');
-      } else {
-        AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-        this.props.navigator.push({component: notification.js});
-      }
-    });*/
+  add(){
+    Alert.alert(
+      'add new event',
+      null,
+      [
+        {
+          text: 'Add',
+          onPress: (text) => {this.notification.push({title: text})
+          }
+        }
+      ]
+    )
   }
 }
 module.exports = Notification;
