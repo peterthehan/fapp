@@ -7,6 +7,7 @@ import React, {
   StyleSheet,
   Component,
   Text,
+  Image,
   View
 } from 'react-native';
 import Button from '../components/button';
@@ -33,16 +34,12 @@ class Notification extends Component {
   });
     this.state = {
       dataSource: ds.cloneWithRows([
-        'Post 1'])
-
+        'You have 1 new follower: tester',
+        'You followed tester'
+      ])
     };
 
     this.notification = this.getRef().child('notification');
-    this.notification.set({
-      followers: null,
-      events:null,
-      ratings:null
-    })
   }
 
   getRef() {
@@ -75,18 +72,27 @@ class Notification extends Component {
   }
   render() {
     return (
+      /*<Image source = {require('../images/coco_color_0.jpg')} style={HeaderStyles.backgroundImage}>
+      */
       <View style={styles.container}>
       <StatusBar title="Notification" />
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this._renderItem.bind(this)}
-        style={styles.listview}/>
+        renderRow={(rowData) =>
+          <TouchableOpacity onPress = {this.generate}>
+            <View style = {{height: 50,
+              backgroundColor:'rgba(240,200,182,0.7)', padding: 10, borderWidth: 1,
+            borderColor: '#003', alignItems: 'center'}}>
+              <Text>{rowData}</Text>
+            </View>
+          </TouchableOpacity>
+        }/>
 
         <View style={styles.container}/>
-      <TouchableHighlight onPress={this.tweet.bind(this)}>
-          <View style={{margin: 30,
-          padding: 12,
-          borderColor: 'transparent',alignItems: 'center',justifyContent:'center', width: 100, height: 50,backgroundColor:'#00aced'}}>
+        <TouchableHighlight onPress={this.tweet.bind(this)}>
+          <View style={{margin: 30,padding: 12,borderColor: 'transparent',
+          alignItems: 'center',justifyContent:'center', width: 100, height: 50,
+          backgroundColor:'#00aced'}}>
            <Text style={{color:'#ffffff',fontWeight:'800',}}>Share Link</Text>
           </View>
           </TouchableHighlight>
@@ -104,6 +110,7 @@ class Notification extends Component {
           </ActionButton.Item>
         </ActionButton>
       </View>
+      /*</Image>*/
     );
   }
 

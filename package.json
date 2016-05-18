@@ -10,6 +10,7 @@
     "react": "^0.14.8",
     "react-native": "^0.25.1",
     "react-native-action-button": "^1.1.5",
+    "react-native-animatable": "^0.6.0",
     "react-native-gifted-spinner": "0.0.3",
     "react-native-grid-view": "^0.3.7",
     "react-native-scrollable-tab-view": "^0.4.2",
