@@ -29,8 +29,36 @@ export default class CreateEvent extends Component {
 
       title: '',
       publicEvent: true,
-      date: new Date(),
+      dateStart: 'pick a start date',
+      dateEnd: 'pick an end date',
       description: ''
+    }
+  }
+
+  async showPicker(stateKey, options, start) {
+  try {
+    var newState = {};
+    var tempDate = new Date();
+    var tempDateStr = tempDate.toLocaleDateString();
+    const {action, year, month, day} = await DatePickerAndroid.open(options);
+    if (action === DatePickerAndroid.dismissedAction) {
+      tempDateStr = 'dismissed';
+      newState[stateKey + 'Text'] = 'dismissed';
+    } else {
+        tempDate = new Date(year, month, day);
+        tempDateStr = tempDate.toLocaleDateString();
+
+      }
+      if( start ){
+        this.setState({dateStart: tempDateStr});
+      }
+      else{
+        this.setState({dateEnd: tempDateStr});
+      }
+      alert(this.state.dateStart);
+      alert(this.state.dateEnd);
+    } catch ({code, message}) {
+      console.warn(`Error in example '${stateKey}': `, message);
     }
   }
 
@@ -67,13 +95,25 @@ export default class CreateEvent extends Component {
         <View>
           <Text style={{color:'white'}}>Start:</Text>
             <View style={{ flexDirection:'row'}}>
-              <Text>date and </Text>
-              <Text>time</Text>
+              <TouchableWithoutFeedback
+                onPress={this.showPicker.bind(this, 'min', {
+                date: this.state.minDate,
+                minDate: new Date(),
+                }, true)}>
+                <Text style={{color:'black'}}>{this.state.dateStart}</Text>
+              </TouchableWithoutFeedback>
             </View>
           <Text style={{color:'white'}}>End:</Text>
             <View style={{ flexDirection:'row'}}>
-              <Text>date and </Text>
-              <Text>time</Text>
+            <View style={{ flexDirection:'row'}}>
+              <TouchableWithoutFeedback
+                onPress={this.showPicker.bind(this, 'min', {
+                date: this.state.minDate,
+                minDate: new Date(this.state.dateStart),
+                }, false )}>
+                <Text style={{color:'black'}}>{this.state.dateEnd}</Text>
+              </TouchableWithoutFeedback>
+            </View>
             </View>
         </View>
 
