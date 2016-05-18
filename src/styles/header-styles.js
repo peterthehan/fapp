@@ -3,17 +3,19 @@
 import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
-  container: {
-    flex: 1
+  // for header.js
+  header: {
+    alignItems: 'center',
+    padding: 14,
+    // backgroundColor: '#000' // just to see container.
   },
-  backgroundImage: {
-    flex: 1,
-    width: null,
-    height: null
+  headerItem: {
   },
-  listview: {
-    flex: 1,
+  headerText: {
+    color: '#FFF',
+    fontSize: 18
   },
+<<<<<<< HEAD
   statusbar: {
     backgroundColor: '#fff',
     height: 22,
@@ -51,5 +53,8 @@ module.exports = StyleSheet.create({
   image: {
     width: 100,
     height: 100
+=======
+  headerIcon: {
+>>>>>>> 97bd50c4268c9a2ee2792d6f217c68ffd4315d89
   }
 });

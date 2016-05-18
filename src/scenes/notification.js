@@ -6,6 +6,7 @@ import React, {
   TouchableOpacity,
   StyleSheet,
   Component,
+  Alert,
   Text,
   Image,
   View
@@ -39,7 +40,11 @@ class Notification extends Component {
       ])
     };
 
-    this.notification = this.getRef().child('notification');
+    this.notification = new Firebase("poopapp1.firebaseio.com/notification");
+  }
+
+  componenetDidMount() {
+    this.listenForItems(this.notification);
   }
 
   getRef() {
@@ -62,6 +67,17 @@ class Notification extends Component {
     });
   }
   _renderItem(item) {
+    const onPress = ()=>{
+     Alert.alert(
+      'Complete',
+      null,
+      [
+        {text: 'Complete', onPress:(text)=>this.notification.child(item_key).remove()},
+        {text: 'Cancel',onPress:(text) => console.log('Cancel')}
+      ],
+      'default'
+     );
+    };
     return (
       <ListItem item={item} onPress={() => {}} />
 
@@ -87,6 +103,13 @@ class Notification extends Component {
             </View>
           </TouchableOpacity>
         }/>
+
+        <Button
+          text = "add"
+          onpress = {this.add.bind(this)}
+          button_styles = {ButtonStyles.primary_button}
+          button_text_styles = {ButtonStyles.primary_button_text}/>
+
 
         <View style={styles.container}/>
         <TouchableHighlight onPress={this.tweet.bind(this)}>
@@ -121,18 +144,19 @@ class Notification extends Component {
   }
 
   add(){
-    Alert.alert(
-      'add new notification',
-      null,
-      [
-        {
-          text: 'Add',
-          onPress: (text) => {this.notification.push({text: text})
-          }
+    Alert.alert('add new task',
+    null,
+    [
+      {
+        text: 'Add',
+        onPress: (text) => {
+          this.notification.push({title: text});
         }
-      ]
-    )
-  }
+      },
+    ],
+    'plain-text'
+  );
+}
 
   tweet(){
     Share.open({
