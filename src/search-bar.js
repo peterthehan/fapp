@@ -16,6 +16,7 @@ class SearchBar extends React.Component {
     return(
       <TextInput
         keyboardType = { 'default' }
+        placeholder = "Search"
         onChangeText={(text) => this.setState({text})} />
     );
   }
