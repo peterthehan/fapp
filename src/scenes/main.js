@@ -15,7 +15,8 @@ import Camera from './camera';
 import Notification from './notification';
 import More from './more';
 import TabBar from '../components/TabBar';
-
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/FontAwesome';
 class Main extends Component {
 
   constructor() {
@@ -26,6 +27,8 @@ class Main extends Component {
 
   render() {
     return(
+      <View style={{flex:1, backgroundColor: '#f3f3f3'}}>
+
       <ScrollableTabView tabBarPosition="bottom" renderTabBar={() => <TabBar />}>
         <View tabLabel="home" style={{flex: 1}}>
           <Home tabLabel = "Home"/>
@@ -43,8 +46,27 @@ class Main extends Component {
           <More tabLabel = "More"/>
         </View>
       </ScrollableTabView>
+
+      <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
+        <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => {alert("new Task tapped!")}}>
+          <Icon name="calendar-plus-o" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+        <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
+          <Icon name="bell" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+        <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
+          <Icon name="bars" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+      </ActionButton>
+      </View>
     );
   }
 }
-
+const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+});
 module.exports = Main;

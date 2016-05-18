@@ -25,13 +25,7 @@ let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
 const FirebaseUrl = 'poopapp1.firebaseio.com';
 import Share from 'react-native-share';
-const styles = StyleSheet.create({
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
-  },
-});
+
 const styles1 = StyleSheet.create({
   container: {
     flex: 1,
@@ -115,38 +109,20 @@ class Notification extends Component {
     return (
       /*<Image source = {require('../images/coco_color_0.jpg')} style={HeaderStyles.backgroundImage}>
       */
-      <View style={{flex:1}}>
-      <StatusBar title="Notification" />
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) =>
-          <TouchableOpacity onPress = {this.generate}>
-            <View style = {{flex: 1, height: 50,
-             padding: 10, borderWidth: 1,
-            borderColor: '#003', alignItems: 'center'}}>
-              <Text>{rowData}</Text>
-            </View>
-          </TouchableOpacity>
-        }/>
-          <View style={{flex:1}}/>
       <View style={{flex: 1}}>
       <StatusBar title="Notification" />
       <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this._renderItem.bind(this)}
-        style={{flex: 1}}/>
+      dataSource={this.state.dataSource}
+      renderRow={(rowData) =>
+        <TouchableOpacity onPress = {this.generate}>
+          <View style = {{flex: 1, height: 50,
+           padding: 10, borderWidth: 1,
+          borderColor: '#003', alignItems: 'center'}}>
+            <Text>{rowData}</Text>
+          </View>
+        </TouchableOpacity>
+      }/>
 
-        <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
-            <Icon name="calendar-plus-o" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
-            <Icon name="bell" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
-            <Icon name="bars" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
       </View>
       /*</Image>*/
     );
