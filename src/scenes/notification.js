@@ -17,8 +17,15 @@ import Header from '../components/header';
 import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const styles = require('../styles/header-styles.js');
+<<<<<<< HEAD
+let eventsRef = new Firebase("poopapp1.firebaseio.com");
+let events = eventsRef.child('event');
+=======
 const FirebaseUrl = 'poopapp1.firebaseio.com';
+>>>>>>> 70d16e548c50361a73257d6cbe96c6b65652f669
 
 class Notification extends Component {
 
@@ -37,12 +44,17 @@ class Notification extends Component {
     })
   }
 
+<<<<<<< HEAD
+ listenForItems(events) {
+    events.on('value', (snap) => {
+=======
   getRef() {
     return new Firebase(FirebaseUrl);
   }
 
   listenForItems(notification) {
     notification.on('value', (snap) => {
+>>>>>>> 70d16e548c50361a73257d6cbe96c6b65652f669
       // get children as an array
       var items = [];
       snap.forEach((child) => {
@@ -88,6 +100,41 @@ class Notification extends Component {
           dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)}
           style={styles.listview}/>
+<<<<<<< HEAD
+        <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
+            <Icon name="calendar-plus-o" size={20} color="white" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
+            <Icon name="bell" size={20} color="white" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
+            <Icon name="bars" size={20} color="white" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+      </View>
+    );
+  }
+
+  createEvent(){
+    //this.setState({loaded: false});
+    alert("add clicked");
+
+    /*app.authWithPassword({
+      "email": this.state.email,
+      "password": this.state.password
+      },
+      (error, user_data) => {
+      this.setState({loaded: true});
+
+      if(error) {
+        alert('createEvent Failed. Please try again');
+      } else {
+        AsyncStorage.setItem('user_data', JSON.stringify(user_data));
+        this.props.navigator.push({component: notification.js});
+      }
+    });*/
+=======
         <Button
           text="add"
           onpress = {this.add.bind(this)}
@@ -109,6 +156,7 @@ class Notification extends Component {
         }
       ]
     )
+>>>>>>> 70d16e548c50361a73257d6cbe96c6b65652f669
   }
 
   remove(rowData){
