@@ -129,16 +129,22 @@ class Notification extends Component {
           </TouchableOpacity>
         }/>
           <View style={{flex:1}}/>
+      <View style={{flex: 1}}>
+      <StatusBar title="Notification" />
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this._renderItem.bind(this)}
+        style={{flex: 1}}/>
 
         <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
-            <Icon name="calendar-plus-o" size={20} color="white" style={styles.actionButtonIcon} />
+            <Icon name="calendar-plus-o" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
-            <Icon name="bell" size={20} color="white" style={styles.actionButtonIcon} />
+            <Icon name="bell" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
-            <Icon name="bars" size={20} color="white" style={styles.actionButtonIcon} />
+            <Icon name="bars" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
       </View>
@@ -195,4 +201,12 @@ class Notification extends Component {
     this.notification.child(rowData.id).remove();
   }
 }
+
+const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+});
 module.exports = Notification;
