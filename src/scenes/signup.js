@@ -3,21 +3,21 @@
 import React, {
   Component,
   Image,
-  Text,
   TextInput,
   View
 } from 'react-native';
 
-import Button from '../components/button';
-import Header from '../components/header';
-
-import Login from './login';
-
 import Firebase from 'firebase';
 let app = new Firebase("poopapp1.firebaseio.com");
 
+import Login from './login';
+
+import Button from '../components/button';
+import Header from '../components/header';
+
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
+import SceneStyles from '../styles/scene-styles';
 
 export default class Signup extends Component {
 
@@ -25,59 +25,71 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      loaded: true,
-      email: '',
-      password: '',
       firstName: '',
       lastName: '',
-
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      dateOfBirth: '',
+      // loaded: true,
     };
   }
 
   render() {
     return (
-      <Image
-        source = {require('../images/coco_color_40.jpg')}
-        style={HeaderStyles.backgroundImage}>
-        <View style = {HeaderStyles.container}>
-          <Header text = "POOP" loaded = {this.state.loaded}/>
-          <View style = {HeaderStyles.body}>
+      <Image style = {SceneStyles.backgroundImage}
+        source = {require('../images/coco_color_40.jpg')}>
+
+        <View style = {SceneStyles.container}>
+          <Header text = ""/>
+
+          <View style = {SceneStyles.body}>
             <TextInput
-              style = {HeaderStyles.textinput}
-              onChangeText = {(text) => this.setState({email: text})}
-              value = {this.state.email}
-              placeholder = {"Email Address"}
-              placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
-            <TextInput
-              style = {HeaderStyles.textinput}
-              onChangeText = {(text) => this.setState({password: text})}
-              value = {this.state.password}
-              secureTextEntry = {true}
-              placeholder = {"Password"}
-              placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
-            <TextInput
-              style = {HeaderStyles.textinput}
+              placeholder = {"First Name"}
               onChangeText = {(text) => this.setState({firstName: text})}
               value = {this.state.firstName}
-              placeholder = {"First Name"}
+              style = {SceneStyles.textinput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
             <TextInput
-                style = {HeaderStyles.textinput}
-                onChangeText = {(text) => this.setState({lastName: text})}
-                value = {this.state.lastName}
-                placeholder = {"Last Name"}
-                placeholderTextColor = 'white'
-                underlineColorAndroid = 'white'/>
+              placeholder = {"Last Name"}
+              onChangeText = {(text) => this.setState({lastName: text})}
+              value = {this.state.lastName}
+              style = {SceneStyles.textinput}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+            <TextInput
+              placeholder = {"Email"}
+              onChangeText = {(text) => this.setState({email: text})}
+              value = {this.state.email}
+              style = {SceneStyles.textinput}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+            <TextInput
+              secureTextEntry = {true}
+              placeholder = {"Password"}
+              onChangeText = {(text) => this.setState({password: text})}
+              value = {this.state.password}
+              style = {SceneStyles.textinput}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+            <TextInput
+              secureTextEntry = {true}
+              placeholder = {"Confirm Password"}
+              onChangeText = {(text) => this.setState({passwordConfirm: text})}
+              value = {this.state.password}
+              style = {SceneStyles.textinput}
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'/>
+
+
             <Button
-              text = "Sign up"
+              text = "SIGN UP"
               onpress = {this.signup.bind(this)}
               button_styles = {ButtonStyles.primary_button}
               button_text_styles = {ButtonStyles.primary_button_text}/>
             <Button
-              text = "Already have an account"
+              text = "Already Have An Account"
               onpress = {this.goToLogin.bind(this)}
               button_styles = {ButtonStyles.transparent_button}
               button_text_styles = {ButtonStyles.transparent_button_text}/>
@@ -88,7 +100,7 @@ export default class Signup extends Component {
   }
 
   signup() {
-    this.setState({loaded: false});
+    // this.setState({loaded: false});
 
     app.createUser({
       'email': this.state.email,
@@ -123,9 +135,11 @@ export default class Signup extends Component {
       this.setState({
         email: '',
         password: '',
+        passwordConfirm: '',
         firstName: '',
         lastName: '',
-        loaded: true
+        dateOfBirth: '',
+        // loaded: true
       });
     });
   }
