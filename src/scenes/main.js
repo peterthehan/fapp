@@ -9,6 +9,7 @@ import React, {
   View
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import CreateEvent from './create-event';
 import Home from './home';
 import Follower from './follower';
 import Camera from './camera';
@@ -23,6 +24,7 @@ class Main extends Component {
     super();
     this.state = {
     };
+
   }
 
   render() {
@@ -48,13 +50,13 @@ class Main extends Component {
       </ScrollableTabView>
 
       <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
-        <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => {alert("new Task tapped!")}}>
+        <ActionButton.Item buttonColor='#9b59b6' title="New Event" onPress={() => {this.props.navigator.push({component: CreateEvent});}}>
           <Icon name="calendar-plus-o" style={styles.actionButtonIcon} />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
+        <ActionButton.Item buttonColor='#3498db' title="New Post" onPress={() => {alert("Notifications Task tapped!")}}>
           <Icon name="bell" style={styles.actionButtonIcon} />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
+        <ActionButton.Item buttonColor='#1abc9c' title="All Events" onPress={() => {alert("All Task tapped!")}}>
           <Icon name="bars" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>
