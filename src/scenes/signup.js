@@ -2,8 +2,11 @@
 
 import React, {
   Component,
+  DatePickerAndroid,
   Image,
+  Text,
   TextInput,
+  TouchableWithoutFeedback,
   View
 } from 'react-native';
 
@@ -16,7 +19,6 @@ import Button from '../components/button';
 import Header from '../components/header';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 import SceneStyles from '../styles/scene-styles';
 
 export default class Signup extends Component {
@@ -27,10 +29,11 @@ export default class Signup extends Component {
     this.state = {
       firstName: '',
       lastName: '',
+      dateOfBirth: new Date(),
+      showDatePicker: false,
       email: '',
       password: '',
-      passwordConfirm: '',
-      dateOfBirth: '',
+      passwordConfirm: ''
       // loaded: true,
     };
   }
@@ -44,25 +47,38 @@ export default class Signup extends Component {
           <Header text = ""/>
 
           <View style = {SceneStyles.body}>
+            <View style = {SceneStyles.oneLine}>
+              <TextInput
+                placeholder = {"First Name"}
+                onChangeText = {(text) => this.setState({firstName: text})}
+                value = {this.state.firstName}
+                style = {SceneStyles.firstName}
+                placeholderTextColor = 'white'
+                underlineColorAndroid = 'white'/>
+              <TextInput
+                placeholder = {"Last Name"}
+                onChangeText = {(text) => this.setState({lastName: text})}
+                value = {this.state.lastName}
+                style = {SceneStyles.lastName}
+                placeholderTextColor = 'white'
+                underlineColorAndroid = 'white'/>
+            </View>
+
             <TextInput
-              placeholder = {"First Name"}
-              onChangeText = {(text) => this.setState({firstName: text})}
-              value = {this.state.firstName}
-              style = {SceneStyles.textinput}
+              keyboardType = 'numeric'
+              placeholder = {"MM/DD/YYYY"}
+              value = {this.state.dateOfBirth}
+              style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
+
             <TextInput
-              placeholder = {"Last Name"}
-              onChangeText = {(text) => this.setState({lastName: text})}
-              value = {this.state.lastName}
-              style = {SceneStyles.textinput}
-              placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
-            <TextInput
+              keyboardType = 'email-address'
               placeholder = {"Email"}
               onChangeText = {(text) => this.setState({email: text})}
               value = {this.state.email}
-              style = {SceneStyles.textinput}
+              style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
             <TextInput
@@ -70,7 +86,7 @@ export default class Signup extends Component {
               placeholder = {"Password"}
               onChangeText = {(text) => this.setState({password: text})}
               value = {this.state.password}
-              style = {SceneStyles.textinput}
+              style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
             <TextInput
@@ -78,21 +94,20 @@ export default class Signup extends Component {
               placeholder = {"Confirm Password"}
               onChangeText = {(text) => this.setState({passwordConfirm: text})}
               value = {this.state.password}
-              style = {SceneStyles.textinput}
+              style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
-
 
             <Button
               text = "SIGN UP"
               onpress = {this.signup.bind(this)}
-              button_styles = {ButtonStyles.primary_button}
-              button_text_styles = {ButtonStyles.primary_button_text}/>
+              button_styles = {ButtonStyles.primaryButton}
+              button_text_styles = {ButtonStyles.primaryButtonText}/>
             <Button
               text = "Already Have An Account"
               onpress = {this.goToLogin.bind(this)}
-              button_styles = {ButtonStyles.transparent_button}
-              button_text_styles = {ButtonStyles.transparent_button_text}/>
+              button_styles = {ButtonStyles.transparentButton}
+              button_text_styles = {ButtonStyles.transparentButtonText}/>
           </View>
         </View>
       </Image>
@@ -133,12 +148,12 @@ export default class Signup extends Component {
       }
 
       this.setState({
-        email: '',
-        password: '',
-        passwordConfirm: '',
         firstName: '',
         lastName: '',
         dateOfBirth: '',
+        email: '',
+        password: '',
+        passwordConfirm: ''
         // loaded: true
       });
     });
