@@ -9,6 +9,7 @@ module.exports = StyleSheet.create({
     height: null
   },
   container: {
+    flex: 1,
   },
   body: {
   },

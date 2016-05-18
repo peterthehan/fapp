@@ -40,7 +40,6 @@ public class MainActivity extends ReactActivity {
             new MainReactPackage(),
             new RNSharePackage(),
             new VectorIconsPackage(),
-            new VectorIconsPackage(),
             new ImagePickerPackage()
         );
     }

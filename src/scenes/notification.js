@@ -17,14 +17,39 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/header';
 import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
+import SceneStyles from '../styles/scene-styles';
 import HeaderStyles from '../styles/header-styles';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const styles = require('../styles/header-styles.js');
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
 const FirebaseUrl = 'poopapp1.firebaseio.com';
 import Share from 'react-native-share';
+const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+});
+const styles1 = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
 
 class Notification extends Component {
 
@@ -90,36 +115,20 @@ class Notification extends Component {
     return (
       /*<Image source = {require('../images/coco_color_0.jpg')} style={HeaderStyles.backgroundImage}>
       */
-      <View style={styles.container}>
+      <View style={{flex:1}}>
       <StatusBar title="Notification" />
       <ListView
         dataSource={this.state.dataSource}
         renderRow={(rowData) =>
           <TouchableOpacity onPress = {this.generate}>
-            <View style = {{height: 50,
-              backgroundColor:'rgba(240,200,182,0.7)', padding: 10, borderWidth: 1,
+            <View style = {{flex: 1, height: 50,
+             padding: 10, borderWidth: 1,
             borderColor: '#003', alignItems: 'center'}}>
               <Text>{rowData}</Text>
             </View>
           </TouchableOpacity>
         }/>
-
-        <Button
-          text = "add"
-          onpress = {this.add.bind(this)}
-          button_styles = {ButtonStyles.primary_button}
-          button_text_styles = {ButtonStyles.primary_button_text}/>
-
-
-        <View style={styles.container}/>
-        <TouchableHighlight onPress={this.tweet.bind(this)}>
-          <View style={{margin: 30,padding: 12,borderColor: 'transparent',
-          alignItems: 'center',justifyContent:'center', width: 100, height: 50,
-          backgroundColor:'#00aced'}}>
-           <Text style={{color:'#ffffff',fontWeight:'800',}}>Share Link</Text>
-          </View>
-          </TouchableHighlight>
-
+          <View style={{flex:1}}/>
 
         <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
@@ -144,6 +153,11 @@ class Notification extends Component {
   }
 
   add(){
+    <Button
+      text = "add"
+      onpress = {this.add.bind(this)}
+      button_styles = {ButtonStyles.primaryButton}
+      button_text_styles = {ButtonStyles.primaryButtonText}/>
     Alert.alert('add new task',
     null,
     [

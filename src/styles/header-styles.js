@@ -54,5 +54,8 @@ module.exports = StyleSheet.create({
     height: 100
   },
   headerIcon: {
+  },
+  container: {
+    flex: 1
   }
 });

@@ -27,7 +27,7 @@ class Main extends Component {
 
   render() {
     return(
-      <ScrollableTabView tabBarPosition = "bottom" renderTabBar={() => <TabBar />}>
+      <ScrollableTabView renderTabBar={() => <TabBar />}>
         <View tabLabel="home" style={styles.container}>
           <Home tabLabel = "Home"/>
         </View>
