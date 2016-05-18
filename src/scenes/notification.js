@@ -15,9 +15,12 @@ import Header from '../components/header';
 import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const styles = require('../styles/header-styles.js');
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
+
 class Notification extends Component {
 
   constructor() {
@@ -32,8 +35,6 @@ class Notification extends Component {
     };
 
   }
-
-
 
  listenForItems(events) {
     events.on('value', (snap) => {
@@ -67,14 +68,21 @@ class Notification extends Component {
           dataSource={this.state.dataSource}
           renderRow={this._renderItem.bind(this)}
           style={styles.listview}/>
-        <Button
-          text="Add"
-          onPress={this.createEvent.bind(this)}
-          button_styles = {ButtonStyles.primary_button}
-          button_text_styles = {ButtonStyles.primary_button_text}/>
+        <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
+            <Icon name="calendar-plus-o" size={20} color="white" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
+            <Icon name="bell" size={20} color="white" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
+            <Icon name="bars" size={20} color="white" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
       </View>
     );
   }
+
   createEvent(){
     //this.setState({loaded: false});
     alert("add clicked");
