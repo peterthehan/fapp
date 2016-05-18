@@ -9,10 +9,20 @@ import React, {
   TouchableOpacity,
   View
 } from 'react-native';
+
+
+import Firebase from 'firebase';
+let app = new Firebase("poopapp1.firebaseio.com");
+
 import SearchBar from '../search-bar';
 import HeaderStyles from '../styles/header-styles';
 
-class Follower extends Component {
+import Button from '../components/button';
+
+import ButtonStyles from '../styles/button-styles';
+import SceneStyles from '../styles/scene-styles';
+
+class Following extends Component {
 
   constructor() {
     super();
@@ -51,9 +61,21 @@ class Follower extends Component {
     }, 5000);
   }
 
+  // TODO move this to POST UI
+  createPost(){
+    var ref = app.child("posts");
+    ref.push({
+        user: "Mickey Mouse",
+        photo: "ssldukyjth"
+    });
+  }
   render() {
     return(
       <View style = {HeaderStyles.container}>
+        <Button
+          text = "Make Post"
+          onpress = {this.createPost.bind(this)}/>
+
         <SearchBar />
         <ScrollView refreshControl={
     			<RefreshControl
@@ -85,4 +107,4 @@ class Follower extends Component {
   }
 }
 
-module.exports = Follower;
+module.exports = Following;
