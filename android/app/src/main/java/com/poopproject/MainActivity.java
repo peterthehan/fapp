@@ -4,6 +4,7 @@ import com.facebook.react.ReactActivity;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.imagepicker.ImagePickerPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,11 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+<<<<<<< 259968d253ebe79302c2c20e2fe261e5a63e53e2
             new VectorIconsPackage()
+=======
+            new ImagePickerPackage()
+>>>>>>> CAMERA FOR REAL THIS TIME
         );
     }
 }

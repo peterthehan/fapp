@@ -18,11 +18,12 @@ class Camera extends Component {
       avatarSource: null
     };
   }
+
   onPress() {
     alert('Hi');
   }
-  openCamera()
-  {
+
+  openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
       console.log('Response = ', response);
 
