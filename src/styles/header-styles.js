@@ -11,6 +11,31 @@ module.exports = StyleSheet.create({
     width: null,
     height: null
   },
+  listview: {
+    flex: 1,
+  },
+  statusbar: {
+    backgroundColor: '#fff',
+    height: 22,
+  },
+  title: {
+    color: '#444',
+    fontSize: 16,
+    fontWeight: "500"
+  },
+  li: {
+    backgroundColor: '#fff',
+    borderBottomColor: '#eee',
+    borderColor: 'transparent',
+    borderWidth: 1,
+    paddingLeft: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+  },
+  text: {
+    color: '#333',
+    fontSize: 16,
+  },
   body: {
     flex: 9,
     alignItems: 'center'

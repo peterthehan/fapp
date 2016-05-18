@@ -9,8 +9,16 @@
     "firebase": "^2.4.2",
     "react": "^0.14.8",
     "react-native": "^0.25.1",
+    "react-native-action-button": "^1.1.5",
     "react-native-gifted-spinner": "0.0.3",
     "react-native-grid-view": "^0.3.7",
+<<<<<<< 259968d253ebe79302c2c20e2fe261e5a63e53e2
+    "react-native-scrollable-tab-view": "^0.4.2",
+    "react-native-social-share": "^0.7.0",
+    "react-native-vector-icons": "^2.0.2"
+=======
+    "react-native-image-picker": "^0.18.15",
     "react-native-scrollable-tab-view": "^0.4.2"
+>>>>>>> CAMERA FOR REAL THIS TIME
   }
 }
