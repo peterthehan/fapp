@@ -1,7 +1,6 @@
 'use strict';
 
 import React, {
-  Alert,
   ListView,
   TouchableHighlight,
   TouchableOpacity,
@@ -26,13 +25,17 @@ const FirebaseUrl = 'poopapp1.firebaseio.com';
 
 class Notification extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+    const ds = new ListView.DataSource({
+    rowHasChanged: (row1, row2) => row1 !== row2,
+  });
     this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1,row2) => row1 != row2,
-      })
+      dataSource: ds.cloneWithRows([
+        'Post 1'])
+
     };
+
     this.notification = this.getRef().child('notification');
     this.notification.set({
       followers: null,
@@ -60,23 +63,10 @@ class Notification extends Component {
       });
     });
   }
-
-  componentDidMount() {
-    this.listenForItems(this.notification);
-  }
-
   _renderItem(item) {
-    const onPress = ()=>{
-      Alert.alert(
-        'Complete!',
-        null,
-        [
-          {text: 'Complete',onPress:(text)=>this.notification.child(item._key).remove()}
-        ]
-      )
-    }
     return (
       <ListItem item={item} onPress={() => {}} />
+
     );
   }
   generate(){
@@ -102,8 +92,6 @@ class Notification extends Component {
             <Icon name="bars" size={20} color="white" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-
-
       </View>
     );
   }
@@ -111,6 +99,7 @@ class Notification extends Component {
   createEvent(){
     //this.setState({loaded: false});
     alert("add clicked");
+
   }
 
   add(){
