@@ -17,7 +17,6 @@ import More from './more';
 import TabBar from '../components/TabBar';
 const styles = require('../styles/header-styles.js');
 
-
 class Main extends Component {
 
   constructor() {
