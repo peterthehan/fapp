@@ -18,7 +18,6 @@ import Button from '../components/button';
 import Header from '../components/header';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 import SceneStyles from '../styles/scene-styles';
 
 export default class Login extends Component {
@@ -43,10 +42,11 @@ export default class Login extends Component {
 
           <View style = {SceneStyles.body}>
             <TextInput
+              keyboardType = 'email-address'
               placeholder = {"Email"}
               onChangeText = {(text) => this.setState({email: text})}
               value = {this.state.email}
-              style = {SceneStyles.textinput}
+              style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
             <TextInput
@@ -54,25 +54,25 @@ export default class Login extends Component {
               placeholder = {"Password"}
               onChangeText = {(text) => this.setState({password: text})}
               value = {this.state.password}
-              style = {SceneStyles.textinput}
+              style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
 
             <Button
               text = "LOG IN"
               onpress = {this.login.bind(this)}
-              button_styles = {ButtonStyles.primary_button}
-              button_text_styles = {ButtonStyles.primary_button_text}/>
+              button_styles = {ButtonStyles.primaryButton}
+              button_text_styles = {ButtonStyles.primaryButtonText}/>
             <Button
               text = "Create New Account"
               onpress = {this.goToSignup.bind(this)}
-              button_styles = {ButtonStyles.transparent_button}
-              button_text_styles = {ButtonStyles.transparent_button_text}/>
+              button_styles = {ButtonStyles.transparentButton}
+              button_text_styles = {ButtonStyles.transparentButtonText}/>
             <Button
               text = "Forgot Password?"
               onpress = {this.goToForgotPassword.bind(this)}
-              button_styles = {ButtonStyles.transparent_button}
-              button_text_styles = {ButtonStyles.transparent_button_text}/>
+              button_styles = {ButtonStyles.transparentButton}
+              button_text_styles = {ButtonStyles.transparentButtonText}/>
           </View>
         </View>
       </Image>
