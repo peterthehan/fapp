@@ -64,7 +64,7 @@ export default class CreateEvent extends Component {
 
   render(){
 
-    var limit = 20;
+    var limit = 50;
     var remainder = limit - this.state.description.length;
     var remainderColor = remainder > 5 ? 'blue' : 'red';
 
@@ -72,14 +72,17 @@ export default class CreateEvent extends Component {
       <View style={{backgroundColor: 'orange', flex: 1}}>
 
         {/*title, public event toggle*/}
-        <View style={{flexDirection:'row'}}>
-          <Header text = "Create a New Event" loaded={this.state.loaded} />
-          <Switch
-            onTintColor="#0000ff"
-            onValueChange={(value) => this.setState({publicEvent: value})}
-            style={{marginBottom: 10}}
-            value={this.state.publicEvent} />
-            <Text>{this.state.publicEvent ? 'Public' : 'Private'}</Text>
+        <View>
+          <Header text = "Create a New Event!" loaded={this.state.loaded} />
+
+          <View style={{flexDirection:'row'}}>
+            <Switch
+              onTintColor="#0000ff"
+              onValueChange={(value) => this.setState({publicEvent: value})}
+              style={{marginBottom: 10}}
+              value={this.state.publicEvent} />
+              <Text style={{color:'white', textAlign:'right'}}>{this.state.publicEvent ? 'Public' : 'Private'}</Text>
+            </View>
         </View>
 
         {/*event title*/}
@@ -88,8 +91,8 @@ export default class CreateEvent extends Component {
           onChangeText = {(text) => this.setState({title: text})}
           value = {this.state.title}
           placeholder = {"Give Your Event a Title."}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'/>
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'black'/>
 
         {/*date and time*/}
         <View>
@@ -122,12 +125,12 @@ export default class CreateEvent extends Component {
           <TextInput
           maxLength = {limit}
           multiline={true}
-          style = {Header.body, {color:'white'}}
+          style = {Header.body, {color:'black'}}
           onChangeText = {(text) => this.setState({description: text})}
           value = {this.state.description}
           placeholder = {"Leave a short description of your event for your guests."}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'/>
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'black'/>
           <Text style={{color: remainderColor}}>
             {remainder}
           </Text>
