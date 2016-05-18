@@ -116,6 +116,8 @@ export default class Signup extends Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             profilePic: "",
+            follower: [],
+            events: []
         });
         alert('Your account was created!');
       }
