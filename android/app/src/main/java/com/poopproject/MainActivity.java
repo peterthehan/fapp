@@ -37,11 +37,8 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-<<<<<<< 259968d253ebe79302c2c20e2fe261e5a63e53e2
-            new VectorIconsPackage()
-=======
+            new VectorIconsPackage(),
             new ImagePickerPackage()
->>>>>>> CAMERA FOR REAL THIS TIME
         );
     }
 }
