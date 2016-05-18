@@ -17,10 +17,6 @@ import More from './more';
 import TabBar from '../components/TabBar';
 const styles = require('../styles/header-styles.js');
 
-=======
-import Profile from './profile';
->>>>>>> added profile page
-
 class Main extends Component {
 
   constructor() {
@@ -47,15 +43,6 @@ class Main extends Component {
         <View tabLabel="bars" style={styles.container}>
           <More tabLabel = "More"/>
         </View>
-=======
-      <ScrollableTabView>
-        <Home tabLabel = "Home"/>
-        <Follower tabLabel = "Follower"/>
-        <Camera tabLabel = "Camera"/>
-        <Notification tabLabel = "Notification"/>
-        <More tabLabel = "More"/>
-        <Profile tabLabel = "Profile"/>
->>>>>>> added profile page
       </ScrollableTabView>
     );
   }
