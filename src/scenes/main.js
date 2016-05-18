@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   StyleSheet,
   Text,
   ScrollView,
@@ -10,16 +11,17 @@ import React, {
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Home from './home';
-import Follower from './follower';
+import Following from './following';
 import Camera from './camera';
 import Notification from './notification';
 import More from './more';
 import TabBar from '../components/TabBar';
+import Post from '../components/post';
 
 class Main extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
     };
   }
@@ -31,7 +33,7 @@ class Main extends Component {
           <Home tabLabel = "Home"/>
         </View>
         <View tabLabel="users" style={{flex: 1}}>
-          <Follower tabLabel = "Follower"/>
+          <Following tabLabel = "Following"/>
         </View>
         <View tabLabel="camera" style={{flex: 1}}>
           <Camera tabLabel = "Camera"/>

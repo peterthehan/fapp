@@ -19,6 +19,8 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // this would be the name of poster retreived from database
+      name: "Mickey Mouse"
     };
   }
 
@@ -28,12 +30,12 @@ class Post extends Component {
 
         <View style={styles.postHead}>
           <TouchableOpacity style={styles.horizontalView}>
-            <View style={{padding: 10}}>
+            <View style={{padding: 5, marginBottom: 5}}>
               <Image style={styles.posterPic} source={require('../images/profilepic.jpg')} />
             </View>
-            <View style={{padding: 10}}>
+            <View style={{padding: 5, marginBottom: 5}}>
               <Text style={styles.posterName}>
-                Mickey Mouse
+                {this.state.name}
               </Text>
             </View>
           </TouchableOpacity>
