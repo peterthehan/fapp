@@ -3,6 +3,7 @@
 import React, {
   ListView,
   TouchableHighlight,
+  TouchableOpacity,
   StyleSheet,
   Component,
   Text,
@@ -20,6 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const styles = require('../styles/header-styles.js');
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
+const FirebaseUrl = 'poopapp1.firebaseio.com';
 
 class Notification extends Component {
 
@@ -34,10 +36,20 @@ class Notification extends Component {
 
     };
 
+    this.notification = this.getRef().child('notification');
+    this.notification.set({
+      followers: null,
+      events:null,
+      ratings:null
+    })
   }
 
- listenForItems(events) {
-    events.on('value', (snap) => {
+  getRef() {
+    return new Firebase(FirebaseUrl);
+  }
+
+  listenForItems(notification) {
+    notification.on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((child) => {
@@ -63,11 +75,12 @@ class Notification extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header text = "event" loaded = {'true'}/>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this._renderItem.bind(this)}
-          style={styles.listview}/>
+
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this._renderItem.bind(this)}
+        style={styles.listview}/>
+
         <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
             <Icon name="calendar-plus-o" size={20} color="white" style={styles.actionButtonIcon} />
@@ -86,21 +99,33 @@ class Notification extends Component {
   createEvent(){
     //this.setState({loaded: false});
     alert("add clicked");
+    add();
+  }
 
-    /*app.authWithPassword({
-      "email": this.state.email,
-      "password": this.state.password
-      },
-      (error, user_data) => {
-      this.setState({loaded: true});
+  add(){
+    Alert.alert(
+      'add new notification',
+      null,
+      [
+        {
+          text: 'Add',
+          onPress: (text) => {this.notification.push({text: text})
+          }
+        }
+      ]
+    )
+  }
 
-      if(error) {
-        alert('createEvent Failed. Please try again');
-      } else {
-        AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-        this.props.navigator.push({component: notification.js});
+  remove(rowData){
+    Alert.alert('delete notification'),
+    null,
+    [
+      {
+        text: 'delete',
+        on
       }
-    });*/
+    ]
+    this.notification.child(rowData.id).remove();
   }
 }
 module.exports = Notification;
