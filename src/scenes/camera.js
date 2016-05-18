@@ -34,7 +34,7 @@ class Camera extends Component {
       } else {
         // You can display the image using either data:
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-    
+
         this.setState({
           avatarSource: source
         });
