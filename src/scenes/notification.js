@@ -4,6 +4,7 @@ import React, {
   Alert,
   ListView,
   TouchableHighlight,
+  TouchableOpacity,
   StyleSheet,
   Component,
   Text,
@@ -83,8 +84,8 @@ class Notification extends Component {
           renderRow={this._renderItem.bind(this)}
           style={styles.listview}/>
         <Button
-          text="addTest"
-          onPress={this.add.bind(this)}
+          text="add"
+          onpress = {this.add.bind(this)}
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}/>
       </View>
@@ -97,7 +98,7 @@ class Notification extends Component {
       [
         {
           text: 'Add',
-          onPress: (text) => {this.notification.push({title: text})
+          onPress: (text) => {this.notification.push({text: text})
           }
         }
       ]
