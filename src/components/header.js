@@ -2,48 +2,31 @@
 
 import React, {
   Component,
-  StyleSheet,
+  Image,
   Text,
-  TextInput,
   View
 } from 'react-native';
 
-import GiftedSpinner from 'react-native-gifted-spinner';
+import HeaderStyles from '../styles/header-styles';
 
 export default class Header extends Component {
 
   render() {
     return (
-      <View style = {styles.header}>
-        <View style = {styles.header_item}>
-          <Text style = {styles.header_text}>
+      <View style = {HeaderStyles.header}>
+        <View style = {HeaderStyles.header_item}>
+          <Text style = {HeaderStyles.header_text}>
             {this.props.text}
           </Text>
         </View>
-        <View style = {styles.header_item}>
-          {!this.props.loaded && <GiftedSpinner/>}
+        <View style = {HeaderStyles.header_item}>
+          <Image style = {HeaderStyles.header_icon}
+            source = {require('../images/logo.png')}>
+          </Image>
         </View>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    flex: 1
-  },
-  header_item: {
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  header_text: {
-    color: '#FFF',
-    fontSize: 18
-  }
-});
 
 module.exports = Header;

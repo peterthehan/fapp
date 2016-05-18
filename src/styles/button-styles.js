@@ -4,21 +4,25 @@ import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
   transparent_button: {
-    margin: 6,
-    padding: 12
+    padding: 12,
+    marginLeft: 30,
+    marginRight: 30,
+    alignItems: 'center'
   },
   transparent_button_text: {
     color: '#fff',
     fontSize: 16
   },
   primary_button: {
-    margin: 10,
     padding: 12,
-    borderColor: 'transparent',
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 60,
+    alignItems: 'center',
     backgroundColor: '#529ecc'
   },
   primary_button_text: {
     color: '#FFF',
-    fontSize: 18
+    fontSize: 16
   }
 });

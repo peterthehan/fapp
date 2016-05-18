@@ -3,25 +3,18 @@
 import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
-  container: {
-    flex: 1
+  // for header.js
+  header: {
+    alignItems: 'center',
+    padding: 24,
+    //backgroundColor: '#000' // just to see bounding box.
   },
-  backgroundImage: {
-    flex: 1,
-    width: null,
-    height: null
+  header_item: {
   },
-  body: {
-    flex: 9,
-    alignItems: 'center'
+  header_text: {
+    fontSize: 18,
+    color: '#FFF'
   },
-  textinput: {
-    height: 40,
-    borderWidth: 1,
-    color: 'white'
-  },
-  image: {
-    width: 100,
-    height: 100
+  header_icon: {
   }
 });
