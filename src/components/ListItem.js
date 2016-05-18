@@ -9,7 +9,7 @@ import React, {
 } from 'react-native';
 const styles = require('../styles/header-styles.js');
 
-class ListItem extends React.Component {
+export default class ListItem extends Component {
   render() {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
