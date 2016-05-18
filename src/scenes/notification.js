@@ -76,6 +76,7 @@ class Notification extends Component {
     return (
       <View style={styles.container}>
 
+      <Header
       <ListView
         dataSource={this.state.dataSource}
         renderRow={this._renderItem.bind(this)}
