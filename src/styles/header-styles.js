@@ -45,6 +45,9 @@ module.exports = StyleSheet.create({
     borderWidth: 1,
     color: 'white'
   },
+  seperator:{
+    marginBottom: 20
+  },
   image: {
     width: 100,
     height: 100

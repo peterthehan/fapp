@@ -22,6 +22,7 @@ const styles = require('../styles/header-styles.js');
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
 const FirebaseUrl = 'poopapp1.firebaseio.com';
+import Share from 'react-native-share';
 
 class Notification extends Component {
 
@@ -81,6 +82,16 @@ class Notification extends Component {
         renderRow={this._renderItem.bind(this)}
         style={styles.listview}/>
 
+        <View style={styles.container}/>
+      <TouchableHighlight onPress={this.tweet.bind(this)}>
+          <View style={{margin: 30,
+          padding: 12,
+          borderColor: 'transparent',alignItems: 'center',justifyContent:'center', width: 100, height: 50,backgroundColor:'#00aced'}}>
+           <Text style={{color:'#ffffff',fontWeight:'800',}}>Share Link</Text>
+          </View>
+          </TouchableHighlight>
+
+
         <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
             <Icon name="calendar-plus-o" size={20} color="white" style={styles.actionButtonIcon} />
@@ -114,6 +125,17 @@ class Notification extends Component {
         }
       ]
     )
+  }
+
+  tweet(){
+    Share.open({
+      share_text: "Hola mundo",
+      share_URL: "http://google.cl",
+      title: "Share Link",
+      image: "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg"
+    },(e) => {
+      console.log(e);
+    });
   }
 
   remove(rowData){
