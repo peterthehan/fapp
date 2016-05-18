@@ -30,6 +30,11 @@ class Notification extends Component {
       })
     };
     this.notification = this.getRef().child('notification');
+    this.notification.set({
+      followers: null,
+      events:null,
+      ratings:null
+    })
   }
 
   getRef() {
@@ -91,9 +96,10 @@ class Notification extends Component {
       </View>
     );
   }
+
   add(){
     Alert.alert(
-      'add new event',
+      'add new notification',
       null,
       [
         {
@@ -103,6 +109,18 @@ class Notification extends Component {
         }
       ]
     )
+  }
+
+  remove(rowData){
+    Alert.alert('delete notification'),
+    null,
+    [
+      {
+        text: 'delete',
+        on
+      }
+    ]
+    this.notification.child(rowData.id).remove();
   }
 }
 module.exports = Notification;
