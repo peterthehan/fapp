@@ -9,13 +9,22 @@ import React, {
   TouchableOpacity,
   View
 } from 'react-native';
-import SearchBar from '../search-bar';
+
+
+import Firebase from 'firebase';
+let app = new Firebase("poopapp1.firebaseio.com");
+
 import HeaderStyles from '../styles/header-styles';
+import Home from './home';
+import Button from '../components/button';
 
-class Follower extends Component {
+import ButtonStyles from '../styles/button-styles';
+import SceneStyles from '../styles/scene-styles';
 
-  constructor() {
-    super();
+class Setting extends Component {
+
+  constructor(props) {
+    super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([
@@ -43,46 +52,28 @@ class Follower extends Component {
     };
   }
 
-  _onRefresh() {
-  	this.setState({refreshing: true});
-    setTimeout(() => {
-      // Do some stuff
-      this.setState({refreshing: false});
-    }, 5000);
-  }
-
   render() {
     return(
       <View style = {HeaderStyles.container}>
-        <SearchBar />
-        <ScrollView refreshControl={
-    			<RefreshControl
-    				refreshing={this.state.refreshing}
-    				onRefresh={this._onRefresh.bind(this)}
-    				tintColor="blue"
-    				title="Loading..."
-    				titleColor="black"
-    				colors={['#ffffff', '#b3b3b3', '#808080']}
-    				progressBackgroundColor="black"
-    			/>
-		    }>
+        <Button
+          text = "Back to Home"
+          onPress={() => {this.props.navigator.push({component: Home});}}
+          button_styles = {ButtonStyles.primaryButton}
+          button_text_styles = {ButtonStyles.primaryButtonText}/>
+
+
           <ListView
             dataSource = {this.state.dataSource}
             renderRow = {(rowData) =>
-              <TouchableOpacity onPress = {this.changePage}>
+              <TouchableOpacity onPress={() => {alert("Notifications Task tapped!")}}>
                 <View style = {{height: 50, padding: 10, borderWidth: 1, borderColor: '#000', alignItems: 'center'}}>
                   <Text>{rowData}</Text>
                 </View>
               </TouchableOpacity>
             }/>
-        </ScrollView>
       </View>
     );
   }
-
-  changePage(){
-    alert("posts");
-  }
 }
 
-module.exports = Follower;
+module.exports = Setting;

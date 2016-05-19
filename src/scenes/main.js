@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   StyleSheet,
   Text,
   ScrollView,
@@ -11,17 +12,21 @@ import React, {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import CreateEvent from './create-event';
 import Home from './home';
-import Follower from './follower';
+import Following from './following';
+import Setting from './setting';
 import Camera from './camera';
+import Profile from './profile';
 import Notification from './notification';
 import More from './more';
 import TabBar from '../components/TabBar';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Post from '../components/post';
+
 class Main extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
     };
 
@@ -36,7 +41,7 @@ class Main extends Component {
           <Home tabLabel = "Home"/>
         </View>
         <View tabLabel="users" style={{flex: 1}}>
-          <Follower tabLabel = "Follower"/>
+          <Following tabLabel = "Following"/>
         </View>
         <View tabLabel="camera" style={{flex: 1}}>
           <Camera tabLabel = "Camera"/>
@@ -53,10 +58,10 @@ class Main extends Component {
         <ActionButton.Item buttonColor='#9b59b6' title="New Event" onPress={() => {this.props.navigator.push({component: CreateEvent});}}>
           <Icon name="calendar-plus-o" style={styles.actionButtonIcon} />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor='#3498db' title="New Post" onPress={() => {alert("Notifications Task tapped!")}}>
+        <ActionButton.Item buttonColor='#3498db' title="Setting" onPress={() => {this.props.navigator.push({component: Setting});}}>
           <Icon name="bell" style={styles.actionButtonIcon} />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor='#1abc9c' title="All Events" onPress={() => {alert("All Task tapped!")}}>
+        <ActionButton.Item buttonColor='#1abc9c' title="Profile" onPress={() => {this.props.navigator.push({component:Profile});}}>
           <Icon name="bars" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>
