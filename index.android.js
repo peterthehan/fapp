@@ -17,8 +17,6 @@ import Header from './src/components/header';
 import Firebase from 'firebase';
 let app = new Firebase("poopapp1.firebaseio.com");
 
-import HeaderStyles from './src/styles/header-styles';
-
 // reference: http://www.sitepoint.com/authentication-in-react-native-with-firebase/
 class PoopApp extends Component {
 
@@ -55,9 +53,9 @@ class PoopApp extends Component {
         <Navigator
           initialRoute = {{component: this.state.component}}
           configureScene = {(route, routeStack) => {
-            if(route.type == 'index1') {
+            if(route.index === 1) {
               return Navigator.SceneConfigs.FloatFromRight
-            } else if(route.type == 'index2') {
+            } else if(route.index === 2) {
               return Navigator.SceneConfigs.FloatFromLeft
             } else {
               return Navigator.SceneConfigs.FadeAndroid
@@ -77,9 +75,9 @@ class PoopApp extends Component {
       );
     } else {
       return (
-        <View style = {HeaderStyles.container}>
+        <View>
           <Header text = "React Native Firebase Auth" loaded = {this.state.loaded}/>
-          <View style = {HeaderStyles.body}>
+          <View>
           </View>
         </View>
       );

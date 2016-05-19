@@ -12,6 +12,7 @@ import Firebase from 'firebase';
 let app = new Firebase("poopapp1.firebaseio.com");
 
 import Signup from './signup';
+import ForgotPassword from './forgot-password';
 import Main from './main';
 
 import Button from '../components/button';
@@ -21,24 +22,23 @@ import ButtonStyles from '../styles/button-styles';
 import SceneStyles from '../styles/scene-styles';
 
 export default class Login extends Component {
-
   constructor(props) {
     super(props);
-
     this.state = {
       email: '',
-      password: '',
-      // loaded: true
+      password: ''
     }
   }
 
   render() {
     return (
-      <Image style = {SceneStyles.backgroundImage}
-        source = {require('../images/coco_color_40.jpg')}>
+      <View style = {SceneStyles.container}>
+        <Image style = {SceneStyles.backgroundImage}
+          source = {require('../images/coco_color_40.jpg')}>
 
-        <View style = {SceneStyles.container}>
-          <Header text = ""/>
+          <Header
+            text = ""
+            image = {require('../images/logo.png')}/>
 
           <View style = {SceneStyles.body}>
             <TextInput
@@ -60,52 +60,55 @@ export default class Login extends Component {
 
             <Button
               text = "LOG IN"
-              onpress = {this.login.bind(this)}
-              button_styles = {ButtonStyles.primaryButton}
-              button_text_styles = {ButtonStyles.primaryButtonText}/>
+              onPress = {this.login.bind(this)}
+              buttonStyles = {ButtonStyles.primaryButton}
+              buttonTextStyles = {ButtonStyles.primaryButtonText}
+              underlayColor = {"#B18C40"}/>
             <Button
-              text = "Create New Account"
-              onpress = {this.goToSignup.bind(this)}
-              button_styles = {ButtonStyles.transparentButton}
-              button_text_styles = {ButtonStyles.transparentButtonText}/>
+              text = "Create A New Account"
+              onPress = {this.goToSignup.bind(this)}
+              buttonStyles = {ButtonStyles.transparentButton}
+              buttonTextStyles = {ButtonStyles.transparentButtonText}
+              underlayColor = {"#A2A2A2"}/>
             <Button
-              text = "Forgot Password?"
-              onpress = {this.goToForgotPassword.bind(this)}
-              button_styles = {ButtonStyles.transparentButton}
-              button_text_styles = {ButtonStyles.transparentButtonText}/>
+              text = "Forgot Your Password?"
+              onPress = {this.goToForgotPassword.bind(this)}
+              buttonStyles = {ButtonStyles.transparentButton}
+              buttonTextStyles = {ButtonStyles.transparentButtonText}
+              underlayColor = {"#A2A2A2"}/>
           </View>
-        </View>
-      </Image>
+        </Image>
+      </View>
     );
   }
 
   login() {
-    // this.setState({loaded: false});
-
     app.authWithPassword({
       "email": this.state.email,
       "password": this.state.password
       },
       (error, user_data) => {
-      // this.setState({loaded: true});
-      if(error) {
-        alert('Login Failed. Please try again');
-      } else {
-        AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-        this.props.navigator.push({component: Main});
-      }
-    });
+        if(error) {
+          alert('Login Failed. Please try again');
+        } else {
+          AsyncStorage.setItem('user_data', JSON.stringify(user_data));
+          this.props.navigator.push({component: Main});
+        }
+      });
   }
 
   goToSignup() {
     this.props.navigator.push({
       component: Signup,
-      type: 'index1'
+      index: 1
     });
   }
 
   goToForgotPassword() {
-    alert("forgot password")
+    this.props.navigator.push({
+      component: ForgotPassword,
+      index: 1
+    });
   }
 }
 

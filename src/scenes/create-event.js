@@ -17,7 +17,6 @@ import Header from '../components/header';
 import Main from './main';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 
 export default class CreateEvent extends Component {
 

@@ -8,7 +8,6 @@ import React, {
   View
 } from 'react-native';
 import SearchBar from '../search-bar';
-import HeaderStyles from '../styles/header-styles';
 
 var pictures = [
   "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
