@@ -15,49 +15,57 @@ class Camera extends Component {
   constructor() {
     super();
     this.state = {
-      avatarSource: null
+      avatarSource: null,
+      test: 'help'
     };
-  }
-
-  onPress() {
-    alert('Hi');
   }
 
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
+    console.log('Response = ', response);
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePickerManager Error: ', response.error);
-      } else {
-        // You can display the image using either data:
-        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-
-        this.setState({
-          avatarSource: source
-        });
-      }
-    });
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.error) {
+      console.log('ImagePickerManager Error: ', response.error);
+    } else {
+      // You can display the image using either data:
+      const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+      this.setState({
+        avatarSource: source
+      });
+    }
+  });
   }
 
-  render() {
-    return(
+
+  renderImage() {
+    return (
       <View>
       <ToolbarAndroid
         title='Create a Post'
         style={styles.toolbar}
-        actions={[{title: 'Next', show: 'always'}] }
-        onActionSelected={this.onPress.bind(this)} />
-        <ToolbarAndroid
-        style={styles.toolbar}
-        actions = {[{title: 'Camera', show: 'always'}]}
-        onActionSelected = {this.openCamera.bind(this)} />
+        actions={[{title: 'Next', show: 'always'}, {title: 'Camera', show: 'always'}, {title: 'Home', show: 'always'}] }
+        onActionSelected = {this._onActionSelected.bind(this)} />
         <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
       </View>
     );
   }
+
+  _onActionSelected(position) {
+    if (position == 0) { alert('Hi'); }
+    else if (position == 1) {
+      this.openCamera();
+    }
+    else if (position == 2) { this.props.navigator.replace({ title: 'More', component: 'Home'}); }
+
+  }
+
+  render() {
+    return this.renderImage();
+  }
+
+
 }
 var styles = StyleSheet.create({
   toolbar: {
@@ -89,5 +97,4 @@ var options = {
   allowsEditing: false, // Built in functionality to resize, reposition the image after selection
   noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
 };
-
 module.exports = Camera;
