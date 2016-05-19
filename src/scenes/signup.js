@@ -4,9 +4,7 @@ import React, {
   Component,
   DatePickerAndroid,
   Image,
-  Text,
   TextInput,
-  TouchableWithoutFeedback,
   View
 } from 'react-native';
 
@@ -25,26 +23,25 @@ export default class Signup extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date(),
-      showDatePicker: false,
+      dateOfBirth: '',
       email: '',
       password: '',
       passwordConfirm: ''
-      // loaded: true,
     };
   }
 
   render() {
     return (
-      <Image style = {SceneStyles.backgroundImage}
-        source = {require('../images/coco_color_40.jpg')}>
+      <View style = {SceneStyles.container}>
+        <Image style = {SceneStyles.backgroundImage}
+          source = {require('../images/coco_color_40.jpg')}>
 
-        <View style = {SceneStyles.container}>
-          <Header text = ""/>
+          <Header
+            text = ""
+            image = {require('../images/logo.png')}/>
 
           <View style = {SceneStyles.body}>
             <View style = {SceneStyles.oneLine}>
@@ -70,9 +67,7 @@ export default class Signup extends Component {
               value = {this.state.dateOfBirth}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'
-            />
-
+              underlineColorAndroid = 'white'/>
             <TextInput
               keyboardType = 'email-address'
               placeholder = {"Email"}
@@ -93,30 +88,30 @@ export default class Signup extends Component {
               secureTextEntry = {true}
               placeholder = {"Confirm Password"}
               onChangeText = {(text) => this.setState({passwordConfirm: text})}
-              value = {this.state.password}
+              value = {this.state.passwordConfirm}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
               underlineColorAndroid = 'white'/>
 
             <Button
               text = "SIGN UP"
-              onpress = {this.signup.bind(this)}
-              button_styles = {ButtonStyles.primaryButton}
-              button_text_styles = {ButtonStyles.primaryButtonText}/>
+              onPress = {this.signup.bind(this)}
+              buttonStyles = {ButtonStyles.primaryButton}
+              buttonTextStyles = {ButtonStyles.primaryButtonText}
+              underlayColor = {"#B18C40"}/>
             <Button
               text = "Already Have An Account"
-              onpress = {this.goToLogin.bind(this)}
-              button_styles = {ButtonStyles.transparentButton}
-              button_text_styles = {ButtonStyles.transparentButtonText}/>
+              onPress = {this.goToLogin.bind(this)}
+              buttonStyles = {ButtonStyles.transparentButton}
+              buttonTextStyles = {ButtonStyles.transparentButtonText}
+              underlayColor = {"#A2A2A2"}/>
           </View>
-        </View>
-      </Image>
+        </Image>
+      </View>
     );
   }
 
   signup() {
-    // this.setState({loaded: false});
-
     app.createUser({
       'email': this.state.email,
       'password': this.state.password
@@ -154,7 +149,6 @@ export default class Signup extends Component {
         email: '',
         password: '',
         passwordConfirm: ''
-        // loaded: true
       });
     });
   }
@@ -162,7 +156,7 @@ export default class Signup extends Component {
   goToLogin() {
     this.props.navigator.push({
       component: Login,
-      type: 'index2'
+      index: 2
     });
   }
 }

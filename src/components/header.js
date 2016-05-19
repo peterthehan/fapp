@@ -3,30 +3,39 @@
 import React, {
   Component,
   Image,
+  StyleSheet,
   Text,
   View
 } from 'react-native';
-
-import HeaderStyles from '../styles/header-styles';
 
 export default class Header extends Component {
 
   render() {
     return (
-      <View style = {HeaderStyles.header}>
-        <View style = {HeaderStyles.header_item}>
-          <Text style = {HeaderStyles.header_text}>
-            {this.props.text}
-          </Text>
-        </View>
-        <View style = {HeaderStyles.header_item}>
-          <Image style = {HeaderStyles.header_icon}
-            source = {require('../images/logo.png')}>
-          </Image>
-        </View>
+      <View style = {styles.header}>
+        <Text style = {styles.headerText}>
+          {this.props.text}
+        </Text>
+
+        <Image style = {styles.headerImage}
+          source = {this.props.image}>
+        </Image>
       </View>
     );
   }
 }
+
+var styles = StyleSheet.create({
+  header: {
+    padding: 30,
+    alignItems: 'center'
+  },
+  headerText: {
+    color: '#FFF',
+    fontSize: 18
+  },
+  headerImage: {
+  }
+});
 
 module.exports = Header;

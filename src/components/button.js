@@ -13,13 +13,13 @@ export default class Button extends Component {
     return (
       <View>
         <TouchableHighlight
-          underlayColor = {"#E8E8E8"}
-          onPress = {this.props.onpress}
-          style = {this.props.button_styles}>
+          onPress = {this.props.onPress}
+          style = {this.props.buttonStyles}
+          underlayColor = {this.props.underlayColor}>
           <View>
-              <Text
-                style = {this.props.button_text_styles}>{this.props.text}
-              </Text>
+            <Text style = {this.props.buttonTextStyles}>
+              {this.props.text}
+            </Text>
           </View>
         </TouchableHighlight>
       </View>

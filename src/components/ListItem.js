@@ -7,7 +7,6 @@ import React, {
   TextInput,
   View
 } from 'react-native';
-const styles = require('../styles/header-styles.js');
 
 export default class ListItem extends Component {
   render() {

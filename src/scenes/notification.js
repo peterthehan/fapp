@@ -15,7 +15,6 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/header';
 import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
