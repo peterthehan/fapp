@@ -57,7 +57,6 @@ class Camera extends Component {
     else if (position == 1) {
       this.openCamera();
     }
-    else if (position == 2) { this.props.navigator.replace({ title: 'More', component: 'Home'}); }
 
   }
 
