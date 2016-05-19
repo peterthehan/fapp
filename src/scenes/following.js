@@ -16,7 +16,7 @@ import Button from '../components/button';
 
 import SearchBar from '../search-bar';
 
-let database = new Firebase("poopapp.firebaseio.com");
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Following extends Component {
 

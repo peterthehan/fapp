@@ -20,7 +20,7 @@ import ForgotPassword from './forgot-password';
 import Main from './main';
 import Signup from './signup';
 
-let database = new Firebase("poopapp.firebaseio.com");
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Login extends Component {
   constructor(props) {
