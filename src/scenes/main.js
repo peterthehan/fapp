@@ -61,7 +61,7 @@ class Main extends Component {
         <ActionButton.Item buttonColor='#3498db' title="Setting" onPress={() => {this.props.navigator.push({component: Setting});}}>
           <Icon name="bell" style={styles.actionButtonIcon} />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor='#1abc9c' title="Profile" onPress={() => {this.props.navigator.push({component:Profile});}}>
+        <ActionButton.Item buttonColor='#1abc9c' title="Profile" onPress={() => {this.props.navigator.push({component: Profile});}}>
           <Icon name="bars" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>

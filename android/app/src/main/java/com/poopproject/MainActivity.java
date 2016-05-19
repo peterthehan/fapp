@@ -43,4 +43,12 @@ public class MainActivity extends ReactActivity {
             new ImagePickerPackage()
         );
     }
+    @Override
+    public void onBackPressed() {
+      if (mReactInstanceManager != null) {
+        mReactInstanceManager.onBackPressed();
+      } else {
+        super.onBackPressed();
+      }
+  }
 }
