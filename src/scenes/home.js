@@ -1,15 +1,16 @@
 'use strict';
 
-import HomeGrid from '../home-grid';
 import React, {
   Component,
   ScrollView,
   RefreshControl,
   View
 } from 'react-native';
+
+import HomeGrid from '../home-grid';
 import SearchBar from '../search-bar';
 
-var pictures = [
+const pictures = [
   "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
   "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
   "http://www.latoro.com/wallpapers/food/18747-desktop-wallpapers-japanese-cuisine.jpg",
@@ -39,7 +40,7 @@ class Home extends Component {
     };
   }
 
-  _onRefresh() {
+  onRefresh() {
   	this.setState({refreshing: true});
     setTimeout(() => {
       // Do some stuff
@@ -49,20 +50,20 @@ class Home extends Component {
 
   render() {
     return(
-      <View style = {HeaderStyles.container}>
+      <View>
         <SearchBar />
-        <ScrollView refreshControl={
+        <ScrollView refreshControl = {
     			<RefreshControl
-    				refreshing={this.state.refreshing}
-    				onRefresh={this._onRefresh.bind(this)}
-    				tintColor="blue"
-    				title="Loading..."
-    				titleColor="black"
-    				colors={['#ffffff', '#b3b3b3', '#808080']}
-    				progressBackgroundColor="black"
+    				refreshing = {this.state.refreshing}
+    				onRefresh = {this.onRefresh.bind(this)}
+    				tintColor = "blue"
+    				title = "Loading..."
+    				titleColor = "black"
+    				colors = {['#ffffff', '#b3b3b3', '#808080']}
+    				progressBackgroundColor = "black"
     			/>
 		    }>
-          <HomeGrid items = {pictures}/>
+          <HomeGrid items = {pictures} />
         </ScrollView>
       </View>
     );

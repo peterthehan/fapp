@@ -8,7 +8,7 @@ import React, {
   View
 } from 'react-native';
 
-export default class Header extends Component {
+class Header extends Component {
 
   render() {
     return (
@@ -16,8 +16,8 @@ export default class Header extends Component {
         <Text style = {styles.headerText}>
           {this.props.text}
         </Text>
-
-        <Image style = {styles.headerImage}
+        <Image
+          style = {styles.headerImage}
           source = {this.props.image}>
         </Image>
       </View>

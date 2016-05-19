@@ -9,7 +9,6 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-let app = new Firebase("poopapp1.firebaseio.com");
 
 import Login from './login';
 
@@ -19,7 +18,10 @@ import Header from '../components/header';
 import ButtonStyles from '../styles/button-styles';
 import SceneStyles from '../styles/scene-styles';
 
-export default class ForgotPassword extends Component {
+let database = new Firebase("poopapp1.firebaseio.com");
+
+class ForgotPassword extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +37,8 @@ export default class ForgotPassword extends Component {
 
           <Header
             text = ""
-            image = {require('../images/logo.png')}/>
+            image = {require('../images/logo.png')}
+          />
 
           <View style = {SceneStyles.body}>
             <Text style = {SceneStyles.text}>
@@ -49,20 +52,23 @@ export default class ForgotPassword extends Component {
               value = {this.state.email}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
 
             <Button
               text = "SEARCH"
               onPress = {this.submit.bind(this)}
               buttonStyles = {ButtonStyles.primaryButton}
               buttonTextStyles = {ButtonStyles.primaryButtonText}
-              underlayColor = {"#B18C40"}/>
+              underlayColor = {"#B18C40"}
+            />
             <Button
               text = "Cancel"
               onPress = {this.goToLogin.bind(this)}
               buttonStyles = {ButtonStyles.transparentButton}
               buttonTextStyles = {ButtonStyles.transparentButtonText}
-              underlayColor = {"#A2A2A2"}/>
+              underlayColor = {"#A2A2A2"}
+            />
           </View>
         </Image>
       </View>

@@ -2,16 +2,12 @@
 
 import React, {
   Component,
-  DatePickerAndroid,
   Image,
   TextInput,
   View
 } from 'react-native';
 
 import Firebase from 'firebase';
-let app = new Firebase("poopapp1.firebaseio.com");
-
-import Login from './login';
 
 import Button from '../components/button';
 import Header from '../components/header';
@@ -19,7 +15,11 @@ import Header from '../components/header';
 import ButtonStyles from '../styles/button-styles';
 import SceneStyles from '../styles/scene-styles';
 
-export default class Signup extends Component {
+import Login from './login';
+
+let database = new Firebase("poopapp1.firebaseio.com");
+
+class Signup extends Component {
 
   constructor(props) {
     super(props);
@@ -36,12 +36,14 @@ export default class Signup extends Component {
   render() {
     return (
       <View style = {SceneStyles.container}>
-        <Image style = {SceneStyles.backgroundImage}
+        <Image
+          style = {SceneStyles.backgroundImage}
           source = {require('../images/coco_color_40.jpg')}>
 
           <Header
             text = ""
-            image = {require('../images/logo.png')}/>
+            image = {require('../images/logo.png')}
+          />
 
           <View style = {SceneStyles.body}>
             <View style = {SceneStyles.oneLine}>
@@ -51,14 +53,16 @@ export default class Signup extends Component {
                 value = {this.state.firstName}
                 style = {SceneStyles.firstName}
                 placeholderTextColor = 'white'
-                underlineColorAndroid = 'white'/>
+                underlineColorAndroid = 'white'
+              />
               <TextInput
                 placeholder = {"Last Name"}
                 onChangeText = {(text) => this.setState({lastName: text})}
                 value = {this.state.lastName}
                 style = {SceneStyles.lastName}
                 placeholderTextColor = 'white'
-                underlineColorAndroid = 'white'/>
+                underlineColorAndroid = 'white'
+              />
             </View>
 
             <TextInput
@@ -67,7 +71,8 @@ export default class Signup extends Component {
               value = {this.state.dateOfBirth}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
             <TextInput
               keyboardType = 'email-address'
               placeholder = {"Email"}
@@ -75,7 +80,8 @@ export default class Signup extends Component {
               value = {this.state.email}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
             <TextInput
               secureTextEntry = {true}
               placeholder = {"Password"}
@@ -83,7 +89,8 @@ export default class Signup extends Component {
               value = {this.state.password}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
             <TextInput
               secureTextEntry = {true}
               placeholder = {"Confirm Password"}
@@ -91,20 +98,23 @@ export default class Signup extends Component {
               value = {this.state.passwordConfirm}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
 
             <Button
               text = "SIGN UP"
               onPress = {this.signup.bind(this)}
               buttonStyles = {ButtonStyles.primaryButton}
               buttonTextStyles = {ButtonStyles.primaryButtonText}
-              underlayColor = {"#B18C40"}/>
+              underlayColor = {"#B18C40"}
+            />
             <Button
               text = "Already Have An Account"
               onPress = {this.goToLogin.bind(this)}
               buttonStyles = {ButtonStyles.transparentButton}
               buttonTextStyles = {ButtonStyles.transparentButtonText}
-              underlayColor = {"#A2A2A2"}/>
+              underlayColor = {"#A2A2A2"}
+            />
           </View>
         </Image>
       </View>
@@ -112,45 +122,47 @@ export default class Signup extends Component {
   }
 
   signup() {
-    app.createUser({
-      'email': this.state.email,
-      'password': this.state.password
+    database.createUser(
+      {
+        'email': this.state.email,
+        'password': this.state.password
       },
       (error, userData) => {
-      if(error) {
-        switch(error.code) {
-          case "EMAIL_TAKEN":
-            alert("The new user account cannot be created because the email is already in use.");
-          break;
+        if(error) {
+          switch(error.code) {
+            case "EMAIL_TAKEN":
+              alert("The new user account cannot be created because the email is already in use.");
+            break;
 
-          case "INVALID_EMAIL":
-            alert("The specified email is not a valid email.");
-          break;
+            case "INVALID_EMAIL":
+              alert("The specified email is not a valid email.");
+            break;
 
-          default:
-            alert("Error creating user:");
+            default:
+              alert("Error creating user:");
+          }
+        } else {
+          var ref = database.child("users");
+          var uid = userData.uid;
+          ref.child(uid).set({
+              email: this.state.email,
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
+              profilePic: "",
+          });
+          alert('Your account was created!');
         }
-      } else {
-        var ref = app.child("users");
-        var uid = userData.uid;
-        ref.child(uid).set({
-            email: this.state.email,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            profilePic: "",
-        });
-        alert('Your account was created!');
-      }
 
-      this.setState({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        email: '',
-        password: '',
-        passwordConfirm: ''
-      });
-    });
+        this.setState({
+          firstName: '',
+          lastName: '',
+          dateOfBirth: '',
+          email: '',
+          password: '',
+          passwordConfirm: ''
+        });
+      }
+    );
   }
 
   goToLogin() {

@@ -1,4 +1,5 @@
 'use strict';
+
 import React, {
   Component,
   StyleSheet,
@@ -6,19 +7,22 @@ import React, {
   View
 } from 'react-native';
 
-export default class StatusBar extends Component {
+class StatusBar extends Component {
+  
   render() {
     return (
       <View>
-        <View style={styles.statusbar}/>
-        <View style={styles.li}>
-          <Text style={styles.text}>{this.props.title}
+        <View style = {styles.statusbar}/>
+        <View style = {styles.li}>
+          <Text style = {styles.text}>
+            {this.props.title}
           </Text>
         </View>
       </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
   li: {
     backgroundColor: 'rgba(252,252,182,0.7)',
@@ -43,4 +47,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   }
 });
+
 module.exports = StatusBar;

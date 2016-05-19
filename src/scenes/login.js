@@ -9,11 +9,6 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-let app = new Firebase("poopapp1.firebaseio.com");
-
-import Signup from './signup';
-import ForgotPassword from './forgot-password';
-import Main from './main';
 
 import Button from '../components/button';
 import Header from '../components/header';
@@ -21,7 +16,13 @@ import Header from '../components/header';
 import ButtonStyles from '../styles/button-styles';
 import SceneStyles from '../styles/scene-styles';
 
-export default class Login extends Component {
+import ForgotPassword from './forgot-password';
+import Main from './main';
+import Signup from './signup';
+
+let database = new Firebase("poopapp.firebaseio.com");
+
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +39,8 @@ export default class Login extends Component {
 
           <Header
             text = ""
-            image = {require('../images/logo.png')}/>
+            image = {require('../images/logo.png')}
+          />
 
           <View style = {SceneStyles.body}>
             <TextInput
@@ -48,7 +50,8 @@ export default class Login extends Component {
               value = {this.state.email}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
             <TextInput
               secureTextEntry = {true}
               placeholder = {"Password"}
@@ -56,26 +59,30 @@ export default class Login extends Component {
               value = {this.state.password}
               style = {SceneStyles.textInput}
               placeholderTextColor = 'white'
-              underlineColorAndroid = 'white'/>
+              underlineColorAndroid = 'white'
+            />
 
             <Button
               text = "LOG IN"
               onPress = {this.login.bind(this)}
               buttonStyles = {ButtonStyles.primaryButton}
               buttonTextStyles = {ButtonStyles.primaryButtonText}
-              underlayColor = {"#B18C40"}/>
+              underlayColor = {"#B18C40"}
+            />
             <Button
               text = "Create A New Account"
               onPress = {this.goToSignup.bind(this)}
               buttonStyles = {ButtonStyles.transparentButton}
               buttonTextStyles = {ButtonStyles.transparentButtonText}
-              underlayColor = {"#A2A2A2"}/>
+              underlayColor = {"#A2A2A2"}
+            />
             <Button
               text = "Forgot Your Password?"
               onPress = {this.goToForgotPassword.bind(this)}
               buttonStyles = {ButtonStyles.transparentButton}
               buttonTextStyles = {ButtonStyles.transparentButtonText}
-              underlayColor = {"#A2A2A2"}/>
+              underlayColor = {"#A2A2A2"}
+            />
           </View>
         </Image>
       </View>
@@ -83,9 +90,10 @@ export default class Login extends Component {
   }
 
   login() {
-    app.authWithPassword({
-      "email": this.state.email,
-      "password": this.state.password
+    database.authWithPassword(
+      {
+        "email": this.state.email,
+        "password": this.state.password
       },
       (error, user_data) => {
         if(error) {
@@ -94,7 +102,8 @@ export default class Login extends Component {
           AsyncStorage.setItem('user_data', JSON.stringify(user_data));
           this.props.navigator.push({component: Main});
         }
-      });
+      }
+    );
   }
 
   goToSignup() {

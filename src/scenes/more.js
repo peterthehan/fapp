@@ -10,8 +10,8 @@ import React, {
 
 class More extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows(['Extra page 1', 'Extra page 2', 'Extra page 3']),
@@ -25,10 +25,13 @@ class More extends Component {
         renderRow = {(rowData) =>
           <TouchableOpacity onPress = {this.changePage}>
             <View style = {{height: 50, padding: 10, borderWidth: 1, borderColor: '#000', alignItems: 'center'}}>
-              <Text>{rowData}</Text>
+              <Text>
+                {rowData}
+              </Text>
             </View>
           </TouchableOpacity>
-        }/>
+        }
+      />
     );
   }
 

@@ -2,18 +2,19 @@
 
 import React, {
   Component,
-  Text,
-  View,
-  StyleSheet,
-  ToolbarAndroid,
   Image,
-  style
+  StyleSheet,
+  Text,
+  ToolbarAndroid,
+  View,
 } from 'react-native';
-var ImagePickerManager = require('NativeModules').ImagePickerManager;
+
+import ImagePickerManager from 'NativeModules';
 
 class Camera extends Component {
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     this.state = {
       avatarSource: null,
       test: 'help'
@@ -22,51 +23,59 @@ class Camera extends Component {
 
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
-    console.log('Response = ', response);
+      console.log('Response = ', response);
 
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.error) {
-      console.log('ImagePickerManager Error: ', response.error);
-    } else {
-      // You can display the image using either data:
-      const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-      this.setState({
-        avatarSource: source
-      });
-    }
-  });
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
   }
 
 
   renderImage() {
     return (
       <View>
-      <ToolbarAndroid
-        title='Create a Post'
-        style={styles.toolbar}
-        actions={[{title: 'Next', show: 'always'}, {title: 'Camera', show: 'always'}, {title: 'Home', show: 'always'}] }
-        onActionSelected = {this._onActionSelected.bind(this)} />
-        <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
+        <ToolbarAndroid
+          title = 'Create a Post'
+          style = {styles.toolbar}
+          actions = {[
+            {title: 'Next', show: 'always'},
+            {title: 'Camera', show: 'always'},
+            {title: 'Home', show: 'always'}
+          ]}
+          onActionSelected = {this._onActionSelected.bind(this)}
+        />
+        <Image
+          source = {this.state.avatarSource}
+          style = {styles.uploadAvatar}
+        />
       </View>
     );
   }
 
   _onActionSelected(position) {
-    if (position == 0) { alert('Hi'); }
-    else if (position == 1) {
+    if (position == 0) {
+      alert('Hi');
+    } else if (position == 1) {
       this.openCamera();
     }
-
   }
 
   render() {
     return this.renderImage();
   }
 
-
 }
-var styles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   toolbar: {
     height: 56,
     backgroundColor: '#4682b4',
@@ -76,7 +85,6 @@ var styles = StyleSheet.create({
     width: 370,
   }
 });
-
 
 var options = {
   title: 'Select Avatar', // specify null or empty string to remove the title
@@ -96,4 +104,5 @@ var options = {
   allowsEditing: false, // Built in functionality to resize, reposition the image after selection
   noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
 };
+
 module.exports = Camera;

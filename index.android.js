@@ -9,13 +9,14 @@ import React, {
   View
 } from 'react-native';
 
-import Login from './src/scenes/login';
-import Main from './src/scenes/main';
+import Firebase from 'firebase';
 
 import Header from './src/components/header';
 
-import Firebase from 'firebase';
-let app = new Firebase("poopapp1.firebaseio.com");
+import Login from './src/scenes/login';
+import Main from './src/scenes/main';
+
+let database = new Firebase("poopapp1.firebaseio.com");
 
 // reference: http://www.sitepoint.com/authentication-in-react-native-with-firebase/
 class PoopApp extends Component {
@@ -31,17 +32,16 @@ class PoopApp extends Component {
   componentWillMount() {
     AsyncStorage.getItem('user_data').then((user_data_json) => {
       let user_data = JSON.parse(user_data_json);
-      let component = {component: Login};
       if(user_data != null) {
-        app.authWithCustomToken(user_data.token, (error, authData) => {
+        database.authWithCustomToken(user_data.token, (error, authData) => {
           if(error) {
-            this.setState(component);
+            this.setState({component: Login});
           } else {
             this.setState({component: Main});
           }
         });
       } else {
-        this.setState(component);
+        this.setState({component: Login});
       }
     });
   }
@@ -55,17 +55,12 @@ class PoopApp extends Component {
           configureScene = {(route, routeStack) => {
             if(route.index === 1) {
               return Navigator.SceneConfigs.FloatFromRight
-            } else if(route.index === 2) {
+            } else if (route.index === 2) {
               return Navigator.SceneConfigs.FloatFromLeft
             } else {
               return Navigator.SceneConfigs.FadeAndroid
             }
           }}
-          /*
-          configureScene = {() => {
-            return Navigator.SceneConfigs.FloatFromRight;
-          }}
-          */
           renderScene = {(route, navigator) => {
             if(route.component) {
               return React.createElement(route.component, {navigator});
@@ -76,9 +71,7 @@ class PoopApp extends Component {
     } else {
       return (
         <View>
-          <Header text = "React Native Firebase Auth" loaded = {this.state.loaded}/>
-          <View>
-          </View>
+          <Header text = "React Native Firebase Auth" loaded = {this.state.loaded} />
         </View>
       );
     }
