@@ -6,7 +6,9 @@ import React, {
   TouchableOpacity,
   StyleSheet,
   Component,
+  Alert,
   Text,
+  Image,
   View
 } from 'react-native';
 import Button from '../components/button';
@@ -15,11 +17,33 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/header';
 import Firebase from 'firebase';
 import ButtonStyles from '../styles/button-styles';
+import SceneStyles from '../styles/scene-styles';
+import HeaderStyles from '../styles/header-styles';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 let eventsRef = new Firebase("poopapp1.firebaseio.com");
 let events = eventsRef.child('event');
 const FirebaseUrl = 'poopapp1.firebaseio.com';
+import Share from 'react-native-share';
+
+const styles1 = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
 
 class Notification extends Component {
 
@@ -30,16 +54,16 @@ class Notification extends Component {
   });
     this.state = {
       dataSource: ds.cloneWithRows([
-        'Post 1'])
-
+        'You have 1 new follower: tester',
+        'You followed tester'
+      ])
     };
 
-    this.notification = this.getRef().child('notification');
-    this.notification.set({
-      followers: null,
-      events:null,
-      ratings:null
-    })
+    this.notification = new Firebase("poopapp1.firebaseio.com/notification");
+  }
+
+  componenetDidMount() {
+    this.listenForItems(this.notification);
   }
 
   getRef() {
@@ -62,6 +86,17 @@ class Notification extends Component {
     });
   }
   _renderItem(item) {
+    const onPress = ()=>{
+     Alert.alert(
+      'Complete',
+      null,
+      [
+        {text: 'Complete', onPress:(text)=>this.notification.child(item_key).remove()},
+        {text: 'Cancel',onPress:(text) => console.log('Cancel')}
+      ],
+      'default'
+     );
+    };
     return (
       <ListItem item={item} onPress={() => {}} />
 
@@ -72,25 +107,24 @@ class Notification extends Component {
   }
   render() {
     return (
+      /*<Image source = {require('../images/coco_color_0.jpg')} style={HeaderStyles.backgroundImage}>
+      */
       <View style={{flex: 1}}>
       <StatusBar title="Notification" />
       <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this._renderItem.bind(this)}
-        style={{flex: 1}}/>
+      dataSource={this.state.dataSource}
+      renderRow={(rowData) =>
+        <TouchableOpacity onPress = {this.generate}>
+          <View style = {{flex: 1, height: 50,
+           padding: 10, borderWidth: 1,
+          borderColor: '#003', alignItems: 'center'}}>
+            <Text>{rowData}</Text>
+          </View>
+        </TouchableOpacity>
+      }/>
 
-        <ActionButton buttonColor="rgba(231,76,60,1)" bgColor="rgba(0,0,0,0.1)" btnOutRange="rgba(231,76,60,0.6)">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={this.createEvent.bind(this)}>
-            <Icon name="calendar-plus-o" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {alert("Notifications Task tapped!")}}>
-            <Icon name="bell" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {alert("All Task tapped!")}}>
-            <Icon name="bars" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
       </View>
+      /*</Image>*/
     );
   }
 
@@ -101,17 +135,34 @@ class Notification extends Component {
   }
 
   add(){
-    Alert.alert(
-      'add new notification',
-      null,
-      [
-        {
-          text: 'Add',
-          onPress: (text) => {this.notification.push({text: text})
-          }
+    <Button
+      text = "add"
+      onpress = {this.add.bind(this)}
+      button_styles = {ButtonStyles.primaryButton}
+      button_text_styles = {ButtonStyles.primaryButtonText}/>
+    Alert.alert('add new task',
+    null,
+    [
+      {
+        text: 'Add',
+        onPress: (text) => {
+          this.notification.push({title: text});
         }
-      ]
-    )
+      },
+    ],
+    'plain-text'
+  );
+}
+
+  tweet(){
+    Share.open({
+      share_text: "Hola mundo",
+      share_URL: "http://google.cl",
+      title: "Share Link",
+      image: "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg"
+    },(e) => {
+      console.log(e);
+    });
   }
 
   remove(rowData){

@@ -1,6 +1,7 @@
 package com.poopproject;
 
 import com.facebook.react.ReactActivity;
+import cl.json.RNSharePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -38,9 +39,18 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNSharePackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
             new RNGLPackage()
         );
     }
+    @Override
+    public void onBackPressed() {
+      if (mReactInstanceManager != null) {
+        mReactInstanceManager.onBackPressed();
+      } else {
+        super.onBackPressed();
+      }
+  }
 }

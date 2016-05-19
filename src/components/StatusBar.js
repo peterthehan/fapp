@@ -21,17 +21,17 @@ export default class StatusBar extends Component {
 }
 const styles = StyleSheet.create({
   li: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(252,252,182,0.7)',
     borderBottomColor: '#eee',
-    borderColor: 'transparent',
+    borderColor: '#003',
     borderWidth: 1,
     paddingLeft: 16,
-    paddingTop: 14,
+    paddingTop: 12,
     paddingBottom: 16,
   },
   statusbar: {
     backgroundColor: '#fff',
-    height: 22,
+    height: 11,
   },
   title: {
     color: '#444',
