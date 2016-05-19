@@ -11,12 +11,9 @@ module.exports = StyleSheet.create({
     width: null,
     height: null
   },
-<<<<<<< HEAD
   container: {
     flex: 1,
   },
-=======
->>>>>>> 5ada25ac766fb035ebbc6f66a2ea8c91fa1c06d3
   body: {
   },
   text: {
