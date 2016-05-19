@@ -1,12 +1,14 @@
 'use strict';
 
-const React = require('react-native');
-const { TextInput } = React;
+import React, {
+  Component,
+  TextInput,
+} from 'react-native';
 
-class SearchBar extends React.Component {
+class SearchBar extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       text: "",
     };
@@ -17,9 +19,10 @@ class SearchBar extends React.Component {
       <TextInput
         keyboardType = { 'default' }
         placeholder = "Search"
-        onChangeText={(text) => this.setState({text})} />
+        onChangeText={(text) => this.setState({text})}
+      />
     );
   }
 }
 
-export default SearchBar;
+module.exports = SearchBar;

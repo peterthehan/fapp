@@ -7,7 +7,7 @@ import React, {
   View
 } from 'react-native';
 
-export default class Button extends Component {
+class Button extends Component {
 
   render() {
     return (

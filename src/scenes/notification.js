@@ -1,73 +1,47 @@
 'use strict';
 
 import React, {
-  ListView,
-  TouchableHighlight,
-  TouchableOpacity,
-  StyleSheet,
-  Component,
   Alert,
-  Text,
+  Component,
   Image,
-  View
+  ListView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Button from '../components/button';
-import ListItem from '../components/ListItem';
-import StatusBar from '../components/StatusBar';
-import Header from '../components/header';
+
 import Firebase from 'firebase';
-import ButtonStyles from '../styles/button-styles';
-import SceneStyles from '../styles/scene-styles';
-import HeaderStyles from '../styles/header-styles';
-import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-let eventsRef = new Firebase("poopapp1.firebaseio.com");
-let events = eventsRef.child('event');
-const FirebaseUrl = 'poopapp1.firebaseio.com';
 import Share from 'react-native-share';
 
-const styles1 = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+import Button from '../components/button';
+import Header from '../components/header';
+import StatusBar from '../components/status-bar';
+
+import ButtonStyles from '../styles/button-styles';
+import HeaderStyles from '../styles/header-styles';
+
+let events = new Firebase("poopapp1.firebaseio.com/events");
+let notifications = new Firebase("poopapp1.firebaseio.com/notification");
 
 class Notification extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const ds = new ListView.DataSource({
-    rowHasChanged: (row1, row2) => row1 !== row2,
-  });
+      rowHasChanged: (row1, row2) => row1 !== row2,
+    });
     this.state = {
       dataSource: ds.cloneWithRows([
         'You have 1 new follower: tester',
         'You followed tester'
       ])
     };
-
-    this.notification = new Firebase("poopapp1.firebaseio.com/notification");
   }
 
   componenetDidMount() {
-    this.listenForItems(this.notification);
-  }
-
-  getRef() {
-    return new Firebase(FirebaseUrl);
+    this.listenForItems(notifications);
   }
 
   listenForItems(notification) {
@@ -85,74 +59,53 @@ class Notification extends Component {
       });
     });
   }
-  _renderItem(item) {
-    const onPress = ()=>{
-     Alert.alert(
-      'Complete',
-      null,
-      [
-        {text: 'Complete', onPress:(text)=>this.notification.child(item_key).remove()},
-        {text: 'Cancel',onPress:(text) => console.log('Cancel')}
-      ],
-      'default'
-     );
-    };
-    return (
-      <ListItem item={item} onPress={() => {}} />
 
-    );
-  }
   generate(){
     alert("asdfafasf");
   }
+
   render() {
     return (
-      /*<Image source = {require('../images/coco_color_0.jpg')} style={HeaderStyles.backgroundImage}>
-      */
-      <View style={{flex: 1}}>
-      <StatusBar title="Notification" />
-      <ListView
-      dataSource={this.state.dataSource}
-      renderRow={(rowData) =>
-        <TouchableOpacity onPress = {this.generate}>
-          <View style = {{flex: 1, height: 50,
-           padding: 10, borderWidth: 1,
-          borderColor: '#003', alignItems: 'center'}}>
-            <Text>{rowData}</Text>
-          </View>
-        </TouchableOpacity>
-      }/>
-
+      <View style = {{flex: 1}}>
+        <StatusBar title = "Notification" />
+        <ListView
+          dataSource = {this.state.dataSource}
+          renderRow = {(rowData) =>
+            <TouchableOpacity onPress = {this.generate}>
+              <View style = {{flex: 1, height: 50, padding: 10, borderWidth: 1, borderColor: '#003', alignItems: 'center'}}>
+                <Text>
+                  {rowData}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          }
+        />
       </View>
-      /*</Image>*/
     );
   }
 
-  createEvent(){
-    //this.setState({loaded: false});
-    alert("add clicked");
-
-  }
-
+  /*
   add(){
     <Button
       text = "add"
       onpress = {this.add.bind(this)}
       button_styles = {ButtonStyles.primaryButton}
-      button_text_styles = {ButtonStyles.primaryButtonText}/>
-    Alert.alert('add new task',
-    null,
-    [
-      {
-        text: 'Add',
-        onPress: (text) => {
-          this.notification.push({title: text});
+      button_text_styles = {ButtonStyles.primaryButtonText}
+    />
+    Alert.alert(
+      'add new task',
+      null,
+      [
+        {
+          text: 'Add',
+          onPress: (text) => {
+            notifications.push({title: text});
+          }
         }
-      },
-    ],
-    'plain-text'
-  );
-}
+      ],
+      'plain-text'
+    );
+  }
 
   tweet(){
     Share.open({
@@ -160,7 +113,7 @@ class Notification extends Component {
       share_URL: "http://google.cl",
       title: "Share Link",
       image: "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg"
-    },(e) => {
+    }, (e) => {
       console.log(e);
     });
   }
@@ -174,8 +127,9 @@ class Notification extends Component {
         on
       }
     ]
-    this.notification.child(rowData.id).remove();
+    notifications.child(rowData.id).remove();
   }
+  */
 }
 
 const styles = StyleSheet.create({
@@ -185,4 +139,5 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
 module.exports = Notification;

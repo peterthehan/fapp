@@ -10,21 +10,18 @@ import React, {
   View
 } from 'react-native';
 
-
 import Firebase from 'firebase';
-let app = new Firebase("poopapp1.firebaseio.com");
-
-import SearchBar from '../search-bar';
 
 import Button from '../components/button';
 
-import ButtonStyles from '../styles/button-styles';
-import SceneStyles from '../styles/scene-styles';
+import SearchBar from '../search-bar';
+
+let database = new Firebase("poopapp.firebaseio.com");
 
 class Following extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([
@@ -52,7 +49,7 @@ class Following extends Component {
     };
   }
 
-  _onRefresh() {
+  onRefresh() {
   	this.setState({refreshing: true});
     setTimeout(() => {
       // Do some stuff
@@ -62,7 +59,7 @@ class Following extends Component {
 
   // TODO move this to POST UI
   createPost(){
-    var ref = app.child("posts");
+    var ref = database.child("posts");
     ref.push({
         user: "Mickey Mouse",
         photo: "ssldukyjth"
@@ -70,32 +67,34 @@ class Following extends Component {
   }
   render() {
     return(
-      <View style = {HeaderStyles.container}>
+      <View>
         <Button
           text = "Make Post"
           onpress = {this.createPost.bind(this)}/>
 
         <SearchBar />
-        <ScrollView refreshControl={
+        <ScrollView refreshControl = {
     			<RefreshControl
-    				refreshing={this.state.refreshing}
-    				onRefresh={this._onRefresh.bind(this)}
-    				tintColor="blue"
-    				title="Loading..."
-    				titleColor="black"
-    				colors={['#ffffff', '#b3b3b3', '#808080']}
-    				progressBackgroundColor="black"
+    				refreshing = {this.state.refreshing}
+    				onRefresh = {this.onRefresh.bind(this)}
+    				tintColor = "blue"
+    				title = "Loading..."
+    				titleColor = "black"
+    				colors = {['#ffffff', '#b3b3b3', '#808080']}
+    				progressBackgroundColor = "black"
     			/>
 		    }>
-          <ListView
-            dataSource = {this.state.dataSource}
-            renderRow = {(rowData) =>
-              <TouchableOpacity onPress = {this.changePage}>
-                <View style = {{height: 50, padding: 10, borderWidth: 1, borderColor: '#000', alignItems: 'center'}}>
-                  <Text>{rowData}</Text>
-                </View>
-              </TouchableOpacity>
-            }/>
+        <ListView
+          dataSource = {this.state.dataSource}
+          renderRow = {(rowData) =>
+            <TouchableOpacity onPress = {this.changePage}>
+              <View style = {{height: 50, padding: 10, borderWidth: 1, borderColor: '#000', alignItems: 'center'}}>
+                <Text>
+                  {rowData}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          }/>
         </ScrollView>
       </View>
     );

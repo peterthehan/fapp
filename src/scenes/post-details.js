@@ -2,23 +2,21 @@
 
 import React, {
   Component,
-  Text,
-  View,
   StyleSheet,
+  Text,
+  TextInput,
   ToolbarAndroid,
-  Image,
-  style,
-  TextInput
+  View,
 } from 'react-native';
 
 import Button from '../components/button';
 
-import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
 
 class Tags extends Component {
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     this.state = {
       title: '',
       tags: '',
@@ -33,14 +31,15 @@ class Tags extends Component {
 
   render() {
     return(
-      <View style={{backgroundColor: '#4682b4', flex: 1}}>
+      <View style = {{backgroundColor: '#4682b4', flex: 1}}>
         <View>
           <ToolbarAndroid
-            title='Create a Post'
-            titleColor='white'
-            style={styles.toolbar}
-            actions={[{title: 'Post', show: 'always'}]}
-            onActionSelected={this.onPress.bind(this)} />
+            title = 'Create a Post'
+            titleColor = 'white'
+            style = {styles.toolbar}
+            actions = {[{title: 'Post', show: 'always'}]}
+            onActionSelected = {this.onPress.bind(this)}
+          />
         </View>
 
         <TextInput
@@ -49,7 +48,8 @@ class Tags extends Component {
           value = {this.state.title}
           placeholder = {"Give a description..."}
           placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'/>
+          underlineColorAndroid = 'white'
+        />
 
         <TextInput
           style = {HeaderStyles.textinput}
@@ -57,7 +57,8 @@ class Tags extends Component {
           value = {this.state.tags}
           placeholder = {"Add tags"}
           placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'/>
+          underlineColorAndroid = 'white'
+        />
 
         <TextInput
           style = {HeaderStyles.textinput}
@@ -65,7 +66,8 @@ class Tags extends Component {
           value = {this.state.location}
           placeholder = {"Enter location"}
           placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'/>
+          underlineColorAndroid = 'white'
+        />
 
         <TextInput
           style = {HeaderStyles.textinput}
@@ -73,7 +75,8 @@ class Tags extends Component {
           value = {this.state.recipe}
           placeholder = {"Cooked it yourself? Add a recipe!"}
           placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'/>
+          underlineColorAndroid = 'white'
+        />
 
       </View>
     );
