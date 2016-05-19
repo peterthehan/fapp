@@ -5,6 +5,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.imagepicker.ImagePickerPackage;
+import com.projectseptember.RNGL.RNGLPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,8 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new VectorIconsPackage(),
-            new ImagePickerPackage()
+            new ImagePickerPackage(),
+            new RNGLPackage()
         );
     }
 }
