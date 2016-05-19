@@ -11,9 +11,6 @@ module.exports = StyleSheet.create({
     width: null,
     height: null
   },
-  container: {
-    flex: 1,
-  },
   body: {
   },
   text: {

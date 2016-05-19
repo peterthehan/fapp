@@ -45,12 +45,12 @@ public class MainActivity extends ReactActivity {
             new RNGLPackage()
         );
     }
-    @Override
+    /*@Override
     public void onBackPressed() {
       if (mReactInstanceManager != null) {
         mReactInstanceManager.onBackPressed();
       } else {
         super.onBackPressed();
       }
-  }
+  }*/
 }
