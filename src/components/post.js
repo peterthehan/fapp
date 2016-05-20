@@ -12,14 +12,38 @@ import React, {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import Firebase from 'firebase';
+
+let database = new Firebase("poopapp1.firebaseio.com");
+
 class Post extends Component {
 
   constructor(props) {
     super(props);
-    var id = props.id;
+    var postid = props.id;
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var postsnapshot = snapshot.child("posts/" + postid);
+      var userid = postsnapshot.val().userID;
+      var usersnapshot = snapshot.child("users/" + userid);
+      var proPic = usersnapshot.val().profilePic;
+      self.setState({
+        name: postsnapshot.val().user,
+        profilePic: proPic,
+        image: postsnapshot.val().photoID,
+        rating: postsnapshot.val().rating,
+        description: postsnapshot.val().description,
+      });
+    });
+
     this.state = {
-      // this would be the name of poster retreived from database
-      name: id,
+      //these are default fields for a post.
+      name: "undef",
+      profilePic: "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C_400x400.jpeg",
+      image: "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C_400x400.jpeg",
+      rating: "undef",
+      description: "undef",
     };
   }
 
@@ -31,7 +55,7 @@ class Post extends Component {
             <View style = {styles.padding}>
               <Image
                 style = {styles.posterPic}
-                source = {require('../images/profilepic.jpg')} />
+                source = {{uri: this.state.profilePic}} />
             </View>
             <View style = {styles.padding}>
               <Text style = {styles.posterName}>
@@ -44,12 +68,12 @@ class Post extends Component {
         <View style = {styles.postImage}>
           <Image
             style = {styles.image}
-            source = {require('../images/foodpic.jpg')} />
+            source = {{uri: this.state.image}} />
         </View>
 
         <View style = {styles.horizontalView}>
           <Text style = {styles.rating}>
-            6
+            {this.state.rating}
           </Text>
           <TouchableOpacity style = {styles.ratingButton}>
               <Icon
@@ -69,7 +93,7 @@ class Post extends Component {
 
         <View style = {styles.descriptContainer}>
           <Text style = {styles.descText}>
-            This is a delicious chicken that I had at 64 degrees! I am Mickey Mouse. I eat at 64 after CSE 101 every day!
+            {this.state.description}
           </Text>
         </View>
 
