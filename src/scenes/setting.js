@@ -16,7 +16,7 @@ import Header from '../components/header';
 import Button from '../components/button';
 import Login from './login';
 
-let database = new Firebase("poopapp1.firebaseio.com/users");
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Setting extends Component {
 
@@ -27,21 +27,38 @@ class Setting extends Component {
     }
   }
 
+  getInitialState() {
+    return {
+      firstame: '',
+      lastname: ''
+    };
+  }
+
+  componentDidMount() {
+    let data = database.child('users');
+    data.on("value", function(snapshot) {
+      alert (snapshot.val());
+    },  function (errorObject) {
+    alert ("The read failed: " + errorObject.code);
+    });
+  }
+
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
-        this.props.navigator.push({component: Login});
       });
   }
 
   render() {
+    {this.componentDidMount()}
     AsyncStorage.getItem('user_data').then((user_data_json) => {
       let user_data = JSON.parse(user_data_json);
       this.setState({
         user: user_data,
         loaded: true
       });
-    });    return(
+    });
+    return(
       <View>
         <Header
           navigator = {this.props.navigator}
@@ -60,7 +77,7 @@ class Setting extends Component {
                   style={SceneStyles.image}
                   source={{uri: this.state.user.password.profileImageURL}}
                />
-                <Text style={page_styles.email_text}>{this.state.user.password.lastName}
+                <Text style={page_styles.email_text}>{this.state.user.token}
                 </Text>
               </View>
                 <TouchableHighlight onPress = {this.logout.bind(this)} underlayColor='lemonchiffon'>
@@ -76,7 +93,6 @@ class Setting extends Component {
       </View>
     );
   }
-
 }
 
 const page_styles = StyleSheet.create({

@@ -20,6 +20,7 @@ import Header from '../components/header';
 
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
+import SceneStyles from '../styles/scene-styles';
 
 let events = new Firebase("poopapp1.firebaseio.com/events");
 let notifications = new Firebase("poopapp1.firebaseio.com/notification");
@@ -69,19 +70,21 @@ class Notification extends Component {
         <Header
           navigator = {this.props.navigator}
           text = "Notification"
-    i    />
+        />
+        <View style = {{flex:1, backgroundColor: 'white'}}>
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
-            <TouchableOpacity onPress = {this.generate}>
-              <View style = {{flex: 1, height: 50, padding: 10, borderWidth: 1, borderColor: '#003', alignItems: 'center'}}>
-                <Text>
+            <TouchableOpacity onPress = {this.generate} underlayColor = 'lemonchiffon'>
+              <View style = {{flex: 1, height: 50, backgroundColor: 'dodgerblue', padding: 10, alignItems: 'center'}}>
+                <Text style = {SceneStyles.text}>
                   {rowData}
                 </Text>
               </View>
             </TouchableOpacity>
           }
         />
+        </View>
       </View>
     );
   }
