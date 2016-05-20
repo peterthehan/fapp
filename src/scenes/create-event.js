@@ -63,10 +63,11 @@ class CreateEvent extends Component {
   }
 
   async showTimePicker(stateKey, start) {
+    var tempMin, tempHour;
     try {
-      const {action, m, h} = await TimePickerAndroid.open();
-      tempMin = m;
-      tempHour = h;
+      const {action, minute, hour} = await TimePickerAndroid.open();
+      tempMin = minute;
+      tempHour = hour;
       var tempTimeStr = '';
 
       if (action === TimePickerAndroid.dismissedAction) {
@@ -76,8 +77,7 @@ class CreateEvent extends Component {
           tempTimeStr = this.state.timeEnd;
         }
       } else if(action === TimePickerAndroid.timeSetAction){
-        alert('poo');
-        tempTimeStr = this.formatTime(h, m);
+        tempTimeStr = this.formatTime(hour, minute);
 
       }
       if(start) {
