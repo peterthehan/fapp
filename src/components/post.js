@@ -16,9 +16,10 @@ class Post extends Component {
 
   constructor(props) {
     super(props);
+    var id = props.id;
     this.state = {
       // this would be the name of poster retreived from database
-      name: "Mickey Mouse"
+      name: id,
     };
   }
 
