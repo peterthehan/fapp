@@ -167,8 +167,8 @@ class CreateEvent extends Component {
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback
-            onPress={this.showTimePicker.bind(this, true)}>
-            <Text style={{color:'black'}}>{this.state.timeStart}</Text>
+            onPress = {this.showTimePicker.bind(this, true)}>
+            <Text style = {{color:'black'}}>{this.state.timeStart}</Text>
           </TouchableWithoutFeedback>
 
         </View>
