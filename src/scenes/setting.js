@@ -6,6 +6,8 @@ import React, {
   View
 } from 'react-native';
 
+import Header from '../components/header';
+
 class Setting extends Component {
 
   constructor(props) {
@@ -17,9 +19,11 @@ class Setting extends Component {
   render() {
     return(
       <View>
-        <Text>
-          Settings Page
-        </Text>
+        <Header
+          navigator = {this.props.navigator}
+          text = "Setting"
+          hasBack = {true}
+      />
       </View>
     );
   }
