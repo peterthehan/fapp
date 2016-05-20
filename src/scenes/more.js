@@ -11,6 +11,7 @@ import React, {
 
 import Following from './following';
 import Setting from './setting';
+import Profile from './profile';
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
 import Header from '../components/header';
@@ -32,10 +33,27 @@ class More extends Component {
           navigator = {this.props.navigator}
           text = "More"
         />
+        {this.profilebutton()}
         {this.settingbutton()}
         {this.followingbutton()}
     </View>
     );
+  }
+
+  profile(){
+    this.props.navigator.push({component: Profile});
+  }
+
+  profilebutton(){
+    return (
+      <TouchableHighlight onPress = {this.profile.bind(this)} underlayColor='gainsboro'>
+        <View style = {styles.bubblechoice}>
+          <Text style = {styles.icontext}>
+            Profile
+          </Text>
+        </View>
+      </TouchableHighlight>
+    );  
   }
 
   setting(){

@@ -107,17 +107,11 @@ class Login extends Component {
   }
 
   goToSignup() {
-    this.props.navigator.push({
-      component: Signup,
-      index: 1
-    });
+    this.props.navigator.push({component: Signup});
   }
 
   goToForgotPassword() {
-    this.props.navigator.push({
-      component: ForgotPassword,
-      index: 1
-    });
+    this.props.navigator.push({component: ForgotPassword});
   }
 }
 

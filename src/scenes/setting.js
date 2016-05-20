@@ -30,6 +30,7 @@ class Setting extends Component {
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
+        this.props.navigator.resetTo(this.refs.navigator.getCurrentRoutes()[0]);
       });
   }
 

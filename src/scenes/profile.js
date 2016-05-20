@@ -10,6 +10,7 @@ import React, {
 } from 'react-native';
 
 import ProfileGrid from '../profile-grid';
+import Header from '../components/header';
 
 const pictures = [
   "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
@@ -38,6 +39,12 @@ class Profile extends Component {
   render() {
     return(
       <View>
+        <Header
+          navigator = {this.props.navigator}
+          text = "Profile"
+          loaded={this.state.loaded}
+          hasBack = {true}
+        />
         <ScrollView refreshControl = {
     			<RefreshControl
     				refreshing = {this.state.refreshing}
@@ -72,7 +79,7 @@ class Profile extends Component {
       </View>
     );
   }
-  
+
 }
 
 module.exports = Profile;

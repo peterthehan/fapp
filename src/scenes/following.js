@@ -14,6 +14,7 @@ import React, {
 import Firebase from 'firebase';
 
 import Button from '../components/button';
+import Header from '../components/header';
 
 import SearchBar from '../search-bar';
 import Post from '../components/post';
@@ -70,6 +71,11 @@ class Following extends Component {
   render() {
     return(
       <View>
+        <Header
+          navigator = {this.props.navigator}
+          text = "Following"
+          hasBack = {"true"}
+        />
         <TouchableOpacity onPress={this.createPost}>
           <Text>
             touch me
