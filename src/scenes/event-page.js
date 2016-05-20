@@ -3,7 +3,9 @@
 import React, {
   Component,
   Image,
+  ScrollView,
   StyleSheet,
+  Switch,
   Text,
   View
 } from 'react-native';
@@ -22,26 +24,82 @@ export default class EventPage extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isGoing: false
+    }
   }
 
   render() {
-    return (
-      <View>
 
-        <View style={{flex:1}}>
-          <View>
+    return (
+
+      <View style={{flex:10}}>
+
+        <View style = {{flex:2}}>
+          <View style = {{flex: 3, flexDirection:'row', justifyContent:'space-around'}}>
             <View><Text>image</Text></View>
             <View>
               <View><Text>title</Text></View>
               <View><Text>when</Text></View>
               <View><Text>where</Text></View>
             </View>
-            <View><Text>description</Text></View>
+          </View>
+          <View style = {{flex: 1, alignSelf:'center'}}>
+          <Text>description</Text>
+          </View>
+          <View style = {{flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
+            <View style = {{flex:1, alignItems:'center'}}>
+              <Text>
+                {this.state.isGoing ? 'Attending' : 'Not Attending'}
+              </Text>
+              <Switch
+                onTintColor = "#00ff00"
+                onValueChange = {(value) => this.setState({isGoing: value})}
+                style = {{marginBottom: 10}}
+                value = {this.state.isGoing}
+              />
+
+            </View>
+            <View style = {{flex:1}}>
+              <Button
+                text = "View Guestlist"
+                onpress = {this.goToGuestList.bind(this)}
+                buttonStyles = {ButtonStyles.primaryButton}
+                buttonTextStyles = {ButtonStyles.primaryButtonText}
+                underlayColor = {"#B18C40"}
+              />
+            </View>
           </View>
         </View>
-        <View style={{flex:3}}><Text>comments</Text></View>
+
+        <View style = {{flex:3, alignSelf:'center', alignItems:'stretch'}}>
+        <ScrollView
+          automaticallyAdjustContentInsets={false}
+          horizontal={false}
+          >
+          {[
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
+          ]}
+        </ScrollView>
+        </View>
       </View>
     );
+  }
+
+  goToGuestList(){
+    alert('guest list not implemented');
   }
 }
 module.exports = EventPage;
