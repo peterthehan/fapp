@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
   ListView,
   RefreshControl,
@@ -15,6 +16,7 @@ import Firebase from 'firebase';
 import Button from '../components/button';
 
 import SearchBar from '../search-bar';
+import Post from '../components/post';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -24,29 +26,22 @@ class Following extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([
-        'Post 1',
-        'Post 2',
-        'Post 3',
-        'Post 4',
-        'Post 5',
-        'Post 6',
-        'Post 7',
-        'Post 8',
-        'Post 9',
-        'Post 10',
-        'Post 11',
-        'Post 12',
-        'Post 13',
-        'Post 14',
-        'Post 15',
-        'Post 16',
-        'Post 17',
-        'Post 18',
-        'Post 19'
-      ]),
+      dataSource: ds.cloneWithRows([]),
       refreshing: false,
     };
+  }
+
+  componentDidMount(){
+    var ref = database.child("posts");
+    var myBlob = [];
+    var self = this;
+    ref.once("value", function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        myBlob.push(childSnapshot.key().toString());
+
+      });
+      self.setState({dataSource: self.state.dataSource.cloneWithRows(myBlob)});
+    });
   }
 
   onRefresh() {
@@ -59,18 +54,27 @@ class Following extends Component {
 
   // TODO move this to POST UI
   createPost(){
-    var ref = database.child("posts");
-    ref.push({
+    AsyncStorage.getItem('user_data', (error, result) =>{
+      alert("making a post...");
+      var ref = database.child("posts");
+      ref.push({
         user: "Mickey Mouse",
-        photo: "ssldukyjth"
+        photoID: "http://thewoksoflife.com/wp-content/uploads/2015/02/soy-sauce-chicken-9.jpg",
+        userID: JSON.parse(result).uid,
+        description: "I like big butts",
+        rating: 5,
+      });
     });
   }
+
   render() {
     return(
       <View>
-        <Button
-          text = "Make Post"
-          onpress = {this.createPost.bind(this)}/>
+        <TouchableOpacity onPress={this.createPost}>
+          <Text>
+            touch me
+          </Text>
+        </TouchableOpacity>
 
         <SearchBar />
         <ScrollView refreshControl = {
@@ -87,13 +91,7 @@ class Following extends Component {
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
-            <TouchableOpacity onPress = {this.changePage}>
-              <View style = {{height: 50, padding: 10, borderWidth: 1, borderColor: '#000', alignItems: 'center'}}>
-                <Text>
-                  {rowData}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            <Post id={rowData}/>
           }/>
         </ScrollView>
       </View>
