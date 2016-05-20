@@ -4,9 +4,16 @@ import React, {
   Component,
   ListView,
   Text,
-  TouchableOpacity,
+  StyleSheet,
+  TouchableHighlight,
   View
 } from 'react-native';
+
+import Following from './following';
+import Setting from './setting';
+import Button from '../components/button';
+import Header from '../components/header';
+import ButtonStyles from '../styles/button-styles';
 
 class More extends Component {
 
@@ -20,24 +27,65 @@ class More extends Component {
 
   render() {
     return(
-      <ListView
-        dataSource = {this.state.dataSource}
-        renderRow = {(rowData) =>
-          <TouchableOpacity onPress = {this.changePage}>
-            <View style = {{height: 50, padding: 10, borderWidth: 1, borderColor: '#000', alignItems: 'center'}}>
-              <Text>
-                {rowData}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        }
-      />
+      <View style = {styles.container}>
+        <Header
+          navigator = {this.props.navigator}
+          text = "More"
+        />
+        <TouchableHighlight onPress = {this.setting.bind(this)} underlayColor='gainsboro'>
+          <View style = {styles.bubblechoice}>
+            <Text style = {styles.icontext}>
+              Setting
+            </Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='lemonchiffon'>
+          <View style = {styles.bubblechoice}>
+            <Text style = {styles.icontext}>
+              Following
+            </Text>
+        </View>
+        </TouchableHighlight>
+    </View>
     );
   }
 
-  changePage(){
-    alert("ASDF");
+  setting(){
+    this.props.navigator.push({component: Setting});
+  }
+
+  following(){
+    this.props.navigator.push({component: Following});
   }
 }
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    backgroundColor: 'transparent'
+  },
+  separator: {
+    height: 30,
+    backgroundColor: '#CCCCCC'
+  },
+  icontext: {
+    color: '#5d5d5d',
+    fontWeight: '400',
+    fontSize: 18,
+    backgroundColor: 'transparent',
+    paddingLeft: 4,
+    alignItems: 'stretch',
+    marginTop: window.height/2.2,
+    textAlign: 'left',
+    margin: 10,
+  },
+  bubblechoice: {
+    height: window.height/8,
+    borderRadius: (window.height/8)/2,
+    marginRight: 2,
+    width: window.height/8,
+  }
+});
 
 module.exports = More;

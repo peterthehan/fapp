@@ -17,7 +17,6 @@ import Share from 'react-native-share';
 
 import Button from '../components/button';
 import Header from '../components/header';
-import StatusBar from '../components/status-bar';
 
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
@@ -67,7 +66,10 @@ class Notification extends Component {
   render() {
     return (
       <View style = {{flex: 1}}>
-        <StatusBar title = "Notification" />
+        <Header
+          navigator = {this.props.navigator}
+          text = "Notification"
+    i    />
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
