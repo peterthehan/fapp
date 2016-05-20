@@ -15,6 +15,8 @@ import SceneStyles from '../styles/scene-styles';
 import Header from '../components/header';
 import Button from '../components/button';
 import Login from './login';
+import Home from './home';
+
 let database = new Firebase("poopapp1.firebaseio.com/users");
 
 class Setting extends Component {
@@ -22,7 +24,7 @@ class Setting extends Component {
   constructor(props){
     super(props);
     this.state = {
-      loaded: true,
+      loaded: false,
     }
   }
 
@@ -31,7 +33,11 @@ class Setting extends Component {
         database.unauth();
         this.props.navigator.push({component: Login});
       });
-    }
+  }
+
+  home(){
+    this.props.navigator.push({component: Home});
+  }
 
   render() {
     AsyncStorage.getItem('user_data').then((user_data_json) => {
@@ -40,8 +46,7 @@ class Setting extends Component {
         user: user_data,
         loaded: true
       });
-    });
-    return(
+    });    return(
       <View>
         <Header
           navigator = {this.props.navigator}
@@ -63,7 +68,12 @@ class Setting extends Component {
                 </Text>
               </View>
                 <TouchableHighlight onPress = {this.logout.bind(this)} underlayColor='lemonchiffon'>
-                  <Text style = {SceneStyles.icontext}>
+                  <Text style = {SceneStyles.text}>
+                    logout
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight onPress = {this.home.bind(this)} underlayColor = 'lemonchiffon'>
+                  <Text style = {SceneStyles.text}>
                     logout
                   </Text>
                 </TouchableHighlight>
@@ -75,6 +85,7 @@ class Setting extends Component {
   }
 
 }
+
 const page_styles = StyleSheet.create({
   email_container: {
     padding: 20
@@ -83,4 +94,5 @@ const page_styles = StyleSheet.create({
     fontSize: 18
   }
 });
+
 module.exports = Setting;
