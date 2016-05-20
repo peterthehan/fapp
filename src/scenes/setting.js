@@ -15,7 +15,6 @@ import SceneStyles from '../styles/scene-styles';
 import Header from '../components/header';
 import Button from '../components/button';
 import Login from './login';
-import Home from './home';
 
 let database = new Firebase("poopapp1.firebaseio.com/users");
 
@@ -33,10 +32,6 @@ class Setting extends Component {
         database.unauth();
         this.props.navigator.push({component: Login});
       });
-  }
-
-  home(){
-    this.props.navigator.push({component: Home});
   }
 
   render() {
@@ -68,12 +63,9 @@ class Setting extends Component {
                 </Text>
               </View>
                 <TouchableHighlight onPress = {this.logout.bind(this)} underlayColor='lemonchiffon'>
-                  <Text style = {SceneStyles.text}>
-                    logout
-                  </Text>
-                </TouchableHighlight>
-                <TouchableHighlight onPress = {this.home.bind(this)} underlayColor = 'lemonchiffon'>
-                  <Text style = {SceneStyles.text}>
+                  <Text style = {{color: 'black',
+                  fontSize: 16,
+                  textAlign: 'center'}}>
                     logout
                   </Text>
                 </TouchableHighlight>
