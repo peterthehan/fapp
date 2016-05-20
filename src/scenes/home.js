@@ -7,6 +7,8 @@ import React, {
   View
 } from 'react-native';
 
+import Header from '../components/header';
+
 import HomeGrid from '../home-grid';
 import SearchBar from '../search-bar';
 
@@ -39,6 +41,10 @@ class Home extends Component {
   render() {
     return(
       <View>
+        <Header
+          navigator = {this.props.navigator}
+          text = "Home"
+        />
         <SearchBar />
         <ScrollView refreshControl = {
     			<RefreshControl

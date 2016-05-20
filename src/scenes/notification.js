@@ -69,7 +69,7 @@ class Notification extends Component {
         <Header
           navigator = {this.props.navigator}
           text = "Notification"
-    i    />
+        />
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
