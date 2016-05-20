@@ -18,7 +18,7 @@ class Tags extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
+      description: '',
       tags: '',
       location: '',
       recipe: '',
@@ -30,6 +30,7 @@ class Tags extends Component {
   }
 
   render() {
+    var limit = 100;
     return(
       <View style = {{backgroundColor: '#4682b4', flex: 1}}>
         <View>
@@ -44,9 +45,9 @@ class Tags extends Component {
 
         <TextInput
           style = {HeaderStyles.textinput}
-          onChangeText = {(text) => this.setState({title: text})}
-          value = {this.state.title}
-          placeholder = {"Give a description..."}
+          onChangeText = {(text) => this.setState({description: text})}
+          value = {this.state.description}
+          placeholder = {"Give a description"}
           placeholderTextColor = 'white'
           underlineColorAndroid = 'white'
         />

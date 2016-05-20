@@ -9,7 +9,9 @@ import React, {
   View,
 } from 'react-native';
 
-import ImagePickerManager from 'NativeModules';
+var ImagePickerManager = require('NativeModules').ImagePickerManager;
+
+import Edit from './edit';
 
 class Camera extends Component {
 
@@ -39,7 +41,6 @@ class Camera extends Component {
     });
   }
 
-
   renderImage() {
     return (
       <View>
@@ -47,11 +48,11 @@ class Camera extends Component {
           title = 'Create a Post'
           style = {styles.toolbar}
           actions = {[
-            {title: 'Next', show: 'always'},
+            {title: 'Edit', show: 'always'},
             {title: 'Camera', show: 'always'},
             {title: 'Home', show: 'always'}
           ]}
-          onActionSelected = {this._onActionSelected.bind(this)}
+          onActionSelected = {this.onActionSelected.bind(this)}
         />
         <Image
           source = {this.state.avatarSource}
@@ -61,11 +62,13 @@ class Camera extends Component {
     );
   }
 
-  _onActionSelected(position) {
+  onActionSelected(position) {
     if (position == 0) {
-      alert('Hi');
+      this.props.navigator.push({component: Edit});
     } else if (position == 1) {
       this.openCamera();
+    } else if (position == 2) {
+      alert('Home');
     }
   }
 
