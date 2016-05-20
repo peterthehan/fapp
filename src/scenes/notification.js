@@ -67,7 +67,11 @@ class Notification extends Component {
   render() {
     return (
       <View style = {{flex: 1}}>
-        <StatusBar title = "Notification" />
+        <Header
+          navigator = {this.props.navigator}
+          text = "Notification"
+          hasBack = {true}
+    i    />
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
