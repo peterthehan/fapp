@@ -3,6 +3,7 @@
 import React, {
   Component,
   DatePickerAndroid,
+  Image,
   StyleSheet,
   Switch,
   Text,
@@ -31,7 +32,7 @@ class CreateEvent extends Component {
     }
   }
 
-  async showPicker(stateKey, options, start) {
+  async showDatePicker(stateKey, options, start) {
     try {
       var newState = {};
       var tempDate = new Date();
@@ -39,8 +40,11 @@ class CreateEvent extends Component {
       const {action, year, month, day} = await DatePickerAndroid.open(options);
 
       if (action === DatePickerAndroid.dismissedAction) {
-        tempDateStr = 'dismissed';
-        newState[stateKey + 'Text'] = 'dismissed';
+        if(start) {
+          tempDateStr = this.state.dateStart;
+        } else {
+          tempDateStr = this.state.dateEnd;
+        }
       } else {
         tempDate = new Date(year, month, day);
         tempDateStr = tempDate.toLocaleDateString();
@@ -50,8 +54,6 @@ class CreateEvent extends Component {
       } else {
         this.setState({dateEnd: tempDateStr});
       }
-      alert(this.state.dateStart);
-      alert(this.state.dateEnd);
     } catch ({code, message}) {
       console.warn(`Error in example '${stateKey}': `, message);
     }
@@ -60,7 +62,8 @@ class CreateEvent extends Component {
   render(){
     return(
       <View style = {{backgroundColor: 'orange', flex: 1}}>
-        {this.renderTitleAndToggle()}
+        {this.renderPageTitle()}
+        {this.renderToggle()}
         {this.renderTitleInput()}
         {this.renderDateTimeInput()}
         {this.renderDescriptionInput()}
@@ -69,13 +72,18 @@ class CreateEvent extends Component {
     );
   }
 
-  renderTitleAndToggle(){
-    return (
+  renderPageTitle(){
+    return(
+      <Header
+        text = "Create a New Event"
+        loaded = {this.state.loaded}
+      />
+    );
+  }
+
+  renderToggle(){
+    return(
       <View style = {{flexDirection:'row'}}>
-        <Header
-          text = "Create a New Event"
-          loaded = {this.state.loaded}
-        />
         <Switch
           onTintColor = "#0000ff"
           onValueChange = {(value) => this.setState({publicEvent: value})}
@@ -83,20 +91,23 @@ class CreateEvent extends Component {
           value = {this.state.publicEvent}
         />
         <Text>
-          {this.state.publicEvent ? 'Public' : 'Private'}
+          {this.state.publicEvent ? ' Public Event' : 'Private Event'}
         </Text>
       </View>
     );
   }
 
   renderTitleInput(){
-    <TextInput
-      onChangeText = {(text) => this.setState({title: text})}
-      value = {this.state.title}
-      placeholder = {"Give Your Event a Title."}
-      placeholderTextColor = 'white'
-      underlineColorAndroid = 'white'
-    />
+    return(
+      <TextInput
+        blurOnSubmit = {true}
+        onChangeText = {(text) => this.setState({title: text})}
+        value = {this.state.title}
+        placeholder = {"Give Your Event a Title."}
+        placeholderTextColor = 'black'
+        underlineColorAndroid = 'black'
+      />
+    );
   }
 
   renderDateTimeInput(){
@@ -107,7 +118,7 @@ class CreateEvent extends Component {
         </Text>
         <View style = {{ flexDirection:'row'}}>
           <TouchableWithoutFeedback onPress = {
-            this.showPicker.bind(this, 'min', {
+            this.showDatePicker.bind(this, 'min', {
               date: this.state.minDate,
               minDate: new Date(),
             }, true)
@@ -123,7 +134,7 @@ class CreateEvent extends Component {
         <View style = {{ flexDirection:'row'}}>
           <View style = {{ flexDirection:'row'}}>
             <TouchableWithoutFeedback onPress = {
-              this.showPicker.bind(this, 'min', {
+              this.showDatePicker.bind(this, 'min', {
                 date: this.state.minDate,
                 minDate: new Date(this.state.dateStart),
               }, false )
@@ -139,7 +150,7 @@ class CreateEvent extends Component {
   }
 
   renderDescriptionInput(){
-    var limit = 20;
+    var limit = 100;
     var remainder = limit - this.state.description.length;
     var remainderColor = remainder > 5 ? 'blue' : 'red';
 
@@ -148,12 +159,12 @@ class CreateEvent extends Component {
         <TextInput
           maxLength = {limit}
           multiline = {true}
-          style = {Header.body, {color:'white'}}
+          style = {Header.body, {color:'black'}}
           onChangeText = {(text) => this.setState({description: text})}
           value = {this.state.description}
-          placeholder = {"Leave a short description of your event for your guests."}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
+          placeholder = {"Leave a short description of your event for your guests:"}
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'black'
         />
         <Text style = {{color: remainderColor}}>
           {remainder}
@@ -167,17 +178,51 @@ class CreateEvent extends Component {
       <View style = {{alignItems: 'center'}}>
         <Button
           text = "Invite Friends!"
+          onPress = {this.createGuestList.bind(this)}
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}
         />
 
         <Button
-          text = "Create Event"
+          text = "Create Event!"
+          onPress = {this.createEvent.bind(this)}
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}
         />
-      </View>
+
+      <Button
+        text = "Clear"
+        onPress = {this.clearEvent.bind(this)}
+        button_styles = {ButtonStyles.primary_button}
+        button_text_styles = {ButtonStyles.primary_button_text}
+      />
+
+    </View>
     );
+  }
+
+  createGuestList(){
+    alert('friends list unimplemented')
+  }
+
+  createEvent(){
+
+    alert(this.state.title)
+    alert('this event is a public event: ' + this.state.publicEvent);
+    alert('start: ' + this.state.dateStart + ' end: ' + this.state.dateEnd);
+    alert(this.state.description);
+  }
+
+  clearEvent(){
+    alert('Cleared :(');
+    this.setState({
+      title: '',
+      publicEvent: true,
+      dateStart: 'pick a start date',
+      dateEnd: 'pick an end date',
+      description: ''
+    })
+
   }
 }
 
