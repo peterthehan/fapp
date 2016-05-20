@@ -17,7 +17,6 @@ import Share from 'react-native-share';
 
 import Button from '../components/button';
 import Header from '../components/header';
-import StatusBar from '../components/status-bar';
 
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
@@ -70,7 +69,6 @@ class Notification extends Component {
         <Header
           navigator = {this.props.navigator}
           text = "Notification"
-          hasBack = {true}
     i    />
         <ListView
           dataSource = {this.state.dataSource}

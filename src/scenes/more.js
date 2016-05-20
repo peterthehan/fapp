@@ -13,6 +13,7 @@ import Following from './following';
 import Setting from './setting';
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
+import Header from '../components/header';
 
 class More extends Component {
 
@@ -27,14 +28,18 @@ class More extends Component {
   render() {
     return(
       <View style = {styles.container}>
-        <TouchableHighlight onPress = {this.setting.bind(this)} underlayColor='transparent'>
+        <Header
+          navigator = {this.props.navigator}
+          text = "More"
+        />
+        <TouchableHighlight onPress = {this.setting.bind(this)} underlayColor='gainsboro'>
           <View style = {styles.bubblechoice}>
             <Text style = {styles.icontext}>
               Setting
             </Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='transparent'>
+        <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='lemonchiffon'>
           <View style = {styles.bubblechoice}>
             <Text style = {styles.icontext}>
               Following
@@ -62,18 +67,21 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
     backgroundColor: 'transparent'
+  },
+  separator: {
+    height: 30,
+    backgroundColor: '#CCCCCC'
   },
   icontext: {
     color: '#5d5d5d',
     fontWeight: '400',
-    fontSize: 20,
+    fontSize: 18,
     backgroundColor: 'transparent',
-    paddingLeft: 10,
-    alignItems: 'center',
+    paddingLeft: 4,
+    alignItems: 'stretch',
     marginTop: window.height/2.2,
-    textAlign: 'center',
+    textAlign: 'left',
     margin: 10,
   },
   bubblechoice: {

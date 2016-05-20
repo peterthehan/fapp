@@ -7,12 +7,18 @@ import React, {
 } from 'react-native';
 
 import Header from '../components/header';
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Setting extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
+      email: '',
+      profilePic: '',
+      visibility: '',
+      notification: ''
     };
   }
 
@@ -22,8 +28,8 @@ class Setting extends Component {
         <Header
           navigator = {this.props.navigator}
           text = "Setting"
-          hasBack = {true}
-      />
+        />
+
       </View>
     );
   }
