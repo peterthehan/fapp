@@ -2,6 +2,7 @@
 
 import React, {
   Component,
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -9,9 +10,14 @@ import React, {
   View,
 } from 'react-native';
 
+import Slider from 'react-native-slider';
+import { Surface, GL } from 'gl-react-native';
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
-import Edit from './edit';
+import PostDetails from './post-details';
+import Saturation from '../components/saturation';
+
+var length = Dimensions.get('window').width;
 
 class Camera extends Component {
 
@@ -19,7 +25,8 @@ class Camera extends Component {
     super(props);
     this.state = {
       avatarSource: null,
-      test: 'help'
+      test: 'help',
+      length: length
     };
   }
 
@@ -44,19 +51,55 @@ class Camera extends Component {
   renderImage() {
     return (
       <View>
+        <View>
+          <ToolbarAndroid
+            title = 'Create a Post'
+            style = {styles.toolbar}
+            actions = {[
+              {title: 'Details', show: 'always'},
+              {title: 'Camera', show: 'always'}
+            ]}
+            onActionSelected = {this.onActionSelected.bind(this)}
+          />
+        </View>
+
+        <Surface
+          width = {this.state.length}
+          height = {this.state.length}
+          ref = "helloGL"
+        >
+          <Saturation
+            factor = {this.state.value}
+            image={this.state.avatarSource}
+          />
+        </Surface>
+
+        <Text
+          style = {{color: 'black', marginTop: 10}}>
+          Saturation
+        </Text>
+
+        <Slider
+          value = {this.state.value}
+          maximumValue = {3}
+          onValueChange = {(value) => this.setState({value})}
+        />
+      </View>
+    );
+  }
+
+  renderBars() {
+    return(
+      <View>
         <ToolbarAndroid
           title = 'Create a Post'
           style = {styles.toolbar}
-          actions = {[
-            {title: 'Edit', show: 'always'},
-            {title: 'Camera', show: 'always'},
-            {title: 'Home', show: 'always'}
+          actions ={[
+            {title: 'Details', show: 'always'},
+            {title: 'Camera', show: 'always'}
           ]}
+
           onActionSelected = {this.onActionSelected.bind(this)}
-        />
-        <Image
-          source = {this.state.avatarSource}
-          style = {styles.uploadAvatar}
         />
       </View>
     );
@@ -64,11 +107,9 @@ class Camera extends Component {
 
   onActionSelected(position) {
     if (position == 0) {
-      this.props.navigator.push({component: Edit});
+      this.props.navigator.push({component: PostDetails});
     } else if (position == 1) {
       this.openCamera();
-    } else if (position == 2) {
-      alert('Home');
     }
   }
 
@@ -82,10 +123,6 @@ const styles = StyleSheet.create({
   toolbar: {
     height: 56,
     backgroundColor: '#4682b4',
-  },
-  uploadAvatar: {
-    height: 370,
-    width: 370,
   }
 });
 
