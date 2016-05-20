@@ -80,10 +80,7 @@ class ForgotPassword extends Component {
   }
 
   goToLogin() {
-    this.props.navigator.push({
-      component: Login,
-      index: 2
-    });
+    this.props.navigator.pop();
   }
 }
 
