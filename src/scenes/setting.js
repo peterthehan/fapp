@@ -30,7 +30,7 @@ class Setting extends Component {
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
-        this.props.navigator.push({component: Login});
+        this.props.navigator.resetTo(this.refs.navigator.getCurrentRoutes()[0]);
       });
   }
 
@@ -41,12 +41,13 @@ class Setting extends Component {
         user: user_data,
         loaded: true
       });
-    });    return(
+    });
+    return(
       <View>
         <Header
           navigator = {this.props.navigator}
-          text = "Setting"
-          loaded={this.state.loaded}
+          text = "Settings"
+          hasBack = {"true"}
         />
         <View>
         {
