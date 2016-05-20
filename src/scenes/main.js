@@ -34,7 +34,7 @@ class Main extends Component {
               tabLabel = "Home" />
           </View>
           <View
-            tabLabel = "event"
+            tabLabel = "calendar"
             style = {{flex: 1}}>
             <Event
               navigator = {this.props.navigator}
