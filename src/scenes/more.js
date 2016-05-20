@@ -12,8 +12,8 @@ import React, {
 import Following from './following';
 import Setting from './setting';
 import Button from '../components/button';
-import ButtonStyles from '../styles/button-styles';
 import Header from '../components/header';
+import ButtonStyles from '../styles/button-styles';
 
 class More extends Component {
 
@@ -56,10 +56,6 @@ class More extends Component {
 
   following(){
     this.props.navigator.push({component: Following});
-  }
-
-  changePage(){
-    alert("ASDF");
   }
 }
 

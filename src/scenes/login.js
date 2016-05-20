@@ -19,6 +19,7 @@ import SceneStyles from '../styles/scene-styles';
 import ForgotPassword from './forgot-password';
 import Main from './main';
 import Signup from './signup';
+import Setting from './setting';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -100,7 +101,7 @@ class Login extends Component {
           alert('Login Failed. Please try again');
         } else {
           AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-          this.props.navigator.push({component: Main});
+          this.props.navigator.push({component: Setting});
         }
       }
     );
