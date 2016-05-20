@@ -16,6 +16,8 @@ import Header from './src/components/header';
 import Login from './src/scenes/login';
 import Main from './src/scenes/main';
 
+console.ignoredYellowBox = ['Warning'];
+
 let database = new Firebase("poopapp1.firebaseio.com");
 
 // reference: http://www.sitepoint.com/authentication-in-react-native-with-firebase/
@@ -63,7 +65,9 @@ class PoopApp extends Component {
           }}
           renderScene = {(route, navigator) => {
             if(route.component) {
-              return React.createElement(route.component, {navigator});
+              return (
+                <route.component navigator = {navigator} />
+              );
             }
           }}
         />
