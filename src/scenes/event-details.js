@@ -20,7 +20,7 @@ import Main from './main';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
-export default class EventPage extends Component {
+class EventDetails extends Component {
 
   constructor(props) {
     super(props);
@@ -30,11 +30,13 @@ export default class EventPage extends Component {
   }
 
   render() {
-
     return (
-
       <View style={{flex:10}}>
-
+        <Header
+          navigator = {this.props.navigator}
+          text = "Event Details"
+          hasBack = {true}
+        />
         <View style = {{flex:2}}>
           <View style = {{flex: 3, flexDirection:'row', justifyContent:'space-around'}}>
             <View><Text>image</Text></View>
@@ -102,4 +104,4 @@ export default class EventPage extends Component {
     alert('guest list not implemented');
   }
 }
-module.exports = EventPage;
+module.exports = EventDetails;

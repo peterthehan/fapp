@@ -97,7 +97,7 @@ class CreateEvent extends Component {
 
   render(){
     return(
-      <View style = {{backgroundColor: 'orange', flex: 1}}>
+      <View style = {{flex: 1}}>
         {this.renderPageTitle()}
         {this.renderToggle()}
         {this.renderTitleInput()}
@@ -111,8 +111,9 @@ class CreateEvent extends Component {
   renderPageTitle(){
     return(
       <Header
+        navigator = {this.props.navigator}
         text = "Create a New Event"
-        loaded = {this.state.loaded}
+        hasBack = {true}
       />
     );
   }
