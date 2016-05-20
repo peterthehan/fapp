@@ -55,13 +55,7 @@ class PoopApp extends Component {
         <Navigator
           initialRoute = {{component: this.state.component}}
           configureScene = {(route, routeStack) => {
-            if(route.index === 1) {
-              return Navigator.SceneConfigs.FloatFromRight
-            } else if (route.index === 2) {
-              return Navigator.SceneConfigs.FloatFromLeft
-            } else {
-              return Navigator.SceneConfigs.FadeAndroid
-            }
+            return Navigator.SceneConfigs.FloatFromRight
           }}
           renderScene = {(route, navigator) => {
             if(route.component) {
