@@ -9,6 +9,7 @@ import React, {
   Text,
   TextInput,
   TouchableWithoutFeedback,
+  TimePickerAndroid,
   View
 } from 'react-native';
 
@@ -28,6 +29,8 @@ class CreateEvent extends Component {
       publicEvent: true,
       dateStart: 'pick a start date',
       dateEnd: 'pick an end date',
+      timeStart: 'pick a start time',
+      timeEnd: 'pick an end time',
       description: ''
     }
   }
@@ -58,6 +61,39 @@ class CreateEvent extends Component {
       console.warn(`Error in example '${stateKey}': `, message);
     }
   }
+
+  async showTimePicker(stateKey, start) {
+    try {
+      const {action, m, h} = await TimePickerAndroid.open();
+      tempMin = m;
+      tempHour = h;
+      var tempTimeStr = '';
+
+      if (action === TimePickerAndroid.dismissedAction) {
+        if(start) {
+          tempTimeStr = this.state.timeStart;
+        } else {
+          tempTimeStr = this.state.timeEnd;
+        }
+      } else if(action === TimePickerAndroid.timeSetAction){
+        alert('poo');
+        tempTimeStr = this.formatTime(h, m);
+
+      }
+      if(start) {
+        this.setState({timeStart: tempTimeStr});
+      } else {
+        this.setState({timeEnd: tempTimeStr});
+      }
+    } catch ({code, message}) {
+      console.warn(`Error in example '${stateKey}': `, message);
+    }
+  }
+
+  formatTime(hour, minute) {
+    return hour + ':' + (minute < 10 ? '0' + minute : minute);
+  }
+
 
   render(){
     return(
@@ -113,9 +149,11 @@ class CreateEvent extends Component {
   renderDateTimeInput(){
     return (
       <View>
+
         <Text style = {{color:'white'}}>
           Start:
         </Text>
+
         <View style = {{ flexDirection:'row'}}>
           <TouchableWithoutFeedback onPress = {
             this.showDatePicker.bind(this, 'min', {
@@ -127,7 +165,15 @@ class CreateEvent extends Component {
               {this.state.dateStart}
             </Text>
           </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback
+            onPress={this.showTimePicker.bind(this, true)}>
+            <Text style={{color:'black'}}>{this.state.timeStart}</Text>
+          </TouchableWithoutFeedback>
+
         </View>
+
+
         <Text style = {{color:'white'}}>
           End:
         </Text>
@@ -220,6 +266,8 @@ class CreateEvent extends Component {
       publicEvent: true,
       dateStart: 'pick a start date',
       dateEnd: 'pick an end date',
+      timeStart: 'pick a start time',
+      timeEnd: 'pick an end time',
       description: ''
     })
 
