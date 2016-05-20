@@ -12,8 +12,8 @@ import React, {
 import Following from './following';
 import Setting from './setting';
 import Button from '../components/button';
-import Header from '../components/header';
 import ButtonStyles from '../styles/button-styles';
+import Header from '../components/header';
 
 class More extends Component {
 
@@ -32,20 +32,8 @@ class More extends Component {
           navigator = {this.props.navigator}
           text = "More"
         />
-        <TouchableHighlight onPress = {this.setting.bind(this)} underlayColor='gainsboro'>
-          <View style = {styles.bubblechoice}>
-            <Text style = {styles.icontext}>
-              Setting
-            </Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='lemonchiffon'>
-          <View style = {styles.bubblechoice}>
-            <Text style = {styles.icontext}>
-              Following
-            </Text>
-        </View>
-        </TouchableHighlight>
+        {this.settingbutton()}
+        {this.followingbutton()}
     </View>
     );
   }
@@ -54,8 +42,32 @@ class More extends Component {
     this.props.navigator.push({component: Setting});
   }
 
+  settingbutton(){
+    return (
+      <TouchableHighlight onPress = {this.setting.bind(this)} underlayColor='gainsboro'>
+        <View style = {styles.bubblechoice}>
+          <Text style = {styles.icontext}>
+            Setting
+          </Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
   following(){
     this.props.navigator.push({component: Following});
+  }
+
+  followingbutton(){
+    return (
+      <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='lemonchiffon'>
+        <View style = {styles.bubblechoice}>
+          <Text style = {styles.icontext}>
+            Following
+          </Text>
+      </View>
+      </TouchableHighlight>
+    );
   }
 }
 

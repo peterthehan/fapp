@@ -27,22 +27,6 @@ class Setting extends Component {
     }
   }
 
-  getInitialState() {
-    return {
-      firstame: '',
-      lastname: ''
-    };
-  }
-
-  componentDidMount() {
-    let data = database.child('users');
-    data.on("value", function(snapshot) {
-      alert (snapshot.val());
-    },  function (errorObject) {
-    alert ("The read failed: " + errorObject.code);
-    });
-  }
-
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
@@ -50,7 +34,6 @@ class Setting extends Component {
   }
 
   render() {
-    {this.componentDidMount()}
     AsyncStorage.getItem('user_data').then((user_data_json) => {
       let user_data = JSON.parse(user_data_json);
       this.setState({

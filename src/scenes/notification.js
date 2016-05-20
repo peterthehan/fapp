@@ -60,10 +60,6 @@ class Notification extends Component {
     });
   }
 
-  generate(){
-    alert("asdfafasf");
-  }
-
   render() {
     return (
       <View style = {{flex: 1}}>
