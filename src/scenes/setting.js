@@ -47,6 +47,7 @@ class Setting extends Component {
           navigator = {this.props.navigator}
           text = "Setting"
           loaded={this.state.loaded}
+          hasBack = {true}
         />
         <View>
         {
