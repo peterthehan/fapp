@@ -47,45 +47,65 @@ class Home extends Component {
 
   componentDidMount() {
     let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
-      return {id: i, src: pictures[i]}
+      //
+      return {
+        src: pictures[i],
+        isFavorite: false, // TODO: should check in database for user
+        // TODO: put other information about post from database here (or maybe just send the entire database entry snapshot)
+      }
     });
     this.setState({items});
   }
 
-  favorite(){
-    alert("Favorite");
+  picture(post){
+    alert("Enlarge picture (" + post.src + ").");
   }
 
-  messages(){
-    alert("Messages");
+  favorite(post){
+    post.isFavorite = !post.isFavorite;
+    // TODO: update database
+
+    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
+    this.forceUpdate();
   }
 
-  renderRow(rowData) {
+  messages(post){
+    alert("Go to messages page.");
+  }
+
+  getFavoriteColor(post){
+    if(post.isFavorite) {
+      return "orange";
+    } else {
+      return "gray";
+    }
+  }
+
+  renderRow(post) {
     return (
       <View style = {styles.item}>
         <TouchableOpacity
-          key = {rowData.id}
           style = {styles.photo}
-          onPress = {() => {alert("Pressed image " + rowData.id);}}>
+          onPress = {() => this.picture(post)}>
           <Image
             resizeMode = "cover"
             style = {{flex: 1}}
-            source = {{uri: rowData.src}}
+            source = {{uri: post.src}}
           />
         </TouchableOpacity>
         <View style = {styles.buttonView}>
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.favorite.bind(this)}>
+            onPress = {() => this.favorite(post)}>
             <Icon
               name = "star"
               size = {16}
-              color = "orange"
+              color = {this.getFavoriteColor(post)}
             />
           </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.messages.bind(this)}>
+            onPress = {() => this.messages(post)}>
             <Icon
               name = "feedback"
               size = {16}
