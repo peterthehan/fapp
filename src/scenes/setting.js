@@ -145,7 +145,7 @@ class Setting extends Component {
                   value = {this.state.email}
                   style = {SceneStyles.firstName}
                   placeholderTextColor = 'black'
-                  underlineColorAndroid = 'black'
+                  underlineColorAndroid = 'gray'
                 />
                 {this.changeEmailButton()}
                 <Image
