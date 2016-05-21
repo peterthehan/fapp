@@ -29,6 +29,7 @@ class Post extends Component {
       var usersnapshot = snapshot.child("users/" + userid);
       var proPic = usersnapshot.val().profilePic;
       self.setState({
+        userID: userid,
         name: postsnapshot.val().user,
         profilePic: proPic,
         image: postsnapshot.val().photoID,
@@ -53,7 +54,7 @@ class Post extends Component {
         <View style = {styles.postHead}>
           <TouchableOpacity
             style = {styles.horizontalView}
-            onPress = {() => this.props.navigator.push({component: Profile})}
+            onPress = {() => this.props.navigator.push({component: Profile, state: this.state.userID })}
           >
             <View style = {styles.padding}>
               <Image

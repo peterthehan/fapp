@@ -11,8 +11,12 @@ import React, {
   View
 } from 'react-native';
 
+import Firebase from 'firebase';
+
 import GridView from '../components/grid-view';
 import Header from '../components/header';
+
+let database = new Firebase("poopapp1.firebaseio.com");
 
 const pictures = [
   "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
@@ -25,8 +29,23 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
+
+    var userid = props.state;
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var usersnapshot = snapshot.child("users/" + userid);
+      var proPic = usersnapshot.val().profilePic;
+      self.setState({
+        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
+        profilePic: proPic,
+      });
+    });
+
     this.state = {
       items: [],
+      name: "",
+      profilePic: "",
     };
   }
 
@@ -75,10 +94,10 @@ class Profile extends Component {
               height: 150,
             }}
             //resizeMode = {Image.resizeMode.center}
-            source = {require('../images/profilepic.jpg')}
+            source = {{uri: this.state.profilePic}}
           />
           <Text style = {{fontSize: 42, color: '#000000',}}>
-            Mickey Mouse
+            {this.state.name}
           </Text>
         </View>
         <GridView
