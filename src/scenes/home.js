@@ -13,7 +13,6 @@ import React, {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import GridView from '../components/grid-view';
 import Header from '../components/header';
 import SearchBar from '../components/search-bar';
@@ -148,14 +147,14 @@ class Home extends Component {
            style={{alignItems: 'center', borderRadius: 20, margin: 0}}>
            <View>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text style={{fontSize: 20, marginBottom: 10}}>Post Name: </Text>
-              <TouchableOpacity onPress={() => this.setState({open: false})}>
-                <Icon name = "close"
-                size = {25}
-                borderWidth = {7}
-                color = "black"
-                />
-              </TouchableOpacity>
+                <Text style={{fontSize: 20, marginBottom: 10}}>Post Name: </Text>
+                <TouchableOpacity onPress={() => this.setState({open: false})}>
+                  <Icon name = "close"
+                  size = {25}
+                  borderWidth = {7}
+                  color = "black"
+                  />
+                </TouchableOpacity>
               </View>
               <Image
                 resizeMode = "cover"
