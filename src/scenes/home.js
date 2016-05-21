@@ -9,8 +9,7 @@ import React, {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
-  Dimensions
+  View
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -148,17 +147,21 @@ class Home extends Component {
            modalDidClose={() => this.setState({open: false})}
            style={{alignItems: 'center', borderRadius: 20, margin: 0}}>
            <View>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{fontSize: 20, marginBottom: 10}}>Post Name: </Text>
+              <TouchableOpacity onPress={() => this.setState({open: false})}>
+                <Icon name = "close"
+                size = {25}
+                borderWidth = {7}
+                color = "black"
+                />
+              </TouchableOpacity>
+              </View>
               <Image
                 resizeMode = "cover"
                 style = {{width: windowSize.width-10, height: windowSize.width-10}}
                 source = {{uri: this.state.image}}
               />
-              <TouchableOpacity
-                 style={{margin: 5}}
-                 onPress={() => this.setState({open: false})}>
-                 <Text>Close modal</Text>
-              </TouchableOpacity>
            </View>
         </Modal>
       </View>
