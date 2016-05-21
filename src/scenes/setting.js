@@ -150,7 +150,7 @@ class Setting extends Component {
                 {this.changeEmailButton()}
                 <Image
                   style={SceneStyles.image}
-                  source={{uri: this.state.user.firstName}}
+                  source={{uri: this.state.user.profileImageURL}}
                />
                 <Text style={page_styles.email_text}>{this.state.user.token}
                 </Text>
