@@ -17,6 +17,7 @@ import SceneStyles from '../styles/scene-styles';
 import Header from '../components/header';
 import Button from '../components/button';
 import Login from './login';
+import Home from './home';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -38,13 +39,13 @@ class Setting extends Component {
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
-      //  this.props.navigator.push({component:Login});
       });
   }
 
   logoutbutton(){
     return (
-      <TouchableHighlight onPress = {this.logout} underlayColor='lemonchiffon'>
+      <TouchableHighlight onPress = {this.logout}
+ underlayColor='lemonchiffon'>
         <Text style = {{color: 'black',
         fontSize: 16,
         textAlign: 'center'}}>
@@ -149,7 +150,7 @@ class Setting extends Component {
                 {this.changeEmailButton()}
                 <Image
                   style={SceneStyles.image}
-                  source={{uri: this.state.user.password.profileImageURL}}
+                  source={{uri: this.state.user.firstName}}
                />
                 <Text style={page_styles.email_text}>{this.state.user.token}
                 </Text>
