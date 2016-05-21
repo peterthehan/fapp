@@ -12,7 +12,6 @@ import React, {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class Header extends Component {
-
   render() {
     return (
       <View style = {styles.header}>
@@ -49,7 +48,7 @@ class Header extends Component {
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   header: {
     padding: 10,
     alignItems: 'center',
