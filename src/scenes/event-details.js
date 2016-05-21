@@ -12,6 +12,7 @@ import React, {
 
 import Button from '../components/button';
 import Header from '../components/header';
+import Comments from '../components/comments';
 
 import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
@@ -60,8 +61,8 @@ class EventDetails extends Component {
                 style = {{marginBottom: 10}}
                 value = {this.state.isGoing}
               />
-
             </View>
+
             <View style = {{flex:1}}>
               <Button
                 text = "View Guestlist"
@@ -74,28 +75,25 @@ class EventDetails extends Component {
           </View>
         </View>
 
-        <View style = {{flex:3, alignSelf:'center', alignItems:'stretch'}}>
-        <ScrollView
-          automaticallyAdjustContentInsets={false}
-          horizontal={false}
-          >
-          {[
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
-          ]}
-        </ScrollView>
-        </View>
+        <Comments
+        flex = {1}
+        commentsArray = {[
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
+            ]}
+        />
+
       </View>
     );
   }
