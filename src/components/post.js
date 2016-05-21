@@ -14,13 +14,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Profile from "../scenes/profile"
 
+import Header from "./header";
+
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Post extends Component {
 
   constructor(props) {
     super(props);
-    var postid = props.id;
+    var postid = props.state;
     var self = this;
 
     database.once("value", function(snapshot){
@@ -50,12 +52,16 @@ class Post extends Component {
 
   render() {
     return(
-      <View style = {styles.postContainer}>
+      <View>
+        <Header
+          navigator = {this.props.navigator}
+          text = "Post"
+          hasBack = {true}
+        />
         <View style = {styles.postHead}>
           <TouchableOpacity
             style = {styles.horizontalView}
-            onPress = {() => this.props.navigator.push({component: Profile, state: this.state.userID })}
-          >
+            onPress = {() => this.props.navigator.push({component: Profile, state: this.state.userID })}>
             <View style = {styles.padding}>
               <Image
                 style = {styles.posterPic}
@@ -110,10 +116,6 @@ var styles = StyleSheet.create({
   padding: {
     padding: 5,
     marginBottom: 5,
-  },
-  postContainer: {
-    padding: 15,
-    borderWidth: 1,
   },
   postHead: {
     flex: 1,
