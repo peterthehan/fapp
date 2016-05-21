@@ -78,7 +78,10 @@ class Following extends Component {
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
-            <Post id={rowData}/>
+            <Post
+              navigator = {this.props.navigator}
+              id = {rowData}
+            />
           }/>
         </ScrollView>
       </View>
