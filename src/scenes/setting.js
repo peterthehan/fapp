@@ -38,8 +38,7 @@ class Setting extends Component {
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
-        var Login = Navigator.login;
-        this.props.navigator.push({component:Login});
+      //  this.props.navigator.push({component:Login});
       });
   }
 
@@ -69,6 +68,18 @@ class Setting extends Component {
     });
   }
 
+  changePasswordButton(){
+    return (
+      <TouchableHighlight onPress = {this.changePassword} underlayColor='lemonchiffon'>
+        <Text style = {{color: 'black',
+        fontSize: 16,
+        textAlign: 'center'}}>
+          change password
+        </Text>
+      </TouchableHighlight>
+    )
+  }
+
   changeEmail(){
     database.changeEmail({
       oldEmail: this.state.user.password.email,
@@ -90,6 +101,18 @@ class Setting extends Component {
         alert("User email changed successfully!");
       }
     });
+  }
+
+  changeEmailButton(){
+    return (
+      <TouchableHighlight onPress = {this.changeEmail} underlayColor='lemonchiffon'>
+        <Text style = {{color: 'black',
+        fontSize: 16,
+        textAlign: 'center'}}>
+          change email
+        </Text>
+      </TouchableHighlight>
+    )
   }
 
   render() {
@@ -123,13 +146,7 @@ class Setting extends Component {
                   placeholderTextColor = 'black'
                   underlineColorAndroid = 'black'
                 />
-                <TouchableHighlight onPress = {this.changeEmail} underlayColor='lemonchiffon'>
-                  <Text style = {{color: 'black',
-                  fontSize: 16,
-                  textAlign: 'center'}}>
-                    change email
-                  </Text>
-                </TouchableHighlight>
+                {this.changeEmailButton()}
                 <Image
                   style={SceneStyles.image}
                   source={{uri: this.state.user.password.profileImageURL}}
