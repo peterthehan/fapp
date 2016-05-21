@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
   StyleSheet,
   Text,
@@ -9,9 +10,13 @@ import React, {
   View,
 } from 'react-native';
 
+import Firebase from 'firebase';
+
 import Button from '../components/button';
 
 import HeaderStyles from '../styles/header-styles';
+
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Tags extends Component {
 
@@ -26,7 +31,22 @@ class Tags extends Component {
   }
 
   onPress() {
-    alert('Create the post');
+    var self = this;
+    AsyncStorage.getItem('user_data', (error, result) =>{
+      var ref = database.child("posts");
+      var usid = JSON.parse(result).uid;
+      database.once("value", function(snapshot){
+        var usersnapshot = snapshot.child("users/" + usid);
+        var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
+        ref.push({
+          user: userName,
+          photoID: "http://thewoksoflife.com/wp-content/uploads/2015/02/soy-sauce-chicken-9.jpg",
+          userID: usid,
+          description: self.state.description,
+          rating: 0,
+        });
+      });
+    });
   }
 
   render() {
