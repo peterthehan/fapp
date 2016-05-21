@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Text,
   Component,
   Dimensions,
   Image,
@@ -8,7 +9,8 @@ import React, {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
+  Dimensions
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -16,6 +18,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import GridView from '../components/grid-view';
 import Header from '../components/header';
 import SearchBar from '../components/search-bar';
+import Modal from 'react-native-simple-modal';
+
 
 const pictures = [
   "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
@@ -36,12 +40,16 @@ const pictures = [
   "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
 ];
 
+const windowSize = Dimensions.get('window');
+
 class Home extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       items: [],
+      open: false,
+      image: "",
     };
   }
 
@@ -57,7 +65,7 @@ class Home extends Component {
   }
 
   picture(post){
-    alert("Enlarge picture (" + post.src + ").");
+    this.setState({open: true, image: post.src});
   }
 
   favorite(post){
@@ -133,6 +141,26 @@ class Home extends Component {
           renderRow = {this.renderRow.bind(this)}
           onRefresh = {this.queryData.bind(this)}
         />
+        <Modal
+           offset={this.state.offset}
+           open={this.state.open}
+           modalDidOpen={() => console.log('modal did open')}
+           modalDidClose={() => this.setState({open: false})}
+           style={{alignItems: 'center', borderRadius: 20, margin: 0}}>
+           <View>
+              <Text style={{fontSize: 20, marginBottom: 10}}>Post Name: </Text>
+              <Image
+                resizeMode = "cover"
+                style = {{width: windowSize.width-10, height: windowSize.width-10}}
+                source = {{uri: this.state.image}}
+              />
+              <TouchableOpacity
+                 style={{margin: 5}}
+                 onPress={() => this.setState({open: false})}>
+                 <Text>Close modal</Text>
+              </TouchableOpacity>
+           </View>
+        </Modal>
       </View>
     );
   }
