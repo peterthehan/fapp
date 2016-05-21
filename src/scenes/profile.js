@@ -28,11 +28,10 @@ class Profile extends Component {
   constructor(props) {
     super(props);
 
-    var userid = props.state;
     var self = this;
 
     database.once("value", function(snapshot){
-      var usersnapshot = snapshot.child("users/" + userid);
+      var usersnapshot = snapshot.child("users/" + props.state);
       var proPic = usersnapshot.val().profilePic;
       self.setState({
         name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,

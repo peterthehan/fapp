@@ -2,6 +2,7 @@
 
 import React, {
   Component,
+  Dimensions,
   Image,
   RefreshControl,
   ScrollView,
@@ -45,15 +46,14 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
-      //
+    let posts = Array.apply(null, Array(pictures.length)).map((v, i) => {
       return {
         src: pictures[i],
         isFavorite: false, // TODO: should check in database for user
         // TODO: put other information about post from database here (or maybe just send the entire database entry snapshot)
       }
     });
-    this.setState({items});
+    this.setState({items: posts});
   }
 
   picture(post){
@@ -143,11 +143,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'gray',
-    margin: 5,
+    margin: 2,
   },
   photo: {
-    width: 100,
-    height: 100,
+    width: Dimensions.get("window").width / 3 - 6,
+    height: Dimensions.get("window").width / 3 - 6,
   },
   buttonView: {
     justifyContent: 'center',
