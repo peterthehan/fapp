@@ -33,17 +33,21 @@ class Tags extends Component {
   onPress() {
     var self = this;
     AsyncStorage.getItem('user_data', (error, result) =>{
-      var ref = database.child("posts");
       var usid = JSON.parse(result).uid;
+      var ref = database.child("posts");
+      var postList = database.child("users/" + usid + "/postList");
       database.once("value", function(snapshot){
         var usersnapshot = snapshot.child("users/" + usid);
         var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
-        ref.push({
+        var post = ref.push({
           user: userName,
           photoID: "http://thewoksoflife.com/wp-content/uploads/2015/02/soy-sauce-chicken-9.jpg",
           userID: usid,
           description: self.state.description,
           rating: 0,
+        });
+        postList.push({
+          postId: post.key(),
         });
       });
     });
