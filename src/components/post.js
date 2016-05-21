@@ -3,16 +3,16 @@
 import React, {
   Component,
   Image,
-  ListView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
 
+import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Firebase from 'firebase';
+import Profile from "../scenes/profile"
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -51,7 +51,10 @@ class Post extends Component {
     return(
       <View style = {styles.postContainer}>
         <View style = {styles.postHead}>
-          <TouchableOpacity style = {styles.horizontalView}>
+          <TouchableOpacity
+            style = {styles.horizontalView}
+            onPress = {() => this.props.navigator.push({component: Profile})}
+          >
             <View style = {styles.padding}>
               <Image
                 style = {styles.posterPic}
