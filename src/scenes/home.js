@@ -2,23 +2,37 @@
 
 import React, {
   Component,
-  ScrollView,
+  Image,
   RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
   View
 } from 'react-native';
 
-import Header from '../components/header';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import HomeGrid from '../home-grid';
-import SearchBar from '../search-bar';
+import GridView from '../components/grid-view';
+import Header from '../components/header';
+import SearchBar from '../components/search-bar';
 
 const pictures = [
-  "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg",
-  "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
-  "http://www.latoro.com/wallpapers/food/18747-desktop-wallpapers-japanese-cuisine.jpg",
-  "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
-  "http://ww2.kqed.org/quest/wp-content/uploads/sites/39/2012/08/starbucks.jpg",
-  "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg",
+  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
+  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
+  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
+  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
+  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
+  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
+  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
+  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
+  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
+  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
+  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
+  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
+  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
+  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
+  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
+  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
 ];
 
 class Home extends Component {
@@ -26,42 +40,125 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      refreshing: false,
+      items: [],
     };
   }
 
-  onRefresh() {
-  	this.setState({refreshing: true});
-    setTimeout(() => {
-      // Do some stuff
-      this.setState({refreshing: false});
-    }, 5000);
+  componentDidMount() {
+    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
+      //
+      return {
+        src: pictures[i],
+        isFavorite: false, // TODO: should check in database for user
+        // TODO: put other information about post from database here (or maybe just send the entire database entry snapshot)
+      }
+    });
+    this.setState({items});
+  }
+
+  picture(post){
+    alert("Enlarge picture (" + post.src + ").");
+  }
+
+  favorite(post){
+    post.isFavorite = !post.isFavorite;
+    // TODO: update database
+
+    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
+    this.forceUpdate();
+  }
+
+  messages(post){
+    alert("Go to messages page.");
+  }
+
+  getFavoriteColor(post){
+    if(post.isFavorite) {
+      return "orange";
+    } else {
+      return "gray";
+    }
+  }
+
+  renderRow(post) {
+    return (
+      <View style = {styles.item}>
+        <TouchableOpacity
+          style = {styles.photo}
+          onPress = {() => this.picture(post)}>
+          <Image
+            resizeMode = "cover"
+            style = {{flex: 1}}
+            source = {{uri: post.src}}
+          />
+        </TouchableOpacity>
+        <View style = {styles.buttonView}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {() => this.favorite(post)}>
+            <Icon
+              name = "star"
+              size = {16}
+              color = {this.getFavoriteColor(post)}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {() => this.messages(post)}>
+            <Icon
+              name = "feedback"
+              size = {16}
+              color = "green"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  queryData(){
+    alert("ASFD");
   }
 
   render() {
     return(
-      <View>
+      <View style = {{flex: 1}}>
         <Header
           navigator = {this.props.navigator}
           text = "Home"
         />
         <SearchBar />
-        <ScrollView refreshControl = {
-    			<RefreshControl
-    				refreshing = {this.state.refreshing}
-    				onRefresh = {this.onRefresh.bind(this)}
-    				tintColor = "blue"
-    				title = "Loading..."
-    				titleColor = "black"
-    				colors = {['#ffffff', '#b3b3b3', '#808080']}
-    				progressBackgroundColor = "black"
-    			/>
-		    }>
-          <HomeGrid items = {pictures} />
-        </ScrollView>
+        <GridView
+          dataSource = {this.state.items}
+          renderRow = {this.renderRow.bind(this)}
+          onRefresh = {this.queryData.bind(this)}
+        />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'gray',
+    margin: 5,
+  },
+  photo: {
+    width: 100,
+    height: 100,
+  },
+  buttonView: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  button: {
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 4,
+    marginBottom: 4,
+  }
+});
 
 module.exports = Home;

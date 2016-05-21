@@ -5,6 +5,7 @@ import React, {
   Text,
   TouchableHighlight,
   StyleSheet,
+  Navigator,
   TextInput,
   Image,
   AsyncStorage,
@@ -25,19 +26,26 @@ class Setting extends Component {
     super(props);
     this.state = {
       loaded: false,
-    }
+      email: '',
+      password: '',
+      passwordConfirm: ''
+    };
+    this.logout = this.logout.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
+    this.changePassword = this.changePassword.bind(this);
   }
 
   logout(){
       AsyncStorage.removeItem('user_data').then(() => {
         database.unauth();
-        this.props.navigator.resetTo(this.refs.navigator.getCurrentRoutes()[0]);
+        var Login = Navigator.login;
+        this.props.navigator.push({component:Login});
       });
   }
 
   logoutbutton(){
     return (
-      <TouchableHighlight onPress = {this.logout.bind(this)} underlayColor='lemonchiffon'>
+      <TouchableHighlight onPress = {this.logout} underlayColor='lemonchiffon'>
         <Text style = {{color: 'black',
         fontSize: 16,
         textAlign: 'center'}}>
@@ -48,6 +56,17 @@ class Setting extends Component {
   }
   /*Todo*/
   changePassword(){
+    database.changePassword({
+      email       : this.state.user.password.email,
+      oldPassword : "asdf",
+      newPassword : "asdf"
+    }, function(error) {
+     if (error === null) {
+       alert ("Password changed successfully");
+     } else {
+         alert("Error changing password:", error);
+       }
+    });
   }
 
   changeEmail(){
@@ -102,9 +121,9 @@ class Setting extends Component {
                   value = {this.state.email}
                   style = {SceneStyles.firstName}
                   placeholderTextColor = 'black'
-                  underlineColorAndroid = 'white'
+                  underlineColorAndroid = 'black'
                 />
-                <TouchableHighlight onPress = {this.changeEmail.bind(this)} underlayColor='lemonchiffon'>
+                <TouchableHighlight onPress = {this.changeEmail} underlayColor='lemonchiffon'>
                   <Text style = {{color: 'black',
                   fontSize: 16,
                   textAlign: 'center'}}>

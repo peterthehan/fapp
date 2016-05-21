@@ -60,7 +60,7 @@ class PoopApp extends Component {
           renderScene = {(route, navigator) => {
             if(route.component) {
               return (
-                <route.component navigator = {navigator} />
+                <route.component navigator = {navigator} state = {route.state}/>
               );
             }
           }}

@@ -5,13 +5,17 @@ import React, {
   Image,
   RefreshControl,
   ScrollView,
+  StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
 
-import ProfileGrid from '../profile-grid';
+import Firebase from 'firebase';
+import GridView from '../components/grid-view';
 import Header from '../components/header';
 
+let database = new Firebase("poopapp1.firebaseio.com");
 const pictures = [
   "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
   "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
@@ -23,63 +27,94 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
+
+    var userid = props.state;
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var usersnapshot = snapshot.child("users/" + userid);
+      var proPic = usersnapshot.val().profilePic;
+      self.setState({
+        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
+        profilePic: proPic,
+      });
+    });
+
     this.state = {
-      refreshing: false,
+      items: [],
+      name: "",
+      profilePic: "",
     };
   }
 
-  onRefresh() {
-  	this.setState({refreshing: true});
-    setTimeout(() => {
-      // Do some stuff
-      this.setState({refreshing: false});
-    }, 5000);
+  componentDidMount() {
+    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
+      return {id: i, src: pictures[i]}
+    });
+    this.setState({items});
+  }
+
+  renderRow(rowData) {
+    return (
+      <TouchableOpacity
+        key = {rowData.id}
+        style = {styles.item}
+        onPress = {() => {alert("Pressed image " + rowData.id);}}>
+        <Image
+          resizeMode = "cover"
+          style = {{flex: 1}}
+          source = {{uri: rowData.src}}
+        />
+      </TouchableOpacity>
+    );
+  }
+
+  queryData(){
+    alert("ASFD");
   }
 
   render() {
     return(
-      <View>
+      <View style = {{flex: 1}}>
         <Header
           navigator = {this.props.navigator}
           text = "Profile"
-          loaded={this.state.loaded}
           hasBack = {true}
         />
-        <ScrollView refreshControl = {
-    			<RefreshControl
-    				refreshing = {this.state.refreshing}
-    				onRefresh = {this.onRefresh.bind(this)}
-    				tintColor = "blue"
-    				title = "Loading..."
-    				titleColor = "black"
-    				colors = {['#ffffff', '#b3b3b3', '#808080']}
-    				progressBackgroundColor = "black"
-    			/>
-		    }>
-          <View style = {{
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 30,
-            }}>
-            <Image
-              style = {{
-                width: 150,
-                height: 150,
-              }}
-              //resizeMode = {Image.resizeMode.center}
-              source = {require('../images/profilepic.jpg')}
-            />
-            <Text style = {{fontSize: 42, color: '#000000',}}>
-              Mickey Mouse
-            </Text>
-          </View>
-
-          <ProfileGrid items = {pictures} />
-        </ScrollView>
+        <View style = {{
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 30,
+        }}>
+          <Image
+            style = {{
+              width: 150,
+              height: 150,
+            }}
+            //resizeMode = {Image.resizeMode.center}
+            source = {{uri: this.state.profilePic}}
+          />
+          <Text style = {{fontSize: 42, color: '#000000',}}>
+            {this.state.name}
+          </Text>
+        </View>
+        <GridView
+          dataSource = {this.state.items}
+          renderRow = {this.renderRow.bind(this)}
+          onRefresh = {this.queryData.bind(this)}
+        />
       </View>
     );
   }
 
 }
+
+const styles = StyleSheet.create({
+  item: {
+    margin: 10,
+    width: 100,
+    height: 100
+  }
+});
 
 module.exports = Profile;
