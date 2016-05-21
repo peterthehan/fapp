@@ -10,6 +10,8 @@ import React, {
   View
 } from 'react-native';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import GridView from '../components/grid-view';
 import Header from '../components/header';
 
@@ -50,18 +52,48 @@ class Home extends Component {
     this.setState({items});
   }
 
+  favorite(){
+    alert("Favorite");
+  }
+
+  messages(){
+    alert("Messages");
+  }
+
   renderRow(rowData) {
     return (
-      <TouchableOpacity
-        key = {rowData.id}
-        style = {styles.item}
-        onPress = {() => {alert("Pressed image " + rowData.id);}}>
-        <Image
-          resizeMode = "cover"
-          style = {{flex: 1}}
-          source = {{uri: rowData.src}}
-        />
-      </TouchableOpacity>
+      <View style = {styles.item}>
+        <TouchableOpacity
+          key = {rowData.id}
+          style = {styles.photo}
+          onPress = {() => {alert("Pressed image " + rowData.id);}}>
+          <Image
+            resizeMode = "cover"
+            style = {{flex: 1}}
+            source = {{uri: rowData.src}}
+          />
+        </TouchableOpacity>
+        <View style = {styles.buttonView}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.favorite.bind(this)}>
+            <Icon
+              name = "star"
+              size = {16}
+              color = "orange"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.messages.bind(this)}>
+            <Icon
+              name = "feedback"
+              size = {16}
+              color = "green"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
@@ -89,9 +121,24 @@ class Home extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    margin: 10,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'gray',
+    margin: 5,
+  },
+  photo: {
     width: 100,
-    height: 100
+    height: 100,
+  },
+  buttonView: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  button: {
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 4,
+    marginBottom: 4,
   }
 });
 
