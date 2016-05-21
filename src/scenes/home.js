@@ -14,8 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from '../components/grid-view';
 import Header from '../components/header';
-
-import SearchBar from '../search-bar';
+import SearchBar from '../components/search-bar';
 
 const pictures = [
   "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",

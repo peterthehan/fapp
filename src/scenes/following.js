@@ -15,9 +15,8 @@ import Firebase from 'firebase';
 
 import Button from '../components/button';
 import Header from '../components/header';
-
-import SearchBar from '../search-bar';
 import Post from '../components/post';
+import SearchBar from '../components/search-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
