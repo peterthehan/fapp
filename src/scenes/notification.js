@@ -2,11 +2,14 @@
 
 import React, {
   Alert,
+  AsyncStorage,
   Component,
+<<<<<<< 54d93cafb05e4919d24a068762679592ac981fe2
   AsyncStorage,
   Image,
+=======
+>>>>>>> refactor.
   ListView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -17,15 +20,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
 
 import Button from '../components/button';
+import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
-
-import ButtonStyles from '../styles/button-styles';
-import SceneStyles from '../styles/scene-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com/");
 
 class Notification extends Component {
-
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({
@@ -40,7 +40,7 @@ class Notification extends Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('user_data', (error, result) =>{
+    AsyncStorage.getItem('user_data', (error, result) => {
       this.setState({
         userID: JSON.parse(result).uid,
       });
@@ -70,7 +70,7 @@ class Notification extends Component {
           renderRow = {(rowData) =>
             <TouchableOpacity onPress = {this.generate} underlayColor = 'lemonchiffon'>
               <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
-                <Text style = {SceneStyles.text}>
+                <Text style = {TextStyles.text}>
                   {rowData}
                 </Text>
               </View>
@@ -92,13 +92,5 @@ class Notification extends Component {
   }
 
 }
-
-const styles = StyleSheet.create({
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
-  },
-});
 
 module.exports = Notification;

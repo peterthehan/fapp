@@ -4,7 +4,6 @@ import React, {
   Component,
   Image,
   RefreshControl,
-  ScrollView,
   StyleSheet,
   Dimensions,
   Text,
@@ -17,6 +16,7 @@ import GridView from '../components/grid-view';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
+
 const pictures = [
   "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
   "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
@@ -26,12 +26,9 @@ const pictures = [
 const windowSize = Dimensions.get('window');
 
 class Profile extends Component {
-
   constructor(props) {
     super(props);
-
     var self = this;
-
     database.once("value", function(snapshot){
       var usersnapshot = snapshot.child("users/" + props.state);
       var proPic = usersnapshot.val().profilePic;
@@ -70,9 +67,6 @@ class Profile extends Component {
     );
   }
 
-  queryData(){
-    alert("ASFD");
-  }
 
   render() {
     return(
@@ -106,6 +100,10 @@ class Profile extends Component {
         />
       </View>
     );
+  }
+
+  queryData(){
+    alert('Query data.');
   }
 
 }

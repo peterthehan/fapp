@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   AsyncStorage,
   Component,
   Image,
@@ -52,13 +53,62 @@ class Setting extends Component {
     this.changePassword = this.changePassword.bind(this);
   }
 
-  logout(){
+  render() {
+    AsyncStorage.getItem('user_data').then((user_data_json) => {
+      let user_data = JSON.parse(user_data_json);
+      this.setState({
+        user: user_data,
+        loaded: true
+      });
+    });
+    return(
+      <View>
+        <TitleBar
+          navigator = {this.props.navigator}
+          text = "Setting"
+          loaded = {this.state.loaded}
+          hasBack = {true}
+        />
+        <View>
+        {
+          this.state.user &&
+            <View style = {SceneStyles.body}>
+              <View style = {styles.container}>
+                <Text>
+                   {this.state.name}
+                </Text>
+                <Text style = {styles.emailText}>
+                   {this.state.oldEmail}
+                </Text>
+                <TextInput
+                  placeholder = {"email"}
+                  onChangeText = {(text) => this.setState({email: text})}
+                  value = {this.state.email}
+                  style = {SceneStyles.firstName}
+                  placeholderTextColor = '#000'
+                  underlineColorAndroid = '#FFF'
+                />
+                {this.changeEmailButton()}
+                <Image
+                  style={SceneStyles.image}
+                  source={{uri: this.state.profilePic}}
+               />
+              </View>
+                {this.logoutButton()}
+            </View>
+        }
+        </View>
+      </View>
+    );
+  }
+
+  logout() {
     AsyncStorage.removeItem('user_data').then(() => {
       database.unauth();
     });
   }
 
-  logoutButton(){
+  logoutButton() {
     return (
       <TouchableHighlight
         onPress = {this.logout}
@@ -75,21 +125,21 @@ class Setting extends Component {
   }
 
   /*TODO*/
-  changePassword(){
+  changePassword() {
     database.changePassword({
       email: this.state.user.password.email,
       oldPassword: "asdf",
       newPassword: "asdf"
       }, function(error) {
       if(error === null) {
-        alert("Password changed successfully!");
+        Alert.alert('Success!', 'Password has been changed.');
       } else {
-        alert("Error changing password.", error);
+        Alert.alert('Error!', "Could not change password.");
       }
     });
   }
 
-  changePasswordButton(){
+  changePasswordButton() {
     return (
       <TouchableHighlight
         onPress = {this.changePassword}
@@ -105,15 +155,13 @@ class Setting extends Component {
     )
   }
 
-  changeProfilePicture(){
-
+  changeProfilePicture() {
   }
 
-  changeProfilePictureButton(){
-
+  changeProfilePictureButton() {
   }
 
-  changeEmail(){
+  changeEmail() {
     database.changeEmail({
       oldEmail: this.state.user.password.email,
       newEmail: this.state.email,
@@ -122,16 +170,16 @@ class Setting extends Component {
       if(error) {
         switch(error.code) {
           case "INVALID_PASSWORD":
-            alert ("The specified user account password is incorrect.");
+            Alert.alert('Error!', 'The specified user account password is incorrect.');
             break;
           case "INVALID_USER":
-            alert ("The specified user account does not exist.");
+            Alert.alert('Error!', 'The specified user account does not exist.');
             break;
           default:
-            alert ("Error creating user.", error);
+            Alert.alert('Error!', 'Error creating user.');
         }
       } else {
-        alert("Email changed successfully! Please logout and login again");
+        Alert.alert('Success!', 'Email has been changed. Please log out and log in again.');
       }
     });
     var ref = database.child("users");
@@ -140,14 +188,14 @@ class Setting extends Component {
     });
   }
 
-  changeEmailButton(){
+  changeEmailButton() {
     return (
       <TouchableHighlight
         onPress = {this.changeEmail}
         underlayColor = 'lemonchiffon'>
 
         <Text style = {{
-          color: '#000',
+          color: 'black',
           fontSize: 16,
           textAlign: 'center'}}>
           change email
@@ -155,6 +203,7 @@ class Setting extends Component {
       </TouchableHighlight>
     )
   }
+<<<<<<< 54d93cafb05e4919d24a068762679592ac981fe2
 
   render() {
     AsyncStorage.getItem('user_data').then((user_data_json) => {
@@ -204,13 +253,15 @@ class Setting extends Component {
       </View>
     );
   }
+=======
+>>>>>>> refactor.
 }
 
-const page_styles = StyleSheet.create({
-  email_container: {
+const styles = StyleSheet.create({
+  container: {
     padding: 20
   },
-  email_text: {
+  emailText: {
     fontSize: 18
   }
 });

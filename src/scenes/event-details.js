@@ -2,26 +2,19 @@
 
 import React, {
   Component,
-  Image,
-  ScrollView,
-  StyleSheet,
   Switch,
   Text,
   View
 } from 'react-native';
 
 import Button from '../components/button';
-import TitleBar from '../components/title-bar';
-import Comments from '../components/comments';
-
 import ButtonStyles from '../styles/button-styles';
-
-import Main from './main';
+import Comments from '../components/comments';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class EventDetails extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -31,14 +24,14 @@ class EventDetails extends Component {
 
   render() {
     return (
-      <View style={{flex:10}}>
+      <View style = {{flex: 10}}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Event Details"
           hasBack = {true}
         />
-        <View style = {{flex:2}}>
-          <View style = {{flex: 3, flexDirection:'row', justifyContent:'space-around'}}>
+        <View style = {{flex: 2}}>
+          <View style = {{flex: 3, flexDirection:'row', justifyContent: 'space-around'}}>
             <View><Text>image</Text></View>
             <View>
               <View><Text>title</Text></View>
@@ -46,10 +39,10 @@ class EventDetails extends Component {
               <View><Text>where</Text></View>
             </View>
           </View>
-          <View style = {{flex: 1, alignSelf:'center'}}>
+          <View style = {{flex: 1, alignSelf: 'center'}}>
           <Text>description</Text>
           </View>
-          <View style = {{flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
+          <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
             <View style = {{flex:1, alignItems:'center'}}>
               <Text>
                 {this.state.isGoing ? 'Attending' : 'Not Attending'}
@@ -62,7 +55,7 @@ class EventDetails extends Component {
               />
             </View>
 
-            <View style = {{flex:1}}>
+            <View style = {{flex: 1}}>
               <Button
                 text = "View Guestlist"
                 onpress = {this.goToGuestList.bind(this)}
@@ -75,30 +68,29 @@ class EventDetails extends Component {
         </View>
 
         <Comments
-        flex = {1}
-        commentsArray = {[
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
-            ]}
+          flex = {1}
+          commentsArray = {[
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
+          ]}
         />
-
       </View>
     );
   }
 
   goToGuestList(){
-    alert('guest list not implemented');
+    alert('Guest list not implemented.');
   }
 }
 module.exports = EventDetails;
