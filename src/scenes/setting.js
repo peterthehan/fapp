@@ -28,14 +28,18 @@ class Setting extends Component {
     database.once("value", function(snapshot){
       var usersnapshot = snapshot.child("users/");
       var proPic = usersnapshot.val().profilePic;
+      var emailaddress = usersnapshot.val().email;
       self.setState({
         name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
         profilePic: proPic,
+        email: emailaddress,
       });
     });
 
     this.state = {
       name: "",
+      email: "",
+      password: "",
       profilePic: "",
     };
     this.logout = this.logout.bind(this);
