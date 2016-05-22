@@ -15,7 +15,6 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from './grid-view';
-import Header from './header';
 import SearchBar from './search-bar';
 
 import Profile from "../scenes/profile";

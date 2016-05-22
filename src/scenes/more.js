@@ -15,7 +15,7 @@ import Setting from './setting';
 import Profile from './profile';
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 class More extends Component {
 
@@ -39,7 +39,7 @@ class More extends Component {
   render() {
     return(
       <View style = {styles.container}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "More"
         />

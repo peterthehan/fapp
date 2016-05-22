@@ -11,11 +11,10 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 import Comments from '../components/comments';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 
 import Main from './main';
 
@@ -33,7 +32,7 @@ class EventDetails extends Component {
   render() {
     return (
       <View style={{flex:10}}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Event Details"
           hasBack = {true}

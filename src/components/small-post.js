@@ -17,7 +17,6 @@ import Modal from 'react-native-simple-modal';
 
 
 import GridView from './grid-view';
-import Header from './header';
 import SearchBar from './search-bar';
 
 import Profile from "../scenes/profile";
