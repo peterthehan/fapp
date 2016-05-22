@@ -48,8 +48,12 @@ class EventDetails extends Component {
         />
         <View style = {{flex: 2}}>
           <View style = {{flex: 3, flexDirection:'row', justifyContent: 'space-around'}}>
-            <View>
-              <Image source = {{uri: this.state.photo}} />
+            <View style = {{width: 100, height: 100}}>
+              <Image
+                resizeMode = "cover"
+                style = {{flex: 1}}
+                source = {{uri: this.state.photo}}
+              />
             </View>
             <View>
               <View><Text>{this.state.title}</Text></View>
