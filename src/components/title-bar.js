@@ -40,13 +40,14 @@ class TitleBar extends Component {
       return null;
     }
   }
+
 }
 
 const styles = StyleSheet.create({
   titleBar: {
     padding: 10,
     alignItems: 'center',
-    backgroundColor: '#F26D6A',
+    backgroundColor: 'orange',
   },
   titleBarText: {
     color: 'white',

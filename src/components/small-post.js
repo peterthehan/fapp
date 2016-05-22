@@ -8,12 +8,12 @@ import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Modal
 } from 'react-native';
 
 import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Modal from 'react-native-simple-modal';
 
 import GridView from './grid-view';
 import Profile from "../scenes/profile";
@@ -27,9 +27,60 @@ class SmallPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      modalVisible: false
     };
   }
+
+  componentDidMount(){
+    var postSnapshot = this.props.id;
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var userid = postSnapshot.val().userID;
+      var userSnapshot = snapshot.child("users/" + userid);
+      var proPic = userSnapshot.val().profilePic;
+
+      self.setState({
+        postID: postSnapshot.key().toString(),
+        userID: userid,
+        user: postSnapshot.val().user,
+        userPhoto: proPic,
+        photo: postSnapshot.val().photoID,
+        rating: postSnapshot.val().rating,
+        description: postSnapshot.val().description,
+        isFavorite: false,
+      });
+    });
+  }
+
+  picture(){
+    //TODO
+    this._setModalVisible(true)
+  }
+
+  favorite(){
+    this.state.isFavorite = !this.state.isFavorite;
+    // TODO: update database
+
+    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
+    this.forceUpdate();
+  }
+
+  messages(){
+    alert("Go to messages page.");
+  }
+
+  getFavoriteColor(){
+    if(this.state.isFavorite) {
+      return "orange";
+    } else {
+      return "gray";
+    }
+  }
+
+    _setModalVisible(visible) {
+      this.setState({modalVisible: visible});
+    }
 
   render() {
     return (
@@ -37,7 +88,7 @@ class SmallPost extends Component {
         <View style = {styles.item}>
           <TouchableOpacity
             style = {styles.photo}
-            onPress = {() => this.picture()}>
+            onPress={() => this.picture()}>
             <Image
               style = {{flex: 1}}
               resizeMode = "cover"
@@ -72,15 +123,14 @@ class SmallPost extends Component {
           </View>
         </View>
         <Modal
-           offset = {this.state.offset}
-           open = {this.state.open}
-           modalDidOpen = {() => console.log('modal did open')}
-           modalDidClose = {() => this.setState({open: false})}
-           style = {{alignItems: 'center', borderRadius: 20, margin: 0}}>
-           <View>
-              <View style = {{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <TouchableOpacity onPress = {() => {this.props.navigator.push({component: Profile, state: this.state.userID});}}>
-                  <View style = {{flexDirection: 'row'}}>
+          visible={this.state.modalVisible}
+          onRequestClose={() => {this._setModalVisible(false)}}
+          >
+          <View style={styles.container}>
+            <View style={styles.innerContainer}>
+              <View style={styles.modalUserBar}>
+                <TouchableOpacity onPress={() => {this._setModalVisible(false); this.props.navigator.push({component: Profile, state: this.state.userID});}}>
+                  <View style={styles.modalUser}>
                     <Image
                       resizeMode = "cover"
                       style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
@@ -89,7 +139,7 @@ class SmallPost extends Component {
                     <Text>{this.state.user}</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setState({open: false})}>
+                <TouchableOpacity onPress={() => {this._setModalVisible(false);}}>
                   <Icon name = "close"
                   size = {25}
                   borderWidth = {7}
@@ -99,8 +149,8 @@ class SmallPost extends Component {
               </View>
               <Image
                 resizeMode = "cover"
-                style = {{width: windowSize.width-10, height: windowSize.width-10}}
-                source = {{uri: this.state.image}}
+                style = {styles.modalPhoto}
+                source = {{uri: this.state.photo}}
               />
               <View style = {styles.buttonViewModal}>
                 <TouchableOpacity
@@ -122,8 +172,9 @@ class SmallPost extends Component {
                   />
                 </TouchableOpacity>
               </View>
-              <Text style={{marginTop: 5}}><Text style={{fontWeight: 'bold'}}>Description: </Text>{this.state.description}</Text>
-           </View>
+              <Text style={styles.description}><Text style={{fontWeight: 'bold'}}>Description: </Text>{this.state.description}</Text>
+            </View>
+          </View>
         </Modal>
       </View>
     );
@@ -209,6 +260,37 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginTop: 4,
     marginBottom: 4,
+  },
+  container: {
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+  },
+  innerContainer: {
+    borderRadius: 20,
+    margin: 5,
+    backgroundColor: "white",
+  },
+  modalUserBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 2,
+    marginRight:2,
+    marginLeft: 4,
+    marginTop: 4,
+  },
+  modalUser: {
+    flexDirection: 'row',
+  },
+  modalPhoto: {
+    width: windowSize.width-20,
+    height: windowSize.width-20,
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  description: {
+    padding: 5,
+    marginLeft: 2,
   }
 });
 
