@@ -32,32 +32,43 @@ class Notification extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
     this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      })
+    };/*
+    this.state = {
       dataSource: ds.cloneWithRows([
         'You have 1 new follower: tester',
         'You followed tester'
       ])
-    };
+    };*/
+    this.itemsRef = new Firebase("poopapp1.firebaseio.com/posts");
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('user_data', (error, result) =>{
-      this.setState({
-        userID: JSON.parse(result).uid,
-      });
-    });
-    this.listenForItems();
+    this.listenForItems(this.itemsRef);
   }
 
   listenForItems() {
-    var data = database.child('post')
-    data.on("child_added", function(snapshot, prevChildKey) {
-      var newPost = snapshot.val();
-      alert ("create post");
+    itemsRef.on('value', (snap) => {
+
+      // get children as an array
+      var items = [];
+      snap.forEach((child) => {
+        items.push({
+          title: child.val().title,
+          _key: child.key()
+        });
+      });
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(items)
+      });
+
     });
   }
 
   render() {
-    {this.listenForItems()}
     return (
       <View style = {{flex: 1}}>
         <TitleBar
