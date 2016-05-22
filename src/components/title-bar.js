@@ -2,7 +2,6 @@
 
 import React, {
   Component,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,23 +10,19 @@ import React, {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-class Header extends Component {
+class TitleBar extends Component {
   render() {
     return (
-      <View style = {styles.header}>
+      <View style = {styles.titleBar}>
         {this.backButton()}
-        <Text style = {styles.headerText}>
+        <Text style = {styles.titleBarText}>
           {this.props.text}
         </Text>
-        <Image
-          style = {styles.headerImage}
-          source = {this.props.image}>
-        </Image>
       </View>
     );
   }
 
-  backButton(){
+  backButton() {
     if(this.props.hasBack) {
       return (
         <TouchableOpacity
@@ -38,31 +33,28 @@ class Header extends Component {
             size = {25}
             borderWidth = {7}
             color = "white"
-            />
+          />
         </TouchableOpacity>
       );
-    }
-    else {
+    } else {
       return null;
     }
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
+  titleBar: {
     padding: 10,
     alignItems: 'center',
     backgroundColor: '#F26D6A',
   },
-  headerText: {
-    color: '#FFF',
+  titleBarText: {
+    color: 'white',
     fontSize: 18
-  },
-  headerImage: {
   },
   backButton: {
     position: 'absolute',
   }
 });
 
-module.exports = Header;
+module.exports = TitleBar;

@@ -13,7 +13,7 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 import ButtonStyles from '../styles/button-styles';
 
@@ -114,7 +114,7 @@ class CreateEvent extends Component {
   render(){
     return(
       <View style = {styles.container}>
-        {this.renderHeader()}
+        {this.renderTitleBar()}
         {this.renderTitleInput()}
         {this.renderDateTimeInput()}
         {this.renderToggle()}
@@ -124,9 +124,9 @@ class CreateEvent extends Component {
     );
   }
 
-  renderHeader(){
+  renderTitleBar(){
     return(
-      <Header
+      <TitleBar
         navigator = {this.props.navigator}
         text = "Create an Event"
         hasBack = {true}

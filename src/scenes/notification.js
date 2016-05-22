@@ -16,10 +16,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
 
 import Button from '../components/button';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 import SceneStyles from '../styles/scene-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com/");
@@ -70,7 +69,7 @@ class Notification extends Component {
     {this.listenForItems()}
     return (
       <View style = {{flex: 1}}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Notification"
         />
@@ -93,15 +92,12 @@ class Notification extends Component {
   }
 
   following(){
-
   }
 
   posts(){
-
   }
 
   events(){
-
   }
 
 }
