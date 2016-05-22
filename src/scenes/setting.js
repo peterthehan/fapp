@@ -155,6 +155,7 @@ class Setting extends Component {
           change email
         </Text>
       </TouchableHighlight>
+      <Text>Please login again</Text>
     )
   }
 

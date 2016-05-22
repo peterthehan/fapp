@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   AsyncStorage,
   Component,
   Image,
@@ -89,20 +90,26 @@ class Login extends Component {
   }
 
   login() {
-    database.authWithPassword(
-      {
-        "email": this.state.email,
-        "password": this.state.password
-      },
-      (error, user_data) => {
-        if(error) {
-          alert('Log in failed. Please try again');
-        } else {
-          AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-          this.props.navigator.push({component: Main});
+    if(this.state.email === "") {
+      Alert.alert('', 'Enter your email.');
+    } else if(this.state.password === "") {
+      Alert.alert('', 'Enter your password.');
+    } else {
+      database.authWithPassword(
+        {
+          "email": this.state.email,
+          "password": this.state.password
+        },
+        (error, user_data) => {
+          if(error) {
+            Alert.alert('Error!', 'Log in failed. Please try again.');
+          } else {
+            AsyncStorage.setItem('user_data', JSON.stringify(user_data));
+            this.props.navigator.push({component: Main});
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   goToSignup() {

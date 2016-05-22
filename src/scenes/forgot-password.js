@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   Component,
   Image,
   Text,
@@ -74,7 +75,10 @@ class ForgotPassword extends Component {
   }
 
   submit() {
-    alert("Get PW.");
+    if(this.state.email === "") {
+      Alert.alert('', 'Enter your email.');
+    }
+    alert("Access database.");
   }
 
   goToLogin() {
