@@ -31,7 +31,6 @@ class SmallPost extends Component {
     };
   }
 
-
   render() {
     return (
       <View>
@@ -40,42 +39,48 @@ class SmallPost extends Component {
             style = {styles.photo}
             onPress = {() => this.picture()}>
             <Image
-              resizeMode = "cover"
               style = {{flex: 1}}
-              source = {{uri: this.state.photo}}
-            />
+              resizeMode = "cover"
+              source = {{uri: this.state.photo}}>
+
+              <View style = {styles.buttonContainer}>
+              <TouchableOpacity
+                style = {styles.button}
+                onPress = {() => this.favorite()}>
+                <Icon
+                  name = "star"
+                  size = {16}
+                  color = {this.getFavoriteColor()}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style = {styles.button}
+                onPress = {() => this.messages()}>
+                <Icon
+                  name = "feedback"
+                  size = {16}
+                  color = "green"
+                />
+              </TouchableOpacity>
+              </View>
+
+            </Image>
           </TouchableOpacity>
           <View style = {styles.buttonView}>
-            <TouchableOpacity
-              style = {styles.button}
-              onPress = {() => this.favorite()}>
-              <Icon
-                name = "star"
-                size = {16}
-                color = {this.getFavoriteColor()}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style = {styles.button}
-              onPress = {() => this.messages()}>
-              <Icon
-                name = "feedback"
-                size = {16}
-                color = "green"
-              />
-            </TouchableOpacity>
+
           </View>
         </View>
         <Modal
-           offset={this.state.offset}
-           open={this.state.open}
-           modalDidOpen={() => console.log('modal did open')}
-           modalDidClose={() => this.setState({open: false})}
-           style={{alignItems: 'center', borderRadius: 20, margin: 0}}>
+           offset = {this.state.offset}
+           open = {this.state.open}
+           modalDidOpen = {() => console.log('modal did open')}
+           modalDidClose = {() => this.setState({open: false})}
+           style = {{alignItems: 'center', borderRadius: 20, margin: 0}}>
            <View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <TouchableOpacity onPress={() => {this.props.navigator.push({component: Profile, state: this.state.userID});}}>
-                  <View style={{flexDirection: 'row'}}>
+              <View style = {{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <TouchableOpacity onPress = {() => {this.props.navigator.push({component: Profile, state: this.state.userID});}}>
+                  <View style = {{flexDirection: 'row'}}>
                     <Image
                       resizeMode = "cover"
                       style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
@@ -175,9 +180,6 @@ class SmallPost extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'gray',
     margin: 2,
   },
   photo: {
@@ -185,12 +187,22 @@ const styles = StyleSheet.create({
     height: windowSize.width / 3 - 6,
   },
   buttonView: {
-    justifyContent: 'center',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   buttonViewModal: {
-    justifyContent: 'flex-start',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    padding: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'black',
+    opacity: 80
   },
   button: {
     marginLeft: 8,
