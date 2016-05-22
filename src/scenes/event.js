@@ -51,6 +51,7 @@ class Event extends Component {
 
   renderRow(eventData){
     return(
+<<<<<<< 70d13df48760e1f961f9757b7afac64e6221e0d5
       <View style = {styles.eventView}>
         <TouchableOpacity
           onPress = {() => this.showDetails(eventData)}>
@@ -66,6 +67,15 @@ class Event extends Component {
           </Text>
         </TouchableOpacity>
       </View>
+=======
+      <TouchableOpacity onPress = {() => this.showDetails(eventData)}>
+        <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
+          <Text style = {SceneStyles.text}>
+            {eventData.val().title}
+          </Text>
+        </View>
+      </TouchableOpacity>
+>>>>>>> Event details page uses database info.
     );
   }
 
