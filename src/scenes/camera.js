@@ -59,8 +59,8 @@ class Camera extends Component {
       case "vign":
         filter = this.vignetteImage();
         break;
-      case "hefe":
-        filter = this.hefeImage();
+      case "ig":
+        filter = this.igImage();
         break;
       default:
         filter = this.ogImage();
@@ -119,12 +119,12 @@ class Camera extends Component {
 
         <Text
           style = {{color: 'black', marginTop: 10, flex: 1}}>
-          Hefe
+          Anything Goes
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'hefe'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setState({filter: 'ig'})} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
-            {this.hefeImage()}
+            {this.igImage()}
           </Surface>
         </TouchableOpacity>
 
@@ -158,7 +158,8 @@ class Camera extends Component {
     />
     );
   }
-  hefeImage() {
+
+  igImage() {
     var thirdSource = this.state.avatarSource;
     return (<Instagram
       brightness = {1}
