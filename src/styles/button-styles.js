@@ -5,8 +5,8 @@ import React, {StyleSheet} from 'react-native';
 module.exports = StyleSheet.create({
   transparentButton: {
     padding: 12,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 16,
+    marginRight: 16,
     alignItems: 'center'
   },
   transparentButtonText: {
@@ -15,10 +15,11 @@ module.exports = StyleSheet.create({
   },
   primaryButton: {
     padding: 12,
-    marginLeft: 30,
-    marginRight: 30,
-    marginBottom: 60,
+    marginLeft: 16,
+    marginRight: 16,
     alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 64,
     backgroundColor: '#DEB050'
   },
   primaryButtonText: {
