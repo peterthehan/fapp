@@ -1,7 +1,9 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -10,11 +12,13 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import Profile from "../scenes/profile"
+import GridView from './grid-view';
+import Header from './header';
+import SearchBar from './search-bar';
 
-import Header from "./header";
+import Profile from "../scenes/profile";
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -22,144 +26,151 @@ class Post extends Component {
 
   constructor(props) {
     super(props);
-    var postid = props.state;
+
+    this.state = {};
+  }
+
+  componentDidMount(){
+    var postSnapshot = this.props.id;
     var self = this;
 
     database.once("value", function(snapshot){
-      var postsnapshot = snapshot.child("posts/" + postid);
-      var userid = postsnapshot.val().userID;
-      var usersnapshot = snapshot.child("users/" + userid);
-      var proPic = usersnapshot.val().profilePic;
+      var userid = postSnapshot.val().userID;
+      var userSnapshot = snapshot.child("users/" + userid);
+      var proPic = userSnapshot.val().profilePic;
+
       self.setState({
+        postID: postSnapshot.key().toString(),
         userID: userid,
-        name: postsnapshot.val().user,
-        profilePic: proPic,
-        image: postsnapshot.val().photoID,
-        rating: postsnapshot.val().rating,
-        description: postsnapshot.val().description,
+        user: postSnapshot.val().user,
+        userPhoto: proPic,
+        photo: postSnapshot.val().photoID,
+        rating: postSnapshot.val().rating,
+        description: postSnapshot.val().description,
       });
     });
+  }
 
-    this.state = {
-      //these are default fields for a post.
-      name: "undef",
-      profilePic: "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C_400x400.jpeg",
-      image: "https://pbs.twimg.com/profile_images/425274582581264384/X3QXBN8C_400x400.jpeg",
-      rating: "undef",
-      description: "undef",
-    };
+  profile(){
+    this.props.navigator.push({component: Profile, state: this.state.userID});
+  }
+
+  picture(){
+    //TODO
+    //this.props.navigator.push({component: Post, state: post.postID});
+  }
+
+  favorite(){
+    //post.isFavorite = !post.isFavorite;
+    // TODO: update database
+
+    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
+    this.forceUpdate();
+  }
+
+  messages(){
+    alert("Go to messages page.");
+  }
+
+  getFavoriteColor(){
+    return "orange";
   }
 
   render() {
     return(
-      <View>
-        <Header
-          navigator = {this.props.navigator}
-          text = "Post"
-          hasBack = {true}
-        />
-        <View style = {styles.postHead}>
+      <View style = {styles.item}>
+        <View>
           <TouchableOpacity
-            style = {styles.horizontalView}
-            onPress = {() => this.props.navigator.push({component: Profile, state: this.state.userID })}>
-            <View style = {styles.padding}>
-              <Image
-                style = {styles.posterPic}
-                source = {{uri: this.state.profilePic}} />
-            </View>
-            <View style = {styles.padding}>
-              <Text style = {styles.posterName}>
-                {this.state.name}
-              </Text>
-            </View>
+            style = {styles.userView}
+            onPress = {this.profile.bind(this)}>
+            <Image
+              resizeMode = "cover"
+              style = {styles.userPhoto}
+              source = {{uri: this.state.userPhoto}}
+            />
+            <Text style = {styles.userName}>
+              {this.state.user}
+            </Text>
           </TouchableOpacity>
         </View>
-
-        <View style = {styles.postImage}>
-          <Image
-            style = {styles.image}
-            source = {{uri: this.state.image}} />
-        </View>
-
-        <View style = {styles.horizontalView}>
-          <Text style = {styles.rating}>
-            {this.state.rating}
-          </Text>
-          <TouchableOpacity style = {styles.ratingButton}>
-              <Icon
-                name = "thumbs-o-up"
-                size = {20}
-                color = "green"
-              />
-          </TouchableOpacity>
-          <TouchableOpacity style = {styles.ratingButton}>
-              <Icon
-                name = "thumbs-o-down"
-                size = {20}
-                color = "red"
-              />
-          </TouchableOpacity>
-        </View>
-
-        <View style = {styles.descriptContainer}>
-          <Text style = {styles.descText}>
+        <View style = {styles.descriptionView}>
+          <Text style = {styles.description}>
             {this.state.description}
           </Text>
         </View>
-
+        <TouchableOpacity
+          style = {styles.photo}
+          onPress = {this.picture.bind(this)}>
+          <Image
+            resizeMode = "cover"
+            style = {{flex: 1}}
+            source = {{uri: this.state.photo}}
+          />
+        </TouchableOpacity>
+        <View style = {styles.buttonView}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.favorite.bind(this)}>
+            <Icon
+              name = "star"
+              size = {16}
+              color = {this.getFavoriteColor()}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.messages.bind(this)}>
+            <Icon
+              name = "feedback"
+              size = {16}
+              color = "green"
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
-var styles = StyleSheet.create({
-  padding: {
-    padding: 5,
-    marginBottom: 5,
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'gray',
+    margin: 8,
   },
-  postHead: {
-    flex: 1,
-  },
-  horizontalView: {
-    alignItems: 'flex-start',
+  userView: {
     flexDirection: 'row',
-    flex:1,
+    margin: 8,
   },
-  posterName: {
-    fontSize: 20,
-    padding: 5,
-    color: '#000000',
-  },
-  posterPic: {
-    height: 40,
+  userPhoto: {
+    width: 30,
+    height: 30,
     borderRadius: 90,
-    width: 40,
+    padding: 4,
   },
-  postImage: {
+  userName: {
+    padding: 4,
+  },
+  photo: {
+    width: Dimensions.get("window").width - 16,
+    height: (Dimensions.get("window").width - 16) * 9 / 16,
+  },
+  descriptionView: {
+    padding: 12,
+  },
+  description: {
+    color: 'black'
+  },
+  buttonView: {
     justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row',
   },
-  image: {
-    width: 350,
-    height: 350,
-  },
-  rating: {
-    padding: 5,
-    marginRight: 15,
-    marginLeft: 15,
-    marginTop: 10,
-    fontSize: 20,
-  },
-  ratingButton:{
-    padding: 5,
-    marginRight: 5,
-    marginLeft: 5,
-    marginTop: 10,
-
-  },
-  descriptContainer: {
-  },
-  descText: {
+  button: {
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 4,
+    marginBottom: 4,
   }
 });
 

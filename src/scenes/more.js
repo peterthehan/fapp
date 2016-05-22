@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
   ListView,
   Text,
@@ -26,6 +27,15 @@ class More extends Component {
     };
   }
 
+  componentDidMount(){
+    var self = this;
+    AsyncStorage.getItem('user_data', (error, result) =>{
+      self.setState({
+        userID: JSON.parse(result).uid,
+      });
+    });
+  }
+
   render() {
     return(
       <View style = {styles.container}>
@@ -41,7 +51,7 @@ class More extends Component {
   }
 
   profile(){
-    this.props.navigator.push({component: Profile});
+    this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
   profilebutton(){
@@ -53,7 +63,7 @@ class More extends Component {
           </Text>
         </View>
       </TouchableHighlight>
-    );  
+    );
   }
 
   setting(){
