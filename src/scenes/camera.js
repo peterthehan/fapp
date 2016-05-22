@@ -119,7 +119,7 @@ class Camera extends Component {
 
         <Text
           style = {{color: 'black', marginTop: 10, flex: 1}}>
-          Anything Goes
+          Multi-purpose filter
         </Text>
 
         <TouchableOpacity onPress = {()=> this.setState({filter: 'ig'})} style = {{flex: 1}}>
