@@ -5,7 +5,6 @@ import React, {
   Component,
   Dimensions,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View
@@ -74,47 +73,5 @@ class Following extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'gray',
-    margin: 8,
-  },
-  userView: {
-    flexDirection: 'row',
-    margin: 8,
-  },
-  userPhoto: {
-    width: 30,
-    height: 30,
-    borderRadius: 90,
-    padding: 4,
-  },
-  userName: {
-    padding: 4,
-  },
-  photo: {
-    width: Dimensions.get("window").width - 16,
-    height: (Dimensions.get("window").width - 16) * 9 / 16,
-  },
-  descriptionView: {
-    padding: 12,
-  },
-  description: {
-    color: 'black'
-  },
-  buttonView: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  button: {
-    marginLeft: 8,
-    marginRight: 8,
-    marginTop: 4,
-    marginBottom: 4,
-  }
-});
 
 module.exports = Following;
