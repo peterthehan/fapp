@@ -11,9 +11,7 @@ import React, {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 class TabBar extends Component{
-
   propTypes: {
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
@@ -25,7 +23,6 @@ class TabBar extends Component{
     this.state = {
       tabIcons: [],
     }
-
   }
 
   componentDidMount() {
@@ -37,17 +34,17 @@ class TabBar extends Component{
       const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
       icon.setNativeProps({
         style: {
-          color: this.iconColor(progress),
+          color: this.iconColor(progress)
         },
       });
     });
   }
 
-  //color between rgb(59,89,152) and rgb(204,204,204)
+  // color between rgb(59,89,152) and rgb(204,204,204)
   iconColor(progress) {
-    const red = 59 + (204 - 59) * progress;
-    const green = 89 + (204 - 89) * progress;
-    const blue = 152 + (204 - 152) * progress;
+    const red = 242 + (204 - 242) * progress;
+    const green = 109 + (204 - 109) * progress;
+    const blue = 106 + (204 - 106) * progress;
     return `rgb(${red}, ${green}, ${blue})`;
   }
 
@@ -69,7 +66,7 @@ class TabBar extends Component{
                 <Icon
                   name = {tab}
                   size = {30}
-                  color = {this.props.activeTab == i ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
+                  color = {this.props.activeTab == i ? '#F26D6A' : 'rgb(204,204,204)'}
                   ref = {(icon) => {this.state.tabIcons[i] = icon;}}
                 />
               </TouchableOpacity>
@@ -97,12 +94,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomColor: '#000'
   },
   tabUnderlineStyle: {
     position: 'absolute',
     height: 3,
-    backgroundColor: '#3b5998',
+    backgroundColor: '#F26D6A',
     bottom: 0,
   },
 });
