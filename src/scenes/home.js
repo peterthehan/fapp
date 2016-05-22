@@ -1,25 +1,20 @@
 'use strict';
 
 import React, {
-  Text,
   Component,
   Dimensions,
-  Image,
   RefreshControl,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
   View
 } from 'react-native';
 
+import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import GridView from '../components/grid-view';
-import TitleBar from '../components/title-bar';
-import SearchBar from '../components/search-bar';
 import Modal from 'react-native-simple-modal';
 import Profile from "../scenes/profile";
-import Firebase from 'firebase';
-
+import SearchBar from '../components/search-bar';
+import TitleBar from '../components/title-bar';
 import SmallPost from '../components/small-post';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -95,32 +90,5 @@ class Home extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: 'gray',
-    margin: 2,
-  },
-  photo: {
-    width: Dimensions.get("window").width / 3 - 6,
-    height: Dimensions.get("window").width / 3 - 6,
-  },
-  buttonView: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonViewModal: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-  },
-  button: {
-    marginLeft: 8,
-    marginRight: 8,
-    marginTop: 4,
-    marginBottom: 4,
-  }
-});
 
 module.exports = Home;

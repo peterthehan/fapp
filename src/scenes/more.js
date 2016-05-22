@@ -10,15 +10,14 @@ import React, {
   View
 } from 'react-native';
 
-import Following from './following';
-import Setting from './setting';
-import Profile from './profile';
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
+import Following from './following';
+import Profile from './profile';
+import Setting from './setting';
 import TitleBar from '../components/title-bar';
 
 class More extends Component {
-
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -27,9 +26,9 @@ class More extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     var self = this;
-    AsyncStorage.getItem('user_data', (error, result) =>{
+    AsyncStorage.getItem('user_data', (error, result) => {
       self.setState({
         userID: JSON.parse(result).uid,
       });
@@ -43,20 +42,22 @@ class More extends Component {
           navigator = {this.props.navigator}
           text = "More"
         />
-        {this.profilebutton()}
-        {this.settingbutton()}
-        {this.followingbutton()}
+        {this.profileButton()}
+        {this.settingButton()}
+        {this.followingButton()}
     </View>
     );
   }
 
-  profile(){
+  profile() {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  profilebutton(){
+  profileButton() {
     return (
-      <TouchableHighlight onPress = {this.profile.bind(this)} underlayColor='gainsboro'>
+      <TouchableHighlight
+        onPress = {this.profile.bind(this)}
+        underlayColor = 'gainsboro'>
         <View style = {styles.bubblechoice}>
           <Text style = {styles.icontext}>
             Profile
@@ -66,11 +67,11 @@ class More extends Component {
     );
   }
 
-  setting(){
+  setting() {
     this.props.navigator.push({component: Setting, state: this.state.userID});
   }
 
-  settingbutton(){
+  settingButton() {
     return (
       <TouchableHighlight onPress = {this.setting.bind(this)} underlayColor='gainsboro'>
         <View style = {styles.bubblechoice}>
@@ -86,7 +87,7 @@ class More extends Component {
     this.props.navigator.push({component: Following});
   }
 
-  followingbutton(){
+  followingButton(){
     return (
       <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='gainsboro'>
         <View style = {styles.bubblechoice}>
@@ -99,7 +100,7 @@ class More extends Component {
   }
 }
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',

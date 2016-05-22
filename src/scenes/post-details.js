@@ -13,7 +13,6 @@ import React, {
 import Firebase from 'firebase';
 
 import Button from '../components/button';
-
 import TextStyles from '../styles/text-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
