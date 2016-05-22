@@ -4,11 +4,6 @@ import React, {
   Alert,
   AsyncStorage,
   Component,
-<<<<<<< 54d93cafb05e4919d24a068762679592ac981fe2
-  AsyncStorage,
-  Image,
-=======
->>>>>>> refactor.
   ListView,
   Text,
   TouchableOpacity,

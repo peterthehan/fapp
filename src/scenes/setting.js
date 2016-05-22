@@ -73,11 +73,11 @@ class Setting extends Component {
         {
           this.state.user &&
             <View style = {SceneStyles.body}>
-              <View style = {styles.container}>
-                <Text>
+              <View style = {page_styles.email_container}>
+                <Text style = {{fontSize: 20, color: '#000000',}}>
                    {this.state.name}
                 </Text>
-                <Text style = {styles.emailText}>
+                <Text style = {page_styles.email_text}>
                    {this.state.oldEmail}
                 </Text>
                 <TextInput
@@ -203,58 +203,6 @@ class Setting extends Component {
       </TouchableHighlight>
     )
   }
-<<<<<<< 54d93cafb05e4919d24a068762679592ac981fe2
-
-  render() {
-    AsyncStorage.getItem('user_data').then((user_data_json) => {
-      let user_data = JSON.parse(user_data_json);
-      this.setState({
-        user: user_data,
-        loaded: true
-      });
-    });
-    return(
-      <View>
-        <TitleBar
-          navigator = {this.props.navigator}
-          text = "Setting"
-          loaded = {this.state.loaded}
-          hasBack = {true}
-        />
-        <View>
-        {
-          this.state.user &&
-            <View style = {SceneStyles.body}>
-              <View style = {page_styles.email_container}>
-                <Text style = {{fontSize: 20, color: '#000000',}}>
-                   {this.state.name}
-                </Text>
-                <Text style = {page_styles.email_text}>
-                   {this.state.oldEmail}
-                </Text>
-                <TextInput
-                  placeholder = {"email"}
-                  onChangeText = {(text) => this.setState({email: text})}
-                  value = {this.state.email}
-                  style = {SceneStyles.firstName}
-                  placeholderTextColor = '#000'
-                  underlineColorAndroid = '#FFF'
-                />
-                {this.changeEmailButton()}
-                <Image
-                  style={SceneStyles.image}
-                  source={{uri: this.state.profilePic}}
-               />
-              </View>
-                {this.logoutButton()}
-            </View>
-        }
-        </View>
-      </View>
-    );
-  }
-=======
->>>>>>> refactor.
 }
 
 const styles = StyleSheet.create({
