@@ -2,7 +2,6 @@
 
 import React, {
   Component,
-  ListView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,42 +13,61 @@ import Firebase from 'firebase';
 
 import CreateEvent from './create-event';
 import EventDetails from './event-details';
+import GridView from '../components/grid-view';
 import SceneStyles from '../styles/scene-styles'
 import TitleBar from '../components/title-bar';
 
-let events = new Firebase("poopapp1.firebaseio.com/events");
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Event extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
     this.state = {
-      dataSource: ds.cloneWithRows(["event1", "event2"])
+      dataSource: []
     };
+    this.renderRow = this.renderRow.bind(this);
     this.showDetails = this.showDetails.bind(this);
     this.createEvent = this.createEvent.bind(this);
   }
 
+  renderRow(event){
+    return(
+      <TouchableOpacity onPress = {this.showDetails}>
+        <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
+          <Text style = {SceneStyles.text}>
+            {event.val().title}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  queryData() {
+    var myBlob = [];
+    var self = this;
+
+    // this section loads the postIDs into myBlob and pushes them to dataSource
+    database.once("value", function(snapshot){
+      var eventsSnapshot = snapshot.child("events");
+      eventsSnapshot.forEach(function(eventSnapshot) {
+        myBlob.push(eventSnapshot);
+      });
+      self.setState({dataSource: myBlob});
+    });
+  }
+
   render() {
+    this.queryData();
     return (
       <View style = {{flex: 1}}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Events"
         />
-        <ListView
+        <GridView
           dataSource = {this.state.dataSource}
-          renderRow = {(rowData) =>
-            <TouchableOpacity onPress = {this.showDetails}>
-              <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
-                <Text style = {SceneStyles.text}>
-                  {rowData}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          }
+          renderRow = {this.renderRow.bind(this)}
+          onRefresh = {this.queryData.bind(this)}
         />
         <ActionButton
           buttonColor = {'#F26D6A'}

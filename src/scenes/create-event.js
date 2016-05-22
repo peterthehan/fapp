@@ -299,6 +299,7 @@ class CreateEvent extends Component {
       photo: 'https://s-media-cache-ak0.pinimg.com/236x/d8/0d/1e/d80d1efe3a4b6b4d8bd186bdd788902c.jpg',
       isPublic: this.state.publicEvent
     });
+    this.props.navigator.pop();
   }
 
   clearEvent() {
