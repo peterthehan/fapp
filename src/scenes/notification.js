@@ -49,7 +49,7 @@ class Notification extends Component {
       var usersnapshot = snapshot.child("users/" + this.state.userID);
       var proPic = usersnapshot.val().profilePic;
       var req = database.child("users");
-      var data = req.child(this.state.user.uid);
+      var data = req.child(this.state.user.uid).postList;
       self.setState({
         name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
         profilePic: proPic,
@@ -59,22 +59,15 @@ class Notification extends Component {
   }
 
   listenForItems() {
-    data.on('value', (snap) => {
-      // get children as an array
-      var items = [];
-      snap.forEach((child) => {
-        items.push({
-          title: child.val().title,
-          _key: child.key()
-        });
-      });
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(items)
-      });
+    var data = database.child('post')
+    data.on("child_added", function(snapshot, prevChildKey) {
+      var newPost = snapshot.val();
+      alert ("create post");
     });
   }
 
   render() {
+    {this.listenForItems()}
     return (
       <View style = {{flex: 1}}>
         <Header
