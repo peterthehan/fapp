@@ -5,7 +5,6 @@ import React, {
   Text,
   TouchableHighlight,
   StyleSheet,
-  Navigator,
   TextInput,
   Image,
   AsyncStorage,
@@ -25,11 +24,20 @@ class Setting extends Component {
 
   constructor(props){
     super(props);
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var usersnapshot = snapshot.child("users/");
+      var proPic = usersnapshot.val().profilePic;
+      self.setState({
+        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
+        profilePic: proPic,
+      });
+    });
+
     this.state = {
-      loaded: false,
-      email: '',
-      password: '',
-      passwordConfirm: ''
+      name: "",
+      profilePic: "",
     };
     this.logout = this.logout.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
@@ -79,6 +87,14 @@ class Setting extends Component {
         </Text>
       </TouchableHighlight>
     )
+  }
+
+  changeProfilePicture(){
+
+  }
+
+  changeProfilePictureButton(){
+
   }
 
   changeEmail(){
@@ -150,9 +166,15 @@ class Setting extends Component {
                 {this.changeEmailButton()}
                 <Image
                   style={SceneStyles.image}
-                  source={{uri: this.state.user.profileImageURL}}
+                  source={{uri: this.state.propic}}
                />
-                <Text style={page_styles.email_text}>{this.state.user.token}
+                <Text style = {page_styles.email_text}>{this.state.user.uid}
+                </Text>
+                <Text>
+                   {this.state.name}
+                </Text>
+                <Text>
+                   test above should be name
                 </Text>
               </View>
                 {this.logoutbutton()}
