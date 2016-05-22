@@ -88,7 +88,7 @@ class More extends Component {
 
   followingbutton(){
     return (
-      <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='lemonchiffon'>
+      <TouchableHighlight onPress = {this.following.bind(this)} underlayColor='gainsboro'>
         <View style = {styles.bubblechoice}>
           <Text style = {styles.icontext}>
             Following
