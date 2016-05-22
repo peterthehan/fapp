@@ -4,18 +4,19 @@ import React, {
   AsyncStorage,
   Component,
   ListView,
-  Text,
   StyleSheet,
+  Text,
   TouchableHighlight,
   View
 } from 'react-native';
 
-import Following from './following';
-import Setting from './setting';
-import Profile from './profile';
 import Button from '../components/button';
+import Following from './following';
+import Profile from './profile';
+import Setting from './setting';
+import TitleBar from '../components/title-bar';
+
 import ButtonStyles from '../styles/button-styles';
-import Header from '../components/header';
 
 class More extends Component {
 
@@ -39,7 +40,7 @@ class More extends Component {
   render() {
     return(
       <View style = {styles.container}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "More"
         />

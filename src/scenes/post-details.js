@@ -14,12 +14,11 @@ import Firebase from 'firebase';
 
 import Button from '../components/button';
 
-import HeaderStyles from '../styles/header-styles';
+import TextStyles from '../styles/text-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Tags extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,6 +27,60 @@ class Tags extends Component {
       location: '',
       recipe: '',
     };
+  }
+  
+  render() {
+    var limit = 100;
+    return(
+      <View style = {{backgroundColor: '#4682b4', flex: 1}}>
+        <View>
+          <ToolbarAndroid
+            title = 'Create a Post'
+            titleColor = '#FFF'
+            style = {styles.toolbar}
+            actions = {[{title: 'Post', show: 'always'}]}
+            onActionSelected = {this.onPress.bind(this)}
+          />
+        </View>
+
+        <TextInput
+          style = {TextStyles.textInput}
+          onChangeText = {(text) => this.setState({description: text})}
+          value = {this.state.description}
+          placeholder = {"Give a description"}
+          placeholderTextColor = '#FFF'
+          underlineColorAndroid = '#FFF'
+        />
+
+        <TextInput
+          style = {TextStyles.textInput}
+          onChangeText = {(text) => this.setState({tags: text})}
+          value = {this.state.tags}
+          placeholder = {"Add tags"}
+          placeholderTextColor = '#FFF'
+          underlineColorAndroid = '#FFF'
+        />
+
+        <TextInput
+          style = {TextStyles.textInput}
+          onChangeText = {(text) => this.setState({location: text})}
+          value = {this.state.location}
+          placeholder = {"Enter location"}
+          placeholderTextColor = '#FFF'
+          underlineColorAndroid = '#FFF'
+        />
+
+        <TextInput
+          style = {TextStyles.textInput}
+          onChangeText = {(text) => this.setState({recipe: text})}
+          value = {this.state.recipe}
+          placeholder = {"Cooked it yourself? Add a recipe!"}
+          placeholderTextColor = '#FFF'
+          underlineColorAndroid = '#FFF'
+        />
+
+      </View>
+    );
   }
 
   onPress() {
@@ -51,60 +104,6 @@ class Tags extends Component {
         });
       });
     });
-  }
-
-  render() {
-    var limit = 100;
-    return(
-      <View style = {{backgroundColor: '#4682b4', flex: 1}}>
-        <View>
-          <ToolbarAndroid
-            title = 'Create a Post'
-            titleColor = 'white'
-            style = {styles.toolbar}
-            actions = {[{title: 'Post', show: 'always'}]}
-            onActionSelected = {this.onPress.bind(this)}
-          />
-        </View>
-
-        <TextInput
-          style = {HeaderStyles.textinput}
-          onChangeText = {(text) => this.setState({description: text})}
-          value = {this.state.description}
-          placeholder = {"Give a description"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
-        />
-
-        <TextInput
-          style = {HeaderStyles.textinput}
-          onChangeText = {(text) => this.setState({tags: text})}
-          value = {this.state.tags}
-          placeholder = {"Add tags"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
-        />
-
-        <TextInput
-          style = {HeaderStyles.textinput}
-          onChangeText = {(text) => this.setState({location: text})}
-          value = {this.state.location}
-          placeholder = {"Enter location"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
-        />
-
-        <TextInput
-          style = {HeaderStyles.textinput}
-          onChangeText = {(text) => this.setState({recipe: text})}
-          value = {this.state.recipe}
-          placeholder = {"Cooked it yourself? Add a recipe!"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
-        />
-
-      </View>
-    );
   }
 }
 

@@ -3,7 +3,6 @@
 import React, {
   Component,
   ListView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -12,7 +11,7 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 import CreateEvent from './create-event';
 import EventDetails from './event-details';
@@ -36,7 +35,7 @@ class Event extends Component {
   render() {
     return (
       <View style = {{flex: 1}}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Events"
         />

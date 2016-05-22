@@ -14,7 +14,7 @@ import React, {
 
 import Firebase from 'firebase';
 
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 import Button from '../components/button';
 
 import SceneStyles from '../styles/scene-styles';
@@ -140,7 +140,7 @@ class Setting extends Component {
     });
     return(
       <View>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Setting"
           loaded = {this.state.loaded}

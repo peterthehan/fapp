@@ -14,7 +14,7 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from '../components/grid-view';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 import Post from '../components/post';
 import SearchBar from '../components/search-bar';
 
@@ -58,7 +58,7 @@ class Following extends Component {
   render() {
     return(
       <View style = {{flex: 1}}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Following"
           hasBack = {"true"}

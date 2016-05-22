@@ -6,20 +6,18 @@ import React, {
 } from 'react-native';
 
 class SearchBar extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
+      text: '',
     };
   }
 
   render() {
     return(
       <TextInput
-        keyboardType = { 'default' }
         placeholder = "Search"
-        onChangeText={(text) => this.setState({text})}
+        onChangeText = {(text) => this.setState({text})}
       />
     );
   }

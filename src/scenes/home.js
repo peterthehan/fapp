@@ -1,26 +1,22 @@
 'use strict';
 
 import React, {
-  Text,
   Component,
-  Dimensions,
-  Image,
   RefreshControl,
   ScrollView,
-  StyleSheet,
+  Text,
   TouchableOpacity,
   View
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Firebase from 'firebase';
 import GridView from '../components/grid-view';
-import Header from '../components/header';
-import SearchBar from '../components/search-bar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-simple-modal';
 import Profile from "../scenes/profile";
-import Firebase from 'firebase';
-
+import SearchBar from '../components/search-bar';
 import SmallPost from '../components/small-post';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -43,8 +39,6 @@ const pictures = [
   "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
 ];
 
-const windowSize = Dimensions.get('window');
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -52,6 +46,25 @@ class Home extends Component {
       dataSource: [],
       open: false,
     };
+  }
+
+  render() {
+    return(
+      <View style = {{flex: 1}}>
+        <TitleBar
+          text = "Home"
+          navigator = {this.props.navigator}
+        />
+
+        <SearchBar/>
+
+        <GridView
+          dataSource = {this.state.dataSource}
+          renderRow = {this.renderRow.bind(this)}
+          onRefresh = {this.queryData.bind(this)}
+        />
+      </View>
+    );
   }
 
   componentDidMount(){
@@ -70,57 +83,15 @@ class Home extends Component {
 
   renderRow(post) {
     return (
-      <SmallPost navigator={this.props.navigator} id={post}/>
+      <SmallPost
+        navigator = {this.props.navigator}
+        id = {post}/>
     );
   }
 
-  queryData(){
+  queryData() {
     alert("ASFD");
   }
-
-  render() {
-    return(
-      <View style = {{flex: 1}}>
-        <Header
-          navigator = {this.props.navigator}
-          text = "Home"
-        />
-        <SearchBar />
-        <GridView
-          dataSource = {this.state.dataSource}
-          renderRow = {this.renderRow.bind(this)}
-          onRefresh = {this.queryData.bind(this)}
-        />
-      </View>
-    );
-  }
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: 'gray',
-    margin: 2,
-  },
-  photo: {
-    width: Dimensions.get("window").width / 3 - 6,
-    height: Dimensions.get("window").width / 3 - 6,
-  },
-  buttonView: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonViewModal: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-  },
-  button: {
-    marginLeft: 8,
-    marginRight: 8,
-    marginTop: 4,
-    marginBottom: 4,
-  }
-});
 
 module.exports = Home;

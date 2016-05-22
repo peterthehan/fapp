@@ -3,7 +3,6 @@
 import React, {
   Alert,
   Component,
-  Image,
   ListView,
   StyleSheet,
   Text,
@@ -16,17 +15,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
 
 import Button from '../components/button';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 import SceneStyles from '../styles/scene-styles';
 
 let events = new Firebase("poopapp1.firebaseio.com/events");
 let notifications = new Firebase("poopapp1.firebaseio.com/notification");
 
 class Notification extends Component {
-
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({
@@ -63,7 +60,7 @@ class Notification extends Component {
   render() {
     return (
       <View style = {{flex: 1}}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Notification"
         />
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
   actionButtonIcon: {
     fontSize: 20,
     height: 22,
-    color: 'white',
+    color: '#FFF',
   },
 });
 

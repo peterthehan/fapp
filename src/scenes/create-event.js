@@ -3,18 +3,16 @@
 import React, {
   Component,
   DatePickerAndroid,
-  Image,
-  StyleSheet,
   Switch,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   TimePickerAndroid,
+  TouchableWithoutFeedback,
   View
 } from 'react-native';
 
 import Button from '../components/button';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 import ButtonStyles from '../styles/button-styles';
 
@@ -129,7 +127,7 @@ class CreateEvent extends Component {
 
   renderPageTitle(){
     return(
-      <Header
+      <TitleBar
         navigator = {this.props.navigator}
         text = "Create a New Event"
         hasBack = {true}
