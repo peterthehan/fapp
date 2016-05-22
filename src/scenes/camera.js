@@ -61,7 +61,7 @@ class Camera extends Component {
         filter = this.vignetteImage();
         break;
       default:
-        filter = <Image source = {this.avatarSource} />;
+        filter = this.ogImage();
         break;
     }
     return (
@@ -79,7 +79,20 @@ class Camera extends Component {
         <Surface width = {this.state.length} height = {this.state.length} >
         {filter}
         </Surface>
+
         <View style = {{flex: 1, flexDirection: 'row' }}>
+
+        <Text
+          style = {{color: 'black', marginTop: 10, flex: 1}}>
+          Original
+        </Text>
+
+        <TouchableOpacity onPress ={()=> this.setState({filter: null})} style = {{flex: 1}}>
+          <Surface width = {40} height = {40}>
+            {this.ogImage()}
+          </Surface>
+        </TouchableOpacity>
+
         <Text
           style = {{color: 'black', marginTop: 10, flex: 1}}>
           Monochrome
@@ -108,6 +121,13 @@ class Camera extends Component {
     );
   }
 
+  ogImage() {
+    return(
+      <Image source = {this.state.avatarSource}
+      style = {{flex: 1}}/>
+    );
+  }
+
   monoImage() {
     return(<Saturation
       factor = {0}
@@ -124,6 +144,7 @@ class Camera extends Component {
     />
     );
   }
+
   renderBars() {
     return(
       <View>
