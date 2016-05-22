@@ -2,6 +2,8 @@
 
 import React, {
   Component,
+  Dimensions,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -49,13 +51,21 @@ class Event extends Component {
 
   renderRow(eventData){
     return(
-      <TouchableOpacity onPress = {() => this.showDetails(eventData)}>
-        <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
+      <View style = {styles.eventView}>
+        <TouchableOpacity
+          onPress = {() => this.showDetails(eventData)}>
+          <View style = {{width: 100, height: 100}}>
+            <Image
+              resizeMode = "cover"
+              style = {{flex: 1}}
+              source = {{uri: eventData.val().photo}}
+            />
+          </View>
           <Text style = {SceneStyles.text}>
             {eventData.val().title}
           </Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -87,5 +97,14 @@ class Event extends Component {
     this.props.navigator.push({component: CreateEvent});
   }
 }
+
+const styles = StyleSheet.create({
+  eventView: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'gray',
+    margin: 8,
+  },
+});
 
 module.exports = Event;
