@@ -2,12 +2,8 @@
 
 import React, {
   Component,
-  Image,
   ScrollView,
-  StyleSheet,
-  Text,
   TextInput,
-  TouchableOpacity,
   View
 } from 'react-native';
 
@@ -44,22 +40,5 @@ class Comments extends Component {
     alert(text);
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    padding: 10,
-    alignItems: 'center',
-    backgroundColor: 'orange',
-  },
-  headerText: {
-    color: 'white',
-    fontSize: 18
-  },
-  headerImage: {
-  },
-  backButton: {
-    position: 'absolute',
-  }
-});
 
 module.exports = Comments;
