@@ -26,14 +26,22 @@ class Post extends Component {
     super(props);
 
     this.state = {
-      liked: false
+      liked: false,
+      favorited: false,
     };
   }
 
   componentDidMount() {
     var postSnapshot = this.props.id;
     var self = this;
+    var loggedUserId;
 
+    //get the id of the logged in user
+    AsyncStorage.getItem('user_data', (error, result) =>{
+      loggedUserId = JSON.parse(result).uid;
+    });
+
+    //get all of the data we need for a post
     database.on("value", function(snapshot){
       var userid = postSnapshot.val().userID;
       var userSnapshot = snapshot.child("users/" + userid);
@@ -49,7 +57,19 @@ class Post extends Component {
         });
       }
 
+      var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
+      var didFav = false;
+      if (typeof favData != 'undefined'){
+        favData.forEach(function(userFaved) {
+          if (userFaved.val().postId == postSnapshot.key().toString()){
+            didFav = true;
+          }
+        });
+      }
+
       self.setState({
+        loggedUser: loggedUserId,
         postID: postSnapshot.key().toString(),
         userID: userid,
         user: postSnapshot.val().user,
@@ -58,6 +78,7 @@ class Post extends Component {
         rating: postSnapshot.val().rating,
         description: postSnapshot.val().description,
         liked: didLike,
+        favorited: didFav,
       });
     });
   }
@@ -66,6 +87,7 @@ class Post extends Component {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
+  //This function will control the like/dislike function of the button
   like(){
     var postRated = database.child("posts/" + this.state.postID + "/ratedList");
     var ratedVal = database.child("posts/" + this.state.postID + "/rating");
@@ -82,13 +104,11 @@ class Post extends Component {
       var self = this;
 
       database.once("value", function(snapshot){
-        var userid = postSnapshot.val().userID;
-        var userSnapshot = snapshot.child("users/" + userid);
-        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
+        var likeData = snapshot.child("posts/" + self.state.postID + "/ratedList");
 
         if (typeof likeData != 'undefined'){
           likeData.forEach(function(userRated) {
-            if (userRated.val().userId == userid){
+            if (userRated.val().userId == self.state.userID){
               var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
               toDelete.set(null);
             }
@@ -114,19 +134,39 @@ class Post extends Component {
   }
 
   favorite() {
-    // post.isFavorite = !post.isFavorite;
-    // TODO: update database
+    var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
 
-    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
-    this.forceUpdate();
+    if (!this.state.favorited){
+      userFaved.push({postId: this.state.postID});
+    }
+    else{
+      var postSnapshot = this.props.id;
+      var self = this;
+
+      database.once("value", function(snapshot){
+        var favData = snapshot.child("users/" + self.state.loggedUser + "/favoritedList");
+
+        if (typeof favData != 'undefined'){
+          favData.forEach(function(userFaved) {
+            if (userFaved.val().postId == postSnapshot.key().toString()){
+              var toDelete = database.child("users/" + self.state.loggedUser + "/favoritedList/" + userFaved.key().toString() + "/postId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  getFavoriteColor() {
+    if (this.state.favorited){
+      return "orange";
+    }
+    return "grey";
   }
 
   messages() {
     alert("Go to messages page.");
-  }
-
-  getFavoriteColor() {
-    return "orange";
   }
 
   render() {
