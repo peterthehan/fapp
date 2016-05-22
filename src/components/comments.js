@@ -38,7 +38,7 @@ class Comments extends Component {
     );
   }
 
-  updateText(text){
+  updateText(text) {
     //database stuff
     this.refs['newCommentInput'].clear();
     alert(text);
