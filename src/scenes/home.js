@@ -17,7 +17,10 @@ import GridView from '../components/grid-view';
 import Header from '../components/header';
 import SearchBar from '../components/search-bar';
 import Modal from 'react-native-simple-modal';
+import Profile from "../scenes/profile";
+import Firebase from 'firebase';
 
+let database = new Firebase("poopapp1.firebaseio.com");
 
 const pictures = [
   "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
@@ -45,25 +48,43 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      dataSource: [],
       open: false,
       image: "",
+      user: "",
+      userPhoto: "",
+      userID: "",
+      description: "",
+      isFavorite: false
     };
   }
 
   componentDidMount() {
-    let posts = Array.apply(null, Array(pictures.length)).map((v, i) => {
-      return {
-        src: pictures[i],
-        isFavorite: false, // TODO: should check in database for user
-        // TODO: put other information about post from database here (or maybe just send the entire database entry snapshot)
-      }
+    var myBlob = [];
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var postSnapshot = snapshot.child("posts");
+      postSnapshot.forEach(function(postSnapshot) {
+        var userid = postSnapshot.val().userID;
+        var userSnapshot = snapshot.child("users/" + userid);
+        var proPic = userSnapshot.val().profilePic;
+        myBlob.push({
+          postID: postSnapshot.key().toString(),
+          userID: userid,
+          user: postSnapshot.val().user,
+          userPhoto: proPic,
+          photo: postSnapshot.val().photoID,
+          rating: postSnapshot.val().rating,
+          description: postSnapshot.val().description,
+        });
+      });
+      self.setState({dataSource: myBlob});
     });
-    this.setState({items: posts});
   }
 
   picture(post){
-    this.setState({open: true, image: post.src});
+    this.setState({open: true, image: post.photo, user: post.user, userPhoto: post.userPhoto, userID: post.userID, description: post.description, isFavorite: post.isFavorite});
   }
 
   favorite(post){
@@ -95,7 +116,7 @@ class Home extends Component {
           <Image
             resizeMode = "cover"
             style = {{flex: 1}}
-            source = {{uri: post.src}}
+            source = {{uri: post.photo}}
           />
         </TouchableOpacity>
         <View style = {styles.buttonView}>
@@ -135,7 +156,7 @@ class Home extends Component {
         />
         <SearchBar />
         <GridView
-          dataSource = {this.state.items}
+          dataSource = {this.state.dataSource}
           renderRow = {this.renderRow.bind(this)}
           onRefresh = {this.queryData.bind(this)}
         />
@@ -147,7 +168,16 @@ class Home extends Component {
            style={{alignItems: 'center', borderRadius: 20, margin: 0}}>
            <View>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={{fontSize: 20, marginBottom: 10}}>Post Name: </Text>
+                <TouchableOpacity onPress={() => {this.props.navigator.push({component: Profile, state: this.state.userID});}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Image
+                      resizeMode = "cover"
+                      style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
+                      source = {{uri: this.state.userPhoto}}
+                    />
+                    <Text>{this.state.user}</Text>
+                  </View>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.setState({open: false})}>
                   <Icon name = "close"
                   size = {25}
@@ -161,6 +191,30 @@ class Home extends Component {
                 style = {{width: windowSize.width-10, height: windowSize.width-10}}
                 source = {{uri: this.state.image}}
               />
+              <View style = {styles.buttonViewModal}>
+                <TouchableOpacity
+                  style = {styles.button}
+                  //TODO: Beter way to call corresponding messages
+                  onPress = {() => {alert("Database access");}}>
+                  <Icon
+                    name = "star"
+                    size = {28}
+                    //TODO: Beter way to call corresponding messages
+                    color = {(this.state.isFavorite) ? ("orange") : ("gray")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style = {styles.button}
+                  //TODO: Beter way to call corresponding messages
+                  onPress = {() => {alert("Go to messages page.");}}>
+                  <Icon
+                    name = "feedback"
+                    size = {28}
+                    color = "green"
+                  />
+                </TouchableOpacity>
+              </View>
+              <Text style={{marginTop: 5}}><Text style={{fontWeight: 'bold'}}>Description: </Text>{this.state.description}</Text>
            </View>
         </Modal>
       </View>
@@ -181,6 +235,10 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  buttonViewModal: {
+    justifyContent: 'flex-start',
     flexDirection: 'row',
   },
   button: {
