@@ -13,12 +13,10 @@ import Firebase from 'firebase';
 
 import AppBar from '../components/app-bar';
 import Button from '../components/button';
-
+import ButtonStyles from '../styles/button-styles';
+import Login from './login';
 import SceneStyles from '../styles/scene-styles';
 import TextStyles from '../styles/text-styles';
-import ButtonStyles from '../styles/button-styles';
-
-import Login from './login';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -50,8 +48,8 @@ class ForgotPassword extends Component {
             onChangeText = {(text) => this.setState({email: text})}
             value = {this.state.email}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             keyboardType = 'email-address'
           />
 
@@ -78,7 +76,7 @@ class ForgotPassword extends Component {
     if(this.state.email === "") {
       Alert.alert('', 'Enter your email.');
     }
-    alert("Access database.");
+    Alert.alert('', 'Access database.');
   }
 
   goToLogin() {

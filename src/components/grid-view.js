@@ -8,19 +8,11 @@ import React, {
 } from 'react-native';
 
 class GridView extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       refreshing: false
     }
-  }
-
-  onRefresh() {
-    this.setState({refreshing: true});
-    this.props.onRefresh();
-    setTimeout(() => {
-      this.setState({refreshing: false});
-    }, 5000);
   }
 
   render() {
@@ -34,13 +26,21 @@ class GridView extends Component {
             tintColor = "blue"
             title = "Loading..."
             titleColor = "black"
-            colors = {['#FFFFFF', '#B3B3B3', '#808080']}
-            progressBackgroundColor = "#000"
+            colors = {['white', '#B3B3B3', '#808080']}
+            progressBackgroundColor = "black"
           />
         }>
         {this.props.dataSource.map(this.props.renderRow)}
       </ScrollView>
     );
+  }
+
+  onRefresh() {
+    this.setState({refreshing: true});
+    this.props.onRefresh();
+    setTimeout(() => {
+      this.setState({refreshing: false});
+    }, 5000);
   }
 }
 
