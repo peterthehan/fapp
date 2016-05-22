@@ -2,6 +2,7 @@
 
 import React, {
   Component,
+  Image,
   Switch,
   Text,
   View
@@ -15,11 +16,26 @@ import TitleBar from '../components/title-bar';
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class EventDetails extends Component {
-  constructor(props) {
+
+  constructor(props){
     super(props);
     this.state = {
-      isGoing: false
+      isGoing: false,
     }
+  }
+
+  componentDidMount(){
+    var eventSnapshot = this.props.state;
+    this.setState({
+      title: eventSnapshot.val().title,
+      description: eventSnapshot.val().description,
+      startDate: eventSnapshot.val().startDate,
+      startTime: eventSnapshot.val().startTime,
+      endDate: eventSnapshot.val().endDate,
+      endTime: eventSnapshot.val().endTime,
+      isPublic: eventSnapshot.val().isPublic,
+      photo: eventSnapshot.val().photo,
+    });
   }
 
   render() {
@@ -32,15 +48,17 @@ class EventDetails extends Component {
         />
         <View style = {{flex: 2}}>
           <View style = {{flex: 3, flexDirection:'row', justifyContent: 'space-around'}}>
-            <View><Text>image</Text></View>
             <View>
-              <View><Text>title</Text></View>
+              <Image source = {{uri: this.state.photo}} />
+            </View>
+            <View>
+              <View><Text>{this.state.title}</Text></View>
               <View><Text>when</Text></View>
               <View><Text>where</Text></View>
             </View>
           </View>
           <View style = {{flex: 1, alignSelf: 'center'}}>
-          <Text>description</Text>
+          <Text>{this.state.description}</Text>
           </View>
           <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
             <View style = {{flex:1, alignItems:'center'}}>
