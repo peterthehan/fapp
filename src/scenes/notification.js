@@ -85,52 +85,18 @@ class Notification extends Component {
     );
   }
 
-  /*
-  add(){
-    <Button
-      text = "add"
-      onpress = {this.add.bind(this)}
-      button_styles = {ButtonStyles.primaryButton}
-      button_text_styles = {ButtonStyles.primaryButtonText}
-    />
-    Alert.alert(
-      'add new task',
-      null,
-      [
-        {
-          text: 'Add',
-          onPress: (text) => {
-            notifications.push({title: text});
-          }
-        }
-      ],
-      'plain-text'
-    );
+  following(){
+
   }
 
-  tweet(){
-    Share.open({
-      share_text: "Hola mundo",
-      share_URL: "http://google.cl",
-      title: "Share Link",
-      image: "http://www.technobuffalo.com/wp-content/uploads/2014/04/fast-food.jpg"
-    }, (e) => {
-      console.log(e);
-    });
+  posts(){
+
   }
 
-  remove(rowData){
-    Alert.alert('delete notification'),
-    null,
-    [
-      {
-        text: 'delete',
-        on
-      }
-    ]
-    notifications.child(rowData.id).remove();
+  events(){
+
   }
-  */
+
 }
 
 const styles = StyleSheet.create({
