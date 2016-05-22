@@ -83,7 +83,7 @@ class Tags extends Component {
 
   onPress() {
     var self = this;
-    AsyncStorage.getItem('user_data', (error, result) =>{
+    AsyncStorage.getItem('user_data', (error, result) => {
       var usid = JSON.parse(result).uid;
       var ref = database.child("posts");
       var postList = database.child("users/" + usid + "/postList");
@@ -102,6 +102,7 @@ class Tags extends Component {
         });
       });
     });
+    this.props.navigator.pop();
   }
 }
 

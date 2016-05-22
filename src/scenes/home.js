@@ -19,25 +19,6 @@ import SmallPost from '../components/small-post';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
-const pictures = [
-  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
-  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
-  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
-  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
-  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
-  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
-  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
-  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
-  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
-  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
-  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
-  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
-  "https://pbs.twimg.com/profile_images/723442376933396481/V3QBgFkA.jpg",
-  "https://pbs.twimg.com/profile_images/597793076514426880/qka9dYR-_400x400.jpg",
-  "http://static.wixstatic.com/media/95a3cf_dc7f0c0841ed4228bc6c9a8937a9878e.jpg_256",
-  "http://mediad.publicbroadcasting.net/p/wamc/files/styles/medium/public/201401/Fruit_%26_vegs_assortment_0.jpg",
-];
-
 const windowSize = Dimensions.get('window');
 
 class Home extends Component {
@@ -50,6 +31,16 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    this.queryData();
+  }
+
+  renderRow(post) {
+    return (
+      <SmallPost navigator={this.props.navigator} id={post}/>
+    );
+  }
+
+  queryData(){
     var myBlob = [];
     var self = this;
 
@@ -61,16 +52,6 @@ class Home extends Component {
       });
       self.setState({dataSource: myBlob});
     });
-  }
-
-  renderRow(post) {
-    return (
-      <SmallPost navigator={this.props.navigator} id={post}/>
-    );
-  }
-
-  queryData(){
-    alert("ASFD");
   }
 
   render() {
