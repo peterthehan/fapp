@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   Component,
   Image,
   TextInput,
@@ -121,19 +122,19 @@ class Signup extends Component {
 
   signup() {
     if(this.state.firstName === "") {
-      alert("Enter your first name.");
+      Alert.alert('', 'Enter your first name.');
     } else if(this.state.lastName === "") {
-      alert("Enter your last name.");
+      Alert.alert('', 'Enter your last name.');
     } else if(this.state.dateOfBirth === "") {
-      alert("Enter your date of birth.");
+      Alert.alert('', 'Enter your date of birth.');
     } else if(this.state.email === "") {
-      alert("Enter your email.");
+      Alert.alert('', 'Enter your email.');
     } else if(this.state.password === "") {
-      alert("Enter your password.");
+      Alert.alert('', 'Enter your password.');
     } else if(this.state.passwordConfirm === "") {
-      alert("Confirm your password.");
+      Alert.alert('', 'Confirm your password.');
     } else if(this.state.password != this.state.passwordConfirm) {
-      alert("The specified passwords do not match.");
+      Alert.alert('Error!', 'The specified passwords do not match.');
     } else {
       database.createUser({
         'email': this.state.email,
@@ -142,13 +143,13 @@ class Signup extends Component {
           if(error) {
             switch(error.code) {
               case "EMAIL_TAKEN":
-                alert("The new user account cannot be created because the email is already in use.");
+                Alert.alert('Error!', 'The new user account cannot be created because the email is already in use.');
               break;
               case "INVALID_EMAIL":
-                alert("The specified email is not a valid email.");
+                Alert.alert('Error!', 'The specified email is not a valid email.');
               break;
               default:
-                alert("Error creating user.");
+                Alert.alert('Error!', 'Error creating user.');
             }
           } else {
             var ref = database.child("users");
@@ -160,7 +161,8 @@ class Signup extends Component {
               email: this.state.email,
               profilePic: "",
             });
-            alert('Your account was created!');
+            Alert.alert('Success!', 'Your account was created!');
+            this.props.navigator.pop();
             this.setState({
               firstName: '',
               lastName: '',
