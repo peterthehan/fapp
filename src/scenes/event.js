@@ -12,7 +12,6 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
-
 import CreateEvent from './create-event';
 import EventDetails from './event-details';
 import SceneStyles from '../styles/scene-styles'
