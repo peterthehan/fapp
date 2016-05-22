@@ -51,7 +51,7 @@ class Event extends Component {
           }
         />
         <ActionButton
-          buttonColor = {'red'}
+          buttonColor = {'#F26D6A'}
           onPress = {this.createEvent}
         />
       </View>
