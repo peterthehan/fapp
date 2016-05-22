@@ -73,11 +73,11 @@ class Setting extends Component {
         {
           this.state.user &&
             <View style = {SceneStyles.body}>
-              <View style = {page_styles.email_container}>
+              <View style = {styles.container}>
                 <Text style = {{fontSize: 20, color: '#000000',}}>
                    {this.state.name}
                 </Text>
-                <Text style = {page_styles.email_text}>
+                <Text style = {styles.emailText}>
                    {this.state.oldEmail}
                 </Text>
                 <TextInput
