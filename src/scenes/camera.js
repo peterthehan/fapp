@@ -11,13 +11,13 @@ import React, {
   View,
 } from 'react-native';
 
-import Slider from 'react-native-slider';
-import { Surface, GL } from 'gl-react-native';
+import { Surface } from 'gl-react-native';
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 import PostDetails from './post-details';
 import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
+import Hefe from '../components/hefe';
 
 var length = Dimensions.get('window').width;
 
@@ -59,6 +59,9 @@ class Camera extends Component {
       case "vign":
         filter = this.vignetteImage();
         break;
+      case "hefe":
+        filter = this.hefeImage();
+        break;
       default:
         filter = this.ogImage();
         break;
@@ -79,7 +82,7 @@ class Camera extends Component {
         {filter}
         </Surface>
 
-        <View style = {{flex: 1, flexDirection: 'row' }}>
+        <View style = {{flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
 
         <Text
           style = {{color: 'black', marginTop: 10, flex: 1}}>
@@ -114,6 +117,17 @@ class Camera extends Component {
           </Surface>
         </TouchableOpacity>
 
+        <Text
+          style = {{color: 'black', marginTop: 10, flex: 1}}>
+          Hefe
+        </Text>
+
+        <TouchableOpacity onPress = {()=> this.setState({filter: 'hefe'})} style = {{flex: 1}}>
+          <Surface width = {40} height = {40} >
+            {this.hefeImage()}
+          </Surface>
+        </TouchableOpacity>
+
         </View>
         </View>
 
@@ -143,7 +157,12 @@ class Camera extends Component {
     />
     );
   }
-
+  hefeImage() {
+    return (<Hefe
+      image = {this.state.avatarSource}
+      />
+    );
+  }
   renderBars() {
     return(
       <View>
