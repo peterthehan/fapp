@@ -11,15 +11,13 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
-import TitleBar from '../components/title-bar';
-
 import CreateEvent from './create-event';
 import EventDetails from './event-details';
+import TitleBar from '../components/title-bar';
 
 let events = new Firebase("poopapp1.firebaseio.com/events");
 
 class Event extends Component {
-
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({

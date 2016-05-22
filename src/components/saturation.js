@@ -1,3 +1,5 @@
+'use strict';
+
 import GL from 'gl-react';
 import React from 'react-native';
 

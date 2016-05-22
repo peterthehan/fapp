@@ -16,7 +16,6 @@ import Firebase from 'firebase';
 import PostDetails from './post-details';
 
 class Edit extends Component {
-
   constructor(props) {
     super(props);
 
@@ -39,7 +38,7 @@ class Edit extends Component {
     );
   }
 
-  postDetails(){
+  postDetails() {
     this.props.navigator.push({component: PostDetails});
   }
 }

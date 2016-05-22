@@ -32,7 +32,7 @@ class TitleBar extends Component {
             name = "arrow-back"
             size = {25}
             borderWidth = {7}
-            color = "#FFF"
+            color = "white"
             />
         </TouchableOpacity>
       );
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F26D6A',
   },
   titleBarText: {
-    color: '#FFF',
+    color: 'white',
     fontSize: 18
   },
   backButton: {

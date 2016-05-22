@@ -10,7 +10,7 @@ module.exports = StyleSheet.create({
     alignItems: 'center'
   },
   transparentButtonText: {
-    color: '#FFF',
+    color: 'white',
     fontSize: 16
   },
   primaryButton: {
@@ -23,7 +23,7 @@ module.exports = StyleSheet.create({
     backgroundColor: '#DEB050'
   },
   primaryButtonText: {
-    color: '#FFF',
+    color: 'white',
     fontSize: 16
   }
 });

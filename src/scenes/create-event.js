@@ -179,44 +179,55 @@ class CreateEvent extends Component {
         <Text style = {{color:'black'}}>
           Event Starts:
         </Text>
-        <View style = {{borderWidth: 1,          borderColor:'blue',justifyContent:'space-around', flexDirection:'row'}}>
+        <View style = {{
+          borderWidth: 1,
+          borderColor: 'blue',
+          justifyContent: 'space-around',
+          flexDirection: 'row'}}>
+
           <TouchableWithoutFeedback onPress = {
             this.showDatePicker.bind(this, 'min', {
               date: this.state.minDate,
               minDate: new Date(),
-            }, true)
-          }>
-            <Text style = { [ {color:'gray'}, this.state.dateStart != dateStartStr && {color:'black'} ] }>
+            }, true)}>
+
+            <Text style = {[{color: 'gray'}, this.state.dateStart != dateStartStr && {color: 'black'}]}>
               {this.state.dateStart}
             </Text>
           </TouchableWithoutFeedback>
+
           <TouchableWithoutFeedback
             onPress = {this.showTimePicker.bind(this, true)}>
-            <Text style = { [ {color:'gray'}, this.state.timeStart != timeStartStr && {color:'black'} ] }>
+            <Text style = {[{color: 'gray'}, this.state.timeStart != timeStartStr && {color: 'black'}]}>
               {this.state.timeStart}
             </Text>
           </TouchableWithoutFeedback>
-
         </View>
-        <Text style = {{color:'black'}}>
+
+        <Text style = {{color: 'black'}}>
           Event Ends:
         </Text>
 
-        <View style = {{borderWidth: 1, borderColor:'blue', justifyContent:'space-around', flexDirection:'row'}}>
+        <View style = {{
+          borderWidth: 1,
+          borderColor: 'blue',
+          justifyContent: 'space-around',
+          flexDirection: 'row'}}>
 
           <TouchableWithoutFeedback onPress = {
             this.showDatePicker.bind(this, 'min', {
               date: this.state.minDate,
               minDate: new Date(this.state.dateStart),
-            }, false )
-          }>
-            <Text style = { [ {color:'gray'}, this.state.dateEnd != dateEndStr && {color:'black'} ] }>
+            }, false)}>
+
+            <Text style = {[{color: 'gray'}, this.state.dateEnd != dateEndStr && {color: 'black'}]}>
               {this.state.dateEnd}
             </Text>
           </TouchableWithoutFeedback>
+
           <TouchableWithoutFeedback
             onPress = {this.showTimePicker.bind(this)}>
-            <Text style = { [ {color:'gray'}, this.state.timeEnd != timeEndStr && {color:'black'} ] }>
+            <Text style = {[{color: 'gray'}, this.state.timeEnd != timeEndStr && {color:'black'}]}>
               {this.state.timeEnd}
             </Text>
           </TouchableWithoutFeedback>
@@ -249,7 +260,7 @@ class CreateEvent extends Component {
     );
   }
 
-  renderButtons(){
+  renderButtons() {
     return (
       <View style = {{alignItems: 'center'}}>
         <Button
@@ -258,30 +269,27 @@ class CreateEvent extends Component {
           button_styles = {ButtonStyles.primary_button}
           button_text_styles = {ButtonStyles.primary_button_text}
         />
-
         <Button
-          text = "Create Event!"
+          text = "Create an Event!"
           onPress = {this.createEvent.bind(this)}
-          button_styles = {ButtonStyles.primary_button}
-          button_text_styles = {ButtonStyles.primary_button_text}
+          buttonStyles = {ButtonStyles.primaryButton}
+          buttonTextStyles = {ButtonStyles.primary_buttonText}
         />
-
-      <Button
-        text = "Clear"
-        onPress = {this.clearEvent.bind(this)}
-        button_styles = {ButtonStyles.primary_button}
-        button_text_styles = {ButtonStyles.primary_button_text}
-      />
-
-    </View>
+        <Button
+          text = "Clear"
+          onPress = {this.clearEvent.bind(this)}
+          buttonStyles = {ButtonStyles.primaryButton}
+          buttonTextStyles = {ButtonStyles.primaryButtonText}
+        />
+      </View>
     );
   }
 
-  createGuestList(){
-    alert('friends list unimplemented')
+  createGuestList() {
+    alert('Friends list unimplemented.')
   }
 
-  createEvent(){
+  createEvent() {
     alert(
       'title: '+ this.state.title + "\n" +
       (this.state.publicEvent? 'public ':'private') + " event \n" +
@@ -293,7 +301,7 @@ class CreateEvent extends Component {
     );
   }
 
-  clearEvent(){
+  clearEvent() {
     alert('Cleared :(');
     this.setState({
       title: '',

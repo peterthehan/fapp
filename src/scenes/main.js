@@ -8,14 +8,13 @@ import React, {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import TabBar from '../components/tab-bar';
-
 import Camera from './camera';
 import Event from './event';
 import Following from './following';
 import Home from './home';
 import More from './more';
 import Notification from './notification';
+import TabBar from '../components/tab-bar';
 
 class Main extends Component {
   render() {

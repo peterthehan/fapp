@@ -10,9 +10,10 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import GridView from '../components/grid-view';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-simple-modal';
+
+import GridView from '../components/grid-view';
 import Profile from "../scenes/profile";
 import SearchBar from '../components/search-bar';
 import SmallPost from '../components/small-post';
@@ -90,7 +91,7 @@ class Home extends Component {
   }
 
   queryData() {
-    alert("ASFD");
+    alert('Query data.');
   }
 }
 

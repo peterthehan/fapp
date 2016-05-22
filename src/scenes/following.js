@@ -14,16 +14,15 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from '../components/grid-view';
-import TitleBar from '../components/title-bar';
 import Post from '../components/post';
-import SearchBar from '../components/search-bar';
-
 import Profile from "../scenes/profile";
+import SearchBar from '../components/search-bar';
+import TitleBar from '../components/title-bar';
+
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Following extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -52,7 +51,7 @@ class Following extends Component {
   }
 
   queryData(){
-    alert("ASFD");
+    alert("Query data.");
   }
 
   render() {

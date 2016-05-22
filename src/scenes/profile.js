@@ -12,10 +12,12 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
+
 import GridView from '../components/grid-view';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
+
 const pictures = [
   "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
   "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
@@ -24,12 +26,9 @@ const pictures = [
 ];
 
 class Profile extends Component {
-
   constructor(props) {
     super(props);
-
     var self = this;
-
     database.once("value", function(snapshot){
       var usersnapshot = snapshot.child("users/" + props.state);
       var proPic = usersnapshot.val().profilePic;
@@ -45,33 +44,7 @@ class Profile extends Component {
       profilePic: "",
     };
   }
-
-  componentDidMount() {
-    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
-      return {id: i, src: pictures[i]}
-    });
-    this.setState({items});
-  }
-
-  renderRow(rowData) {
-    return (
-      <TouchableOpacity
-        key = {rowData.id}
-        style = {styles.item}
-        onPress = {() => {alert("Pressed image " + rowData.id);}}>
-        <Image
-          resizeMode = "cover"
-          style = {{flex: 1}}
-          source = {{uri: rowData.src}}
-        />
-      </TouchableOpacity>
-    );
-  }
-
-  queryData(){
-    alert("Query data.");
-  }
-
+  
   render() {
     return(
       <View style = {{flex: 1}}>
@@ -93,7 +66,7 @@ class Profile extends Component {
             //resizeMode = {Image.resizeMode.center}
             source = {{uri: this.state.profilePic}}
           />
-          <Text style = {{fontSize: 42, color: '#000000',}}>
+          <Text style = {{fontSize: 42, color: 'black',}}>
             {this.state.name}
           </Text>
         </View>
@@ -106,6 +79,31 @@ class Profile extends Component {
     );
   }
 
+  componentDidMount() {
+    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
+      return {id: i, src: pictures[i]}
+    });
+    this.setState({items});
+  }
+
+  renderRow(rowData) {
+    return (
+      <TouchableOpacity
+        key = {rowData.id}
+        style = {styles.item}
+        onPress = {() => {alert('Pressed image ' + rowData.id);}}>
+        <Image
+          resizeMode = "cover"
+          style = {{flex: 1}}
+          source = {{uri: rowData.src}}
+        />
+      </TouchableOpacity>
+    );
+  }
+
+  queryData() {
+    alert('Query data.');
+  }
 }
 
 const styles = StyleSheet.create({

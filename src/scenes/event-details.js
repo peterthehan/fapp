@@ -11,17 +11,14 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
-import TitleBar from '../components/title-bar';
-import Comments from '../components/comments';
-
 import ButtonStyles from '../styles/button-styles';
-
+import Comments from '../components/comments';
 import Main from './main';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class EventDetails extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -38,19 +35,37 @@ class EventDetails extends Component {
           hasBack = {true}
         />
         <View style = {{flex:2}}>
-          <View style = {{flex: 3, flexDirection:'row', justifyContent:'space-around'}}>
-            <View><Text>image</Text></View>
+          <View style = {{
+            flex: 3,
+            flexDirection: 'row',
+            justifyContent: 'space-around'}}>
             <View>
-              <View><Text>title</Text></View>
-              <View><Text>when</Text></View>
-              <View><Text>where</Text></View>
+              <Text>image</Text>
+            </View>
+            <View>
+              <View>
+                <Text>title</Text>
+              </View>
+              <View>
+                <Text>when</Text>
+              </View>
+              <View>
+                <Text>where</Text>
+              </View>
             </View>
           </View>
-          <View style = {{flex: 1, alignSelf:'center'}}>
-          <Text>description</Text>
+          <View style = {{
+            flex: 1,
+            alignSelf:'center'}}>
+            <Text>description</Text>
           </View>
-          <View style = {{flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
-            <View style = {{flex:1, alignItems:'center'}}>
+          <View style = {{
+            flexDirection:'row',
+            alignItems:'center',
+            justifyContent:'space-around'}}>
+            <View style = {{
+              flex:1,
+              alignItems:'center'}}>
               <Text>
                 {this.state.isGoing ? 'Attending' : 'Not Attending'}
               </Text>

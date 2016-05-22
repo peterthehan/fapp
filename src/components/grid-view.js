@@ -15,14 +15,6 @@ class GridView extends Component {
     }
   }
 
-  onRefresh() {
-    this.setState({refreshing: true});
-    this.props.onRefresh();
-    setTimeout(() => {
-      this.setState({refreshing: false});
-    }, 5000);
-  }
-
   render() {
     return (
       <ScrollView
@@ -34,13 +26,21 @@ class GridView extends Component {
             tintColor = "blue"
             title = "Loading..."
             titleColor = "black"
-            colors = {['#FFFFFF', '#B3B3B3', '#808080']}
-            progressBackgroundColor = "#000"
+            colors = {['white', '#B3B3B3', '#808080']}
+            progressBackgroundColor = "black"
           />
         }>
         {this.props.dataSource.map(this.props.renderRow)}
       </ScrollView>
     );
+  }
+
+  onRefresh() {
+    this.setState({refreshing: true});
+    this.props.onRefresh();
+    setTimeout(() => {
+      this.setState({refreshing: false});
+    }, 5000);
   }
 }
 

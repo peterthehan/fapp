@@ -15,10 +15,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
 
 import Button from '../components/button';
-import TitleBar from '../components/title-bar';
-
 import ButtonStyles from '../styles/button-styles';
 import SceneStyles from '../styles/scene-styles';
+import TitleBar from '../components/title-bar';
 
 let events = new Firebase("poopapp1.firebaseio.com/events");
 let notifications = new Firebase("poopapp1.firebaseio.com/notification");
@@ -35,26 +34,6 @@ class Notification extends Component {
         'You followed tester'
       ])
     };
-  }
-
-  componenetDidMount() {
-    this.listenForItems(notifications);
-  }
-
-  listenForItems(notification) {
-    notification.on('value', (snap) => {
-      // get children as an array
-      var items = [];
-      snap.forEach((child) => {
-        items.push({
-          title: child.val().title,
-          _key: child.key()
-        });
-      });
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(items)
-      });
-    });
   }
 
   render() {
@@ -80,6 +59,26 @@ class Notification extends Component {
         </View>
       </View>
     );
+  }
+  
+  componenetDidMount() {
+    this.listenForItems(notifications);
+  }
+
+  listenForItems(notification) {
+    notification.on('value', (snap) => {
+      // get children as an array
+      var items = [];
+      snap.forEach((child) => {
+        items.push({
+          title: child.val().title,
+          _key: child.key()
+        });
+      });
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(items)
+      });
+    });
   }
 
   /*
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
   actionButtonIcon: {
     fontSize: 20,
     height: 22,
-    color: '#FFF',
+    color: 'white',
   },
 });
 

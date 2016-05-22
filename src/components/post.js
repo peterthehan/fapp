@@ -15,6 +15,7 @@ import React, {
 import Firebase from 'firebase';
 import GridView from './grid-view';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import Profile from "../scenes/profile";
 import SearchBar from './search-bar';
 import TitleBar from './title-bar';
@@ -25,52 +26,6 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  componentDidMount(){
-    var postSnapshot = this.props.id;
-    var self = this;
-
-    database.once("value", function(snapshot){
-      var userid = postSnapshot.val().userID;
-      var userSnapshot = snapshot.child("users/" + userid);
-      var proPic = userSnapshot.val().profilePic;
-
-      self.setState({
-        postID: postSnapshot.key().toString(),
-        userID: userid,
-        user: postSnapshot.val().user,
-        userPhoto: proPic,
-        photo: postSnapshot.val().photoID,
-        rating: postSnapshot.val().rating,
-        description: postSnapshot.val().description,
-      });
-    });
-  }
-
-  profile() {
-    this.props.navigator.push({component: Profile, state: this.state.userID});
-  }
-
-  picture() {
-    //TODO
-    //this.props.navigator.push({component: Post, state: post.postID});
-  }
-
-  favorite() {
-    //post.isFavorite = !post.isFavorite;
-    // TODO: update database
-
-    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
-    this.forceUpdate();
-  }
-
-  messages() {
-    Alert.alert("Go to messages page.");
-  }
-
-  getFavoriteColor(){
-    return "orange";
   }
 
   render() {
@@ -126,6 +81,52 @@ class Post extends Component {
         </View>
       </View>
     );
+  }
+
+  componentDidMount(){
+    var postSnapshot = this.props.id;
+    var self = this;
+
+    database.once("value", function(snapshot){
+      var userid = postSnapshot.val().userID;
+      var userSnapshot = snapshot.child("users/" + userid);
+      var proPic = userSnapshot.val().profilePic;
+
+      self.setState({
+        postID: postSnapshot.key().toString(),
+        userID: userid,
+        user: postSnapshot.val().user,
+        userPhoto: proPic,
+        photo: postSnapshot.val().photoID,
+        rating: postSnapshot.val().rating,
+        description: postSnapshot.val().description,
+      });
+    });
+  }
+
+  profile() {
+    this.props.navigator.push({component: Profile, state: this.state.userID});
+  }
+
+  picture() {
+    //TODO
+    //this.props.navigator.push({component: Post, state: post.postID});
+  }
+
+  favorite() {
+    //post.isFavorite = !post.isFavorite;
+    // TODO: update database
+
+    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
+    this.forceUpdate();
+  }
+
+  messages() {
+    Alert.alert("Go to messages page.");
+  }
+
+  getFavoriteColor(){
+    return "orange";
   }
 }
 

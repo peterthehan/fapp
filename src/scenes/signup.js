@@ -12,12 +12,10 @@ import Firebase from 'firebase';
 
 import AppBar from '../components/app-bar';
 import Button from '../components/button';
-
+import ButtonStyles from '../styles/button-styles';
+import Login from './login';
 import SceneStyles from '../styles/scene-styles';
 import TextStyles from '../styles/text-styles';
-import ButtonStyles from '../styles/button-styles';
-
-import Login from './login';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -51,16 +49,16 @@ class Signup extends Component {
               onChangeText = {(text) => this.setState({firstName: text})}
               value = {this.state.firstName}
               style = {TextStyles.leftTextInput}
-              placeholderTextColor = '#FFF'
-              underlineColorAndroid = '#FFF'
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'
             />
             <TextInput
               placeholder = {"Last Name"}
               onChangeText = {(text) => this.setState({lastName: text})}
               value = {this.state.lastName}
               style = {TextStyles.rightTextInput}
-              placeholderTextColor = '#FFF'
-              underlineColorAndroid = '#FFF'
+              placeholderTextColor = 'white'
+              underlineColorAndroid = 'white'
             />
           </View>
 
@@ -69,8 +67,8 @@ class Signup extends Component {
             onChangeText = {(text) => this.setState({dateOfBirth: text})}
             value = {this.state.dateOfBirth}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             keyboardType = 'numeric'
           />
           <TextInput
@@ -78,8 +76,8 @@ class Signup extends Component {
             onChangeText = {(text) => this.setState({email: text})}
             value = {this.state.email}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             keyboardType = 'email-address'
           />
           <TextInput
@@ -87,8 +85,8 @@ class Signup extends Component {
             onChangeText = {(text) => this.setState({password: text})}
             value = {this.state.password}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             secureTextEntry = {true}
           />
           <TextInput
@@ -96,8 +94,8 @@ class Signup extends Component {
             onChangeText = {(text) => this.setState({passwordConfirm: text})}
             value = {this.state.passwordConfirm}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             secureTextEntry = {true}
           />
 

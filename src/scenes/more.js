@@ -11,15 +11,13 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
+import ButtonStyles from '../styles/button-styles';
 import Following from './following';
 import Profile from './profile';
 import Setting from './setting';
 import TitleBar from '../components/title-bar';
 
-import ButtonStyles from '../styles/button-styles';
-
 class More extends Component {
-
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

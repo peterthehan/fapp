@@ -13,7 +13,6 @@ import React, {
 import Firebase from 'firebase';
 
 import Button from '../components/button';
-
 import TextStyles from '../styles/text-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -28,15 +27,15 @@ class Tags extends Component {
       recipe: '',
     };
   }
-  
+
   render() {
     var limit = 100;
-    return(
+    return (
       <View style = {{backgroundColor: '#4682b4', flex: 1}}>
         <View>
           <ToolbarAndroid
             title = 'Create a Post'
-            titleColor = '#FFF'
+            titleColor = 'white'
             style = {styles.toolbar}
             actions = {[{title: 'Post', show: 'always'}]}
             onActionSelected = {this.onPress.bind(this)}
@@ -48,8 +47,8 @@ class Tags extends Component {
           onChangeText = {(text) => this.setState({description: text})}
           value = {this.state.description}
           placeholder = {"Give a description"}
-          placeholderTextColor = '#FFF'
-          underlineColorAndroid = '#FFF'
+          placeholderTextColor = 'white'
+          underlineColorAndroid = 'white'
         />
 
         <TextInput
@@ -57,8 +56,8 @@ class Tags extends Component {
           onChangeText = {(text) => this.setState({tags: text})}
           value = {this.state.tags}
           placeholder = {"Add tags"}
-          placeholderTextColor = '#FFF'
-          underlineColorAndroid = '#FFF'
+          placeholderTextColor = 'white'
+          underlineColorAndroid = 'white'
         />
 
         <TextInput
@@ -66,8 +65,8 @@ class Tags extends Component {
           onChangeText = {(text) => this.setState({location: text})}
           value = {this.state.location}
           placeholder = {"Enter location"}
-          placeholderTextColor = '#FFF'
-          underlineColorAndroid = '#FFF'
+          placeholderTextColor = 'white'
+          underlineColorAndroid = 'white'
         />
 
         <TextInput
@@ -75,8 +74,8 @@ class Tags extends Component {
           onChangeText = {(text) => this.setState({recipe: text})}
           value = {this.state.recipe}
           placeholder = {"Cooked it yourself? Add a recipe!"}
-          placeholderTextColor = '#FFF'
-          underlineColorAndroid = '#FFF'
+          placeholderTextColor = 'white'
+          underlineColorAndroid = 'white'
         />
 
       </View>

@@ -14,13 +14,11 @@ import React, {
 
 import Firebase from 'firebase';
 
-import TitleBar from '../components/title-bar';
 import Button from '../components/button';
-
-import SceneStyles from '../styles/scene-styles';
-
-import Login from './login';
 import Home from './home';
+import Login from './login';
+import SceneStyles from '../styles/scene-styles';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -36,98 +34,6 @@ class Setting extends Component {
     this.logout = this.logout.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
-  }
-
-  logout(){
-    AsyncStorage.removeItem('user_data').then(() => {
-      database.unauth();
-    });
-  }
-
-  logoutButton(){
-    return (
-      <TouchableHighlight
-        onPress = {this.logout}
-        underlayColor='lemonchiffon'>
-
-        <Text style = {{
-          color: '#000',
-          fontSize: 16,
-          textAlign: 'center'}}>
-          logout
-        </Text>
-      </TouchableHighlight>
-    );
-  }
-
-  /*TODO*/
-  changePassword(){
-    database.changePassword({
-      email: this.state.user.password.email,
-      oldPassword: "asdf",
-      newPassword: "asdf"
-      }, function(error) {
-      if(error === null) {
-        alert("Password changed successfully!");
-      } else {
-        alert("Error changing password.", error);
-      }
-    });
-  }
-
-  changePasswordButton(){
-    return (
-      <TouchableHighlight
-        onPress = {this.changePassword}
-        underlayColor = 'lemonchiffon'>
-
-        <Text style = {{
-          color: '#000',
-          fontSize: 16,
-          textAlign: 'center'}}>
-          change password
-        </Text>
-      </TouchableHighlight>
-    )
-  }
-
-  changeEmail(){
-    database.changeEmail({
-      oldEmail: this.state.user.password.email,
-      newEmail: "email@mail.com",
-      password: "t"
-      }, function(error) {
-      if(error) {
-        switch(error.code) {
-          case "INVALID_PASSWORD":
-            alert ("The specified user account password is incorrect.");
-            break;
-          case "INVALID_USER":
-            alert ("The specified user account does not exist.");
-            break;
-          default:
-            alert ("Error creating user.", error);
-        }
-      } else {
-        alert("Email changed successfully!");
-      }
-    });
-  }
-
-  changeEmailButton(){
-    return (
-      <TouchableHighlight
-        onPress = {this.changeEmail}
-        underlayColor = 'lemonchiffon'>
-
-        <Text style = {{
-          color: '#000',
-          fontSize: 16,
-          textAlign: 'center'}}>
-          change email
-        </Text>
-      </TouchableHighlight>
-    )
   }
 
   render() {
@@ -159,8 +65,8 @@ class Setting extends Component {
                   onChangeText = {(text) => this.setState({email: text})}
                   value = {this.state.email}
                   style = {SceneStyles.firstName}
-                  placeholderTextColor = '#000'
-                  underlineColorAndroid = '#FFF'
+                  placeholderTextColor = 'black'
+                  underlineColorAndroid = 'white'
                 />
                 {this.changeEmailButton()}
                 <Image
@@ -177,6 +83,98 @@ class Setting extends Component {
         </View>
       </View>
     );
+  }
+
+  logout() {
+    AsyncStorage.removeItem('user_data').then(() => {
+      database.unauth();
+    });
+  }
+
+  logoutButton() {
+    return (
+      <TouchableHighlight
+        onPress = {this.logout}
+        underlayColor='lemonchiffon'>
+
+        <Text style = {{
+          color: 'black',
+          fontSize: 16,
+          textAlign: 'center'}}>
+          logout
+        </Text>
+      </TouchableHighlight>
+    );
+  }
+
+  /*TODO*/
+  changePassword(){
+    database.changePassword({
+      email: this.state.user.password.email,
+      oldPassword: "asdf",
+      newPassword: "asdf"
+      }, function(error) {
+      if(error === null) {
+        alert('Password changed successfully!');
+      } else {
+        alert('Error changing password.', error);
+      }
+    });
+  }
+
+  changePasswordButton(){
+    return (
+      <TouchableHighlight
+        onPress = {this.changePassword}
+        underlayColor = 'lemonchiffon'>
+
+        <Text style = {{
+          color: 'black',
+          fontSize: 16,
+          textAlign: 'center'}}>
+          change password
+        </Text>
+      </TouchableHighlight>
+    )
+  }
+
+  changeEmail(){
+    database.changeEmail({
+      oldEmail: this.state.user.password.email,
+      newEmail: "email@mail.com",
+      password: "t"
+      }, function(error) {
+      if(error) {
+        switch(error.code) {
+          case "INVALID_PASSWORD":
+            alert('The specified user account password is incorrect.');
+            break;
+          case "INVALID_USER":
+            alert('The specified user account does not exist.');
+            break;
+          default:
+            alert('Error creating user.', error);
+        }
+      } else {
+        alert('Email changed successfully!');
+      }
+    });
+  }
+
+  changeEmailButton(){
+    return (
+      <TouchableHighlight
+        onPress = {this.changeEmail}
+        underlayColor = 'lemonchiffon'>
+
+        <Text style = {{
+          color: 'black',
+          fontSize: 16,
+          textAlign: 'center'}}>
+          change email
+        </Text>
+      </TouchableHighlight>
+    )
   }
 }
 

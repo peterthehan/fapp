@@ -20,7 +20,6 @@ import Saturation from '../components/saturation';
 var length = Dimensions.get('window').width;
 
 class Camera extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   }
 });
 
-var options = {
+const options = {
   title: 'Select Avatar', // specify null or empty string to remove the title
   cancelButtonTitle: 'Cancel',
   takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button

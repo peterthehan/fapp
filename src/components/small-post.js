@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   AsyncStorage,
   Component,
   Dimensions,
@@ -12,9 +13,10 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import GridView from './grid-view';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-simple-modal';
+
+import GridView from './grid-view';
 import Profile from "../scenes/profile";
 import SearchBar from './search-bar';
 import TitleBar from './title-bar';
@@ -97,7 +99,7 @@ class SmallPost extends Component {
               <View style = {styles.buttonViewModal}>
                 <TouchableOpacity
                   style = {styles.button}
-                  onPress = {() => {alert("Database access");}}>
+                  onPress = {() => {Alert.alert('', 'Database access');}}>
                   <Icon
                     name = "star"
                     size = {28}
@@ -106,7 +108,7 @@ class SmallPost extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style = {styles.button}
-                  onPress = {() => {alert("Go to messages page.");}}>
+                  onPress = {() => {Alert.alert('', 'Go to messages page.');}}>
                   <Icon
                     name = "feedback"
                     size = {28}
@@ -145,7 +147,7 @@ class SmallPost extends Component {
 
   picture(){
     //TODO
-    Alert.alert("Pressed Picture.");
+    Alert.alert('', 'Pressed Picture.');
     this.setState({open: true, image: this.state.photo});
   }
 
@@ -158,7 +160,7 @@ class SmallPost extends Component {
   }
 
   messages(){
-    Alert.alert("Go to Messages Page.");
+    Alert.alert('', 'Go to Messages Page.');
   }
 
   getFavoriteColor(){

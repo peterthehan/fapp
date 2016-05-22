@@ -13,14 +13,12 @@ import Firebase from 'firebase';
 
 import AppBar from '../components/app-bar';
 import Button from '../components/button';
-
-import SceneStyles from '../styles/scene-styles';
-import TextStyles from '../styles/text-styles';
 import ButtonStyles from '../styles/button-styles';
-
-import Main from './main';
-import Signup from './signup';
 import ForgotPassword from './forgot-password';
+import Main from './main';
+import SceneStyles from '../styles/scene-styles';
+import Signup from './signup';
+import TextStyles from '../styles/text-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -49,8 +47,8 @@ class Login extends Component {
             onChangeText = {(text) => this.setState({email: text})}
             value = {this.state.email}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             keyboardType = 'email-address'
           />
           <TextInput
@@ -58,8 +56,8 @@ class Login extends Component {
             onChangeText = {(text) => this.setState({password: text})}
             value = {this.state.password}
             style = {TextStyles.textInput}
-            placeholderTextColor = '#FFF'
-            underlineColorAndroid = '#FFF'
+            placeholderTextColor = 'white'
+            underlineColorAndroid = 'white'
             secureTextEntry = {true}
           />
 

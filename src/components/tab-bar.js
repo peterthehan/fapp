@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: '#000'
+    borderBottomColor: 'black'
   },
   tabUnderlineStyle: {
     position: 'absolute',
