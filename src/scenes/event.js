@@ -13,7 +13,7 @@ import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
 import Header from '../components/header';
-
+import SceneStyles from '../styles/scene-styles'
 import CreateEvent from './create-event';
 import EventDetails from './event-details';
 
@@ -44,9 +44,11 @@ class Event extends Component {
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
             <TouchableOpacity onPress = {this.showDetails}>
-              <Text>
-                {rowData}
-              </Text>
+              <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
+                <Text style = {SceneStyles.text}>
+                  {rowData}
+                </Text>
+              </View>
             </TouchableOpacity>
           }
         />

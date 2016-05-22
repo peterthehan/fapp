@@ -52,8 +52,6 @@ class Setting extends Component {
     this.changePassword = this.changePassword.bind(this);
   }
 
-
-
   logout(){
     AsyncStorage.removeItem('user_data').then(() => {
       database.unauth();
