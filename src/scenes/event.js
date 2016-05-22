@@ -26,24 +26,11 @@ class Event extends Component {
       dataSource: []
     };
     this.renderRow = this.renderRow.bind(this);
-    this.showDetails = this.showDetails.bind(this);
     this.createEvent = this.createEvent.bind(this);
   }
 
   componentDidMount(){
     this.queryData();
-  }
-
-  renderRow(event){
-    return(
-      <TouchableOpacity onPress = {this.showDetails}>
-        <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
-          <Text style = {SceneStyles.text}>
-            {event.val().title}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
   }
 
   queryData() {
@@ -58,6 +45,18 @@ class Event extends Component {
       });
       self.setState({dataSource: myBlob});
     });
+  }
+
+  renderRow(eventData){
+    return(
+      <TouchableOpacity onPress = {() => this.showDetails(eventData)}>
+        <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
+          <Text style = {SceneStyles.text}>
+            {eventData.val().title}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
   }
 
   render() {
@@ -80,8 +79,8 @@ class Event extends Component {
     );
   }
 
-  showDetails(page){
-    this.props.navigator.push({component: EventDetails});
+  showDetails(eventData){
+    this.props.navigator.push({component: EventDetails, state: eventData});
   }
 
   createEvent(){
