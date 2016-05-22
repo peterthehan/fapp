@@ -119,7 +119,6 @@ class Setting extends Component {
     database.changeEmail({
       oldEmail: this.state.user.password.email,
       newEmail: this.state.email,
-      password: "1"
     }, function(error) {
       if(error) {
         switch(error.code) {
