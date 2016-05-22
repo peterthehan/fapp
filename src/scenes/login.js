@@ -90,7 +90,9 @@ class Login extends Component {
   }
 
   login() {
-    if(this.state.email === "") {
+    if(this.state.email === "" && this.state.password === "") {
+      Alert.alert('', 'Enter your account information.')
+    } else if(this.state.email === "") {
       Alert.alert('', 'Enter your email.');
     } else if(this.state.password === "") {
       Alert.alert('', 'Enter your password.');
