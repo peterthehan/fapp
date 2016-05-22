@@ -44,7 +44,6 @@ const pictures = [
 const windowSize = Dimensions.get('window');
 
 class Home extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -194,7 +193,7 @@ class Home extends Component {
               <View style = {styles.buttonViewModal}>
                 <TouchableOpacity
                   style = {styles.button}
-                  //TODO: Beter way to call corresponding messages
+                  //TODO: Better way to call corresponding messages
                   onPress = {() => {alert("Database access");}}>
                   <Icon
                     name = "star"
@@ -224,7 +223,7 @@ class Home extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: 'white',
+    backgroundColor: '#FFF',
     borderWidth: 1,
     borderColor: 'gray',
     margin: 2,

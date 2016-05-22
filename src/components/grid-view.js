@@ -8,7 +8,6 @@ import React, {
 } from 'react-native';
 
 class GridView extends Component {
-
   constructor(props){
     super(props);
     this.state = {
@@ -35,15 +34,14 @@ class GridView extends Component {
             tintColor = "blue"
             title = "Loading..."
             titleColor = "black"
-            colors = {['#ffffff', '#b3b3b3', '#808080']}
-            progressBackgroundColor = "black"
+            colors = {['#FFFFFF', '#B3B3B3', '#808080']}
+            progressBackgroundColor = "#000"
           />
         }>
         {this.props.dataSource.map(this.props.renderRow)}
       </ScrollView>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
