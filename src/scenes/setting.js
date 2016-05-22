@@ -44,6 +44,7 @@ class Setting extends Component {
       name: "",
       oldEmail: "",
       email: "",
+      newPic: "",
       password: "",
       profilePic: "",
     };
@@ -58,6 +59,7 @@ class Setting extends Component {
     AsyncStorage.removeItem('user_data').then(() => {
       database.unauth();
     });
+    this.props.navigator.push({component: Home});
   }
 
   logoutButton(){
@@ -80,7 +82,7 @@ class Setting extends Component {
   changePassword(){
     database.changePassword({
       email: this.state.user.password.email,
-      oldPassword: "asdf",
+      oldPassword: this.state.user.password,
       newPassword: "asdf"
       }, function(error) {
       if(error === null) {
@@ -104,15 +106,42 @@ class Setting extends Component {
           change password
         </Text>
       </TouchableHighlight>
-    )
+    );
   }
 
   changeProfilePicture(){
-
+    var req = database.child("users");
+    req.child(this.state.user.uid).update({
+      profilePic: this.state.newPic
+    });
   }
 
   changeProfilePictureButton(){
+    return (
+      <TouchableHighlight
+        onPress = {this.changeProfilePicture}
+        underlayColor = 'lemonchiffon'>
+        <Text style = {{
+          color: '#000',
+          fontSize: 16,
+          textAlign: 'center'}}>
+          change profile picture
+        </Text>
+      </TouchableHighlight>
+    );
+  }
 
+  picture(){
+    return(
+     <TextInput
+       placeholder = {"please enter picture URL"}
+       onChangeText = {(text) => this.setState({newPic: text})}
+       value = {this.state.newPic}
+       style = {SceneStyles.firstName}
+       placeholderTextColor = '#000'
+       underlineColorAndroid = '#FFF'
+     />
+   );
   }
 
   changeEmail(){
@@ -154,8 +183,20 @@ class Setting extends Component {
           change email
         </Text>
       </TouchableHighlight>
-      <Text>Please login again</Text>
-    )
+    );
+  }
+
+  email(){
+    return(
+      <TextInput
+        placeholder = {"email"}
+        onChangeText = {(text) => this.setState({email: text})}
+        value = {this.state.email}
+        style = {SceneStyles.firstName}
+        placeholderTextColor = '#000'
+        underlineColorAndroid = '#FFF'
+      />
+    );
   }
 
   render() {
@@ -185,19 +226,15 @@ class Setting extends Component {
                 <Text style = {page_styles.email_text}>
                    {this.state.oldEmail}
                 </Text>
-                <TextInput
-                  placeholder = {"email"}
-                  onChangeText = {(text) => this.setState({email: text})}
-                  value = {this.state.email}
-                  style = {SceneStyles.firstName}
-                  placeholderTextColor = '#000'
-                  underlineColorAndroid = '#FFF'
-                />
+                {this.email()}
                 {this.changeEmailButton()}
                 <Image
                   style={SceneStyles.image}
                   source={{uri: this.state.profilePic}}
                />
+                {this.picture()}
+                {this.changeProfilePictureButton()}
+                {this.changePasswordButton()}
               </View>
                 {this.logoutButton()}
             </View>
