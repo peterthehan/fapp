@@ -15,21 +15,19 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from './grid-view';
-import SearchBar from './search-bar';
-
 import Profile from "../scenes/profile";
+import SearchBar from './search-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Post extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {};
   }
 
-  componentDidMount(){
+  componentDidMount() {
     var postSnapshot = this.props.id;
     var self = this;
 
@@ -50,28 +48,28 @@ class Post extends Component {
     });
   }
 
-  profile(){
+  profile() {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  picture(){
-    //TODO
-    //this.props.navigator.push({component: Post, state: post.postID});
+  picture() {
+    // TODO
+    // this.props.navigator.push({component: Post, state: post.postID});
   }
 
-  favorite(){
-    //post.isFavorite = !post.isFavorite;
+  favorite() {
+    // post.isFavorite = !post.isFavorite;
     // TODO: update database
 
     // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
     this.forceUpdate();
   }
 
-  messages(){
+  messages() {
     alert("Go to messages page.");
   }
 
-  getFavoriteColor(){
+  getFavoriteColor() {
     return "orange";
   }
 

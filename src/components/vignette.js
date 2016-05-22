@@ -1,3 +1,5 @@
+'use strict';
+
 import GL from "gl-react";
 import React from "react-native";
 
@@ -37,8 +39,8 @@ module.exports = GL.createComponent(
   ({ time, freq, texture, amp, moving, finger, ...rest}) =>
   <GL.Node
           {...rest}
-          shader={shaders.imageVignette}
-          uniforms={{
+          shader = {shaders.imageVignette}
+          uniforms = {{
             time,
             freq: 0,
             texture,
@@ -47,4 +49,4 @@ module.exports = GL.createComponent(
             finger: [0.5, 0.5]
           }}
         />,
-{ displayName: "Vignette" });
+{displayName: "Vignette"});
