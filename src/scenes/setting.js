@@ -143,6 +143,7 @@ class Setting extends Component {
 
   changeEmailButton(){
     return (
+      <View>
       <TouchableHighlight
         onPress = {this.changeEmail}
         underlayColor = 'lemonchiffon'>
@@ -154,8 +155,10 @@ class Setting extends Component {
           change email
         </Text>
       </TouchableHighlight>
+
       <Text>Please login again</Text>
-    )
+      </View>
+    );
   }
 
   render() {
