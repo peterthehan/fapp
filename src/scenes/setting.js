@@ -30,18 +30,19 @@ class Setting extends Component {
     var self = this;
 
     database.once("value", function(snapshot){
-      var usersnapshot = snapshot.child("users/");
+      var usersnapshot = snapshot.child("users/" + props.state);
       var proPic = usersnapshot.val().profilePic;
       var emailaddress = usersnapshot.val().email;
       self.setState({
         name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
         profilePic: proPic,
-        email: emailaddress,
+        oldEmail: emailaddress,
       });
     });
 
     this.state = {
       name: "",
+      oldEmail: "",
       email: "",
       password: "",
       profilePic: "",
@@ -50,6 +51,8 @@ class Setting extends Component {
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
   }
+
+
 
   logout(){
     AsyncStorage.removeItem('user_data').then(() => {
@@ -115,9 +118,9 @@ class Setting extends Component {
   changeEmail(){
     database.changeEmail({
       oldEmail: this.state.user.password.email,
-      newEmail: "email@mail.com",
-      password: "t"
-      }, function(error) {
+      newEmail: this.state.email,
+      password: "1"
+    }, function(error) {
       if(error) {
         switch(error.code) {
           case "INVALID_PASSWORD":
@@ -132,6 +135,10 @@ class Setting extends Component {
       } else {
         alert("Email changed successfully!");
       }
+    });
+    var ref = database.child("users");
+    ref.child(this.state.user.uid).update({
+      email: this.state.email
     });
   }
 
@@ -172,8 +179,11 @@ class Setting extends Component {
           this.state.user &&
             <View style = {SceneStyles.body}>
               <View style = {page_styles.email_container}>
+                <Text>
+                   {this.state.name}
+                </Text>
                 <Text style = {page_styles.email_text}>
-                  {this.state.user.password.email}
+                   {this.state.oldEmail}
                 </Text>
                 <TextInput
                   placeholder = {"email"}
@@ -186,16 +196,8 @@ class Setting extends Component {
                 {this.changeEmailButton()}
                 <Image
                   style={SceneStyles.image}
-                  source={{uri: this.state.propic}}
+                  source={{uri: this.state.profilePic}}
                />
-                <Text style = {page_styles.email_text}>{this.state.user.uid}
-                </Text>
-                <Text>
-                   {this.state.name}
-                </Text>
-                <Text>
-                   test above should be name
-                </Text>
               </View>
                 {this.logoutButton()}
             </View>

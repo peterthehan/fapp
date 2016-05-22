@@ -67,7 +67,7 @@ class More extends Component {
   }
 
   setting(){
-    this.props.navigator.push({component: Setting});
+    this.props.navigator.push({component: Setting, state: this.state.userID});
   }
 
   settingbutton(){
