@@ -6,6 +6,7 @@ import React, {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
@@ -16,6 +17,7 @@ class Comments extends Component {
 
   render() {
     var flexVar = this.props.flex;
+    var newComment = '';
 
     return (
       <View style={{flex:flexVar}}>
@@ -27,30 +29,26 @@ class Comments extends Component {
           >
           {this.props.commentsArray}
         </ScrollView>
+
+        <TextInput
+          ref={'newCommentInput'}
+          onSubmitEditing={(event) => this.updateText(event.nativeEvent.text)}
+          placeholder = {"Add a comment"}
+          placeholderTextColor = 'gray'
+          underlineColorAndroid = 'gray'
+        />
       </View>
     );
   }
 
-  backButton(){
-    if(this.props.hasBack) {
-      return (
-        <TouchableOpacity
-          style = {styles.backButton}
-          onPress = {() => this.props.navigator.pop()}>
-          <Icon
-            name = "arrow-back"
-            size = {25}
-            borderWidth = {7}
-            color = "white"
-            />
-        </TouchableOpacity>
-      );
-    }
-    else {
-      return null;
-    }
+  updateText(text){
+    //database stuffff
+    this.refs['newCommentInput'].clear();
+    alert(text);
   }
+
 }
+
 
 var styles = StyleSheet.create({
   header: {
