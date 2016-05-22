@@ -119,6 +119,7 @@ class Setting extends Component {
     database.changeEmail({
       oldEmail: this.state.user.password.email,
       newEmail: this.state.email,
+      password: "1"
     }, function(error) {
       if(error) {
         switch(error.code) {
@@ -132,7 +133,7 @@ class Setting extends Component {
             alert ("Error creating user.", error);
         }
       } else {
-        alert("Email changed successfully!");
+        alert("Email changed successfully! Please logout and login again");
       }
     });
     var ref = database.child("users");
@@ -143,7 +144,6 @@ class Setting extends Component {
 
   changeEmailButton(){
     return (
-      <View>
       <TouchableHighlight
         onPress = {this.changeEmail}
         underlayColor = 'lemonchiffon'>
@@ -155,10 +155,7 @@ class Setting extends Component {
           change email
         </Text>
       </TouchableHighlight>
-
-      <Text>Please login again</Text>
-      </View>
-    );
+    )
   }
 
   render() {

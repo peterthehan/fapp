@@ -22,8 +22,7 @@ import ButtonStyles from '../styles/button-styles';
 import HeaderStyles from '../styles/header-styles';
 import SceneStyles from '../styles/scene-styles';
 
-let events = new Firebase("poopapp1.firebaseio.com/events");
-let notifications = new Firebase("poopapp1.firebaseio.com/notification");
+let database = new Firebase("poopapp1.firebaseio.com/");
 
 class Notification extends Component {
 
@@ -41,11 +40,26 @@ class Notification extends Component {
   }
 
   componenetDidMount() {
-    this.listenForItems(notifications);
+    AsyncStorage.getItem('user_data', (error, result) =>{
+      self.setState({
+        userID: JSON.parse(result).uid,
+      });
+    });
+    database.once("value", function(snapshot){
+      var usersnapshot = snapshot.child("users/" + this.state.userID);
+      var proPic = usersnapshot.val().profilePic;
+      var req = database.child("users");
+      var data = req.child(this.state.user.uid);
+      self.setState({
+        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
+        profilePic: proPic,
+      });
+    });
+    this.listenForItems();
   }
 
-  listenForItems(notification) {
-    notification.on('value', (snap) => {
+  listenForItems() {
+    data.on('value', (snap) => {
       // get children as an array
       var items = [];
       snap.forEach((child) => {
@@ -72,7 +86,7 @@ class Notification extends Component {
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
             <TouchableOpacity onPress = {this.generate} underlayColor = 'lemonchiffon'>
-              <View style = {{flex: 1, height: 50, backgroundColor: 'dodgerblue', padding: 10, alignItems: 'center'}}>
+              <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
                 <Text style = {SceneStyles.text}>
                   {rowData}
                 </Text>
