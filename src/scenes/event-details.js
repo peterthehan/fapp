@@ -11,11 +11,10 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 import Comments from '../components/comments';
 
 import ButtonStyles from '../styles/button-styles';
-import HeaderStyles from '../styles/header-styles';
 
 import Main from './main';
 
@@ -32,8 +31,8 @@ class EventDetails extends Component {
 
   render() {
     return (
-      <View style={{flex:10}}>
-        <Header
+      <View style = {{flex:10}}>
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Event Details"
           hasBack = {true}
@@ -76,30 +75,30 @@ class EventDetails extends Component {
         </View>
 
         <Comments
-        flex = {1}
-        commentsArray = {[
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-              <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
-            ]}
+          flex = {1}
+          commentsArray = {[
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
+            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
+          ]}
         />
-
       </View>
     );
   }
 
-  goToGuestList(){
-    alert('guest list not implemented');
+  goToGuestList() {
+    alert('Guest list not implemented.');
   }
 }
+
 module.exports = EventDetails;

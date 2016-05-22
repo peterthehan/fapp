@@ -10,7 +10,7 @@ import React, {
 class AppBar extends Component {
   render() {
     return (
-      <View style = {styles.headerStyles}>
+      <View style = {styles.appBarStyles}>
         <Image source = {this.props.image}>
         </Image>
       </View>
@@ -19,7 +19,7 @@ class AppBar extends Component {
 }
 
 const styles = StyleSheet.create({
-  headerStyles: {
+  appBarStyles: {
     padding: 16,
     alignItems: 'center'
   }

@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   AsyncStorage,
   Component,
   Dimensions,
@@ -12,21 +13,17 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import GridView from './grid-view';
-import Header from './header';
-import SearchBar from './search-bar';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Profile from "../scenes/profile";
+import SearchBar from './search-bar';
+import TitleBar from './title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Post extends Component {
-
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
@@ -51,16 +48,16 @@ class Post extends Component {
     });
   }
 
-  profile(){
+  profile() {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  picture(){
+  picture() {
     //TODO
     //this.props.navigator.push({component: Post, state: post.postID});
   }
 
-  favorite(){
+  favorite() {
     //post.isFavorite = !post.isFavorite;
     // TODO: update database
 
@@ -68,8 +65,8 @@ class Post extends Component {
     this.forceUpdate();
   }
 
-  messages(){
-    alert("Go to messages page.");
+  messages() {
+    Alert.alert("Go to messages page.");
   }
 
   getFavoriteColor(){
@@ -132,6 +129,8 @@ class Post extends Component {
   }
 }
 
+const windowSize = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   item: {
     backgroundColor: 'white',
@@ -153,8 +152,8 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   photo: {
-    width: Dimensions.get("window").width - 16,
-    height: (Dimensions.get("window").width - 16) * 9 / 16,
+    width: windowSize.width - 16,
+    height: (windowSize.width - 16) * 9 / 16,
   },
   descriptionView: {
     padding: 12,

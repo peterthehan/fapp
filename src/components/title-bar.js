@@ -2,7 +2,6 @@
 
 import React, {
   Component,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,18 +10,14 @@ import React, {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-class Header extends Component {
+class TitleBar extends Component {
   render() {
     return (
-      <View style = {styles.header}>
+      <View style = {styles.titleBarStyles}>
         {this.backButton()}
-        <Text style = {styles.headerText}>
+        <Text style = {styles.titleBarText}>
           {this.props.text}
         </Text>
-        <Image
-          style = {styles.headerImage}
-          source = {this.props.image}>
-        </Image>
       </View>
     );
   }
@@ -37,7 +32,7 @@ class Header extends Component {
             name = "arrow-back"
             size = {25}
             borderWidth = {7}
-            color = "white"
+            color = "#FFF"
             />
         </TouchableOpacity>
       );
@@ -49,20 +44,18 @@ class Header extends Component {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    padding: 10,
+  titleBarStyles: {
+    padding: 14,
     alignItems: 'center',
     backgroundColor: '#F26D6A',
   },
-  headerText: {
+  titleBarText: {
     color: '#FFF',
     fontSize: 18
-  },
-  headerImage: {
   },
   backButton: {
     position: 'absolute',
   }
 });
 
-module.exports = Header;
+module.exports = TitleBar;

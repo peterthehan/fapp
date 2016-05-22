@@ -13,7 +13,7 @@ import React, {
 
 import Firebase from 'firebase';
 import GridView from '../components/grid-view';
-import Header from '../components/header';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 const pictures = [
@@ -69,13 +69,13 @@ class Profile extends Component {
   }
 
   queryData(){
-    alert("ASFD");
+    alert("Query data.");
   }
 
   render() {
     return(
       <View style = {{flex: 1}}>
-        <Header
+        <TitleBar
           navigator = {this.props.navigator}
           text = "Profile"
           hasBack = {true}

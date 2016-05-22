@@ -13,8 +13,6 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
-import Header from '../components/header';
-
 import PostDetails from './post-details';
 
 class Edit extends Component {

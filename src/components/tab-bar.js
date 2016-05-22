@@ -25,29 +25,6 @@ class TabBar extends Component{
     }
   }
 
-  componentDidMount() {
-    this.setAnimationValue(this.props.activeTab);
-  }
-
-  setAnimationValue(value) {
-    this.state.tabIcons.forEach((icon, i) => {
-      const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
-      icon.setNativeProps({
-        style: {
-          color: this.iconColor(progress)
-        },
-      });
-    });
-  }
-
-  // color between rgb(59,89,152) and rgb(204,204,204)
-  iconColor(progress) {
-    const red = 242 + (204 - 242) * progress;
-    const green = 109 + (204 - 109) * progress;
-    const blue = 106 + (204 - 106) * progress;
-    return `rgb(${red}, ${green}, ${blue})`;
-  }
-
   render() {
     const tabWidth = this.props.containerWidth / this.props.tabs.length;
     const left = this.props.scrollValue.interpolate({
@@ -76,6 +53,29 @@ class TabBar extends Component{
         <Animated.View style = {[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
       </View>
     );
+  }
+
+  componentDidMount() {
+    this.setAnimationValue(this.props.activeTab);
+  }
+
+  setAnimationValue(value) {
+    this.state.tabIcons.forEach((icon, i) => {
+      const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
+      icon.setNativeProps({
+        style: {
+          color: this.iconColor(progress)
+        },
+      });
+    });
+  }
+
+  // color between rgb(59,89,152) and rgb(204,204,204)
+  iconColor(progress) {
+    const red = 242 + (204 - 242) * progress;
+    const green = 109 + (204 - 109) * progress;
+    const blue = 106 + (204 - 106) * progress;
+    return `rgb(${red}, ${green}, ${blue})`;
   }
 }
 
