@@ -12,6 +12,8 @@ import React, {
   View
 } from 'react-native';
 
+import Firebase from 'firebase';
+
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
 import TitleBar from '../components/title-bar';
@@ -20,6 +22,8 @@ const dateStartStr = 'Pick a Start Date';
 const dateEndStr = 'Pick an End Date';
 const timeStartStr = 'Pick a Start Time';
 const timeEndStr = 'Pick an End Time';
+
+let events = new Firebase("poopapp1.firebaseio.com/events");
 
 class CreateEvent extends Component {
   constructor(props) {
@@ -285,15 +289,16 @@ class CreateEvent extends Component {
   }
 
   createEvent() {
-    alert(
-      'title: '+ this.state.title + "\n" +
-      (this.state.publicEvent ? 'public ':'private') + " event \n" +
-      'start date: ' + this.state.dateStart + "\n" +
-      'end date: ' + this.state.dateEnd + "\n" +
-      'start time: ' + this.state.timeStart + "\n" +
-      'end time: ' + this.state.timeEnd + "\n" +
-      'description: ' + this.state.description
-    );
+    events.push({
+      title: this.state.title,
+      description: this.state.description,
+      startDate: this.state.dateStart,
+      startTime: this.state.timeStart,
+      endDate: this.state.dateEnd,
+      endTime: this.state.timeEnd,
+      photo: 'https://s-media-cache-ak0.pinimg.com/236x/d8/0d/1e/d80d1efe3a4b6b4d8bd186bdd788902c.jpg',
+      isPublic: this.state.publicEvent
+    });
   }
 
   clearEvent() {
