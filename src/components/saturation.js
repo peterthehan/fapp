@@ -1,3 +1,5 @@
+'use strict';
+
 import GL from 'gl-react';
 import React from 'react-native';
 
@@ -18,10 +20,10 @@ const shaders = GL.Shaders.create({
 });
 
 module.exports = GL.createComponent(
-  ({ factor, image, ...rest }) =>
+  ({factor, image, ...rest}) =>
   <GL.Node
     {...rest}
-    shader={shaders.saturation}
-    uniforms={{ factor, image }}
+    shader = {shaders.saturation}
+    uniforms = {{factor, image}}
   />,
-{ displayName: "Saturation" });
+{displayName: "Saturation"});

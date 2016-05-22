@@ -10,8 +10,8 @@ import React, {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
+var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 class TabBar extends Component{
   propTypes: {
@@ -25,6 +25,41 @@ class TabBar extends Component{
     this.state = {
       tabIcons: [],
     }
+  }
+
+  render() {
+    const tabWidth = this.props.containerWidth / this.props.tabs.length;
+    const left = this.props.scrollValue.interpolate({
+      inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
+    });
+
+    return (
+      <View>
+        <View style = {[styles.tabs, this.props.style]}>
+          {this.props.tabs.map((tab, i) => {
+            return (
+              <TouchableOpacity
+                key = {tab}
+                onPress = {() => {
+                  if (i == 2) {
+                    this.openCamera();
+                  }
+                  this.props.goToPage(i)}
+                }
+                style = {styles.tab}>
+                <Icon
+                  name = {tab}
+                  size = {30}
+                  color = {this.props.activeTab == i ? '#F26D6A' : 'rgb(204,204,204)'}
+                  ref = {(icon) => {this.state.tabIcons[i] = icon;}}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+        <Animated.View style = {[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
+      </View>
+    );
   }
 
   componentDidMount() {
@@ -67,41 +102,6 @@ class TabBar extends Component{
       }
     });
   }
-
-  render() {
-    const tabWidth = this.props.containerWidth / this.props.tabs.length;
-    const left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
-    });
-
-    return (
-      <View>
-        <View style = {[styles.tabs, this.props.style]}>
-          {this.props.tabs.map((tab, i) => {
-            return (
-              <TouchableOpacity
-                key = {tab}
-                onPress = {() => {
-                  if (i == 2) {
-                    this.openCamera();
-                  }
-                  this.props.goToPage(i)}
-                }
-                style = {styles.tab}>
-                <Icon
-                  name = {tab}
-                  size = {30}
-                  color = {this.props.activeTab == i ? '#F26D6A' : 'rgb(204,204,204)'}
-                  ref = {(icon) => {this.state.tabIcons[i] = icon;}}
-                />
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <Animated.View style = {[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
-      </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
 });
 
-var options = {
+const options = {
   title: 'Select Avatar', // specify null or empty string to remove the title
   cancelButtonTitle: 'Cancel',
   takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button

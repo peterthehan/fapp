@@ -22,7 +22,6 @@ import Vignette from '../components/vignette';
 var length = Dimensions.get('window').width;
 
 class Camera extends Component {
-
   constructor(props) {
     super(props);
     this.state = {

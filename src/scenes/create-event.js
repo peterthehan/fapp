@@ -13,17 +13,15 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
+import ButtonStyles from '../styles/button-styles';
 import TitleBar from '../components/title-bar';
 
-import ButtonStyles from '../styles/button-styles';
-
-var dateStartStr = 'Pick a Start Date';
-var dateEndStr = 'Pick an End Date';
-var timeStartStr = 'Pick a Start Time';
-var timeEndStr = 'Pick an End Time';
+const dateStartStr = 'Pick a Start Date';
+const dateEndStr = 'Pick an End Date';
+const timeStartStr = 'Pick a Start Time';
+const timeEndStr = 'Pick an End Time';
 
 class CreateEvent extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +33,19 @@ class CreateEvent extends Component {
       timeEnd: timeEndStr,
       description: ''
     }
+  }
+
+  render() {
+    return(
+      <View style = {styles.container}>
+        {this.renderTitleBar()}
+        {this.renderTitleInput()}
+        {this.renderDateTimeInput()}
+        {this.renderToggle()}
+        {this.renderDescriptionInput()}
+        {this.renderButtons()}
+      </View>
+    );
   }
 
   async showDatePicker(stateKey, options, start) {
@@ -96,35 +107,22 @@ class CreateEvent extends Component {
     var mStr = '';
     var isAM = false;
 
-    if(hour == 0){
+    if(hour == 0) {
       hStr = 12;
     }
-    else if(hour > 12){
-      hStr = hour-12;
-    }
-    else{
+    else if(hour > 12) {
+      hStr = hour - 12;
+    } else {
       hStr = hour;
     }
-    if( hour < 12 && hour >= 0 ){
+
+    if( hour < 12 && hour >= 0 ) {
       isAM = true;
     }
     return hStr + ':' + (minute < 10 ? '0' + minute : minute) + (isAM ? ' am' : ' pm');
   }
 
-  render(){
-    return(
-      <View style = {styles.container}>
-        {this.renderTitleBar()}
-        {this.renderTitleInput()}
-        {this.renderDateTimeInput()}
-        {this.renderToggle()}
-        {this.renderDescriptionInput()}
-        {this.renderButtons()}
-      </View>
-    );
-  }
-
-  renderTitleBar(){
+  renderTitleBar() {
     return(
       <TitleBar
         navigator = {this.props.navigator}
@@ -134,7 +132,7 @@ class CreateEvent extends Component {
     );
   }
 
-  renderTitleInput(){
+  renderTitleInput() {
     return(
       <View>
         <Text style = {styles.smallText}>
@@ -152,7 +150,7 @@ class CreateEvent extends Component {
     );
   }
 
-  renderDateTimeInput(){
+  renderDateTimeInput() {
     return (
       <View>
         <View style = {styles.dateView}>
@@ -167,7 +165,7 @@ class CreateEvent extends Component {
                     date: this.state.minDate,
                     minDate: new Date(),
                   }, true)
-              }>
+                }>
                 <Text style = { [ {color:'gray'}, this.state.dateStart != dateStartStr && {color:'black'} ] }>
                   {this.state.dateStart}
                 </Text>
@@ -193,8 +191,8 @@ class CreateEvent extends Component {
                 this.showDatePicker.bind(this, 'min', {
                   date: this.state.minDate,
                   minDate: new Date(this.state.dateStart),
-                }, false )
-              }>
+                  }, false )
+                }>
                 <Text style = { [ {color:'gray'}, this.state.dateEnd != dateEndStr && {color:'black'} ] }>
                   {this.state.dateEnd}
                 </Text>
@@ -214,7 +212,7 @@ class CreateEvent extends Component {
     );
   }
 
-  renderToggle(){
+  renderToggle() {
     return(
       <View style = {styles.visibilityView}>
         <Switch
@@ -222,14 +220,14 @@ class CreateEvent extends Component {
           style = {styles.visibilityToggle}
           value = {this.state.publicEvent}
         />
-        <Text style={styles.visibilityText}>
+        <Text style = {styles.visibilityText}>
           {this.state.publicEvent ? ' Public Event' : 'Private Event'}
         </Text>
       </View>
     );
   }
 
-  renderDescriptionInput(){
+  renderDescriptionInput() {
     var limit = 1000;
     var remainder = limit - this.state.description.length;
     var remainderColor = remainder > 5 ? 'blue' : 'red';
@@ -254,7 +252,7 @@ class CreateEvent extends Component {
     );
   }
 
-  renderButtons(){
+  renderButtons() {
     return (
       <View style = {{alignItems: 'center'}}>
         <Button
@@ -282,11 +280,11 @@ class CreateEvent extends Component {
     );
   }
 
-  createGuestList(){
-    alert('friends list unimplemented');
+  createGuestList() {
+    alert('Friends list unimplemented.');
   }
 
-  createEvent(){
+  createEvent() {
     alert(
       'title: '+ this.state.title + "\n" +
       (this.state.publicEvent ? 'public ':'private') + " event \n" +
@@ -298,7 +296,7 @@ class CreateEvent extends Component {
     );
   }
 
-  clearEvent(){
+  clearEvent() {
     alert('Cleared :(');
     this.setState({
       title: '',
