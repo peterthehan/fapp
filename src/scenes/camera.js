@@ -17,7 +17,7 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 import PostDetails from './post-details';
 import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
-import Hefe from '../components/hefe';
+import Instagram from '../components/instagram';
 
 var length = Dimensions.get('window').width;
 
@@ -150,16 +150,25 @@ class Camera extends Component {
   }
 
   vignetteImage() {
+    var secondSource = this.state.avatarSource;
     return (<Vignette
       time = {0.2}
-      texture = {this.state.avatarSource}
+      texture = {secondSource}
       style = {{flex: 1}}
     />
     );
   }
   hefeImage() {
-    return (<Hefe
-      image = {this.state.avatarSource}
+    var thirdSource = this.state.avatarSource;
+    return (<Instagram
+      brightness = {1}
+      saturation = {1}
+      contrast = {1}
+      hue = {0}
+      sepia = {1}
+      gray = {0}
+      mixFactor = {0}
+      tex = {thirdSource} 
       />
     );
   }
