@@ -12,7 +12,8 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import GridView from './grid-view';
 import Profile from "../scenes/profile";
@@ -24,17 +25,29 @@ class Post extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      liked: false
+    };
   }
 
   componentDidMount() {
     var postSnapshot = this.props.id;
     var self = this;
 
-    database.once("value", function(snapshot){
+    database.on("value", function(snapshot){
       var userid = postSnapshot.val().userID;
       var userSnapshot = snapshot.child("users/" + userid);
       var proPic = userSnapshot.val().profilePic;
+      var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
+
+      var didLike = false;
+      if (typeof likeData != 'undefined'){
+        likeData.forEach(function(userRated) {
+          if (userRated.val().userId == userid){
+            didLike = true;
+          }
+        });
+      }
 
       self.setState({
         postID: postSnapshot.key().toString(),
@@ -44,6 +57,7 @@ class Post extends Component {
         photo: postSnapshot.val().photoID,
         rating: postSnapshot.val().rating,
         description: postSnapshot.val().description,
+        liked: didLike,
       });
     });
   }
@@ -52,9 +66,51 @@ class Post extends Component {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  picture() {
-    // TODO
-    // this.props.navigator.push({component: Post, state: post.postID});
+  like(){
+    var postRated = database.child("posts/" + this.state.postID + "/ratedList");
+    var ratedVal = database.child("posts/" + this.state.postID + "/rating");
+
+    if (!this.state.liked){
+      postRated.push({userId: this.state.userID});
+      //postRef.update({rating: (this.state.rating + 1)}, function(){});
+      ratedVal.transaction(function(currentRating){
+        return currentRating+1;
+      });
+    }
+    else{
+      var postSnapshot = this.props.id;
+      var self = this;
+
+      database.once("value", function(snapshot){
+        var userid = postSnapshot.val().userID;
+        var userSnapshot = snapshot.child("users/" + userid);
+        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
+
+        if (typeof likeData != 'undefined'){
+          likeData.forEach(function(userRated) {
+            if (userRated.val().userId == userid){
+              var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+      ratedVal.transaction(function(currentRating){
+        return currentRating-1;
+      });
+    }
+  }
+
+  getLikeColor(){
+    if (this.state.liked){
+      return "green";
+    }
+    return "grey";
+  }
+
+  picture(){
+    //TODO
+    //this.props.navigator.push({component: Post, state: post.postID});
   }
 
   favorite() {
@@ -107,8 +163,17 @@ class Post extends Component {
         <View style = {styles.buttonView}>
           <TouchableOpacity
             style = {styles.button}
+            onPress = {this.like.bind(this)}>
+            <IonIcon
+              name = "ios-pizza"
+              size = {16}
+              color = {this.getLikeColor()}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
             onPress = {this.favorite.bind(this)}>
-            <Icon
+            <MaterialIcon
               name = "star"
               size = {16}
               color = {this.getFavoriteColor()}
@@ -117,7 +182,7 @@ class Post extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.messages.bind(this)}>
-            <Icon
+            <MaterialIcon
               name = "feedback"
               size = {16}
               color = "green"
