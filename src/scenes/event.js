@@ -30,6 +30,10 @@ class Event extends Component {
     this.createEvent = this.createEvent.bind(this);
   }
 
+  componentDidMount(){
+    this.queryData();
+  }
+
   renderRow(event){
     return(
       <TouchableOpacity onPress = {this.showDetails}>
@@ -57,7 +61,6 @@ class Event extends Component {
   }
 
   render() {
-    this.queryData();
     return (
       <View style = {{flex: 1}}>
         <TitleBar

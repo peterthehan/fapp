@@ -30,6 +30,10 @@ class Home extends Component {
     };
   }
 
+  componentDidMount(){
+    this.queryData();
+  }
+
   renderRow(post) {
     return (
       <SmallPost navigator={this.props.navigator} id={post}/>
@@ -51,7 +55,6 @@ class Home extends Component {
   }
 
   render() {
-    this.queryData();
     return(
       <View style = {{flex: 1}}>
         <TitleBar
