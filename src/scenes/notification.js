@@ -3,6 +3,7 @@
 import React, {
   Alert,
   Component,
+  AsyncStorage,
   Image,
   ListView,
   StyleSheet,
@@ -38,20 +39,10 @@ class Notification extends Component {
     };
   }
 
-  componenetDidMount() {
+  componentDidMount() {
     AsyncStorage.getItem('user_data', (error, result) =>{
-      self.setState({
+      this.setState({
         userID: JSON.parse(result).uid,
-      });
-    });
-    database.once("value", function(snapshot){
-      var usersnapshot = snapshot.child("users/" + this.state.userID);
-      var proPic = usersnapshot.val().profilePic;
-      var req = database.child("users");
-      var data = req.child(this.state.user.uid).postList;
-      self.setState({
-        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
-        profilePic: proPic,
       });
     });
     this.listenForItems();

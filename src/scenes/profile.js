@@ -6,6 +6,7 @@ import React, {
   RefreshControl,
   ScrollView,
   StyleSheet,
+  Dimensions,
   Text,
   TouchableOpacity,
   View
@@ -22,6 +23,7 @@ const pictures = [
   "http://ww2.kqed.org/quest/wp-content/uploads/sites/39/2012/08/starbucks.jpg",
   "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg"
 ];
+const windowSize = Dimensions.get('window');
 
 class Profile extends Component {
 
@@ -87,13 +89,13 @@ class Profile extends Component {
         }}>
           <Image
             style = {{
-              width: 150,
-              height: 150,
+              width: Dimensions.get("window").width / 4,
+              height: Dimensions.get("window").width / 4,
             }}
             //resizeMode = {Image.resizeMode.center}
             source = {{uri: this.state.profilePic}}
           />
-          <Text style = {{fontSize: 42, color: '#000000',}}>
+          <Text style = {{fontSize: 25, color: '#000000',}}>
             {this.state.name}
           </Text>
         </View>
