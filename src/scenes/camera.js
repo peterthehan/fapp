@@ -168,7 +168,7 @@ class Camera extends Component {
       sepia = {1}
       gray = {0}
       mixFactor = {0}
-      tex = {thirdSource} 
+      tex = {thirdSource}
       />
     );
   }
