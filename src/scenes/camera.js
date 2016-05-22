@@ -7,6 +7,7 @@ import React, {
   StyleSheet,
   Text,
   ToolbarAndroid,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -16,6 +17,7 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 import PostDetails from './post-details';
 import Saturation from '../components/saturation';
+import Vignette from '../components/vignette';
 
 var length = Dimensions.get('window').width;
 
@@ -26,7 +28,8 @@ class Camera extends Component {
     this.state = {
       avatarSource: null,
       test: 'help',
-      length: length
+      length: length,
+      filter: null
     };
   }
 
@@ -49,45 +52,78 @@ class Camera extends Component {
   }
 
   renderImage() {
+    var filter;
+    switch (this.state.filter) {
+      case "sat":
+        filter = this.monoImage();
+        break;
+      case "vign":
+        filter = this.vignetteImage();
+        break;
+      default:
+        filter = <Image source = {this.avatarSource} />;
+        break;
+    }
     return (
       <View>
-        <View>
-          <ToolbarAndroid
-            title = 'Create a Post'
-            style = {styles.toolbar}
-            actions = {[
-              {title: 'Details', show: 'always'},
-              {title: 'Camera', show: 'always'}
-            ]}
-            onActionSelected = {this.onActionSelected.bind(this)}
-          />
-        </View>
+        <ToolbarAndroid
+          title = 'Create a Post'
+          style = {styles.toolbar}
+          actions = {[
+            {title: 'Details', show: 'always'},
+            {title: 'Camera', show: 'always'}
+          ]}
+          onActionSelected = {this.onActionSelected.bind(this)}
+        />
 
-        <Surface
-          width = {this.state.length}
-          height = {this.state.length}
-          ref = "helloGL"
-        >
-          <Saturation
-            factor = {this.state.value}
-            image={this.state.avatarSource}
-          />
+        <Surface width = {this.state.length} height = {this.state.length} >
+        {filter}
         </Surface>
-
+        <View style = {{flex: 1, flexDirection: 'row' }}>
         <Text
-          style = {{color: 'black', marginTop: 10}}>
-          Saturation
+          style = {{color: 'black', marginTop: 10, flex: 1}}>
+          Monochrome
         </Text>
 
-        <Slider
-          value = {this.state.value}
-          maximumValue = {3}
-          onValueChange = {(value) => this.setState({value})}
-        />
-      </View>
+        <TouchableOpacity onPress = {()=> this.setState({filter: 'sat'})} style = {{flex: 1}}>
+          <Surface width = {40} height = {40} >
+            {this.monoImage()}
+          </Surface>
+        </TouchableOpacity>
+
+        <Text
+          style = {{color: 'black', marginTop: 10, flex: 1}}>
+          Vignette
+        </Text>
+
+        <TouchableOpacity onPress = {()=> this.setState({filter: 'vign'})} style = {{flex: 1}}>
+          <Surface width = {40} height = {40} >
+            {this.vignetteImage()}
+          </Surface>
+        </TouchableOpacity>
+
+        </View>
+        </View>
+
     );
   }
 
+  monoImage() {
+    return(<Saturation
+      factor = {0}
+      image = {this.state.avatarSource}
+      style = {{flex: 1}}
+    />);
+  }
+
+  vignetteImage() {
+    return (<Vignette
+      time = {0.2}
+      texture = {this.state.avatarSource}
+      style = {{flex: 1}}
+    />
+    );
+  }
   renderBars() {
     return(
       <View>
@@ -114,7 +150,10 @@ class Camera extends Component {
   }
 
   render() {
-    return this.renderImage();
+    if ( this.state.avatarSource)
+      {return this.renderImage();}
+    else
+      {return this.renderBars();}
   }
 
 }

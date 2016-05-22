@@ -3,7 +3,6 @@
 import React, {
   Component,
   DatePickerAndroid,
-  Image,
   StyleSheet,
   Switch,
   Text,
@@ -18,10 +17,11 @@ import Header from '../components/header';
 
 import ButtonStyles from '../styles/button-styles';
 
-var dateStartStr = 'pick a start date';
-var dateEndStr = 'pick an end date';
-var timeStartStr = 'pick a start time';
-var timeEndStr = 'pick an end time';
+var dateStartStr = 'Pick a Start Date';
+var dateEndStr = 'Pick an End Date';
+var timeStartStr = 'Pick a Start Time';
+var timeEndStr = 'Pick an End Time';
+
 class CreateEvent extends Component {
 
   constructor(props) {
@@ -65,7 +65,6 @@ class CreateEvent extends Component {
   }
 
   async showTimePicker(stateKey, start) {
-
     var tempMin, tempHour;
     try {
       const {action, minute, hour} = await TimePickerAndroid.open();
@@ -80,7 +79,6 @@ class CreateEvent extends Component {
         }
       } else if(action === TimePickerAndroid.timeSetAction){
         tempTimeStr = this.formatTime(hour, minute);
-
       }
       if(start) {
         this.setState({timeStart: tempTimeStr});
@@ -113,116 +111,120 @@ class CreateEvent extends Component {
     return hStr + ':' + (minute < 10 ? '0' + minute : minute) + (isAM ? ' am' : ' pm');
   }
 
-
   render(){
     return(
-      <View style = {{flex: 1}}>
-        {this.renderPageTitle()}
-        {this.renderToggle()}
+      <View style = {styles.container}>
+        {this.renderHeader()}
         {this.renderTitleInput()}
         {this.renderDateTimeInput()}
+        {this.renderToggle()}
         {this.renderDescriptionInput()}
         {this.renderButtons()}
       </View>
     );
   }
 
-  renderPageTitle(){
+  renderHeader(){
     return(
       <Header
         navigator = {this.props.navigator}
-        text = "Create a New Event"
+        text = "Create an Event"
         hasBack = {true}
       />
     );
   }
 
-  renderToggle(){
-    return(
-      <View style = {{alignSelf:'flex-end', flexDirection:'column'}}>
-
-        <Switch
-          onTintColor = "#0000ff"
-          onValueChange = {(value) => this.setState({publicEvent: value})}
-          style = {{marginBottom: 10}}
-          value = {this.state.publicEvent}
-        />
-        <Text style={{color:'black'}}>
-          {this.state.publicEvent ? ' Public Event' : 'Private Event'}
-        </Text>
-      </View>
-    );
-  }
-
   renderTitleInput(){
     return(
-      <TextInput
-        blurOnSubmit = {true}
-        onChangeText = {(text) => this.setState({title: text})}
-        value = {this.state.title}
-        placeholder = {"Give Your Event a Title."}
-        placeholderTextColor = 'gray'
-        underlineColorAndroid = 'black'
-      />
+      <View>
+        <Text style = {styles.smallText}>
+          Title
+        </Text>
+        <TextInput
+          style = {styles.titleInput}
+          onChangeText = {(text) => this.setState({title: text})}
+          value = {this.state.title}
+          placeholder = {"Event Title"}
+          placeholderTextColor = 'gray'
+          underlineColorAndroid = 'gray'
+        />
+      </View>
     );
   }
 
   renderDateTimeInput(){
     return (
       <View>
-        <View style={{flexDirection:'row', justifyContent:'space-around', alignItems:'center'}}>
-          <Text style={{color:'black', textDecorationLine:'underline'}}>
-            date
+        <View style = {styles.dateView}>
+          <Text style = {styles.smallText}>
+            From
           </Text>
-          <Text style={{color:'black', textDecorationLine:'underline'}}>
-            time
+          <View style = {styles.dateInputView}>
+            <View style = {styles.dateInputField}>
+              <TouchableWithoutFeedback
+                onPress = {
+                  this.showDatePicker.bind(this, 'min', {
+                    date: this.state.minDate,
+                    minDate: new Date(),
+                  }, true)
+              }>
+                <Text style = { [ {color:'gray'}, this.state.dateStart != dateStartStr && {color:'black'} ] }>
+                  {this.state.dateStart}
+                </Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style = {styles.dateInputField}>
+              <TouchableWithoutFeedback
+                onPress = {this.showTimePicker.bind(this, true)}>
+                <Text style = { [ {color:'gray'}, this.state.timeStart != timeStartStr && {color:'black'} ] }>
+                  {this.state.timeStart}
+                </Text>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
+        </View>
+        <View style = {styles.dateView}>
+          <Text style = {styles.smallText}>
+            To
           </Text>
+          <View style = {styles.dateInputView}>
+            <View style = {styles.dateInputField}>
+              <TouchableWithoutFeedback onPress = {
+                this.showDatePicker.bind(this, 'min', {
+                  date: this.state.minDate,
+                  minDate: new Date(this.state.dateStart),
+                }, false )
+              }>
+                <Text style = { [ {color:'gray'}, this.state.dateEnd != dateEndStr && {color:'black'} ] }>
+                  {this.state.dateEnd}
+                </Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style = {styles.dateInputField}>
+              <TouchableWithoutFeedback
+                onPress = {this.showTimePicker.bind(this)}>
+                <Text style = { [ {color:'gray'}, this.state.timeEnd != timeEndStr && {color:'black'} ] }>
+                  {this.state.timeEnd}
+                </Text>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
         </View>
-        <Text style = {{color:'black'}}>
-          Event Starts:
+      </View>
+    );
+  }
+
+  renderToggle(){
+    return(
+      <View style = {styles.visibilityView}>
+        <Switch
+          onValueChange = {(value) => this.setState({publicEvent: value})}
+          style = {styles.visibilityToggle}
+          value = {this.state.publicEvent}
+        />
+        <Text style={styles.visibilityText}>
+          {this.state.publicEvent ? ' Public Event' : 'Private Event'}
         </Text>
-        <View style = {{borderWidth: 1,          borderColor:'blue',justifyContent:'space-around', flexDirection:'row'}}>
-          <TouchableWithoutFeedback onPress = {
-            this.showDatePicker.bind(this, 'min', {
-              date: this.state.minDate,
-              minDate: new Date(),
-            }, true)
-          }>
-            <Text style = { [ {color:'gray'}, this.state.dateStart != dateStartStr && {color:'black'} ] }>
-              {this.state.dateStart}
-            </Text>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPress = {this.showTimePicker.bind(this, true)}>
-            <Text style = { [ {color:'gray'}, this.state.timeStart != timeStartStr && {color:'black'} ] }>
-              {this.state.timeStart}
-            </Text>
-          </TouchableWithoutFeedback>
-
-        </View>
-        <Text style = {{color:'black'}}>
-          Event Ends:
-        </Text>
-
-        <View style = {{borderWidth: 1, borderColor:'blue', justifyContent:'space-around', flexDirection:'row'}}>
-
-          <TouchableWithoutFeedback onPress = {
-            this.showDatePicker.bind(this, 'min', {
-              date: this.state.minDate,
-              minDate: new Date(this.state.dateStart),
-            }, false )
-          }>
-            <Text style = { [ {color:'gray'}, this.state.dateEnd != dateEndStr && {color:'black'} ] }>
-              {this.state.dateEnd}
-            </Text>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            onPress = {this.showTimePicker.bind(this)}>
-            <Text style = { [ {color:'gray'}, this.state.timeEnd != timeEndStr && {color:'black'} ] }>
-              {this.state.timeEnd}
-            </Text>
-          </TouchableWithoutFeedback>
-        </View>
       </View>
     );
   }
@@ -233,16 +235,17 @@ class CreateEvent extends Component {
     var remainderColor = remainder > 5 ? 'blue' : 'red';
 
     return (
-      <View>
+      <View style = {styles.descriptionView}>
         <TextInput
           maxLength = {limit}
           multiline = {true}
           style = {{color:'black'}}
           onChangeText = {(text) => this.setState({description: text})}
           value = {this.state.description}
-          placeholder = {"Leave a short description of your event for your guests: (maximum "+limit+" characters.)"}
-          placeholderTextColor = 'grey'
-          underlineColorAndroid = 'black'
+          numberOfLines = {5}
+          placeholder = {"Leave a short description of your event for your guests"}
+          placeholderTextColor = 'gray'
+          underlineColorAndroid = 'gray'
         />
         <Text style = {{color: remainderColor}}>
           remaining: {remainder}
@@ -257,36 +260,36 @@ class CreateEvent extends Component {
         <Button
           text = "Invite Friends!"
           onPress = {this.createGuestList.bind(this)}
-          button_styles = {ButtonStyles.primary_button}
-          button_text_styles = {ButtonStyles.primary_button_text}
+          buttonStyles = {styles.button}
+          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          underlayColor = {"#A2A2A2"}
         />
-
         <Button
           text = "Create Event!"
           onPress = {this.createEvent.bind(this)}
-          button_styles = {ButtonStyles.primary_button}
-          button_text_styles = {ButtonStyles.primary_button_text}
+          buttonStyles = {styles.button}
+          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          underlayColor = {"#A2A2A2"}
         />
-
-      <Button
-        text = "Clear"
-        onPress = {this.clearEvent.bind(this)}
-        button_styles = {ButtonStyles.primary_button}
-        button_text_styles = {ButtonStyles.primary_button_text}
-      />
-
-    </View>
+        <Button
+          text = "Clear"
+          onPress = {this.clearEvent.bind(this)}
+          buttonStyles = {styles.button}
+          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          underlayColor = {"#A2A2A2"}
+        />
+      </View>
     );
   }
 
   createGuestList(){
-    alert('friends list unimplemented')
+    alert('friends list unimplemented');
   }
 
   createEvent(){
     alert(
       'title: '+ this.state.title + "\n" +
-      (this.state.publicEvent? 'public ':'private') + " event \n" +
+      (this.state.publicEvent ? 'public ':'private') + " event \n" +
       'start date: ' + this.state.dateStart + "\n" +
       'end date: ' + this.state.dateEnd + "\n" +
       'start time: ' + this.state.timeStart + "\n" +
@@ -305,9 +308,65 @@ class CreateEvent extends Component {
       timeStart: timeStartStr,
       timeEnd: timeEndStr,
       description: ''
-    })
-
+    });
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+  },
+  smallText: {
+    fontSize: 11,
+    marginLeft: 5,
+  },
+  titleInput: {
+    height: 32,
+    paddingTop: 0,
+  },
+  dateView: {
+    flexDirection: 'column',
+  },
+  dateInputView: {
+    flexDirection: 'row',
+  },
+  dateInputField: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 5,
+    margin: 5,
+  },
+  dateInputText: {
+
+  },
+  visibilityView: {
+    flexDirection: 'row',
+    marginLeft: 10,
+  },
+  visibilityToggle: {
+
+  },
+  visibilityText: {
+    color: 'black',
+  },
+  descriptionView: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    margin: 5,
+  },
+  descriptionInput: {
+
+  },
+  button: {
+    padding: 12,
+    marginLeft: 16,
+    marginRight: 16,
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 4,
+    backgroundColor: '#009688'
+  },
+});
 
 module.exports = CreateEvent;
