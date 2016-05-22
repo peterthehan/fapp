@@ -21,8 +21,7 @@ import Home from './home';
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Setting extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     var self = this;
 
