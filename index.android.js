@@ -3,6 +3,7 @@
 import React, {
   AppRegistry,
   AsyncStorage,
+  BackAndroid,
   Component,
   Navigator,
   Text,
@@ -43,10 +44,21 @@ class PoopApp extends Component {
     });
   }
 
+  bindBackButton(navigator){
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if (navigator && navigator.getCurrentRoutes().length > 1) {
+        navigator.pop();
+        return true;
+      }
+      return false;
+    });
+  }
+
   render() {
     if(this.state.component) {
       return (
         <Navigator
+          ref = {(nav) => {this.bindBackButton(nav);}}
           initialRoute = {{component: this.state.component}}
           configureScene = {(route, routeStack) => {
             return Navigator.SceneConfigs.FloatFromRight
