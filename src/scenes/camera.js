@@ -161,16 +161,17 @@ class Camera extends Component {
 
   igImage() {
     var thirdSource = this.state.avatarSource;
-    return (<Instagram
-      brightness = {1}
-      saturation = {1}
-      contrast = {1}
-      hue = {0}
-      sepia = {1}
-      gray = {0}
-      mixFactor = {0}
-      tex = {thirdSource}
-      />
+    return (
+        <Instagram
+          brightness = {1}
+          saturation = {1}
+          contrast = {1}
+          hue = {0}
+          sepia = {1}
+          gray = {0}
+          mixFactor = {0}
+          tex = {thirdSource}
+        />
     );
   }
   renderBars() {
