@@ -36,7 +36,10 @@ class Home extends Component {
 
   renderRow(post) {
     return (
-      <SmallPost navigator={this.props.navigator} id={post}/>
+      <SmallPost
+        navigator = {this.props.navigator}
+        id = {post}
+      />
     );
   }
 
@@ -44,7 +47,7 @@ class Home extends Component {
     var myBlob = [];
     var self = this;
 
-    //this section loads the postIDs into myBlob and pushes them to dataSource
+    // this section loads the postIDs into myBlob and pushes them to dataSource
     database.once("value", function(snapshot){
       var postsSnapshot = snapshot.child("posts");
       postsSnapshot.forEach(function(postSnapshot) {
@@ -61,7 +64,7 @@ class Home extends Component {
           navigator = {this.props.navigator}
           text = "Home"
         />
-        <SearchBar />
+        <SearchBar/>
         <GridView
           dataSource = {this.state.dataSource}
           renderRow = {this.renderRow.bind(this)}
