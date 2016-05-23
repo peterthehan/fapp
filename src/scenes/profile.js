@@ -2,10 +2,10 @@
 
 import React, {
   Component,
+  Dimensions,
   Image,
   RefreshControl,
   StyleSheet,
-  Dimensions,
   Text,
   TouchableOpacity,
   View
@@ -13,30 +13,16 @@ import React, {
 
 import Firebase from 'firebase';
 import GridView from '../components/grid-view';
+import Post from '../components/post';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
-const pictures = [
-  "https://img.buzzfeed.com/buzzfeed-static/static/2015-06/5/12/campaign_images/webdr05/what-comfort-food-should-you-choose-based-on-your-2-11396-1433522422-14_dblbig.jpg",
-  "http://4.bp.blogspot.com/-r1R_sGJJ-6U/TpEyQz0TFiI/AAAAAAAAAF8/n9WbFZ1Ieug/s1600/yakisoba.jpg",
-  "http://ww2.kqed.org/quest/wp-content/uploads/sites/39/2012/08/starbucks.jpg",
-  "http://cdn.paper4pc.com/images/dessert-pictures-wallpaper-1.jpg"
-];
 const windowSize = Dimensions.get('window');
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    var self = this;
-    database.once("value", function(snapshot){
-      var usersnapshot = snapshot.child("users/" + props.state);
-      var proPic = usersnapshot.val().profilePic;
-      self.setState({
-        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
-        profilePic: proPic,
-      });
-    });
 
     this.state = {
       items: [],
@@ -46,24 +32,39 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    let items = Array.apply(null, Array(pictures.length)).map((v, i) => {
-      return {id: i, src: pictures[i]}
-    });
-    this.setState({items});
+    this.queryData();
   }
 
-  renderRow(rowData) {
+  queryData(){
+    var myBlob = [];
+    var self = this;
+
+    database.once("value", function(snapshot){
+      // user
+      var usersnapshot = snapshot.child("users/" + self.props.state);
+      var proPic = usersnapshot.val().profilePic;
+
+      // posts
+      var userPostsSnapshot = usersnapshot.child("postList");
+      userPostsSnapshot.forEach(function(userPostSnapshot){
+        var postSnapshot = snapshot.child("posts/" + userPostSnapshot.val().postId);
+        myBlob.push(postSnapshot);
+      });
+
+      self.setState({
+        items: myBlob,
+        name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
+        profilePic: proPic,
+      });
+    });
+  }
+
+  renderRow(post) {
     return (
-      <TouchableOpacity
-        key = {rowData.id}
-        style = {styles.item}
-        onPress = {() => {alert("Pressed image " + rowData.id);}}>
-        <Image
-          resizeMode = "cover"
-          style = {{flex: 1}}
-          source = {{uri: rowData.src}}
-        />
-      </TouchableOpacity>
+      <Post
+        navigator = {this.props.navigator}
+        id = {post}
+      />
     );
   }
 
@@ -100,10 +101,6 @@ class Profile extends Component {
         />
       </View>
     );
-  }
-
-  queryData(){
-    alert('Query data.');
   }
 
 }

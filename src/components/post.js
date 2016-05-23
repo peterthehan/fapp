@@ -16,7 +16,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import GridView from './grid-view';
-import Profile from "../scenes/profile";
 import SearchBar from './search-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -84,6 +83,7 @@ class Post extends Component {
   }
 
   profile() {
+    const Profile = require('../scenes/profile');
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
