@@ -11,7 +11,6 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from '../components/grid-view';
-import Modal from 'react-native-simple-modal';
 import Profile from "../scenes/profile";
 import SearchBar from '../components/search-bar';
 import TitleBar from '../components/title-bar';
