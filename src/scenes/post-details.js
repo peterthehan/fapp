@@ -3,6 +3,7 @@
 import React, {
   AsyncStorage,
   Component,
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -25,6 +26,7 @@ class Tags extends Component {
       tags: '',
       location: '',
       recipe: '',
+      image: this.props.state,
     };
   }
 
@@ -77,6 +79,10 @@ class Tags extends Component {
           placeholderTextColor = 'white'
           underlineColorAndroid = 'white'
         />
+        <Image
+          source = {this.state.image}
+          style = {{flex: 1}}
+        />
       </View>
     );
   }
@@ -92,7 +98,7 @@ class Tags extends Component {
         var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
         var post = ref.push({
           user: userName,
-          photoID: "http://thewoksoflife.com/wp-content/uploads/2015/02/soy-sauce-chicken-9.jpg",
+          photoID: self.state.image,
           userID: usid,
           description: self.state.description,
           rating: 0,

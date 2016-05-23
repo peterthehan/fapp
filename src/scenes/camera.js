@@ -193,7 +193,7 @@ class Camera extends Component {
 
   onActionSelected(position) {
     if (position == 0) {
-      this.props.navigator.push({component: PostDetails});
+      this.props.navigator.push({component: PostDetails, state: this.state.avatarSource});
     } else if (position == 1) {
       this.openCamera();
     }
