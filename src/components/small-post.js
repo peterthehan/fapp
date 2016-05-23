@@ -41,7 +41,7 @@ class SmallPost extends Component {
             <Image
               style = {{flex: 1}}
               resizeMode = "cover"
-              source = {{uri: this.state.photo}}>
+              source = {this.state.photo}>
               <View style = {styles.buttonContainer}>
               <TouchableOpacity
                 style = {styles.button}
@@ -94,7 +94,7 @@ class SmallPost extends Component {
               <Image
                 resizeMode = "cover"
                 style = {styles.modalPhoto}
-                source = {{uri: this.state.photo}}
+                source = {this.state.photo}
               />
               <View style = {styles.buttonViewModal}>
                 <TouchableOpacity

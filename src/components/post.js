@@ -197,7 +197,7 @@ class Post extends Component {
           <Image
             resizeMode = "cover"
             style = {{flex: 1}}
-            source = {{uri: this.state.photo}}
+            source = {this.state.photo}
           />
         </TouchableOpacity>
         <View style = {styles.buttonView}>
