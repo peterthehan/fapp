@@ -54,6 +54,7 @@ class Camera extends Component {
         this.setState({
           avatarSource: source,
         });
+
       }
     });
   }
@@ -79,9 +80,11 @@ class Camera extends Component {
         <ToolbarAndroid
           title = 'Create a Post'
           style = {styles.toolbar}
+          titleColor = 'white'
+          subtitleColor = 'white'
           actions = {[
-            {title: 'Details', show: 'always'},
-            {title: 'Camera', show: 'always'}
+            {title: 'Details', show: 'always', color: 'white'},
+            {title: 'Camera', show: 'always', color: 'white'}
           ]}
           onActionSelected = {this.onActionSelected.bind(this)}
         />
@@ -97,7 +100,7 @@ class Camera extends Component {
           Original
         </Text>
 
-        <TouchableOpacity onPress ={()=> this.setState({filter: null})} style = {{flex: 1}}>
+        <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} style = {{flex: 1}}>
           <Surface width = {40} height = {40}>
             {this.ogImage()}
           </Surface>
@@ -108,7 +111,7 @@ class Camera extends Component {
           Monochrome
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'sat'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
             {this.monoImage()}
           </Surface>
@@ -119,7 +122,7 @@ class Camera extends Component {
           Vignette
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'vign'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('vign')} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
             {this.vignetteImage()}
           </Surface>
@@ -130,14 +133,10 @@ class Camera extends Component {
           Multi-purpose filter
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'ig'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
             {this.igImage()}
           </Surface>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress = {()=> this.onCapture1()} style = {{flex: 1}}>
-          <Text>Capture URI</Text>
         </TouchableOpacity>
 
         </View>
@@ -145,7 +144,11 @@ class Camera extends Component {
 
     );
   }
+  setFilterAndCapture(filt) {
+    this.setState({filter: filt});
+    setTimeout(() => {this.onCapture1();},300);
 
+  }
   ogImage() {
     return(
       <Image source = {this.state.avatarSource}
@@ -162,7 +165,6 @@ class Camera extends Component {
   }
 
   vignetteImage() {
-
     return (<Vignette
       time = {0.2}
       texture = {this.state.avatarSource}
@@ -191,11 +193,12 @@ class Camera extends Component {
         <ToolbarAndroid
           title = 'Create a Post'
           style = {styles.toolbar}
-          actions ={[
-            {title: 'Details', show: 'always'},
-            {title: 'Camera', show: 'always'}
+          titleColor = 'white'
+          subtitleColor = 'white'
+          actions = {[
+            {title: 'Details', show: 'always', color: 'white'},
+            {title: 'Camera', show: 'always', color: 'white'}
           ]}
-
           onActionSelected = {this.onActionSelected.bind(this)}
         />
       </View>
@@ -204,13 +207,19 @@ class Camera extends Component {
 
   onActionSelected(position) {
     if (position == 0) {
-      this.onCapture1();
-      var photoIDObj =  {
-        isStatic: true,
-        uri: filteredPic
-      };
-      this.props.navigator.push({component: PostDetails, state: photoIDObj});
-    } else if (position == 1) {
+      var photoIDObj;
+      if (filteredPic) {
+        photoIDObj = {
+          isStatic: true,
+          uri: filteredPic
+        }
+      }
+      else {
+        photoIDObj = this.state.avatarSource;
+      }
+        this.props.navigator.push({component: PostDetails, state: photoIDObj});
+    }
+    else if (position == 1) {
       this.openCamera();
     }
   }
@@ -227,7 +236,7 @@ class Camera extends Component {
 const styles = StyleSheet.create({
   toolbar: {
     height: 56,
-    backgroundColor: '#4682b4',
+    backgroundColor: '#F26D6A',
   }
 });
 
