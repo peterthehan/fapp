@@ -19,7 +19,7 @@ import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com/");
-
+let userdata = new Firebase("poopapp1.firebaseio.com/events");
 class Notification extends Component {
   constructor(props) {
     super(props);
@@ -32,24 +32,23 @@ class Notification extends Component {
         'You followed tester'
       ])
     };
-    this.itemsRef = new Firebase("poopapp1.firebaseio.com/events");
   }
 
   componentDidMount() {
-    this.itemsRef.on('value', function (snap){
-
-      // get children as an array
-      var items = [];
-      snap.forEach(function(child){
-        items.push({
-          description: child.val().description,
-          _key: child.key()
-        })
-      })
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(items)
-      })
+    userdata.on('child_removed', function (snap){
+      alert ("child removed");
     });
+    var newItems = false;
+    userdata.on('child_added',function (snap){
+      if(!newItems) return;
+      alert ("child added");
+    });
+    userdata.once('value', function(snap){
+      newItems = true;
+    });
+    userdata.on('child_changed',function (snap){
+      alert ("child changed");
+    })
   }
 
   render() {
