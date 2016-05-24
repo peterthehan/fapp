@@ -15,7 +15,6 @@ import Firebase from 'firebase';
 
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
-import Home from './home';
 import Login from './login';
 import SceneStyles from '../styles/scene-styles';
 import TextStyles from '../styles/text-styles';
