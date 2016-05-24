@@ -33,8 +33,14 @@ class EventPost extends Component {
     const eventData = this.props.id;
     this.setState({
       id: eventData,
-      photo: eventData.val().photo,
       title: eventData.val().title,
+      description: eventData.val().description,
+      startDate: eventData.val().startDate,
+      startTime: eventData.val().startTime,
+      endDate: eventData.val().endDate,
+      endTime: eventData.val().endTime,
+      isPublic: eventData.val().isPublic,
+      photo: eventData.val().photo,
     });
   }
 
@@ -44,21 +50,28 @@ class EventPost extends Component {
 
   render() {
     return(
-      <View style = {styles.eventView}>
-        <TouchableOpacity
-          onPress = {this.showDetails}>
-          <View style = {{width: 100, height: 100}}>
-            <Image
-              resizeMode = "cover"
-              style = {{flex: 1}}
-              source = {{uri: this.state.photo}}
-            />
-          </View>
-          <Text style = {SceneStyles.text}>
+      <TouchableOpacity
+        style = {styles.eventView}
+        onPress = {this.showDetails}>
+        <View style = {styles.imageView}>
+          <Image
+            resizeMode = "cover"
+            style = {styles.photo}
+            source = {{uri: this.state.photo}}
+          />
+        </View>
+        <View style = {styles.content}>
+          <Text style = {styles.title}>
             {this.state.title}
           </Text>
-        </TouchableOpacity>
-      </View>
+          <Text style = {styles.dateTime}>
+            Starts: {this.state.startDate} @ {this.state.startTime}
+          </Text>
+          <Text style = {styles.dateTime}>
+            Ends: {this.state.endDate} @ {this.state.endTime}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -66,9 +79,29 @@ class EventPost extends Component {
 const styles = StyleSheet.create({
   eventView: {
     backgroundColor: 'white',
-    borderWidth: 1,
+    width: Dimensions.get("window").width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: 1,
     borderColor: 'gray',
-    margin: 8,
+  },
+  imageView: {
+    borderRightWidth: 1,
+    borderColor: 'gray',
+  },
+  photo: {
+    width: 100,
+    height: 100,
+  },
+  content: {
+    padding: 10,
+  },
+  title: {
+    color: '#F26D6A',
+    fontSize: 16,
+  },
+  dateTime: {
+    marginLeft: 10,
   },
 });
 
