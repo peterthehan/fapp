@@ -45,7 +45,7 @@ class Post extends Component {
         var didLike = false;
         if (typeof likeData != 'undefined'){
           likeData.forEach(function(userRated) {
-            if (userRated.val().userId == userid){
+            if (userRated.val().userId == loggedUserId){
               didLike = true;
             }
           });
@@ -88,7 +88,7 @@ class Post extends Component {
       var didLike = false;
       if (typeof likeData != 'undefined'){
         likeData.forEach(function(userRated) {
-          if (userRated.val().userId == userid){
+          if (userRated.val().userId == loggedUserId){
             didLike = true;
           }
         });
@@ -124,7 +124,7 @@ class Post extends Component {
     var ratedVal = database.child("posts/" + this.state.postID + "/rating");
 
     if (!this.state.liked){
-      postRated.push({userId: this.state.userID});
+      postRated.push({userId: this.state.loggedUser});
       //postRef.update({rating: (this.state.rating + 1)}, function(){});
       ratedVal.transaction(function(currentRating){
         return currentRating+1;
@@ -139,7 +139,7 @@ class Post extends Component {
 
         if (typeof likeData != 'undefined'){
           likeData.forEach(function(userRated) {
-            if (userRated.val().userId == self.state.userID){
+            if (userRated.val().userId == self.state.loggedUser){
               var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
               toDelete.set(null);
             }
