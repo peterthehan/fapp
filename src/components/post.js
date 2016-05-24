@@ -25,7 +25,6 @@ class Post extends Component {
     super(props);
 
     this.state = {
-      isLoading: true,
     };
   }
 
