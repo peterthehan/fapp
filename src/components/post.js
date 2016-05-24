@@ -154,7 +154,7 @@ class Post extends Component {
 
   getLikeColor(){
     if (this.state.liked){
-      return "green";
+      return "chartreuse";
     }
     return "grey";
   }
@@ -253,10 +253,10 @@ class Post extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.messages.bind(this)}>
-            <MaterialIcon
-              name = "feedback"
+            <IonIcon
+              name = "ios-chatboxes"
               size = {16}
-              color = "green"
+              color = "deepskyblue"
             />
           </TouchableOpacity>
         </View>
