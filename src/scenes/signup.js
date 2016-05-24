@@ -3,12 +3,14 @@
 import React, {
   Alert,
   Component,
+  DatePickerAndroid,
   Image,
   TextInput,
   View
 } from 'react-native';
 
 import Firebase from 'firebase';
+import DismissKeyboard from 'react-native-dismiss-keyboard';
 
 import AppBar from '../components/app-bar';
 import Button from '../components/button';
@@ -63,13 +65,12 @@ class Signup extends Component {
           </View>
 
           <TextInput
-            placeholder = {"MM/DD/YYYY"}
-            onChangeText = {(text) => this.setState({dateOfBirth: text})}
+            placeholder = {"Date of Birth"}
             value = {this.state.dateOfBirth}
             style = {TextStyles.textInput}
             placeholderTextColor = 'white'
             underlineColorAndroid = 'white'
-            keyboardType = 'numeric'
+            onFocus = {this.showDatePicker.bind(this)}
           />
           <TextInput
             placeholder = {"Email"}
@@ -118,6 +119,22 @@ class Signup extends Component {
     );
   }
 
+  async showDatePicker() {
+    DismissKeyboard();
+    try {
+      const {action, year, month, day} = await DatePickerAndroid.open();
+      if(action !== DatePickerAndroid.dismissedAction) {
+        var tempDate = new Date(year, month, day);
+        var tempDateStr = tempDate.toLocaleDateString();
+
+        this.setState({dateOfBirth: tempDateStr});
+        this.setNativeProps({dateOfBirth: tempDateStr});
+      }
+    } catch({code, message}) {
+      console.warn('Cannot open date picker.', message);
+    }
+  }
+
   signup() {
     if(this.state.firstName === "") {
       Alert.alert('', 'Enter your first name.');
@@ -157,10 +174,11 @@ class Signup extends Component {
               lastName: this.state.lastName,
               dateOfBirth: this.state.dateOfBirth,
               email: this.state.email,
-              profilePic: "",
+              profilePic: "http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png",
             });
             Alert.alert('Success!', 'Your account was created!');
             this.props.navigator.pop();
+
             this.setState({
               firstName: '',
               lastName: '',
