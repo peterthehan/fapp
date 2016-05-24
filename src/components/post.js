@@ -134,6 +134,7 @@ class Post extends Component {
   }
 
   favorite() {
+    alert("loggedUser: " + this.state.loggedUser);
     var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
 
     if (!this.state.favorited){
