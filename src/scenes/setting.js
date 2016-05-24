@@ -6,22 +6,20 @@ import React, {
   Component,
   Image,
   Navigator,
-  StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
   View
 } from 'react-native';
 
 import Firebase from 'firebase';
 
-import TitleBar from '../components/title-bar';
 import Button from '../components/button';
-
-import SceneStyles from '../styles/scene-styles';
-
-import Login from './login';
+import ButtonStyles from '../styles/button-styles';
 import Home from './home';
+import Login from './login';
+import SceneStyles from '../styles/scene-styles';
+import TextStyles from '../styles/text-styles';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -30,7 +28,7 @@ class Setting extends Component {
     super(props);
     var self = this;
 
-    database.once("value", function(snapshot){
+    database.once("value", function(snapshot) {
       var usersnapshot = snapshot.child("users/" + props.state);
       var proPic = usersnapshot.val().profilePic;
       var emailaddress = usersnapshot.val().email;
@@ -58,43 +56,62 @@ class Setting extends Component {
       let user_data = JSON.parse(user_data_json);
       this.setState({
         user: user_data,
-        loaded: true
       });
     });
+
     return(
-      <View>
+      <View style = {SceneStyles.container}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Setting"
-          loaded = {this.state.loaded}
           hasBack = {true}
         />
         <View>
         {
           this.state.user &&
-            <View style = {SceneStyles.body}>
-              <View style = {styles.container}>
-                <Text style = {{fontSize: 20, color: '#000000',}}>
-                   {this.state.name}
-                </Text>
-                <Text style = {styles.emailText}>
-                   {this.state.oldEmail}
-                </Text>
-                <TextInput
-                  placeholder = {"email"}
-                  onChangeText = {(text) => this.setState({email: text})}
-                  value = {this.state.email}
-                  style = {SceneStyles.firstName}
-                  placeholderTextColor = '#000'
-                  underlineColorAndroid = '#FFF'
-                />
-                {this.changeEmailButton()}
-                <Image
-                  style={SceneStyles.image}
-                  source={{uri: this.state.profilePic}}
-               />
-              </View>
-                {this.logoutButton()}
+            <View style = {SceneStyles.container}>
+              <Image
+                source = {{uri: this.state.profilePic}}
+                style = {SceneStyles.image}
+              />
+
+              <Text style = {TextStyles.blackText}>
+                 {this.state.name}
+              </Text>
+              <Text style = {TextStyles.blackText}>
+                 {this.state.oldEmail}
+              </Text>
+
+              <TextInput
+                placeholder = {"Email"}
+                onChangeText = {(text) => this.setState({email: text})}
+                value = {this.state.email}
+                style = {SceneStyles.textInput}
+                placeholderTextColor = 'black'
+                underlineColorAndroid = 'black'
+              />
+
+              <Button
+                text = "Change Email"
+                onPress = {this.changeEmail.bind(this)}
+                buttonStyles = {ButtonStyles.transparentButton}
+                buttonTextStyles = {ButtonStyles.blackButtonText}
+                underlayColor = {"#A2A2A2"}
+              />
+              <Button
+                text = "Change Password"
+                onPress = {this.changePassword.bind(this)}
+                buttonStyles = {ButtonStyles.transparentButton}
+                buttonTextStyles = {ButtonStyles.blackButtonText}
+                underlayColor = {"#A2A2A2"}
+              />
+              <Button
+                text = "Logout"
+                onPress = {this.logout.bind(this)}
+                buttonStyles = {ButtonStyles.transparentButton}
+                buttonTextStyles = {ButtonStyles.blackButtonText}
+                underlayColor = {"#A2A2A2"}
+              />
             </View>
         }
         </View>
@@ -102,63 +119,7 @@ class Setting extends Component {
     );
   }
 
-  logout() {
-    AsyncStorage.removeItem('user_data').then(() => {
-      database.unauth();
-    });
-  }
-
-  logoutButton() {
-    return (
-      <TouchableHighlight
-        onPress = {this.logout}
-        underlayColor='lemonchiffon'>
-
-        <Text style = {{
-          color: '#000',
-          fontSize: 16,
-          textAlign: 'center'}}>
-          logout
-        </Text>
-      </TouchableHighlight>
-    );
-  }
-
-  /*TODO*/
-  changePassword() {
-    database.changePassword({
-      email: this.state.user.password.email,
-      oldPassword: "asdf",
-      newPassword: "asdf"
-      }, function(error) {
-      if(error === null) {
-        Alert.alert('Success!', 'Password has been changed.');
-      } else {
-        Alert.alert('Error!', "Could not change password.");
-      }
-    });
-  }
-
-  changePasswordButton() {
-    return (
-      <TouchableHighlight
-        onPress = {this.changePassword}
-        underlayColor = 'lemonchiffon'>
-
-        <Text style = {{
-          color: '#000',
-          fontSize: 16,
-          textAlign: 'center'}}>
-          change password
-        </Text>
-      </TouchableHighlight>
-    )
-  }
-
   changeProfilePicture() {
-  }
-
-  changeProfilePictureButton() {
   }
 
   changeEmail() {
@@ -188,30 +149,26 @@ class Setting extends Component {
     });
   }
 
-  changeEmailButton() {
-    return (
-      <TouchableHighlight
-        onPress = {this.changeEmail}
-        underlayColor = 'lemonchiffon'>
+  // TODO
+  changePassword() {
+    database.changePassword({
+      email: this.state.user.password.email,
+      oldPassword: "asdf",
+      newPassword: "asdf"
+      }, function(error) {
+        if(error === null) {
+          Alert.alert('Success!', 'Password has been changed.');
+        } else {
+          Alert.alert('Error!', "Could not change password.");
+        }
+      });
+  }
 
-        <Text style = {{
-          color: 'black',
-          fontSize: 16,
-          textAlign: 'center'}}>
-          change email
-        </Text>
-      </TouchableHighlight>
-    )
+  logout() {
+    AsyncStorage.removeItem('user_data').then(() => {
+      database.unauth();
+    });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20
-  },
-  emailText: {
-    fontSize: 18
-  }
-});
 
 module.exports = Setting;

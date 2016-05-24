@@ -3,8 +3,13 @@
 import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
-  text: {
+  whiteText: {
     color: 'white',
+    fontSize: 16,
+    textAlign: 'center'
+  },
+  blackText: {
+    color: 'black',
     fontSize: 16,
     textAlign: 'center'
   },

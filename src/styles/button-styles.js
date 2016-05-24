@@ -3,16 +3,6 @@
 import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
-  transparentButton: {
-    padding: 12,
-    marginLeft: 16,
-    marginRight: 16,
-    alignItems: 'center'
-  },
-  transparentButtonText: {
-    color: 'white',
-    fontSize: 16
-  },
   primaryButton: {
     padding: 12,
     marginLeft: 16,
@@ -22,7 +12,17 @@ module.exports = StyleSheet.create({
     marginBottom: 64,
     backgroundColor: '#DEB050'
   },
-  primaryButtonText: {
+  transparentButton: {
+    padding: 12,
+    marginLeft: 16,
+    marginRight: 16,
+    alignItems: 'center'
+  },
+  blackButtonText: {
+    color: 'black',
+    fontSize: 16
+  },
+  whiteButtonText: {
     color: 'white',
     fontSize: 16
   }

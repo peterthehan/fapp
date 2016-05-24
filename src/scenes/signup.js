@@ -104,14 +104,14 @@ class Signup extends Component {
             text = "SIGN UP"
             onPress = {this.signup.bind(this)}
             buttonStyles = {ButtonStyles.primaryButton}
-            buttonTextStyles = {ButtonStyles.primaryButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#B18C40"}
           />
           <Button
             text = "Already Have An Account"
             onPress = {this.goToLogin.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
-            buttonTextStyles = {ButtonStyles.transparentButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#A2A2A2"}
           />
         </Image>
