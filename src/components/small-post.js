@@ -13,7 +13,7 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import GridView from './grid-view';
@@ -158,16 +158,16 @@ class SmallPost extends Component {
 
   getLikeColor(){
     if (this.state.liked){
-      return "green";
+      return "chartreuse";
     }
-    return "grey";
+    return "white";
   }
 
   getFavoriteColor() {
     if (this.state.favorited){
       return "orange";
     }
-    return "grey";
+    return "white";
   }
 
   favorite() {
@@ -209,13 +209,13 @@ class SmallPost extends Component {
       <View>
         <View style = {styles.item}>
           <TouchableOpacity
-            style = {styles.photo}
+            style = {styles.photoTouch}
             onPress = {() => this.picture()}>
             <Image
-              style = {{flex: 1}}
+              style = {styles.photo}
               resizeMode = "cover"
               source = {this.state.photo}>
-              <View style = {styles.buttonContainer}>
+              <View style = {styles.buttonView}>
                 <TouchableOpacity
                   style = {styles.button}
                   onPress = {this.like.bind(this)}>
@@ -228,20 +228,19 @@ class SmallPost extends Component {
                 <TouchableOpacity
                   style = {styles.button}
                   onPress = {() => this.favorite()}>
-                  <Icon
+                  <MaterialIcon
                     name = "star"
                     size = {16}
                     color = {this.getFavoriteColor()}
                   />
                 </TouchableOpacity>
-
                 <TouchableOpacity
                   style = {styles.button}
                   onPress = {() => this.messages()}>
-                  <Icon
-                    name = "feedback"
+                  <IonIcon
+                    name = "ios-chatboxes"
                     size = {16}
-                    color = "green"
+                    color = "deepskyblue"
                   />
                 </TouchableOpacity>
               </View>
@@ -253,53 +252,51 @@ class SmallPost extends Component {
           onRequestClose={() => {this._setModalVisible(false)}}
           >
           <View style={styles.container}>
-            <View style={styles.innerContainer}>
-              <View style={styles.modalUserBar}>
-                <TouchableOpacity onPress={() => {this._setModalVisible(false); this.props.navigator.push({component: Profile, state: this.state.userID});}}>
-                  <View style={styles.modalUser}>
-                    <Image
-                      resizeMode = "cover"
-                      style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
-                      source = {{uri: this.state.userPhoto}}
-                    />
-                    <Text>{this.state.user}</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {this._setModalVisible(false);}}>
-                  <Icon name = "close"
+            <View style={styles.modalUserBar}>
+              <TouchableOpacity onPress={() => {this._setModalVisible(false); this.props.navigator.push({component: Profile, state: this.state.userID});}}>
+                <View style={styles.modalUser}>
+                  <Image
+                    resizeMode = "cover"
+                    style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
+                    source = {{uri: this.state.userPhoto}}
+                  />
+                  <Text>{this.state.user}</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._setModalVisible(false);}}>
+                <MaterialIcon name = "close"
                   size = {25}
                   borderWidth = {7}
                   color = "black"
-                  />
-                </TouchableOpacity>
-              </View>
-              <Image
-                resizeMode = "cover"
-                style = {styles.modalPhoto}
-                source = {this.state.photo}
-              />
-              <View style = {styles.buttonViewModal}>
-                <TouchableOpacity
-                  style = {styles.button}
-                  onPress = {() => {alert("Database access");}}>
-                  <Icon
-                    name = "star"
-                    size = {28}
-                    color = {(this.state.isFavorite) ? ("orange") : ("gray")}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style = {styles.button}
-                  onPress = {() => {alert("Go to messages page.");}}>
-                  <Icon
-                    name = "feedback"
-                    size = {28}
-                    color = "green"
-                  />
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.description}><Text style={{fontWeight: 'bold'}}>Description: </Text>{this.state.description}</Text>
+                />
+              </TouchableOpacity>
             </View>
+            <Image
+              resizeMode = "cover"
+              style = {styles.modalPhoto}
+              source = {this.state.photo}
+            />
+            <View style = {styles.buttonViewModal}>
+              <TouchableOpacity
+                style = {styles.button}
+                onPress = {() => {alert("Database access");}}>
+                <MaterialIcon
+                  name = "star"
+                  size = {28}
+                  color = {(this.state.isFavorite) ? ("orange") : ("gray")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style = {styles.button}
+                onPress = {() => {alert("Go to messages page.");}}>
+                <IonIcon
+                  name = "ios-chatboxes"
+                  size = {28}
+                  color = "deepskyblue"
+                />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.description}><Text style={{fontWeight: 'bold'}}>Description: </Text>{this.state.description}</Text>
           </View>
         </Modal>
       </View>
@@ -311,27 +308,29 @@ const styles = StyleSheet.create({
   item: {
     margin: 2,
   },
-  photo: {
+  photoTouch: {
     width: windowSize.width / 3 - 6,
     height: windowSize.width / 3 - 6,
   },
+  photo: {
+    flex: 1,
+  },
   buttonView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonViewModal: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  buttonContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     flexDirection: 'row',
     padding: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'black',
-    opacity: 80
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  buttonViewModal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingLeft: 5,
   },
   button: {
     marginLeft: 8,
@@ -340,31 +339,25 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   container: {
-    justifyContent: 'center',
     flex: 1,
-    alignItems: 'center',
-  },
-  innerContainer: {
-    borderRadius: 20,
-    margin: 5,
     backgroundColor: "white",
+    borderRadius: 5,
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
   },
   modalUserBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 2,
-    marginRight:2,
-    marginLeft: 4,
-    marginTop: 4,
+    margin: 10,
   },
   modalUser: {
     flexDirection: 'row',
   },
   modalPhoto: {
-    width: windowSize.width-20,
-    height: windowSize.width-20,
-    marginLeft: 5,
-    marginRight: 5,
+    width: windowSize.width,
+    height: windowSize.width,
   },
   description: {
     padding: 5,
