@@ -20,6 +20,7 @@ import Vignette from '../components/vignette';
 import Instagram from '../components/instagram';
 
 var length = Dimensions.get('window').width;
+var filteredPic;
 
 class Camera extends Component {
   constructor(props) {
@@ -29,9 +30,16 @@ class Camera extends Component {
       test: 'help',
       length: length,
       filter: null
+      //filteredPic: null
     };
+    this.onCapture1 = this.onCapture1.bind(this);
   }
 
+  onCapture1 () {
+    this.refs.surfacePic.captureFrame().then(data64 => {
+      filteredPic = data64;
+    });
+  }
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
       console.log('Response = ', response);
@@ -44,8 +52,9 @@ class Camera extends Component {
         // You can display the image using either data:
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
-          avatarSource: source
+          avatarSource: source,
         });
+
       }
     });
   }
@@ -71,14 +80,16 @@ class Camera extends Component {
         <ToolbarAndroid
           title = 'Create a Post'
           style = {styles.toolbar}
+          titleColor = 'white'
+          subtitleColor = 'white'
           actions = {[
-            {title: 'Details', show: 'always'},
-            {title: 'Camera', show: 'always'}
+            {title: 'Details', show: 'always', color: 'white'},
+            {title: 'Camera', show: 'always', color: 'white'}
           ]}
           onActionSelected = {this.onActionSelected.bind(this)}
         />
 
-        <Surface width = {this.state.length} height = {this.state.length} >
+        <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
         {filter}
         </Surface>
 
@@ -89,7 +100,7 @@ class Camera extends Component {
           Original
         </Text>
 
-        <TouchableOpacity onPress ={()=> this.setState({filter: null})} style = {{flex: 1}}>
+        <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} style = {{flex: 1}}>
           <Surface width = {40} height = {40}>
             {this.ogImage()}
           </Surface>
@@ -100,7 +111,7 @@ class Camera extends Component {
           Monochrome
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'sat'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
             {this.monoImage()}
           </Surface>
@@ -111,7 +122,7 @@ class Camera extends Component {
           Vignette
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'vign'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('vign')} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
             {this.vignetteImage()}
           </Surface>
@@ -122,7 +133,7 @@ class Camera extends Component {
           Multi-purpose filter
         </Text>
 
-        <TouchableOpacity onPress = {()=> this.setState({filter: 'ig'})} style = {{flex: 1}}>
+        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} style = {{flex: 1}}>
           <Surface width = {40} height = {40} >
             {this.igImage()}
           </Surface>
@@ -133,7 +144,11 @@ class Camera extends Component {
 
     );
   }
+  setFilterAndCapture(filt) {
+    this.setState({filter: filt});
+    setTimeout(() => {this.onCapture1();},300);
 
+  }
   ogImage() {
     return(
       <Image source = {this.state.avatarSource}
@@ -150,17 +165,15 @@ class Camera extends Component {
   }
 
   vignetteImage() {
-    var secondSource = this.state.avatarSource;
     return (<Vignette
       time = {0.2}
-      texture = {secondSource}
+      texture = {this.state.avatarSource}
       style = {{flex: 1}}
     />
     );
   }
 
   igImage() {
-    var thirdSource = this.state.avatarSource;
     return (
         <Instagram
           brightness = {1}
@@ -170,7 +183,7 @@ class Camera extends Component {
           sepia = {1}
           gray = {0}
           mixFactor = {0}
-          tex = {thirdSource}
+          tex = {this.state.avatarSource}
         />
     );
   }
@@ -180,11 +193,12 @@ class Camera extends Component {
         <ToolbarAndroid
           title = 'Create a Post'
           style = {styles.toolbar}
-          actions ={[
-            {title: 'Details', show: 'always'},
-            {title: 'Camera', show: 'always'}
+          titleColor = 'white'
+          subtitleColor = 'white'
+          actions = {[
+            {title: 'Details', show: 'always', color: 'white'},
+            {title: 'Camera', show: 'always', color: 'white'}
           ]}
-
           onActionSelected = {this.onActionSelected.bind(this)}
         />
       </View>
@@ -193,8 +207,19 @@ class Camera extends Component {
 
   onActionSelected(position) {
     if (position == 0) {
-      this.props.navigator.push({component: PostDetails, state: this.state.avatarSource});
-    } else if (position == 1) {
+      var photoIDObj;
+      if (filteredPic) {
+        photoIDObj = {
+          isStatic: true,
+          uri: filteredPic
+        }
+      }
+      else {
+        photoIDObj = this.state.avatarSource;
+      }
+        this.props.navigator.push({component: PostDetails, state: photoIDObj});
+    }
+    else if (position == 1) {
       this.openCamera();
     }
   }
@@ -211,7 +236,7 @@ class Camera extends Component {
 const styles = StyleSheet.create({
   toolbar: {
     height: 56,
-    backgroundColor: '#4682b4',
+    backgroundColor: '#F26D6A',
   }
 });
 

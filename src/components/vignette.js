@@ -22,7 +22,8 @@ vec2 lookup (vec2 offset, float amp2) {
 void main() {
   float dist = distance(uv, finger);
   float amp2 = pow(1.0 - dist, 2.0);
-  float colorSeparation = 0.02 * mix(amp2, 1.0, 0.5);
+  //float colorSeparation = 0.02 * mix(amp2, 1.0, 0.5);
+  float colorSeparation = 0;
   vec2 orientation = vec2(1.0, 0.0);
   gl_FragColor = vec4(
     vec3(
