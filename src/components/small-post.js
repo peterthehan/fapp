@@ -42,6 +42,45 @@ class SmallPost extends Component {
     //get the id of the logged in user
     AsyncStorage.getItem('user_data', (error, result) =>{
       loggedUserId = JSON.parse(result).uid;
+      database.once("value", function(snapshot){
+        var userid = postSnapshot.val().userID;
+        var userSnapshot = snapshot.child("users/" + userid);
+        var proPic = userSnapshot.val().profilePic;
+        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
+
+        var didLike = false;
+        if (typeof likeData != 'undefined'){
+          likeData.forEach(function(userRated) {
+            if (userRated.val().userId == userid){
+              didLike = true;
+            }
+          });
+        }
+
+        var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
+        var didFav = false;
+        if (typeof favData != 'undefined'){
+          favData.forEach(function(userFaved) {
+            if (userFaved.val().postId == postSnapshot.key().toString()){
+              didFav = true;
+            }
+          });
+        }
+
+        self.setState({
+          loggedUser: loggedUserId,
+          postID: postSnapshot.key().toString(),
+          userID: userid,
+          user: postSnapshot.val().user,
+          userPhoto: proPic,
+          photo: postSnapshot.val().photoID,
+          description: postSnapshot.val().description,
+          rating: postSnapshot.val().rating,
+          liked: didLike,
+          favorited: didFav,
+        });
+      });
     });
 
     //get all of the data we need for a post
@@ -72,14 +111,7 @@ class SmallPost extends Component {
       }
 
       self.setState({
-        loggedUser: loggedUserId,
-        postID: postSnapshot.key().toString(),
-        userID: userid,
-        user: postSnapshot.val().user,
-        userPhoto: proPic,
-        photo: postSnapshot.val().photoID,
         rating: postSnapshot.val().rating,
-        description: postSnapshot.val().description,
         liked: didLike,
         favorited: didFav,
       });
