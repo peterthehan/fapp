@@ -9,8 +9,8 @@ import React, {
   View
 } from 'react-native';
 
-import Firebase from 'firebase';
 import DismissKeyboard from 'react-native-dismiss-keyboard';
+import Firebase from 'firebase';
 
 import AppBar from '../components/app-bar';
 import Button from '../components/button';
