@@ -80,7 +80,7 @@ class Tags extends Component {
           underlineColorAndroid = 'white'
         />
         <Image
-          source = {this.state.image}
+          source = {{uri: this.state.image}}
           style = {{flex: 1}}
         />
       </View>

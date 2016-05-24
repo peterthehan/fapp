@@ -20,6 +20,7 @@ import Vignette from '../components/vignette';
 import Instagram from '../components/instagram';
 
 var length = Dimensions.get('window').width;
+var filteredPic;
 
 class Camera extends Component {
   constructor(props) {
@@ -29,9 +30,16 @@ class Camera extends Component {
       test: 'help',
       length: length,
       filter: null
+      //filteredPic: null
     };
+    this.onCapture1 = this.onCapture1.bind(this);
   }
 
+  onCapture1 () {
+    this.refs.surfacePic.captureFrame().then(data64 => {
+      filteredPic = data64;
+    });
+  }
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
       console.log('Response = ', response);
@@ -44,7 +52,7 @@ class Camera extends Component {
         // You can display the image using either data:
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
-          avatarSource: source
+          avatarSource: source,
         });
       }
     });
@@ -78,7 +86,7 @@ class Camera extends Component {
           onActionSelected = {this.onActionSelected.bind(this)}
         />
 
-        <Surface width = {this.state.length} height = {this.state.length} >
+        <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
         {filter}
         </Surface>
 
@@ -128,6 +136,10 @@ class Camera extends Component {
           </Surface>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress = {()=> this.onCapture1()} style = {{flex: 1}}>
+          <Text>Capture URI</Text>
+        </TouchableOpacity>
+
         </View>
         </View>
 
@@ -150,17 +162,16 @@ class Camera extends Component {
   }
 
   vignetteImage() {
-    var secondSource = this.state.avatarSource;
+
     return (<Vignette
       time = {0.2}
-      texture = {secondSource}
+      texture = {this.state.avatarSource}
       style = {{flex: 1}}
     />
     );
   }
 
   igImage() {
-    var thirdSource = this.state.avatarSource;
     return (
         <Instagram
           brightness = {1}
@@ -170,7 +181,7 @@ class Camera extends Component {
           sepia = {1}
           gray = {0}
           mixFactor = {0}
-          tex = {thirdSource}
+          tex = {this.state.avatarSource}
         />
     );
   }
@@ -193,7 +204,7 @@ class Camera extends Component {
 
   onActionSelected(position) {
     if (position == 0) {
-      this.props.navigator.push({component: PostDetails, state: this.state.avatarSource});
+      this.props.navigator.push({component: PostDetails, state: filteredPic});
     } else if (position == 1) {
       this.openCamera();
     }
