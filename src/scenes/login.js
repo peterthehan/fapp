@@ -65,21 +65,21 @@ class Login extends Component {
             text = "LOG IN"
             onPress = {this.login.bind(this)}
             buttonStyles = {ButtonStyles.primaryButton}
-            buttonTextStyles = {ButtonStyles.primaryButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#B18C40"}
           />
           <Button
             text = "Create A New Account"
             onPress = {this.goToSignup.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
-            buttonTextStyles = {ButtonStyles.transparentButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#A2A2A2"}
           />
           <Button
             text = "Forgot Your Password?"
             onPress = {this.goToForgotPassword.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
-            buttonTextStyles = {ButtonStyles.transparentButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#A2A2A2"}
           />
         </Image>
