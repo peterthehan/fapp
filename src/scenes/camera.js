@@ -204,7 +204,12 @@ class Camera extends Component {
 
   onActionSelected(position) {
     if (position == 0) {
-      this.props.navigator.push({component: PostDetails, state: filteredPic});
+      this.onCapture1();
+      var photoIDObj =  {
+        isStatic: true,
+        uri: filteredPic
+      };
+      this.props.navigator.push({component: PostDetails, state: photoIDObj});
     } else if (position == 1) {
       this.openCamera();
     }
