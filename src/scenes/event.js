@@ -12,6 +12,7 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
+import CreateEvent from '../scenes/create-event';
 import EventPost from '../components/event-post';
 import GridView from '../components/grid-view';
 import SearchBar from '../components/search-bar';
