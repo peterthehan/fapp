@@ -14,6 +14,7 @@ import React, {
 
 import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import GridView from './grid-view';
 import Profile from "../scenes/profile";
@@ -28,8 +29,148 @@ class SmallPost extends Component {
     super(props);
     this.state = {
       modalVisible: false,
+      liked: false,
+      favorited: false,
     };
   }
+
+  componentDidMount() {
+    var postSnapshot = this.props.id;
+    var self = this;
+    var loggedUserId;
+
+    //get the id of the logged in user
+    AsyncStorage.getItem('user_data', (error, result) =>{
+      loggedUserId = JSON.parse(result).uid;
+    });
+
+    //get all of the data we need for a post
+    database.on("value", function(snapshot){
+      var userid = postSnapshot.val().userID;
+      var userSnapshot = snapshot.child("users/" + userid);
+      var proPic = userSnapshot.val().profilePic;
+      var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
+
+      var didLike = false;
+      if (typeof likeData != 'undefined'){
+        likeData.forEach(function(userRated) {
+          if (userRated.val().userId == userid){
+            didLike = true;
+          }
+        });
+      }
+
+      var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
+      var didFav = false;
+      if (typeof favData != 'undefined'){
+        favData.forEach(function(userFaved) {
+          if (userFaved.val().postId == postSnapshot.key().toString()){
+            didFav = true;
+          }
+        });
+      }
+
+      self.setState({
+        loggedUser: loggedUserId,
+        postID: postSnapshot.key().toString(),
+        userID: userid,
+        user: postSnapshot.val().user,
+        userPhoto: proPic,
+        photo: postSnapshot.val().photoID,
+        rating: postSnapshot.val().rating,
+        description: postSnapshot.val().description,
+        liked: didLike,
+        favorited: didFav,
+      });
+    });
+  }
+
+  picture() {
+    this._setModalVisible(true);
+  }
+
+  //This function will control the like/dislike function of the button
+  like(){
+    var postRated = database.child("posts/" + this.state.postID + "/ratedList");
+    var ratedVal = database.child("posts/" + this.state.postID + "/rating");
+
+    if (!this.state.liked){
+      postRated.push({userId: this.state.userID});
+      //postRef.update({rating: (this.state.rating + 1)}, function(){});
+      ratedVal.transaction(function(currentRating){
+        return currentRating+1;
+      });
+    }
+    else{
+      var postSnapshot = this.props.id;
+      var self = this;
+
+      database.once("value", function(snapshot){
+        var likeData = snapshot.child("posts/" + self.state.postID + "/ratedList");
+
+        if (typeof likeData != 'undefined'){
+          likeData.forEach(function(userRated) {
+            if (userRated.val().userId == self.state.userID){
+              var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+      ratedVal.transaction(function(currentRating){
+        return currentRating-1;
+      });
+    }
+  }
+
+  getLikeColor(){
+    if (this.state.liked){
+      return "green";
+    }
+    return "grey";
+  }
+
+  getFavoriteColor() {
+    if (this.state.favorited){
+      return "orange";
+    }
+    return "grey";
+  }
+
+  favorite() {
+    var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
+
+    if (!this.state.favorited){
+      userFaved.push({postId: this.state.postID});
+    }
+    else{
+      var postSnapshot = this.props.id;
+      var self = this;
+
+      database.once("value", function(snapshot){
+        var favData = snapshot.child("users/" + self.state.loggedUser + "/favoritedList");
+
+        if (typeof favData != 'undefined'){
+          favData.forEach(function(userFaved) {
+            if (userFaved.val().postId == postSnapshot.key().toString()){
+              var toDelete = database.child("users/" + self.state.loggedUser + "/favoritedList/" + userFaved.key().toString() + "/postId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  messages() {
+    alert("Go to messages page.");
+  }
+
+  _setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
 
   render() {
     return (
@@ -43,25 +184,34 @@ class SmallPost extends Component {
               resizeMode = "cover"
               source = {this.state.photo}>
               <View style = {styles.buttonContainer}>
-              <TouchableOpacity
-                style = {styles.button}
-                onPress = {() => this.favorite()}>
-                <Icon
-                  name = "star"
-                  size = {16}
-                  color = {this.getFavoriteColor()}
-                />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style = {styles.button}
+                  onPress = {this.like.bind(this)}>
+                  <IonIcon
+                    name = "ios-pizza"
+                    size = {16}
+                    color = {this.getLikeColor()}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style = {styles.button}
+                  onPress = {() => this.favorite()}>
+                  <Icon
+                    name = "star"
+                    size = {16}
+                    color = {this.getFavoriteColor()}
+                  />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style = {styles.button}
-                onPress = {() => this.messages()}>
-                <Icon
-                  name = "feedback"
-                  size = {16}
-                  color = "green"
-                />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style = {styles.button}
+                  onPress = {() => this.messages()}>
+                  <Icon
+                    name = "feedback"
+                    size = {16}
+                    color = "green"
+                  />
+                </TouchableOpacity>
               </View>
             </Image>
           </TouchableOpacity>
@@ -122,56 +272,6 @@ class SmallPost extends Component {
         </Modal>
       </View>
     );
-  }
-
-  componentDidMount() {
-    var postSnapshot = this.props.id;
-    var self = this;
-
-    database.once("value", function(snapshot){
-      var userid = postSnapshot.val().userID;
-      var userSnapshot = snapshot.child("users/" + userid);
-      var proPic = userSnapshot.val().profilePic;
-
-      self.setState({
-        postID: postSnapshot.key().toString(),
-        userID: userid,
-        user: postSnapshot.val().user,
-        userPhoto: proPic,
-        photo: postSnapshot.val().photoID,
-        rating: postSnapshot.val().rating,
-        description: postSnapshot.val().description,
-        isFavorite: false,
-      });
-    });
-  }
-
-  picture() {
-    this._setModalVisible(true);
-  }
-
-  favorite() {
-    this.state.isFavorite = !this.state.isFavorite;
-    // TODO: update database
-
-    // this is probably bad because it rerenders the entire scene. only really needs to update the Icon's color prop
-    this.forceUpdate();
-  }
-
-  messages() {
-    alert("Go to messages page.");
-  }
-
-  getFavoriteColor() {
-    if(this.state.isFavorite) {
-      return "orange";
-    } else {
-      return "gray";
-    }
-  }
-
-  _setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 }
 
