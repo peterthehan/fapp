@@ -277,11 +277,20 @@ class SmallPost extends Component {
             <View style = {styles.buttonViewModal}>
               <TouchableOpacity
                 style = {styles.button}
-                onPress = {() => {alert("Database access");}}>
+                onPress = {this.like.bind(this)}>
+                <IonIcon
+                  name = "ios-pizza"
+                  size = {28}
+                  color = {this.getLikeColor()}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style = {styles.button}
+                onPress = {() => this.favorite()}>
                 <MaterialIcon
                   name = "star"
                   size = {28}
-                  color = {(this.state.isFavorite) ? ("orange") : ("gray")}
+                  color = {this.getFavoriteColor()}
                 />
               </TouchableOpacity>
               <TouchableOpacity
