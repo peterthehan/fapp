@@ -15,9 +15,6 @@ import Firebase from 'firebase';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import GridView from './grid-view';
-import SearchBar from './search-bar';
-
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Post extends Component {
