@@ -39,7 +39,7 @@ class ForgotPassword extends Component {
             image = {require('../images/logo.png')}
           />
 
-          <Text style = {TextStyles.text}>
+          <Text style = {TextStyles.whiteText}>
             Find Your Account
           </Text>
 
@@ -57,14 +57,14 @@ class ForgotPassword extends Component {
             text = "SEARCH"
             onPress = {this.submit.bind(this)}
             buttonStyles = {ButtonStyles.primaryButton}
-            buttonTextStyles = {ButtonStyles.primaryButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#B18C40"}
           />
           <Button
             text = "Go Back"
             onPress = {this.goToLogin.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
-            buttonTextStyles = {ButtonStyles.transparentButtonText}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             underlayColor = {"#A2A2A2"}
           />
         </Image>

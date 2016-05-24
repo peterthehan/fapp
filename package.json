@@ -13,6 +13,7 @@
     "react-native": "^0.25.1",
     "react-native-action-button": "^1.1.5",
     "react-native-animatable": "^0.6.0",
+    "react-native-dismiss-keyboard": "^1.0.0",
     "react-native-image-picker": "^0.18.15",
     "react-native-scrollable-tab-view": "^0.4.2",
     "react-native-share": "^1.0.10",

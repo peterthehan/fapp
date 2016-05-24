@@ -321,6 +321,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   smallText: {
+    color: '#F26D6A',
     fontSize: 11,
     marginLeft: 5,
   },

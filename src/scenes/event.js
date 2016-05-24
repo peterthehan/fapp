@@ -4,7 +4,6 @@ import React, {
   Component,
   Dimensions,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -13,10 +12,10 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
-import CreateEvent from './create-event';
-import EventDetails from './event-details';
+import CreateEvent from '../scenes/create-event';
+import EventPost from '../components/event-post';
 import GridView from '../components/grid-view';
-import SceneStyles from '../styles/scene-styles'
+import SearchBar from '../components/search-bar';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -51,22 +50,15 @@ class Event extends Component {
 
   renderRow(eventData){
     return(
-      <View style = {styles.eventView}>
-        <TouchableOpacity
-          onPress = {() => this.showDetails(eventData)}>
-          <View style = {{width: 100, height: 100}}>
-            <Image
-              resizeMode = "cover"
-              style = {{flex: 1}}
-              source = {{uri: eventData.val().photo}}
-            />
-          </View>
-          <Text style = {SceneStyles.text}>
-            {eventData.val().title}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <EventPost
+        navigator = {this.props.navigator}
+        id = {eventData}
+      />
     );
+  }
+
+  createEvent(){
+    this.props.navigator.push({component: CreateEvent});
   }
 
   render() {
@@ -76,6 +68,7 @@ class Event extends Component {
           navigator = {this.props.navigator}
           text = "Events"
         />
+        <SearchBar />
         <GridView
           dataSource = {this.state.dataSource}
           renderRow = {this.renderRow.bind(this)}
@@ -88,23 +81,6 @@ class Event extends Component {
       </View>
     );
   }
-
-  showDetails(eventData){
-    this.props.navigator.push({component: EventDetails, state: eventData});
-  }
-
-  createEvent(){
-    this.props.navigator.push({component: CreateEvent});
-  }
 }
-
-const styles = StyleSheet.create({
-  eventView: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'gray',
-    margin: 8,
-  },
-});
 
 module.exports = Event;

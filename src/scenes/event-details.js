@@ -2,7 +2,10 @@
 
 import React, {
   Component,
+  Dimensions,
   Image,
+  ScrollView,
+  StyleSheet,
   Switch,
   Text,
   View
@@ -40,73 +43,55 @@ class EventDetails extends Component {
 
   render() {
     return (
-      <View style = {{flex: 10}}>
+      <View style = {styles.container}>
         <TitleBar
           navigator = {this.props.navigator}
-          text = "Event Details"
+          text = {"Event Details"}
           hasBack = {true}
         />
-        <View style = {{flex: 2}}>
-          <View style = {{flex: 3, flexDirection:'row', justifyContent: 'space-around'}}>
-            <View style = {{width: 100, height: 100}}>
-              <Image
-                resizeMode = "cover"
-                style = {{flex: 1}}
-                source = {{uri: this.state.photo}}
-              />
-            </View>
-            <View>
-              <View><Text>{this.state.title}</Text></View>
-              <View><Text>when</Text></View>
-              <View><Text>where</Text></View>
-            </View>
-          </View>
-          <View style = {{flex: 1, alignSelf: 'center'}}>
-          <Text>{this.state.description}</Text>
-          </View>
-          <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-            <View style = {{flex:1, alignItems:'center'}}>
-              <Text>
-                {this.state.isGoing ? 'Attending' : 'Not Attending'}
+        <ScrollView style = {styles.content}>
+          <Image
+            resizeMode = "cover"
+            style = {styles.photo}
+            source = {{uri: this.state.photo}}
+          >
+            <View style = {styles.titleView}>
+              <Text style = {styles.title}>
+                {this.state.title}
               </Text>
-              <Switch
-                onTintColor = "#00ff00"
-                onValueChange = {(value) => this.setState({isGoing: value})}
-                style = {{marginBottom: 10}}
-                value = {this.state.isGoing}
-              />
             </View>
-
-            <View style = {{flex: 1}}>
-              <Button
-                text = "View Guestlist"
-                onpress = {this.goToGuestList.bind(this)}
-                buttonStyles = {ButtonStyles.primaryButton}
-                buttonTextStyles = {ButtonStyles.primaryButtonText}
-                underlayColor = {"#B18C40"}
-              />
-            </View>
+          </Image>
+          <View style = {styles.sectionView}>
+            <Text style = {styles.sectionTitle}>
+              Starts
+            </Text>
+            <Text style = {styles.dateTime}>
+              {this.state.startDate} @ {this.state.startTime}
+            </Text>
           </View>
-        </View>
-
-        <Comments
-          flex = {1}
-          commentsArray = {[
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>,
-            <Text>comments</Text>,<Text>comments2</Text>,<Text>comments3</Text>
-          ]}
-        />
+          <View style = {styles.sectionView}>
+            <Text style = {styles.sectionTitle}>
+              Ends
+            </Text>
+            <Text style = {styles.dateTime}>
+              {this.state.endDate} @ {this.state.endTime}
+            </Text>
+          </View>
+          <View style = {styles.sectionView}>
+            <Text style = {styles.sectionTitle}>
+              Description
+            </Text>
+            <Text style = {styles.description}>
+              {this.state.description}
+            </Text>
+          </View>
+          <View style = {styles.sectionView}>
+            <Text style = {styles.sectionTitle}>
+              Comments
+            </Text>
+            <Comments />
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -115,4 +100,49 @@ class EventDetails extends Component {
     alert('Guest list not implemented.');
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flexDirection: 'column',
+  },
+  photo: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width * 9 / 16,
+  },
+  titleView: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    height: 50,
+  },
+  title: {
+    color: 'white',
+    fontSize: 16,
+  },
+  sectionView: {
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    backgroundColor: 'white',
+    padding: 8,
+    justifyContent: 'center',
+  },
+  sectionTitle: {
+    color: '#F26D6A',
+    fontSize: 10,
+  },
+  dateTime: {
+
+  },
+  description: {
+
+  },
+});
+
 module.exports = EventDetails;

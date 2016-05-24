@@ -15,9 +15,6 @@ import Firebase from 'firebase';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import GridView from './grid-view';
-import SearchBar from './search-bar';
-
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Post extends Component {
@@ -25,8 +22,6 @@ class Post extends Component {
     super(props);
 
     this.state = {
-      liked: false,
-      favorited: false,
     };
   }
 
@@ -38,7 +33,47 @@ class Post extends Component {
     //get the id of the logged in user
     AsyncStorage.getItem('user_data', (error, result) =>{
       loggedUserId = JSON.parse(result).uid;
+      database.once("value", function(snapshot){
+        var userid = postSnapshot.val().userID;
+        var userSnapshot = snapshot.child("users/" + userid);
+        var proPic = userSnapshot.val().profilePic;
+        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
+
+        var didLike = false;
+        if (typeof likeData != 'undefined'){
+          likeData.forEach(function(userRated) {
+            if (userRated.val().userId == loggedUserId){
+              didLike = true;
+            }
+          });
+        }
+
+        var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
+        var didFav = false;
+        if (typeof favData != 'undefined'){
+          favData.forEach(function(userFaved) {
+            if (userFaved.val().postId == postSnapshot.key().toString()){
+              didFav = true;
+            }
+          });
+        }
+
+        self.setState({
+          loggedUser: loggedUserId,
+          postID: postSnapshot.key().toString(),
+          userID: userid,
+          user: postSnapshot.val().user,
+          userPhoto: proPic,
+          photo: postSnapshot.val().photoID,
+          description: postSnapshot.val().description,
+          rating: postSnapshot.val().rating,
+          liked: didLike,
+          favorited: didFav,
+        });
+      });
     });
+
 
     //get all of the data we need for a post
     database.on("value", function(snapshot){
@@ -50,7 +85,7 @@ class Post extends Component {
       var didLike = false;
       if (typeof likeData != 'undefined'){
         likeData.forEach(function(userRated) {
-          if (userRated.val().userId == userid){
+          if (userRated.val().userId == loggedUserId){
             didLike = true;
           }
         });
@@ -68,14 +103,7 @@ class Post extends Component {
       }
 
       self.setState({
-        loggedUser: loggedUserId,
-        postID: postSnapshot.key().toString(),
-        userID: userid,
-        user: postSnapshot.val().user,
-        userPhoto: proPic,
-        photo: postSnapshot.val().photoID,
         rating: postSnapshot.val().rating,
-        description: postSnapshot.val().description,
         liked: didLike,
         favorited: didFav,
       });
@@ -93,7 +121,7 @@ class Post extends Component {
     var ratedVal = database.child("posts/" + this.state.postID + "/rating");
 
     if (!this.state.liked){
-      postRated.push({userId: this.state.userID});
+      postRated.push({userId: this.state.loggedUser});
       //postRef.update({rating: (this.state.rating + 1)}, function(){});
       ratedVal.transaction(function(currentRating){
         return currentRating+1;
@@ -108,7 +136,7 @@ class Post extends Component {
 
         if (typeof likeData != 'undefined'){
           likeData.forEach(function(userRated) {
-            if (userRated.val().userId == self.state.userID){
+            if (userRated.val().userId == self.state.loggedUser){
               var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
               toDelete.set(null);
             }
@@ -123,7 +151,7 @@ class Post extends Component {
 
   getLikeColor(){
     if (this.state.liked){
-      return "green";
+      return "chartreuse";
     }
     return "grey";
   }
@@ -222,10 +250,10 @@ class Post extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.messages.bind(this)}>
-            <MaterialIcon
-              name = "feedback"
+            <IonIcon
+              name = "ios-chatboxes"
               size = {16}
-              color = "green"
+              color = "deepskyblue"
             />
           </TouchableOpacity>
         </View>
