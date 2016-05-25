@@ -29,11 +29,10 @@ class Setting extends Component {
 
     database.once("value", function(snapshot) {
       var usersnapshot = snapshot.child("users/" + props.state);
-      var emailaddress = usersnapshot.val().email;
       self.setState({
         name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
-        oldEmail: emailaddress,
-        profilePic: proPic,
+        oldEmail: usersnapshot.val().email,
+        profilePic: usersnapshot.val().profilePic,
       });
     });
 
