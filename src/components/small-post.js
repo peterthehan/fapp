@@ -41,19 +41,9 @@ class SmallPost extends Component {
     AsyncStorage.getItem('user_data', (error, result) => {
       loggedUserId = JSON.parse(result).uid;
       database.once("value", function(snapshot) {
-        var didLike = false;
-        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
         var userid = postSnapshot.val().userID;
         var userSnapshot = snapshot.child("users/" + userid);
         var proPic = userSnapshot.val().profilePic;
-
-        if(typeof likeData != 'undefined') {
-          likeData.forEach(function(userRated) {
-            if(userRated.val().userId == loggedUserId) {
-              didLike = true;
-            }
-          });
-        }
 
         var didFav = false;
         var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
@@ -69,7 +59,6 @@ class SmallPost extends Component {
         self.setState({
           description: postSnapshot.val().description,
           favorited: didFav,
-          liked: didLike,
           loggedUser: loggedUserId,
           photo: postSnapshot.val().photoID,
           postID: postSnapshot.key().toString(),
@@ -83,19 +72,9 @@ class SmallPost extends Component {
 
     // get all of the data we need for a post
     database.on("value", function(snapshot) {
-      var didLike = false;
-      var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
       var userid = postSnapshot.val().userID;
       var userSnapshot = snapshot.child("users/" + userid);
       var proPic = userSnapshot.val().profilePic;
-
-      if(typeof likeData != 'undefined') {
-        likeData.forEach(function(userRated) {
-          if(userRated.val().userId == loggedUserId) {
-            didLike = true;
-          }
-        });
-      }
 
       var didFav = false;
       var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
@@ -108,10 +87,11 @@ class SmallPost extends Component {
         });
       }
 
+      var rating = snapshot.child("posts/" + postSnapshot.key() + "/rating");
+
       self.setState({
         favorited: didFav,
-        liked: didLike,
-        rating: postSnapshot.val().rating,
+        rating: rating.val(),
       });
     });
   }
@@ -120,40 +100,7 @@ class SmallPost extends Component {
     this.setModalVisible(true);
   }
 
-  // This function will control the like/dislike function of the button
-  like() {
-    var postRated = database.child("posts/" + this.state.postID + "/ratedList");
-    var ratedVal = database.child("posts/" + this.state.postID + "/rating");
-
-    if(!this.state.liked) {
-      postRated.push({userId: this.state.loggedUser});
-      // postRef.update({rating: (this.state.rating + 1)}, function(){});
-      ratedVal.transaction(function(currentRating) {
-        return currentRating + 1;
-      });
-    } else {
-      var postSnapshot = this.props.id;
-      var self = this;
-
-      database.once("value", function(snapshot) {
-        var likeData = snapshot.child("posts/" + self.state.postID + "/ratedList");
-
-        if(typeof likeData != 'undefined') {
-          likeData.forEach(function(userRated) {
-            if(userRated.val().userId == self.state.loggedUser) {
-              var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
-              toDelete.set(null);
-            }
-          });
-        }
-      });
-      ratedVal.transaction(function(currentRating) {
-        return currentRating - 1;
-      });
-    }
-  }
-
-  getLikeColor() {
+  getFavoriteColor() {
     if(this.state.favorited) {
       return 'orange';
     } else {
@@ -161,7 +108,7 @@ class SmallPost extends Component {
     }
   }
 
-  getLikeColorModal() {
+  getFavoriteColorModal() {
     if(this.state.favorited) {
       return 'orange';
     } else {
@@ -171,9 +118,15 @@ class SmallPost extends Component {
 
   favorite() {
     var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
+    var postRated = database.child("posts/" + this.state.postID + "/ratedList");
+    var ratedVal = database.child("posts/" + this.state.postID + "/rating");
 
     if(!this.state.favorited) {
       userFaved.push({postId: this.state.postID});
+      postRated.push({userId: this.state.loggedUser});
+      ratedVal.transaction(function(currentRating) {
+        return currentRating + 1;
+      });
     } else {
       var postSnapshot = this.props.id;
       var self = this;
@@ -189,6 +142,21 @@ class SmallPost extends Component {
             }
           });
         }
+
+        var favPostData = snapshot.child("posts/" + self.state.postID + "/ratedList");
+
+        if(typeof favPostData != 'undefined') {
+          favPostData.forEach(function(userRated) {
+            if(userRated.val().userId == self.state.loggedUser) {
+              var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+
+      ratedVal.transaction(function(currentRating) {
+        return currentRating - 1;
       });
     }
   }
@@ -218,14 +186,14 @@ class SmallPost extends Component {
                   onPress = {() => this.favorite()}
                   style = {styles.button}>
                   <MaterialIcon
-                    color = {this.getLikeColor()}
+                    color = {this.getFavoriteColor()}
                     name = 'star'
                     size = {16}
                   />
                 </TouchableOpacity>
 
                 <Text style = {styles.button, {color: 'white', fontSize: 12}}>
-                  0
+                  {this.state.rating}
                 </Text>
 
                 <TouchableOpacity
@@ -284,14 +252,14 @@ class SmallPost extends Component {
                 onPress = {() => this.favorite()}
                 style = {styles.button}>
                 <MaterialIcon
-                  color = {this.getLikeColorModal()}
+                  color = {this.getFavoriteColorModal()}
                   name = 'star'
                   size = {20}
                 />
               </TouchableOpacity>
 
               <Text style = {styles.button, {fontSize: 12}}>
-                0
+                {this.state.rating}
               </Text>
 
               <TouchableOpacity

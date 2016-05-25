@@ -25,9 +25,9 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    var loggedUserId;
     var postSnapshot = this.props.id;
     var self = this;
+    var loggedUserId;
 
     // get the id of the logged in user
     AsyncStorage.getItem('user_data', (error, result) => {
@@ -36,20 +36,10 @@ class Post extends Component {
         var userid = postSnapshot.val().userID;
         var userSnapshot = snapshot.child("users/" + userid);
         var proPic = userSnapshot.val().profilePic;
-        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
-
-        var didLike = false;
-        if(typeof likeData != 'undefined') {
-          likeData.forEach(function(userRated) {
-            if(userRated.val().userId == loggedUserId) {
-              didLike = true;
-            }
-          });
-        }
-
-        var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
 
         var didFav = false;
+        var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
         if(typeof favData != 'undefined') {
           favData.forEach(function(userFaved) {
             if(userFaved.val().postId == postSnapshot.key().toString()) {
@@ -61,7 +51,6 @@ class Post extends Component {
         self.setState({
           description: postSnapshot.val().description,
           favorited: didFav,
-          liked: didLike,
           loggedUser: loggedUserId,
           photo: postSnapshot.val().photoID,
           postID: postSnapshot.key().toString(),
@@ -73,22 +62,11 @@ class Post extends Component {
       });
     });
 
-
     // get all of the data we need for a post
     database.on("value", function(snapshot) {
-      var didLike = false;
-      var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
-      var proPic = userSnapshot.val().profilePic;
       var userid = postSnapshot.val().userID;
       var userSnapshot = snapshot.child("users/" + userid);
-
-      if(typeof likeData != 'undefined') {
-        likeData.forEach(function(userRated) {
-          if(userRated.val().userId == loggedUserId) {
-            didLike = true;
-          }
-        });
-      }
+      var proPic = userSnapshot.val().profilePic;
 
       var didFav = false;
       var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
@@ -101,58 +79,19 @@ class Post extends Component {
         });
       }
 
+      var rating = snapshot.child("posts/" + postSnapshot.key() + "/rating");
+
       self.setState({
         favorited: didFav,
-        liked: didLike,
-        rating: postSnapshot.val().rating,
+        rating: rating.val(),
       });
     });
   }
 
+
   profile() {
     const Profile = require('../scenes/profile');
     this.props.navigator.push({component: Profile, state: this.state.userID});
-  }
-
-  // This function will control the like/dislike function of the button
-  like() {
-    var postRated = database.child("posts/" + this.state.postID + "/ratedList");
-    var ratedVal = database.child("posts/" + this.state.postID + "/rating");
-
-    if(!this.state.liked) {
-      postRated.push({userId: this.state.loggedUser});
-      // postRef.update({rating: (this.state.rating + 1)}, function(){});
-      ratedVal.transaction(function(currentRating) {
-        return currentRating + 1;
-      });
-    } else {
-      var postSnapshot = this.props.id;
-      var self = this;
-
-      database.once("value", function(snapshot) {
-        var likeData = snapshot.child("posts/" + self.state.postID + "/ratedList");
-
-        if(typeof likeData != 'undefined') {
-          likeData.forEach(function(userRated) {
-            if(userRated.val().userId == self.state.loggedUser) {
-              var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
-              toDelete.set(null);
-            }
-          });
-        }
-      });
-      ratedVal.transaction(function(currentRating) {
-        return currentRating - 1;
-      });
-    }
-  }
-
-  getLikeColor() {
-    if(this.state.liked) {
-      return "chartreuse";
-    } else {
-      return "grey";
-    }
   }
 
   picture() {
@@ -162,9 +101,15 @@ class Post extends Component {
 
   favorite() {
     var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
+    var postRated = database.child("posts/" + this.state.postID + "/ratedList");
+    var ratedVal = database.child("posts/" + this.state.postID + "/rating");
 
     if(!this.state.favorited) {
       userFaved.push({postId: this.state.postID});
+      postRated.push({userId: this.state.loggedUser});
+      ratedVal.transaction(function(currentRating) {
+        return currentRating + 1;
+      });
     } else {
       var postSnapshot = this.props.id;
       var self = this;
@@ -180,15 +125,30 @@ class Post extends Component {
             }
           });
         }
+
+        var favPostData = snapshot.child("posts/" + self.state.postID + "/ratedList");
+
+        if(typeof favPostData != 'undefined') {
+          favPostData.forEach(function(userRated) {
+            if(userRated.val().userId == self.state.loggedUser) {
+              var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+
+      ratedVal.transaction(function(currentRating) {
+        return currentRating - 1;
       });
     }
   }
 
   getFavoriteColor() {
     if(this.state.favorited) {
-      return "orange";
+      return 'orange';
     } else {
-      return "grey";
+      return 'grey';
     }
   }
 
