@@ -19,8 +19,9 @@ import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
 
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
-var filteredPic;
+var filteredPic = null;
 var length = Dimensions.get('window').width;
+var filterSize = 60;
 
 class Camera extends Component {
   constructor(props) {
@@ -65,17 +66,21 @@ class Camera extends Component {
       case "sat":
         filter = this.monoImage();
         break;
-      case "vign":
-        filter = this.vignetteImage();
+      case "filter1":
+        filter = this.filter1Image();
         break;
       case "ig":
         filter = this.igImage();
+        break;
+      case "test":
+        filter = this.testImage();
         break;
       default:
         filter = this.ogImage();
         break;
     }
     return (
+      <View>
       <View style = {{flex: 1, flexDirection: 'column'}}>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
           <View style = {{flex: 1}}>
@@ -90,56 +95,54 @@ class Camera extends Component {
             {this.detailsButton()}
           </View>
         </View>
+        </View>
 
-        <View>
+        <View style = {{borderWidth: 1}}>
           <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
             {filter}
           </Surface>
+        </View>
 
-          <View style = {{flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-            <Text
-              style = {{color: 'black', marginTop: 10, flex: 1}}>
-              Original
-            </Text>
+        <View style = {{flex: 1, flexDirection: "row", justifyContent: "space-around" }}>
 
-            <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} style = {{flex: 1}}>
-              <Surface width = {40} height = {40}>
-                {this.ogImage()}
-              </Surface>
-            </TouchableOpacity>
+          <View style = {styles.filterButton}>
+          <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} >
+            <Surface width = {filterSize} height = {filterSize}>
+              {this.ogImage()}
+            </Surface>
+          </TouchableOpacity>
+          </View>
 
-            <Text
-              style = {{color: 'black', marginTop: 10, flex: 1}}>
-              Monochrome
-            </Text>
+          <View style = {styles.filterButton}>
+          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} >
+            <Surface width = {filterSize} height = {filterSize} >
+              {this.monoImage()}
+            </Surface>
+          </TouchableOpacity>
+          </View>
 
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} style = {{flex: 1}}>
-              <Surface width = {40} height = {40}>
-                {this.monoImage()}
-              </Surface>
-            </TouchableOpacity>
+          <View style = {styles.filterButton}>
+          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('filter1')} >
+            <Surface width = {filterSize} height = {filterSize} >
+              {this.filter1Image()}
+            </Surface>
+          </TouchableOpacity>
+          </View>
 
-            <Text
-              style = {{color: 'black', marginTop: 10, flex: 1}}>
-              Vignette
-            </Text>
+          <View style = {styles.filterButton}>
+          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} >
+            <Surface width = {filterSize} height = {filterSize} >
+              {this.igImage()}
+            </Surface>
+          </TouchableOpacity>
+          </View>
 
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('vign')} style = {{flex: 1}}>
-              <Surface width = {40} height = {40} >
-                {this.vignetteImage()}
-              </Surface>
-            </TouchableOpacity>
-
-            <Text
-              style = {{color: 'black', marginTop: 10, flex: 1}}>
-              Multi-purpose filter
-            </Text>
-
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} style = {{flex: 1}}>
-              <Surface width = {40} height = {40} >
-                {this.igImage()}
-              </Surface>
-            </TouchableOpacity>
+          <View style = {styles.filterButton}>
+          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('test')} >
+            <Surface width = {filterSize} height = {filterSize} >
+              {this.testImage()}
+            </Surface>
+          </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -149,8 +152,8 @@ class Camera extends Component {
   setFilterAndCapture(filt) {
     this.setState({filter: filt});
     setTimeout(() => {this.onCapture1();},300);
-
   }
+
   ogImage() {
     return(
       <Image source = {this.state.avatarSource}
@@ -168,13 +171,17 @@ class Camera extends Component {
     );
   }
 
-  vignetteImage() {
-    return (
-      <Vignette
-        style = {{flex: 1}}
-        texture = {this.state.avatarSource}
-        time = {0.2}
-      />
+  filter1Image() {
+    return (<Instagram
+      brightness = {1}
+      saturation = {1}
+      contrast = {.6}
+      hue = {.5}
+      sepia = {.5}
+      gray = {.1}
+      mixFactor = {0}
+      tex = {this.state.avatarSource}
+    />
     );
   }
 
@@ -190,6 +197,21 @@ class Camera extends Component {
         sepia = {1}
         tex = {this.state.avatarSource}
       />
+    );
+  }
+
+  testImage() {
+    return (
+        <Instagram
+          brightness = {1}
+          saturation = {1}
+          contrast = {1.5}
+          hue = {.25}
+          sepia = {.25}
+          gray = {0}
+          mixFactor = {.25}
+          tex = {this.state.avatarSource}
+        />
     );
   }
 
@@ -241,8 +263,8 @@ class Camera extends Component {
     var photoIDObj;
     if(filteredPic) {
       photoIDObj = {
+        uri: filteredPic,
         isStatic: true,
-        uri: filteredPic
       }
     } else {
       photoIDObj = this.state.avatarSource;
@@ -277,6 +299,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
+  },
+  filterButton: {
+    borderWidth: 2,
   },
 });
 
