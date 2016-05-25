@@ -307,8 +307,6 @@ const styles = StyleSheet.create({
 const options = {
   allowsEditing: false, // Built in functionality to resize, reposition the image after selection
   angle: 0, // android only, photos only
-  aspectX: 2, // android only - aspectX:aspectY, the cropping image's ratio of width to height
-  aspectY: 1, // android only - aspectX:aspectY, the cropping image's ratio of width to height
   cameraType: 'back', // 'front' or 'back'
   cancelButtonTitle: 'Cancel',
   chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
