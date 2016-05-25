@@ -6,7 +6,7 @@ import React, {
   Component,
   Image,
   TextInput,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -27,7 +27,7 @@ class Login extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
     }
   }
 
@@ -43,44 +43,44 @@ class Login extends Component {
           />
 
           <TextInput
-            placeholder = {"Email"}
-            onChangeText = {(text) => this.setState({email: text})}
-            value = {this.state.email}
-            style = {TextStyles.textInput}
-            placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             keyboardType = 'email-address'
+            onChangeText = {(text) => this.setState({email: text})}
+            placeholder = {"Email"}
+            placeholderTextColor = 'white'
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.email}
           />
           <TextInput
-            placeholder = {"Password"}
             onChangeText = {(text) => this.setState({password: text})}
-            value = {this.state.password}
-            style = {TextStyles.textInput}
+            placeholder = {"Password"}
             placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             secureTextEntry = {true}
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.password}
           />
 
           <Button
-            text = "LOG IN"
-            onPress = {this.login.bind(this)}
             buttonStyles = {ButtonStyles.primaryButton}
             buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#B18C40"}
+            onPress = {this.login.bind(this)}
+            text = "LOG IN"
+            underlayColor = {'#B18C40'}
           />
           <Button
-            text = "Create A New Account"
+            buttonStyles = {ButtonStyles.transparentButton}
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
             onPress = {this.goToSignup.bind(this)}
-            buttonStyles = {ButtonStyles.transparentButton}
-            buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#A2A2A2"}
+            text = "Create A New Account"
+            underlayColor = {'gray'}
           />
           <Button
-            text = "Forgot Your Password?"
-            onPress = {this.goToForgotPassword.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#A2A2A2"}
+            onPress = {this.goToForgotPassword.bind(this)}
+            text = "Forgot Your Password?"
+            underlayColor = {'gray'}
           />
         </Image>
       </View>
@@ -104,7 +104,7 @@ class Login extends Component {
             Alert.alert('Error!', 'Log in failed. Please try again.');
           } else {
             AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-            this.props.navigator.push({component: Main});
+            this.props.navigator.resetTo({component: Main});
           }
         }
       );

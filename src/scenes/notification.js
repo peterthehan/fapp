@@ -39,9 +39,9 @@ class Notification extends Component {
 
   componentDidMount() {
     var notes = [];
-    {this.event()};
+    {this.event(notes)};
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(notes)
+      dataSource: this.state.dataSource.cloneWithRows([notes])
     });
   }
 
@@ -56,7 +56,7 @@ class Notification extends Component {
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
-            <TouchableOpacity onPress = {this.generate} underlayColor = 'lemonchiffon'>
+            <TouchableOpacity onPress = {this.test} underlayColor = 'lemonchiffon'>
               <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
                 <Text style = {TextStyles.text}>
                   {rowData}
@@ -70,22 +70,26 @@ class Notification extends Component {
     );
   }
 
-  event(){
+  test(){
+    alert ("you press an item!");
+  }
+
+  event(notes){
     userdata.on('child_removed', function (snap){
-      alert ("child removed");
+      alert ("event removed");
       notes.push("remove ya!");
     });
     var newItems = false;
     userdata.on('child_added',function (snap){
       if(!newItems) return;
-      alert ("child added");
-      notes.push("someone just added an event yo!");
+      alert ("event added");
+      notes.push("someone just added an event yo!\n");
     });
     userdata.once('value', function(snap){
       newItems = true;
     });
     userdata.on('child_changed',function (snap){
-      alert ("child changed");
+      alert ("event changed");
       notes.push("change! boi impossible! haven't implemented yet!");
     });
   }
@@ -98,6 +102,8 @@ class Notification extends Component {
     alert ("you post some random stuff!");
   }
 
+  events() {
+  }
 }
 
 module.exports = Notification;

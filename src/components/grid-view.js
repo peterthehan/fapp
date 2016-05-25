@@ -21,13 +21,13 @@ class GridView extends Component {
         contentContainerStyle = {styles.list}
         refreshControl = {
           <RefreshControl
-    				refreshing = {this.state.refreshing}
+            colors = {['white', '#B3B3B3', '#808080']}
             onRefresh = {this.onRefresh.bind(this)}
+            progressBackgroundColor = "black"
+    				refreshing = {this.state.refreshing}
             tintColor = "blue"
             title = "Loading..."
             titleColor = "black"
-            colors = {['white', '#B3B3B3', '#808080']}
-            progressBackgroundColor = "black"
           />
         }>
         {this.props.dataSource.map(this.props.renderRow)}
@@ -46,9 +46,9 @@ class GridView extends Component {
 
 const styles = StyleSheet.create({
   list: {
-    justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });
 

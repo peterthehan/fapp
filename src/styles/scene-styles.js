@@ -3,16 +3,16 @@
 import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   backgroundImage: {
     flex: 1,
+    height: null,
     width: null,
-    height: null
+  },
+  container: {
+    flex: 1,
   },
   image: {
+    height: 100,
     width: 100,
-    height: 100
-  }
+  },
 });

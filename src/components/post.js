@@ -8,19 +8,18 @@ import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class Post extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
     };
   }
@@ -30,167 +29,127 @@ class Post extends Component {
     var self = this;
     var loggedUserId;
 
-    //get the id of the logged in user
-    AsyncStorage.getItem('user_data', (error, result) =>{
+    // get the id of the logged in user
+    AsyncStorage.getItem('user_data', (error, result) => {
       loggedUserId = JSON.parse(result).uid;
-      database.once("value", function(snapshot){
+      database.once("value", function(snapshot) {
         var userid = postSnapshot.val().userID;
         var userSnapshot = snapshot.child("users/" + userid);
         var proPic = userSnapshot.val().profilePic;
-        var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
-
-        var didLike = false;
-        if (typeof likeData != 'undefined'){
-          likeData.forEach(function(userRated) {
-            if (userRated.val().userId == loggedUserId){
-              didLike = true;
-            }
-          });
-        }
-
-        var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
 
         var didFav = false;
-        if (typeof favData != 'undefined'){
+        var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
+        if(typeof favData != 'undefined') {
           favData.forEach(function(userFaved) {
-            if (userFaved.val().postId == postSnapshot.key().toString()){
+            if(userFaved.val().postId == postSnapshot.key().toString()) {
               didFav = true;
             }
           });
         }
 
         self.setState({
-          loggedUser: loggedUserId,
-          postID: postSnapshot.key().toString(),
-          userID: userid,
-          user: postSnapshot.val().user,
-          userPhoto: proPic,
-          photo: postSnapshot.val().photoID,
           description: postSnapshot.val().description,
-          rating: postSnapshot.val().rating,
-          liked: didLike,
           favorited: didFav,
+          loggedUser: loggedUserId,
+          photo: postSnapshot.val().photoID,
+          postID: postSnapshot.key().toString(),
+          rating: postSnapshot.val().rating,
+          user: postSnapshot.val().user,
+          userID: userid,
+          userPhoto: proPic,
         });
       });
     });
 
-
-    //get all of the data we need for a post
-    database.on("value", function(snapshot){
+    // get all of the data we need for a post
+    database.on("value", function(snapshot) {
       var userid = postSnapshot.val().userID;
       var userSnapshot = snapshot.child("users/" + userid);
       var proPic = userSnapshot.val().profilePic;
-      var likeData = snapshot.child("posts/" + postSnapshot.key().toString() + "/ratedList");
-
-      var didLike = false;
-      if (typeof likeData != 'undefined'){
-        likeData.forEach(function(userRated) {
-          if (userRated.val().userId == loggedUserId){
-            didLike = true;
-          }
-        });
-      }
-
-      var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
 
       var didFav = false;
-      if (typeof favData != 'undefined'){
+      var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
+
+      if(typeof favData != 'undefined') {
         favData.forEach(function(userFaved) {
-          if (userFaved.val().postId == postSnapshot.key().toString()){
+          if(userFaved.val().postId == postSnapshot.key().toString()) {
             didFav = true;
           }
         });
       }
 
+      var rating = snapshot.child("posts/" + postSnapshot.key() + "/rating");
+
       self.setState({
-        rating: postSnapshot.val().rating,
-        liked: didLike,
         favorited: didFav,
+        rating: rating.val(),
       });
     });
   }
+
 
   profile() {
     const Profile = require('../scenes/profile');
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  //This function will control the like/dislike function of the button
-  like(){
+  picture() {
+    // TODO
+    // this.props.navigator.push({component: Post, state: post.postID});
+  }
+
+  favorite() {
+    var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
     var postRated = database.child("posts/" + this.state.postID + "/ratedList");
     var ratedVal = database.child("posts/" + this.state.postID + "/rating");
 
-    if (!this.state.liked){
+    if(!this.state.favorited) {
+      userFaved.push({postId: this.state.postID});
       postRated.push({userId: this.state.loggedUser});
-      //postRef.update({rating: (this.state.rating + 1)}, function(){});
-      ratedVal.transaction(function(currentRating){
-        return currentRating+1;
+      ratedVal.transaction(function(currentRating) {
+        return currentRating + 1;
       });
-    }
-    else{
+    } else {
       var postSnapshot = this.props.id;
       var self = this;
 
-      database.once("value", function(snapshot){
-        var likeData = snapshot.child("posts/" + self.state.postID + "/ratedList");
+      database.once("value", function(snapshot) {
+        var favData = snapshot.child("users/" + self.state.loggedUser + "/favoritedList");
 
-        if (typeof likeData != 'undefined'){
-          likeData.forEach(function(userRated) {
-            if (userRated.val().userId == self.state.loggedUser){
+        if(typeof favData != 'undefined') {
+          favData.forEach(function(userFaved) {
+            if(userFaved.val().postId == postSnapshot.key().toString()) {
+              var toDelete = database.child("users/" + self.state.loggedUser + "/favoritedList/" + userFaved.key().toString() + "/postId");
+              toDelete.set(null);
+            }
+          });
+        }
+
+        var favPostData = snapshot.child("posts/" + self.state.postID + "/ratedList");
+
+        if(typeof favPostData != 'undefined') {
+          favPostData.forEach(function(userRated) {
+            if(userRated.val().userId == self.state.loggedUser) {
               var toDelete = database.child("posts/" + self.state.postID + "/ratedList/" + userRated.key().toString() + "/userId");
               toDelete.set(null);
             }
           });
         }
       });
-      ratedVal.transaction(function(currentRating){
-        return currentRating-1;
-      });
-    }
-  }
 
-  getLikeColor(){
-    if (this.state.liked){
-      return "chartreuse";
-    }
-    return "grey";
-  }
-
-  picture(){
-    //TODO
-    //this.props.navigator.push({component: Post, state: post.postID});
-  }
-
-  favorite() {
-    var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
-
-    if (!this.state.favorited){
-      userFaved.push({postId: this.state.postID});
-    }
-    else{
-      var postSnapshot = this.props.id;
-      var self = this;
-
-      database.once("value", function(snapshot){
-        var favData = snapshot.child("users/" + self.state.loggedUser + "/favoritedList");
-
-        if (typeof favData != 'undefined'){
-          favData.forEach(function(userFaved) {
-            if (userFaved.val().postId == postSnapshot.key().toString()){
-              var toDelete = database.child("users/" + self.state.loggedUser + "/favoritedList/" + userFaved.key().toString() + "/postId");
-              toDelete.set(null);
-            }
-          });
-        }
+      ratedVal.transaction(function(currentRating) {
+        return currentRating - 1;
       });
     }
   }
 
   getFavoriteColor() {
-    if (this.state.favorited){
-      return "orange";
+    if(this.state.favorited) {
+      return 'orange';
+    } else {
+      return 'grey';
     }
-    return "grey";
   }
 
   messages() {
@@ -202,12 +161,12 @@ class Post extends Component {
       <View style = {styles.item}>
         <View>
           <TouchableOpacity
-            style = {styles.userView}
-            onPress = {this.profile.bind(this)}>
+            onPress = {this.profile.bind(this)}
+            style = {styles.userView}>
             <Image
               resizeMode = "cover"
-              style = {styles.userPhoto}
               source = {{uri: this.state.userPhoto}}
+              style = {styles.userPhoto}
             />
             <Text style = {styles.userName}>
               {this.state.user}
@@ -220,40 +179,32 @@ class Post extends Component {
           </Text>
         </View>
         <TouchableOpacity
-          style = {styles.photo}
-          onPress = {this.picture.bind(this)}>
+          onPress = {this.picture.bind(this)}
+          style = {styles.photo}>
           <Image
             resizeMode = "cover"
-            style = {{flex: 1}}
             source = {this.state.photo}
+            style = {{flex: 1}}
           />
         </TouchableOpacity>
+
         <View style = {styles.buttonView}>
           <TouchableOpacity
-            style = {styles.button}
-            onPress = {this.like.bind(this)}>
-            <IonIcon
-              name = "ios-pizza"
-              size = {16}
-              color = {this.getLikeColor()}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style = {styles.button}
-            onPress = {this.favorite.bind(this)}>
+            onPress = {this.favorite.bind(this)}
+            style = {styles.button}>
             <MaterialIcon
+              color = {this.getFavoriteColor()}
               name = "star"
               size = {16}
-              color = {this.getFavoriteColor()}
             />
           </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.messages.bind(this)}>
             <IonIcon
+              color = "deepskyblue"
               name = "ios-chatboxes"
               size = {16}
-              color = "deepskyblue"
             />
           </TouchableOpacity>
         </View>
@@ -265,8 +216,8 @@ class Post extends Component {
 const styles = StyleSheet.create({
   item: {
     backgroundColor: 'white',
-    borderWidth: 1,
     borderColor: 'gray',
+    borderWidth: 1,
     margin: 8,
   },
   userView: {
@@ -274,17 +225,17 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   userPhoto: {
-    width: 30,
-    height: 30,
     borderRadius: 90,
+    height: 30,
+    width: 30,
     padding: 4,
   },
   userName: {
     padding: 4,
   },
   photo: {
-    width: Dimensions.get("window").width - 16,
     height: (Dimensions.get("window").width - 16) * 9 / 16,
+    width: Dimensions.get("window").width - 16,
   },
   descriptionView: {
     padding: 12,
@@ -293,14 +244,14 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   buttonView: {
-    justifyContent: 'center',
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   button: {
+    marginBottom: 4,
     marginLeft: 8,
     marginRight: 8,
     marginTop: 4,
-    marginBottom: 4,
   }
 });
 

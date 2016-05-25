@@ -8,7 +8,7 @@ import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -23,11 +23,10 @@ const windowSize = Dimensions.get('window');
 class Profile extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       items: [],
-      name: "",
-      profilePic: "",
+      name: '',
+      profilePic: '',
     };
   }
 
@@ -35,18 +34,18 @@ class Profile extends Component {
     this.queryData();
   }
 
-  queryData(){
+  queryData() {
     var myBlob = [];
     var self = this;
 
-    database.once("value", function(snapshot){
+    database.once("value", function(snapshot) {
       // user
       var usersnapshot = snapshot.child("users/" + self.props.state);
       var proPic = usersnapshot.val().profilePic;
 
       // posts
       var userPostsSnapshot = usersnapshot.child("postList");
-      userPostsSnapshot.forEach(function(userPostSnapshot){
+      userPostsSnapshot.forEach(function(userPostSnapshot) {
         var postSnapshot = snapshot.child("posts/" + userPostSnapshot.val().postId);
         myBlob.push(postSnapshot);
       });
@@ -62,8 +61,8 @@ class Profile extends Component {
   renderRow(post) {
     return (
       <Post
-        navigator = {this.props.navigator}
         id = {post}
+        navigator = {this.props.navigator}
       />
     );
   }
@@ -73,31 +72,31 @@ class Profile extends Component {
     return(
       <View style = {{flex: 1}}>
         <TitleBar
+          hasBack = {true}
           navigator = {this.props.navigator}
           text = "Profile"
-          hasBack = {true}
         />
         <View style = {{
-          justifyContent: 'center',
           alignItems: 'center',
+          justifyContent: 'center',
           padding: 30,
         }}>
           <Image
             style = {{
-              width: Dimensions.get("window").width / 4,
               height: Dimensions.get("window").width / 4,
+              width: Dimensions.get("window").width / 4,
             }}
-            //resizeMode = {Image.resizeMode.center}
+            // resizeMode = {Image.resizeMode.center}
             source = {{uri: this.state.profilePic}}
           />
-          <Text style = {{fontSize: 25, color: '#000000',}}>
+          <Text style = {{fontSize: 25, color: 'black',}}>
             {this.state.name}
           </Text>
         </View>
         <GridView
           dataSource = {this.state.items}
-          renderRow = {this.renderRow.bind(this)}
           onRefresh = {this.queryData.bind(this)}
+          renderRow = {this.renderRow.bind(this)}
         />
       </View>
     );
@@ -107,9 +106,9 @@ class Profile extends Component {
 
 const styles = StyleSheet.create({
   item: {
+    height: 100,
     margin: 10,
     width: 100,
-    height: 100
   }
 });
 

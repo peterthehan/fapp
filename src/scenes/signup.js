@@ -6,7 +6,7 @@ import React, {
   DatePickerAndroid,
   Image,
   TextInput,
-  View
+  View,
 } from 'react-native';
 
 import DismissKeyboard from 'react-native-dismiss-keyboard';
@@ -25,10 +25,10 @@ class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: '',
-      lastName: '',
       dateOfBirth: '',
       email: '',
+      firstName: '',
+      lastName: '',
       password: '',
       passwordConfirm: ''
     };
@@ -47,72 +47,72 @@ class Signup extends Component {
 
           <View style = {TextStyles.oneLine}>
             <TextInput
-              placeholder = {"First Name"}
               onChangeText = {(text) => this.setState({firstName: text})}
-              value = {this.state.firstName}
-              style = {TextStyles.leftTextInput}
+              placeholder = {"First Name"}
               placeholderTextColor = 'white'
+              style = {TextStyles.leftTextInput}
               underlineColorAndroid = 'white'
+              value = {this.state.firstName}
             />
             <TextInput
-              placeholder = {"Last Name"}
               onChangeText = {(text) => this.setState({lastName: text})}
-              value = {this.state.lastName}
-              style = {TextStyles.rightTextInput}
+              placeholder = {"Last Name"}
               placeholderTextColor = 'white'
+              style = {TextStyles.rightTextInput}
               underlineColorAndroid = 'white'
+              value = {this.state.lastName}
             />
           </View>
 
           <TextInput
-            placeholder = {"Date of Birth"}
-            value = {this.state.dateOfBirth}
-            style = {TextStyles.textInput}
-            placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             onFocus = {this.showDatePicker.bind(this)}
+            placeholder = {"Date of Birth"}
+            placeholderTextColor = 'white'
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.dateOfBirth}
           />
           <TextInput
-            placeholder = {"Email"}
-            onChangeText = {(text) => this.setState({email: text})}
-            value = {this.state.email}
-            style = {TextStyles.textInput}
-            placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             keyboardType = 'email-address'
+            onChangeText = {(text) => this.setState({email: text})}
+            placeholder = {"Email"}
+            placeholderTextColor = 'white'
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.email}
           />
           <TextInput
-            placeholder = {"Password"}
             onChangeText = {(text) => this.setState({password: text})}
-            value = {this.state.password}
-            style = {TextStyles.textInput}
+            placeholder = {"Password"}
             placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             secureTextEntry = {true}
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.password}
           />
           <TextInput
-            placeholder = {"Confirm Password"}
             onChangeText = {(text) => this.setState({passwordConfirm: text})}
-            value = {this.state.passwordConfirm}
-            style = {TextStyles.textInput}
+            placeholder = {"Confirm Password"}
             placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             secureTextEntry = {true}
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.passwordConfirm}
           />
 
           <Button
-            text = "SIGN UP"
-            onPress = {this.signup.bind(this)}
             buttonStyles = {ButtonStyles.primaryButton}
             buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#B18C40"}
+            onPress = {this.signup.bind(this)}
+            text = "SIGN UP"
+            underlayColor = {'#B18C40'}
           />
           <Button
-            text = "Already Have An Account"
-            onPress = {this.goToLogin.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#A2A2A2"}
+            onPress = {this.goToLogin.bind(this)}
+            text = "Already Have An Account"
+            underlayColor = {'gray'}
           />
         </Image>
       </View>
@@ -170,20 +170,20 @@ class Signup extends Component {
             var ref = database.child("users");
             var uid = userData.uid;
             ref.child(uid).set({
-              firstName: this.state.firstName,
-              lastName: this.state.lastName,
               dateOfBirth: this.state.dateOfBirth,
               email: this.state.email,
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
               profilePic: "http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png",
             });
             Alert.alert('Success!', 'Your account was created!');
             this.props.navigator.pop();
 
             this.setState({
+              dateOfBirth: '',
+              email: '',
               firstName: '',
               lastName: '',
-              dateOfBirth: '',
-              email: ''
             });
           }
         }
