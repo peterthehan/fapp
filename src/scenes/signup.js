@@ -3,7 +3,6 @@
 import React, {
   Alert,
   Component,
-  DatePickerAndroid,
   Image,
   TextInput,
   View,
@@ -25,7 +24,6 @@ class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateOfBirth: '',
       email: '',
       firstName: '',
       lastName: '',
@@ -64,14 +62,6 @@ class Signup extends Component {
             />
           </View>
 
-          <TextInput
-            onFocus = {this.showDatePicker.bind(this)}
-            placeholder = {"Date of Birth"}
-            placeholderTextColor = 'white'
-            style = {TextStyles.textInput}
-            underlineColorAndroid = 'white'
-            value = {this.state.dateOfBirth}
-          />
           <TextInput
             keyboardType = 'email-address'
             onChangeText = {(text) => this.setState({email: text})}
@@ -119,29 +109,12 @@ class Signup extends Component {
     );
   }
 
-  async showDatePicker() {
-    DismissKeyboard();
-    try {
-      const {action, year, month, day} = await DatePickerAndroid.open();
-      if(action !== DatePickerAndroid.dismissedAction) {
-        var tempDate = new Date(year, month, day);
-        var tempDateStr = tempDate.toLocaleDateString();
-
-        this.setState({dateOfBirth: tempDateStr});
-        this.setNativeProps({dateOfBirth: tempDateStr});
-      }
-    } catch({code, message}) {
-      console.warn('Cannot open date picker.', message);
-    }
-  }
 
   signup() {
     if(this.state.firstName === "") {
       Alert.alert('', 'Enter your first name.');
     } else if(this.state.lastName === "") {
       Alert.alert('', 'Enter your last name.');
-    } else if(this.state.dateOfBirth === "") {
-      Alert.alert('', 'Enter your date of birth.');
     } else if(this.state.email === "") {
       Alert.alert('', 'Enter your email.');
     } else if(this.state.password === "") {
@@ -170,7 +143,6 @@ class Signup extends Component {
             var ref = database.child("users");
             var uid = userData.uid;
             ref.child(uid).set({
-              dateOfBirth: this.state.dateOfBirth,
               email: this.state.email,
               firstName: this.state.firstName,
               lastName: this.state.lastName,
@@ -180,7 +152,6 @@ class Signup extends Component {
             this.props.navigator.pop();
 
             this.setState({
-              dateOfBirth: '',
               email: '',
               firstName: '',
               lastName: '',
