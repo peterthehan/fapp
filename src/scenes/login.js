@@ -104,7 +104,7 @@ class Login extends Component {
             Alert.alert('Error!', 'Log in failed. Please try again.');
           } else {
             AsyncStorage.setItem('user_data', JSON.stringify(user_data));
-            this.props.navigator.push({component: Main});
+            this.props.navigator.resetTo({component: Main});
           }
         }
       );

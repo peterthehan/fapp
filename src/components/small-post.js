@@ -117,7 +117,7 @@ class SmallPost extends Component {
   }
 
   picture() {
-    this._setModalVisible(true);
+    this.setModalVisible(true);
   }
 
   // This function will control the like/dislike function of the button
@@ -154,18 +154,18 @@ class SmallPost extends Component {
   }
 
   getLikeColor() {
-    if(this.state.liked) {
-      return "chartreuse";
+    if(this.state.favorited) {
+      return 'orange';
     } else {
-      return "white";
+      return 'white';
     }
   }
 
-  getFavoriteColor() {
+  getLikeColorModal() {
     if(this.state.favorited) {
-      return "orange";
+      return 'orange';
     } else {
-      return "white";
+      return 'black';
     }
   }
 
@@ -197,7 +197,7 @@ class SmallPost extends Component {
     alert("Go to messages page.");
   }
 
-  _setModalVisible(visible) {
+  setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
 
@@ -213,37 +213,49 @@ class SmallPost extends Component {
               source = {this.state.photo}
               style = {styles.photo}>
               <View style = {styles.buttonView}>
+
                 <TouchableOpacity
                   onPress = {() => this.favorite()}
                   style = {styles.button}>
                   <MaterialIcon
-                    color = {this.getFavoriteColor()}
-                    name = "star"
+                    color = {this.getLikeColor()}
+                    name = 'star'
                     size = {16}
                   />
                 </TouchableOpacity>
+
+                <Text style = {styles.button, {color: 'white', fontSize: 12}}>
+                  0
+                </Text>
+
                 <TouchableOpacity
                   style = {styles.button}
                   onPress = {() => this.messages()}>
-                  <IonIcon
-                    color = "white"
-                    name = "ios-chatboxes"
+                  <MaterialIcon
+                    color = 'white'
+                    name = 'textsms'
                     size = {16}
                   />
                 </TouchableOpacity>
+
+                <Text style = {styles.button, {color: 'white', fontSize: 12}}>
+                  0
+                </Text>
+
               </View>
             </Image>
           </TouchableOpacity>
         </View>
         <Modal
-          onRequestClose = {() => {this._setModalVisible(false)}}
+          onRequestClose = {() => {this.setModalVisible(false)}}
           visible = {this.state.modalVisible}>
           <View style = {styles.container}>
             <View style = {styles.modalUserBar}>
-              <TouchableOpacity onPress = {() => {this._setModalVisible(false); this.props.navigator.push({component: Profile, state: this.state.userID});}}>
+
+              <TouchableOpacity onPress = {() => {this.setModalVisible(false); this.props.navigator.push({component: Profile, state: this.state.userID});}}>
                 <View style = {styles.modalUser}>
                   <Image
-                    resizeMode = "cover"
+                    resizeMode = 'cover'
                     style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
                     source = {{uri: this.state.userPhoto}}
                   />
@@ -252,51 +264,53 @@ class SmallPost extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress = {() => {this._setModalVisible(false);}}>
+
+              <TouchableOpacity onPress = {() => {this.setModalVisible(false);}}>
                 <MaterialIcon
                   borderWidth = {7}
-                  color = "black"
-                  name = "close"
+                  color = 'black'
+                  name = 'close'
                   size = {25}
                 />
               </TouchableOpacity>
             </View>
             <Image
-              resizeMode = "cover"
+              resizeMode = 'cover'
               source = {this.state.photo}
               style = {styles.modalPhoto}
             />
             <View style = {styles.buttonViewModal}>
               <TouchableOpacity
-                onPress = {this.like.bind(this)}
-                style = {styles.button}>
-                <IonIcon
-                  color = {this.getLikeColor()}
-                  name = "ios-pizza"
-                  size = {28}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
                 onPress = {() => this.favorite()}
                 style = {styles.button}>
                 <MaterialIcon
-                  color = {this.getFavoriteColor()}
-                  name = "star"
-                  size = {28}
+                  color = {this.getLikeColorModal()}
+                  name = 'star'
+                  size = {20}
                 />
               </TouchableOpacity>
+
+              <Text style = {styles.button, {fontSize: 12}}>
+                0
+              </Text>
+
               <TouchableOpacity
                 onPress = {() => {alert("Go to messages page.");}}
                 style = {styles.button}>
-                <IonIcon
-                  color = "deepskyblue"
-                  name = "ios-chatboxes"
-                  size = {28}
+                <MaterialIcon
+                  color = 'black'
+                  name = 'textsms'
+                  size = {20}
                 />
               </TouchableOpacity>
+
+              <Text style = {styles.button, {fontSize: 12}}>
+                0
+              </Text>
+
             </View>
-            <Text style={styles.description}>
-              <Text style={{fontWeight: 'bold'}}>
+            <Text style = {styles.description}>
+              <Text style = {{fontWeight: 'bold'}}>
                 Description:
               </Text>
               {this.state.description}
@@ -311,16 +325,16 @@ class SmallPost extends Component {
 const styles = StyleSheet.create({
   button: {
     marginBottom: 4,
-    marginLeft: 16,
-    marginRight: 16,
+    marginLeft: 4,
+    marginRight: 3,
     marginTop: 4,
   },
   buttonView: {
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     bottom: 0,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     left: 0,
     padding: 4,
     position: 'absolute',
