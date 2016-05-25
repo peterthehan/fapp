@@ -2,7 +2,7 @@
 
 import React, {
   Component,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -25,18 +25,18 @@ class Following extends Component {
   }
 
   render() {
-    return(
+    return (
       <View style = {{flex: 1}}>
         <TitleBar
+          hasBack = {"true"}
           navigator = {this.props.navigator}
           text = "Following"
-          hasBack = {"true"}
         />
         <SearchBar />
         <GridView
           dataSource = {this.state.dataSource}
-          renderRow = {this.renderRow.bind(this)}
           onRefresh = {this.queryData.bind(this)}
+          renderRow = {this.renderRow.bind(this)}
         />
       </View>
     );
@@ -49,8 +49,8 @@ class Following extends Component {
   renderRow(post) {
     return (
       <Post
-        navigator = {this.props.navigator}
         id = {post}
+        navigator = {this.props.navigator}
       />
     );
   }
@@ -60,7 +60,7 @@ class Following extends Component {
     var self = this;
 
     // this section loads the postIDs into myBlob and pushes them to dataSource
-    database.once("value", function(snapshot){
+    database.once("value", function(snapshot) {
       var postsSnapshot = snapshot.child("posts");
       postsSnapshot.forEach(function(postSnapshot) {
         myBlob.push(postSnapshot);
@@ -68,7 +68,6 @@ class Following extends Component {
       self.setState({dataSource: myBlob});
     });
   }
-
 }
 
 module.exports = Following;

@@ -6,7 +6,7 @@ import React, {
   Image,
   Text,
   TextInput,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -24,7 +24,7 @@ class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ''
+      email: '',
     }
   }
 
@@ -44,28 +44,28 @@ class ForgotPassword extends Component {
           </Text>
 
           <TextInput
-            placeholder = {"Email"}
-            onChangeText = {(text) => this.setState({email: text})}
-            value = {this.state.email}
-            style = {TextStyles.textInput}
-            placeholderTextColor = 'white'
-            underlineColorAndroid = 'white'
             keyboardType = 'email-address'
+            onChangeText = {(text) => this.setState({email: text})}
+            placeholder = {"Email"}
+            placeholderTextColor = 'white'
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'white'
+            value = {this.state.email}
           />
 
           <Button
-            text = "SEARCH"
-            onPress = {this.submit.bind(this)}
             buttonStyles = {ButtonStyles.primaryButton}
             buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#B18C40"}
+            onPress = {this.submit.bind(this)}
+            text = "SEARCH"
+            underlayColor = {'#B18C40'}
           />
           <Button
-            text = "Go Back"
-            onPress = {this.goToLogin.bind(this)}
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {"#A2A2A2"}
+            onPress = {this.goToLogin.bind(this)}
+            text = "Go Back"
+            underlayColor = {'gray'}
           />
         </Image>
       </View>

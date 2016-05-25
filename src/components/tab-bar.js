@@ -15,12 +15,12 @@ var ImagePickerManager = require('NativeModules').ImagePickerManager;
 
 class TabBar extends Component{
   propTypes: {
-    goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
+    goToPage: React.PropTypes.func,
     tabs: React.PropTypes.array,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       tabIcons: [],
@@ -30,7 +30,8 @@ class TabBar extends Component{
   render() {
     const tabWidth = this.props.containerWidth / this.props.tabs.length;
     const left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
+      inputRange: [0, 1, ],
+      outputRange: [0, tabWidth, ],
     });
 
     return (
@@ -41,23 +42,23 @@ class TabBar extends Component{
               <TouchableOpacity
                 key = {tab}
                 onPress = {() => {
-                  if (i == 2) {
+                  if(i == 2) {
                     this.openCamera();
                   }
                   this.props.goToPage(i)}
                 }
                 style = {styles.tab}>
                 <Icon
-                  name = {tab}
-                  size = {30}
                   color = {this.props.activeTab == i ? '#F26D6A' : 'rgb(204,204,204)'}
+                  name = {tab}
                   ref = {(icon) => {this.state.tabIcons[i] = icon;}}
+                  size = {30}
                 />
               </TouchableOpacity>
             );
           })}
         </View>
-        <Animated.View style = {[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
+        <Animated.View style = {[styles.tabUnderlineStyle, {width: tabWidth}, {left, }, ]} />
       </View>
     );
   }
@@ -70,9 +71,7 @@ class TabBar extends Component{
     this.state.tabIcons.forEach((icon, i) => {
       const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
       icon.setNativeProps({
-        style: {
-          color: this.iconColor(progress)
-        },
+        style: {color: this.iconColor(progress)},
       });
     });
   }
@@ -88,8 +87,7 @@ class TabBar extends Component{
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
       console.log('Response = ', response);
-
-      if (response.didCancel) {
+      if(response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePickerManager Error: ', response.error);
@@ -106,46 +104,46 @@ class TabBar extends Component{
 
 const styles = StyleSheet.create({
   tab: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
     paddingBottom: 10,
   },
   tabs: {
-    height: 45,
-    flexDirection: 'row',
-    paddingTop: 5,
     borderWidth: 1,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: '#000'
+    borderBottomColor: 'black',
+    flexDirection: 'row',
+    height: 45,
+    paddingTop: 5,
   },
   tabUnderlineStyle: {
-    position: 'absolute',
-    height: 3,
     backgroundColor: '#F26D6A',
     bottom: 0,
+    height: 3,
+    position: 'absolute',
   },
 });
 
 const options = {
-  title: 'Select Avatar', // specify null or empty string to remove the title
-  cancelButtonTitle: 'Cancel',
-  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
-  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
-  cameraType: 'back', // 'front' or 'back'
-  mediaType: 'photo', // 'photo' or 'video'
-  videoQuality: 'high', // 'low', 'medium', or 'high'
-  durationLimit: 10, // video recording max time in seconds
-  maxWidth: 370, // photos only
-  maxHeight: 370, // photos only
+  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  angle: 0, // android only, photos only
   aspectX: 2, // android only - aspectX:aspectY, the cropping image's ratio of width to height
   aspectY: 1, // android only - aspectX:aspectY, the cropping image's ratio of width to height
-  quality: 1, // 0 to 1, photos only
-  angle: 0, // android only, photos only
-  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  cameraType: 'back', // 'front' or 'back'
+  cancelButtonTitle: 'Cancel',
+  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+  durationLimit: 10, // video recording max time in seconds
+  title: 'Select Avatar', // specify null or empty string to remove the title
+  maxHeight: 370, // photos only
+  maxWidth: 370, // photos only
+  mediaType: 'photo', // 'photo' or 'video'
   noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  quality: 1, // 0 to 1, photos only
+  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+  videoQuality: 'high', // 'low', 'medium', or 'high'
 };
 
 module.exports = TabBar;

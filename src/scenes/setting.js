@@ -8,7 +8,7 @@ import React, {
   Navigator,
   Text,
   TextInput,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -31,20 +31,22 @@ class Setting extends Component {
       var usersnapshot = snapshot.child("users/" + props.state);
       var emailaddress = usersnapshot.val().email;
       self.setState({
-        oldEmail: emailaddress,
         name: usersnapshot.val().firstName + " " + usersnapshot.val().lastName,
+        oldEmail: emailaddress,
+        profilePic: proPic,
       });
     });
 
     this.state = {
-      name: "",
-      oldEmail: "",
-      email: "",
-      password: "",
+      email: '',
+      name: '',
+      oldEmail: '',
+      password: '',
+      profilePic: '',
     };
-    this.logout = this.logout.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   render() {
@@ -55,12 +57,12 @@ class Setting extends Component {
       });
     });
 
-    return(
+    return (
       <View style = {SceneStyles.container}>
         <TitleBar
+          hasBack = {true}
           navigator = {this.props.navigator}
           text = "Setting"
-          hasBack = {true}
         />
         <View>
         {
@@ -79,33 +81,33 @@ class Setting extends Component {
               </Text>
 
               <TextInput
-                placeholder = {"Email"}
                 onChangeText = {(text) => this.setState({email: text})}
-                value = {this.state.email}
-                style = {SceneStyles.textInput}
+                placeholder = {"Email"}
                 placeholderTextColor = 'black'
+                style = {SceneStyles.textInput}
                 underlineColorAndroid = 'black'
+                value = {this.state.email}
               />
 
               <Button
-                text = "Change Email"
+                buttonStyles = {ButtonStyles.transparentButton}
+                buttonTextStyles = {ButtonStyles.blackButtonText}
                 onPress = {this.changeEmail.bind(this)}
-                buttonStyles = {ButtonStyles.transparentButton}
-                buttonTextStyles = {ButtonStyles.blackButtonText}
+                text = "Change Email"
                 underlayColor = {"#A2A2A2"}
               />
               <Button
-                text = "Change Password"
+                buttonStyles = {ButtonStyles.transparentButton}
+                buttonTextStyles = {ButtonStyles.blackButtonText}
                 onPress = {this.changePassword.bind(this)}
-                buttonStyles = {ButtonStyles.transparentButton}
-                buttonTextStyles = {ButtonStyles.blackButtonText}
+                text = "Change Password"
                 underlayColor = {"#A2A2A2"}
               />
               <Button
-                text = "Logout"
-                onPress = {this.logout.bind(this)}
                 buttonStyles = {ButtonStyles.transparentButton}
                 buttonTextStyles = {ButtonStyles.blackButtonText}
+                onPress = {this.logout.bind(this)}
+                text = "Logout"
                 underlayColor = {"#A2A2A2"}
               />
             </View>

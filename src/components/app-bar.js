@@ -4,7 +4,7 @@ import React, {
   Component,
   Image,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 
 class AppBar extends Component {
@@ -20,8 +20,8 @@ class AppBar extends Component {
 
 const styles = StyleSheet.create({
   appBarStyles: {
+    alignItems: 'center',
     padding: 16,
-    alignItems: 'center'
   }
 });
 

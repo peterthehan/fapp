@@ -30,7 +30,7 @@ class Event extends Component {
     this.createEvent = this.createEvent.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.queryData();
   }
 
@@ -49,15 +49,15 @@ class Event extends Component {
   }
 
   renderRow(eventData){
-    return(
+    return (
       <EventPost
-        navigator = {this.props.navigator}
         id = {eventData}
+        navigator = {this.props.navigator}
       />
     );
   }
 
-  createEvent(){
+  createEvent() {
     this.props.navigator.push({component: CreateEvent});
   }
 
@@ -71,8 +71,8 @@ class Event extends Component {
         <SearchBar />
         <GridView
           dataSource = {this.state.dataSource}
-          renderRow = {this.renderRow.bind(this)}
           onRefresh = {this.queryData.bind(this)}
+          renderRow = {this.renderRow.bind(this)}
         />
         <ActionButton
           buttonColor = {'#F26D6A'}

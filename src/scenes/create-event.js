@@ -7,9 +7,9 @@ import React, {
   Switch,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   TimePickerAndroid,
-  View
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -29,13 +29,13 @@ class CreateEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      publicEvent: true,
-      dateStart: dateStartStr,
       dateEnd: dateEndStr,
-      timeStart: timeStartStr,
+      dateStart: dateStartStr,
+      description: '',
+      publicEvent: true,
       timeEnd: timeEndStr,
-      description: ''
+      timeStart: timeStartStr,
+      title: '',
     }
   }
 
@@ -59,7 +59,7 @@ class CreateEvent extends Component {
       var tempDateStr = tempDate.toLocaleDateString();
       const {action, year, month, day} = await DatePickerAndroid.open(options);
 
-      if (action === DatePickerAndroid.dismissedAction) {
+      if(action === DatePickerAndroid.dismissedAction) {
         if(start) {
           tempDateStr = this.state.dateStart;
         } else {
@@ -74,7 +74,7 @@ class CreateEvent extends Component {
       } else {
         this.setState({dateEnd: tempDateStr});
       }
-    } catch ({code, message}) {
+    } catch({code, message}) {
       console.warn(`Error in example '${stateKey}': `, message);
     }
   }
@@ -86,7 +86,7 @@ class CreateEvent extends Component {
       tempMin = minute;
       tempHour = hour;
       var tempTimeStr = '';
-      if (action === TimePickerAndroid.dismissedAction) {
+      if(action === TimePickerAndroid.dismissedAction) {
         if(start) {
           tempTimeStr = this.state.timeStart;
         } else {
@@ -100,7 +100,7 @@ class CreateEvent extends Component {
       } else {
         this.setState({timeEnd: tempTimeStr});
       }
-    } catch ({code, message}) {
+    } catch({code, message}) {
       console.warn(`Error in example '${stateKey}': `, message);
     }
   }
@@ -113,14 +113,13 @@ class CreateEvent extends Component {
 
     if(hour == 0) {
       hStr = 12;
-    }
-    else if(hour > 12) {
+    } else if(hour > 12) {
       hStr = hour - 12;
     } else {
       hStr = hour;
     }
 
-    if( hour < 12 && hour >= 0 ) {
+    if(hour < 12 && hour >= 0) {
       isAM = true;
     }
     return hStr + ':' + (minute < 10 ? '0' + minute : minute) + (isAM ? ' am' : ' pm');
@@ -129,26 +128,26 @@ class CreateEvent extends Component {
   renderTitleBar() {
     return(
       <TitleBar
+        hasBack = {true}
         navigator = {this.props.navigator}
         text = "Create an Event"
-        hasBack = {true}
       />
     );
   }
 
   renderTitleInput() {
-    return(
+    return (
       <View>
         <Text style = {styles.smallText}>
           Title
         </Text>
         <TextInput
-          style = {styles.titleInput}
           onChangeText = {(text) => this.setState({title: text})}
-          value = {this.state.title}
           placeholder = {"Event Title"}
           placeholderTextColor = 'gray'
+          style = {styles.titleInput}
           underlineColorAndroid = 'gray'
+          value = {this.state.title}
         />
       </View>
     );
@@ -241,13 +240,13 @@ class CreateEvent extends Component {
         <TextInput
           maxLength = {limit}
           multiline = {true}
-          style = {{color:'black'}}
-          onChangeText = {(text) => this.setState({description: text})}
-          value = {this.state.description}
           numberOfLines = {5}
+          onChangeText = {(text) => this.setState({description: text})}
           placeholder = {"Leave a short description of your event for your guests"}
           placeholderTextColor = 'gray'
+          style = {{color: 'black'}}
           underlineColorAndroid = 'gray'
+          value = {this.state.description}
         />
         <Text style = {{color: remainderColor}}>
           remaining: {remainder}
@@ -260,24 +259,24 @@ class CreateEvent extends Component {
     return (
       <View style = {{alignItems: 'center'}}>
         <Button
-          text = "Invite Friends!"
+          buttonStyles = {styles.button}
+          buttonTextStyles = {ButtonStyles.primaryButtonText}
           onPress = {this.createGuestList.bind(this)}
-          buttonStyles = {styles.button}
-          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          text = "Invite Friends!"
           underlayColor = {"#A2A2A2"}
         />
         <Button
-          text = "Create Event!"
+          buttonStyles = {styles.button}
+          buttonTextStyles = {ButtonStyles.primaryButtonText}
           onPress = {this.createEvent.bind(this)}
-          buttonStyles = {styles.button}
-          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          text = "Create Event!"
           underlayColor = {"#A2A2A2"}
         />
         <Button
-          text = "Clear"
-          onPress = {this.clearEvent.bind(this)}
           buttonStyles = {styles.button}
           buttonTextStyles = {ButtonStyles.primaryButtonText}
+          onPress = {this.clearEvent.bind(this)}
+          text = "Clear"
           underlayColor = {"#A2A2A2"}
         />
       </View>
@@ -290,14 +289,14 @@ class CreateEvent extends Component {
 
   createEvent() {
     events.push({
-      title: this.state.title,
       description: this.state.description,
-      startDate: this.state.dateStart,
-      startTime: this.state.timeStart,
       endDate: this.state.dateEnd,
       endTime: this.state.timeEnd,
+      isPublic: this.state.publicEvent,
       photo: 'https://s-media-cache-ak0.pinimg.com/236x/d8/0d/1e/d80d1efe3a4b6b4d8bd186bdd788902c.jpg',
-      isPublic: this.state.publicEvent
+      startDate: this.state.dateStart,
+      startTime: this.state.timeStart,
+      title: this.state.title,
     });
     this.props.navigator.pop();
   }
@@ -305,13 +304,13 @@ class CreateEvent extends Component {
   clearEvent() {
     alert('Cleared :(');
     this.setState({
-      title: '',
-      publicEvent: true,
-      dateStart: dateStartStr,
+      description: '',
       dateEnd: dateEndStr,
-      timeStart: timeStartStr,
+      dateStart: dateStartStr,
+      publicEvent: true,
       timeEnd: timeEndStr,
-      description: ''
+      timeStart: timeStartStr,
+      title: '',
     });
   }
 }
@@ -337,40 +336,37 @@ const styles = StyleSheet.create({
   },
   dateInputField: {
     flex: 1,
-    borderWidth: 1,
     borderColor: 'gray',
-    padding: 5,
+    borderWidth: 1,
     margin: 5,
+    padding: 5,
   },
   dateInputText: {
-
   },
   visibilityView: {
     flexDirection: 'row',
     marginLeft: 10,
   },
   visibilityToggle: {
-
   },
   visibilityText: {
     color: 'black',
   },
   descriptionView: {
-    borderWidth: 1,
     borderColor: 'gray',
+    borderWidth: 1,
     margin: 5,
   },
   descriptionInput: {
-
   },
   button: {
-    padding: 12,
+    alignItems: 'center',
+    backgroundColor: '#009688',
+    marginBottom: 4,
     marginLeft: 16,
     marginRight: 16,
-    alignItems: 'center',
     marginTop: 4,
-    marginBottom: 4,
-    backgroundColor: '#009688'
+    padding: 12,
   },
 });
 
