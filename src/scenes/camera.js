@@ -97,8 +97,8 @@ class Camera extends Component {
         </View>
         </View>
 
-        <View style = {{borderWidth: 1}}>
-          <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
+        <View style = {{marginTop:3, marginLeft: 3, marginRight: 5, marginBottom: 10, borderColor: 'black', borderWidth: 1}}>
+          <Surface width = {this.state.length - 3} height = {this.state.length - 3} ref = "surfacePic">
             {filter}
           </Surface>
         </View>
@@ -301,7 +301,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filterButton: {
-    borderWidth: 2,
   },
 });
 
