@@ -26,26 +26,26 @@ class Edit extends Component {
     return (
       <View style = {{flex: 1}}>
         <ToolbarAndroid
-          title = 'Create a Post'
-          style = {styles.toolbar}
           actions = {[
             {title: 'Details', show: 'always'},
           ]}
           onActionSelected = {this.postDetails.bind(this)}
+          style = {styles.toolbar}
+          title = 'Create a Post'
         />
       </View>
     );
   }
 
-  postDetails(){
+  postDetails() {
     this.props.navigator.push({component: PostDetails});
   }
 }
 
 const styles = StyleSheet.create({
   toolbar: {
-    height: 56,
     backgroundColor: '#4682b4',
+    height: 56,
   },
   uploadAvatar: {
     height: 370,

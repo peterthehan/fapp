@@ -11,42 +11,42 @@ import React, {
   View,
 } from 'react-native';
 
-import { Surface } from 'gl-react-native';
-var ImagePickerManager = require('NativeModules').ImagePickerManager;
+import {Surface} from 'gl-react-native';
 
+import Instagram from '../components/instagram';
 import PostDetails from './post-details';
 import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
-import Instagram from '../components/instagram';
 
-var length = Dimensions.get('window').width;
+var ImagePickerManager = require('NativeModules').ImagePickerManager;
 var filteredPic;
+var length = Dimensions.get('window').width;
 
 class Camera extends Component {
   constructor(props) {
     super(props);
     this.state = {
       avatarSource: null,
-      test: 'help',
+      filter: null,
+      // filteredPic: null,
       length: length,
-      filter: null
-      //filteredPic: null
+      test: 'help',
     };
     this.onCapture1 = this.onCapture1.bind(this);
   }
 
-  onCapture1 () {
+  onCapture1() {
     this.refs.surfacePic.captureFrame().then(data64 => {
       filteredPic = data64;
     });
   }
+
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
       console.log('Response = ', response);
-
-      if (response.didCancel) {
+      if(response.didCancel) {
         console.log('User cancelled image picker');
-      } else if (response.error) {
+      } else if(response.error) {
         console.log('ImagePickerManager Error: ', response.error);
       } else {
         // You can display the image using either data:
@@ -61,7 +61,7 @@ class Camera extends Component {
 
   renderImage() {
     var filter;
-    switch (this.state.filter) {
+    switch(this.state.filter) {
       case "sat":
         filter = this.monoImage();
         break;
@@ -90,7 +90,7 @@ class Camera extends Component {
             {this.detailsButton()}
           </View>
         </View>
-        
+
         <View>
           <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
             {filter}
@@ -101,40 +101,40 @@ class Camera extends Component {
               style = {{color: 'black', marginTop: 10, flex: 1}}>
               Original
             </Text>
-    
+
             <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} style = {{flex: 1}}>
               <Surface width = {40} height = {40}>
                 {this.ogImage()}
               </Surface>
             </TouchableOpacity>
-    
+
             <Text
               style = {{color: 'black', marginTop: 10, flex: 1}}>
               Monochrome
             </Text>
-    
+
             <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} style = {{flex: 1}}>
-              <Surface width = {40} height = {40} >
+              <Surface width = {40} height = {40}>
                 {this.monoImage()}
               </Surface>
             </TouchableOpacity>
-    
+
             <Text
               style = {{color: 'black', marginTop: 10, flex: 1}}>
               Vignette
             </Text>
-    
+
             <TouchableOpacity onPress = {()=> this.setFilterAndCapture('vign')} style = {{flex: 1}}>
               <Surface width = {40} height = {40} >
                 {this.vignetteImage()}
               </Surface>
             </TouchableOpacity>
-    
+
             <Text
               style = {{color: 'black', marginTop: 10, flex: 1}}>
               Multi-purpose filter
             </Text>
-    
+
             <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} style = {{flex: 1}}>
               <Surface width = {40} height = {40} >
                 {this.igImage()}
@@ -145,6 +145,7 @@ class Camera extends Component {
       </View>
     );
   }
+
   setFilterAndCapture(filt) {
     this.setState({filter: filt});
     setTimeout(() => {this.onCapture1();},300);
@@ -158,39 +159,42 @@ class Camera extends Component {
   }
 
   monoImage() {
-    return(<Saturation
-      factor = {0}
-      image = {this.state.avatarSource}
-      style = {{flex: 1}}
-    />);
+    return(
+      <Saturation
+        factor = {0}
+        image = {this.state.avatarSource}
+        style = {{flex: 1}}
+      />
+    );
   }
 
   vignetteImage() {
-    return (<Vignette
-      time = {0.2}
-      texture = {this.state.avatarSource}
-      style = {{flex: 1}}
-    />
+    return (
+      <Vignette
+        style = {{flex: 1}}
+        texture = {this.state.avatarSource}
+        time = {0.2}
+      />
     );
   }
 
   igImage() {
     return (
-        <Instagram
-          brightness = {1}
-          saturation = {1}
-          contrast = {1}
-          hue = {0}
-          sepia = {1}
-          gray = {0}
-          mixFactor = {0}
-          tex = {this.state.avatarSource}
-        />
+      <Instagram
+        brightness = {1}
+        contrast = {1}
+        gray = {0}
+        hue = {0}
+        mixFactor = {0}
+        saturation = {1}
+        sepia = {1}
+        tex = {this.state.avatarSource}
+      />
     );
   }
 
   renderBars() {
-    return(
+    return (
       <View style = {{flex: 1}}>
         <View style = {styles.titleBar}>
           <View style = {{flex: 1}}>
@@ -205,9 +209,6 @@ class Camera extends Component {
             {this.detailsButton()}
           </View>
         </View>
-
-        <View>
-        </View>
       </View>
     );
   }
@@ -217,7 +218,9 @@ class Camera extends Component {
       <TouchableOpacity
         style = {styles.button, {alignItems: 'flex-end'}}
         onPress = {this.onActionSelected.bind(this)}>
-        <Text style = {{color: 'white'}}>Details</Text>
+        <Text style = {{color: 'white'}}>
+          Details
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -225,16 +228,18 @@ class Camera extends Component {
   cameraButton() {
     return (
       <TouchableOpacity
-        style = {styles.button}
-        onPress = {() => {this.openCamera()}}>
-        <Text style = {{color: 'white'}}>Camera</Text>
+        onPress = {() => {this.openCamera()}}
+        style = {styles.button}>
+        <Text style = {{color: 'white'}}>
+          Camera
+        </Text>
       </TouchableOpacity>
     );
   }
 
   onActionSelected() {
     var photoIDObj;
-    if (filteredPic) {
+    if(filteredPic) {
       photoIDObj = {
         isStatic: true,
         uri: filteredPic
@@ -246,52 +251,52 @@ class Camera extends Component {
   }
 
   render() {
-    if ( this.state.avatarSource)
-      {return this.renderImage();}
-    else
-      {return this.renderBars();}
+    if(this.state.avatarSource) {
+      return this.renderImage();
+    } else {
+      return this.renderBars();
+    }
   }
-
 }
 
 const styles = StyleSheet.create({
+  button: {
+  },
   titleBar: {
+    alignItems: 'center',
+    backgroundColor: '#F26D6A',
+    flex: 3,
+    flexDirection: 'row',
+    left: 0,
     padding: 10,
     position: 'absolute',
-    backgroundColor: '#F26D6A',
-    top: 0,
-    left: 0,
     right: 0,
-    alignItems: 'center',
-    flex: 3,
-    flexDirection: 'row'
+    top: 0,
   },
   titleBarText: {
     color: 'white',
     fontSize: 18,
-    textAlign: 'center'
-  },
-  button: {
+    textAlign: 'center',
   },
 });
 
-var options = {
-  title: 'Select Avatar', // specify null or empty string to remove the title
-  cancelButtonTitle: 'Cancel',
-  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
-  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
-  cameraType: 'back', // 'front' or 'back'
-  mediaType: 'photo', // 'photo' or 'video'
-  videoQuality: 'high', // 'low', 'medium', or 'high'
-  durationLimit: 10, // video recording max time in seconds
-  maxWidth: 370, // photos only
-  maxHeight: 370, // photos only
+const options = {
+  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  angle: 0, // android only, photos only
   aspectX: 2, // android only - aspectX:aspectY, the cropping image's ratio of width to height
   aspectY: 1, // android only - aspectX:aspectY, the cropping image's ratio of width to height
-  quality: 1, // 0 to 1, photos only
-  angle: 0, // android only, photos only
-  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  cameraType: 'back', // 'front' or 'back'
+  cancelButtonTitle: 'Cancel',
+  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+  durationLimit: 10, // video recording max time in seconds
+  maxHeight: 370, // photos only
+  maxWidth: 370, // photos only
+  mediaType: 'photo', // 'photo' or 'video'
   noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  quality: 1, // 0 to 1, photos only
+  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+  title: 'Select Avatar', // specify null or empty string to remove the title
+  videoQuality: 'high', // 'low', 'medium', or 'high'
 };
 
 module.exports = Camera;

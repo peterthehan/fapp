@@ -77,15 +77,14 @@ class Notification extends Component {
     );
   }
 
-  following(){
+  following() {
   }
 
-  posts(){
+  posts() {
   }
 
-  events(){
+  events() {
   }
-
 }
 
 module.exports = Notification;

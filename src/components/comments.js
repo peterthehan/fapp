@@ -6,7 +6,7 @@ import React, {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -16,7 +16,6 @@ import GridView from './grid-view';
 const tempComments = ["Comment 1", "Comment 2", "Comment 3", "Comment 4", "Comment 5", "Comment 6", "Comment 7", "Comment 8"];
 
 class Comments extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,16 +32,18 @@ class Comments extends Component {
     this.setState({dataSource: tempComments});
   }
 
-  renderRow(comment){
+  renderRow(comment) {
     return (
       <View style = {styles.postView}>
-        <Text>{comment}</Text>
+        <Text>
+          {comment}
+        </Text>
       </View>
     );
   }
 
   updateText(text) {
-    //database stuff
+    // database stuff
     this.refs['newCommentInput'].clear();
     alert(text);
   }
@@ -53,16 +54,16 @@ class Comments extends Component {
         <View style = {styles.commentView}>
           <GridView
             dataSource = {this.state.dataSource}
-            renderRow = {this.renderRow.bind(this)}
             onRefresh = {this.queryData.bind(this)}
+            renderRow = {this.renderRow.bind(this)}
           />
         </View>
         <TextInput
-          style = {styles.textInput}
-          ref = {'newCommentInput'}
           onSubmitEditing = {(event) => this.updateText(event.nativeEvent.text)}
           placeholder = {"Add a comment"}
           placeholderTextColor = 'gray'
+          ref = {'newCommentInput'}
+          style = {styles.textInput}
           underlineColorAndroid = 'gray'
         />
       </View>
@@ -78,12 +79,12 @@ const styles = StyleSheet.create({
   textInput: {
   },
   postView: {
-    width: Dimensions.get("window").width,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
     height: 50,
     justifyContent: 'center',
     paddingLeft: 20,
-    borderBottomWidth: 1,
-    borderColor: 'gray',
+    width: Dimensions.get("window").width,
   },
 });
 

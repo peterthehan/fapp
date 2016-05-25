@@ -3,7 +3,7 @@
 import React, {
   Component,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 
 class Button extends Component {

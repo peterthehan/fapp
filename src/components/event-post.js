@@ -7,7 +7,7 @@ import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -18,13 +18,12 @@ import SceneStyles from '../styles/scene-styles'
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class EventPost extends Component {
-
   constructor(props){
     super(props);
     this.state = {
-      id: "",
-      photo: "",
-      title: "",
+      id: '',
+      photo: '',
+      title: '',
     }
     this.showDetails = this.showDetails.bind(this);
   }
@@ -32,32 +31,35 @@ class EventPost extends Component {
   componentDidMount() {
     const eventData = this.props.id;
     this.setState({
-      id: eventData,
-      title: eventData.val().title,
       description: eventData.val().description,
-      startDate: eventData.val().startDate,
-      startTime: eventData.val().startTime,
       endDate: eventData.val().endDate,
       endTime: eventData.val().endTime,
+      id: eventData,
       isPublic: eventData.val().isPublic,
       photo: eventData.val().photo,
+      startDate: eventData.val().startDate,
+      startTime: eventData.val().startTime,
+      title: eventData.val().title,
     });
   }
 
-  showDetails(){
-    this.props.navigator.push({component: EventDetails, state: this.state.id});
+  showDetails() {
+    this.props.navigator.push({
+      component: EventDetails,
+      state: this.state.id,
+    });
   }
 
   render() {
     return(
       <TouchableOpacity
-        style = {styles.eventView}
-        onPress = {this.showDetails}>
+        onPress = {this.showDetails}
+        style = {styles.eventView}>
         <View style = {styles.imageView}>
           <Image
             resizeMode = "cover"
-            style = {styles.photo}
             source = {{uri: this.state.photo}}
+            style = {styles.photo}
           />
         </View>
         <View style = {styles.content}>
@@ -78,20 +80,20 @@ class EventPost extends Component {
 
 const styles = StyleSheet.create({
   eventView: {
-    backgroundColor: 'white',
-    width: Dimensions.get("window").width,
-    flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 1,
+    backgroundColor: 'white',
     borderColor: 'gray',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    width: Dimensions.get("window").width,
   },
   imageView: {
-    borderRightWidth: 1,
     borderColor: 'gray',
+    borderRightWidth: 1,
   },
   photo: {
-    width: 100,
     height: 100,
+    width: 100,
   },
   content: {
     padding: 10,

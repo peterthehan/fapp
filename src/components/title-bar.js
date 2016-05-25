@@ -5,7 +5,7 @@ import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -26,13 +26,13 @@ class TitleBar extends Component {
     if(this.props.hasBack) {
       return (
         <TouchableOpacity
-          style = {styles.backButton}
-          onPress = {() => this.props.navigator.pop()}>
+          onPress = {() => this.props.navigator.pop()}
+          style = {styles.backButton}>
           <Icon
-            name = "arrow-back"
-            size = {25}
             borderWidth = {7}
             color = "white"
+            name = "arrow-back"
+            size = {25}
           />
         </TouchableOpacity>
       );
@@ -43,18 +43,18 @@ class TitleBar extends Component {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    position: 'absolute',
+  },
   titleBar: {
-    padding: 10,
     alignItems: 'center',
     backgroundColor: '#F26D6A',
+    padding: 10,
   },
   titleBarText: {
     color: 'white',
-    fontSize: 18
+    fontSize: 18,
   },
-  backButton: {
-    position: 'absolute',
-  }
 });
 
 module.exports = TitleBar;

@@ -4,7 +4,7 @@ import React, {
   Component,
   Dimensions,
   RefreshControl,
-  View
+  View,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import GridView from '../components/grid-view';
 import Profile from "../scenes/profile";
 import SearchBar from '../components/search-bar';
+import SceneStyles from '../styles/scene-styles';
 import TitleBar from '../components/title-bar';
 import SmallPost from '../components/small-post';
 
@@ -29,7 +30,7 @@ class Home extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.queryData();
   }
 
@@ -42,12 +43,12 @@ class Home extends Component {
     );
   }
 
-  queryData(){
+  queryData() {
     var myBlob = [];
     var self = this;
 
     // this section loads the postIDs into myBlob and pushes them to dataSource
-    database.once("value", function(snapshot){
+    database.once("value", function(snapshot) {
       var postsSnapshot = snapshot.child("posts");
       postsSnapshot.forEach(function(postSnapshot) {
         myBlob.push(postSnapshot);
@@ -58,7 +59,7 @@ class Home extends Component {
 
   render() {
     return(
-      <View style = {{flex: 1}}>
+      <View style = {SceneStyles.container}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Home"
@@ -66,8 +67,8 @@ class Home extends Component {
         <SearchBar/>
         <GridView
           dataSource = {this.state.dataSource}
-          renderRow = {this.renderRow.bind(this)}
           onRefresh = {this.queryData.bind(this)}
+          renderRow = {this.renderRow.bind(this)}
         />
       </View>
     );

@@ -6,32 +6,32 @@ module.exports = StyleSheet.create({
   whiteText: {
     color: 'white',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   blackText: {
     color: 'black',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textInput: {
     color: 'white',
     height: 36,
     marginLeft: 16,
-    marginRight: 16
+    marginRight: 16,
   },
   oneLine: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   leftTextInput: {
     color: 'white',
+    flex: 1,
     height: 36,
     marginLeft: 16,
-    flex: 1
   },
   rightTextInput: {
     color: 'white',
+    flex: 1,
     height: 36,
     marginRight: 16,
-    flex: 1
   }
 });

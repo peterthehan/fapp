@@ -14,10 +14,13 @@ class SearchBar extends Component {
   }
 
   render() {
-    return(
+    return (
       <TextInput
-        placeholder = "Search"
         onChangeText = {(text) => this.setState({text})}
+        placeholder = "Search"
+        placeholderTextColor = 'gray'
+        style = {{height: 40}}
+        underlineColorAndroid = 'gray'
       />
     );
   }

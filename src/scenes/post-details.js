@@ -23,10 +23,10 @@ class Tags extends Component {
     super(props);
     this.state = {
       description: '',
-      tags: '',
+      image: this.props.state,
       location: '',
       recipe: '',
-      image: this.props.state,
+      tags: '',
     };
   }
 
@@ -43,45 +43,50 @@ class Tags extends Component {
             </Text>
           </View>
           <View style = {{flex: 1}}>
-            {this.postButton()}
+            <Button
+              buttonStyles = {styles.button, {alignItems: 'flex-end'}}
+              onPress = {this.onPress.bind(this)}
+              text = "Post"
+              underlayColor = {'white'}
+            />
           </View>
         </View>
 
         <View>
         <TextInput
-          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({description: text})}
-          value = {this.state.description}
           placeholder = {"Give a description"}
           placeholderTextColor = 'black'
+          style = {{color: 'black'}}
           underlineColorAndroid = 'black'
+          value = {this.state.description}
         />
 
         <TextInput
-          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({tags: text})}
-          value = {this.state.tags}
           placeholder = {"Add tags"}
           placeholderTextColor = 'black'
+          style = {{color: 'black'}}
           underlineColorAndroid = 'black'
+          value = {this.state.tags}
         />
 
         <TextInput
-          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({location: text})}
-          value = {this.state.location}
           placeholder = {"Enter location"}
           placeholderTextColor = 'black'
+          style = {{color: 'black'}}
           underlineColorAndroid = 'black'
+          value = {this.state.location}
         />
 
         <TextInput
-          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({recipe: text})}
-          value = {this.state.recipe}
           placeholder = {"Cooked it yourself? Add a recipe!"}
           placeholderTextColor = 'black'
-          underlineColorAndroid = 'blackR'
+          style = {{color: 'black'}}
+          underlineColorAndroid = 'black'
+          value = {this.state.recipe}
         />
         <Image
           source =  {this.state.image}
@@ -89,16 +94,6 @@ class Tags extends Component {
         />
         </View>
       </View>
-    );
-  }
-
-  postButton() {
-    return (
-      <TouchableOpacity
-        style = {styles.button, {alignItems: 'flex-end'}}
-        onPress = {this.onPress.bind(this)}>
-        <Text style = {{color: 'white'}}>Post</Text>
-      </TouchableOpacity>
     );
   }
 
@@ -112,11 +107,11 @@ class Tags extends Component {
         var usersnapshot = snapshot.child("users/" + usid);
         var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
         var post = ref.push({
-          user: userName,
-          photoID: self.state.image,
-          userID: usid,
           description: self.state.description,
+          photoID: self.state.image,
           rating: 0,
+          user: userName,
+          userID: usid,
         });
         postList.push({
           postId: post.key(),
@@ -128,22 +123,22 @@ class Tags extends Component {
 }
 
 const styles = StyleSheet.create({
+  button: {
+  },
   titleBar: {
+    alignItems: 'center',
+    backgroundColor: '#F26D6A',
+    flexDirection: 'row',
+    left: 0,
     padding: 10,
     position: 'absolute',
-    backgroundColor: '#F26D6A',
-    top: 0,
-    left: 0,
     right: 0,
-    alignItems: 'center',
-    flexDirection: 'row'
+    top: 0,
   },
   titleBarText: {
     color: 'white',
     fontSize: 18,
-    textAlign: 'center'
-  },
-  button: {
+    textAlign: 'center',
   },
 });
 

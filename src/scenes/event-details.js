@@ -8,7 +8,7 @@ import React, {
   StyleSheet,
   Switch,
   Text,
-  View
+  View,
 } from 'react-native';
 
 import Button from '../components/button';
@@ -19,25 +19,24 @@ import TitleBar from '../components/title-bar';
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class EventDetails extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       isGoing: false,
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     var eventSnapshot = this.props.state;
     this.setState({
-      title: eventSnapshot.val().title,
       description: eventSnapshot.val().description,
-      startDate: eventSnapshot.val().startDate,
-      startTime: eventSnapshot.val().startTime,
       endDate: eventSnapshot.val().endDate,
       endTime: eventSnapshot.val().endTime,
       isPublic: eventSnapshot.val().isPublic,
       photo: eventSnapshot.val().photo,
+      startDate: eventSnapshot.val().startDate,
+      startTime: eventSnapshot.val().startTime,
+      title: eventSnapshot.val().title,
     });
   }
 
@@ -45,15 +44,15 @@ class EventDetails extends Component {
     return (
       <View style = {styles.container}>
         <TitleBar
+          hasBack = {true}
           navigator = {this.props.navigator}
           text = {"Event Details"}
-          hasBack = {true}
         />
         <ScrollView style = {styles.content}>
           <Image
             resizeMode = "cover"
-            style = {styles.photo}
             source = {{uri: this.state.photo}}
+            style = {styles.photo}
           >
             <View style = {styles.titleView}>
               <Text style = {styles.title}>
@@ -96,7 +95,7 @@ class EventDetails extends Component {
     );
   }
 
-  goToGuestList(){
+  goToGuestList() {
     alert('Guest list not implemented.');
   }
 }
@@ -108,40 +107,38 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'column',
   },
+  dateTime: {
+  },
+  description: {
+  },
   photo: {
-    width: Dimensions.get("window").width,
     height: Dimensions.get("window").width * 9 / 16,
-  },
-  titleView: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    height: 50,
-  },
-  title: {
-    color: 'white',
-    fontSize: 16,
-  },
-  sectionView: {
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    backgroundColor: 'white',
-    padding: 8,
-    justifyContent: 'center',
+    width: Dimensions.get("window").width,
   },
   sectionTitle: {
     color: '#F26D6A',
     fontSize: 10,
   },
-  dateTime: {
-
+  sectionView: {
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    justifyContent: 'center',
+    padding: 8,
   },
-  description: {
-
+  title: {
+    color: 'white',
+    fontSize: 16,
+  },
+  titleView: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    bottom: 0,
+    height: 50,
+    justifyContent: 'center',
+    left: 0,
+    position: 'absolute',
+    right: 0,
   },
 });
 
