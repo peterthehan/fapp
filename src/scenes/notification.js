@@ -23,32 +23,42 @@ let userdata = new Firebase("poopapp1.firebaseio.com/events");
 class Notification extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({
+    /*const ds = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
-    });
+    });*/
     this.state = {
-      dataSource: ds.cloneWithRows([
+      /*dataSource: ds.cloneWithRows([
         'You have 1 new follower: tester',
         'You followed tester'
-      ])
+      ])*/
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      })
     };
   }
 
   componentDidMount() {
+    var notes = [];
     userdata.on('child_removed', function (snap){
       alert ("child removed");
+      notes.push("remove!");
     });
     var newItems = false;
     userdata.on('child_added',function (snap){
       if(!newItems) return;
       alert ("child added");
+      notes.push("add!");
     });
     userdata.once('value', function(snap){
       newItems = true;
     });
     userdata.on('child_changed',function (snap){
       alert ("child changed");
-    })
+      notes.push("change! impossible! haven't implemented yet!");
+    });
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(notes)
+    });
   }
 
   render() {
