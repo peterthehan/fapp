@@ -316,8 +316,8 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   photoTouch: {
-    width: windowSize.width / 3 - 6,
-    height: windowSize.width / 3 - 6,
+    width: windowSize.width / 2 - 6,
+    height: windowSize.width / 2 - 6,
   },
   photo: {
     flex: 1,
