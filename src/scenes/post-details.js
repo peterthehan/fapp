@@ -7,7 +7,7 @@ import React, {
   StyleSheet,
   Text,
   TextInput,
-  ToolbarAndroid,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -33,57 +33,72 @@ class Tags extends Component {
   render() {
     var limit = 100;
     return(
-      <View style = {{backgroundColor: '#4682b4', flex: 1}}>
-        <View>
-          <ToolbarAndroid
-            title = 'Create a Post'
-            titleColor = 'white'
-            style = {styles.toolbar}
-            actions = {[{title: 'Post', show: 'always'}]}
-            onActionSelected = {this.onPress.bind(this)}
-          />
+      <View style = {{flex: 1}}>
+        <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
+          <View style = {{flex: 1}}>
+          </View>
+          <View style = {{flex: 2}}>
+            <Text style = {styles.titleBarText}>
+              Create a Post
+            </Text>
+          </View>
+          <View style = {{flex: 1}}>
+            {this.postButton()}
+          </View>
         </View>
 
+        <View>
         <TextInput
-          style = {TextStyles.textInput}
+          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({description: text})}
           value = {this.state.description}
           placeholder = {"Give a description"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'black'
         />
 
         <TextInput
-          style = {TextStyles.textInput}
+          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({tags: text})}
           value = {this.state.tags}
           placeholder = {"Add tags"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'black'
         />
 
         <TextInput
-          style = {TextStyles.textInput}
+          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({location: text})}
           value = {this.state.location}
           placeholder = {"Enter location"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'black'
         />
 
         <TextInput
-          style = {TextStyles.textInput}
+          style = {{color: 'black'}}
           onChangeText = {(text) => this.setState({recipe: text})}
           value = {this.state.recipe}
           placeholder = {"Cooked it yourself? Add a recipe!"}
-          placeholderTextColor = 'white'
-          underlineColorAndroid = 'white'
+          placeholderTextColor = 'black'
+          underlineColorAndroid = 'blackR'
         />
         <Image
           source =  {this.state.image}
           style = {{flex: 1}}
         />
+        </View>
       </View>
+    );
+  }
+
+  postButton() {
+    return (
+      <TouchableOpacity
+        style = {styles.button, {alignItems: 'flex-end'}}
+        onPress = {this.onPress.bind(this)}>
+        <Text style = {{color: 'white'}}>Post</Text>
+      </TouchableOpacity>
     );
   }
 
@@ -113,9 +128,22 @@ class Tags extends Component {
 }
 
 const styles = StyleSheet.create({
-  toolbar: {
-    height: 56,
-    backgroundColor: '#4682b4',
+  titleBar: {
+    padding: 10,
+    position: 'absolute',
+    backgroundColor: '#F26D6A',
+    top: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  titleBarText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  button: {
   },
 });
 

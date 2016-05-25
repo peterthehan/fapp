@@ -76,72 +76,73 @@ class Camera extends Component {
         break;
     }
     return (
-      <View>
-        <ToolbarAndroid
-          title = 'Create a Post'
-          style = {styles.toolbar}
-          titleColor = 'white'
-          subtitleColor = 'white'
-          actions = {[
-            {title: 'Details', show: 'always', color: 'white'},
-            {title: 'Camera', show: 'always', color: 'white'}
-          ]}
-          onActionSelected = {this.onActionSelected.bind(this)}
-        />
-
-        <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
-        {filter}
-        </Surface>
-
-        <View style = {{flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-
-        <Text
-          style = {{color: 'black', marginTop: 10, flex: 1}}>
-          Original
-        </Text>
-
-        <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} style = {{flex: 1}}>
-          <Surface width = {40} height = {40}>
-            {this.ogImage()}
-          </Surface>
-        </TouchableOpacity>
-
-        <Text
-          style = {{color: 'black', marginTop: 10, flex: 1}}>
-          Monochrome
-        </Text>
-
-        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} style = {{flex: 1}}>
-          <Surface width = {40} height = {40} >
-            {this.monoImage()}
-          </Surface>
-        </TouchableOpacity>
-
-        <Text
-          style = {{color: 'black', marginTop: 10, flex: 1}}>
-          Vignette
-        </Text>
-
-        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('vign')} style = {{flex: 1}}>
-          <Surface width = {40} height = {40} >
-            {this.vignetteImage()}
-          </Surface>
-        </TouchableOpacity>
-
-        <Text
-          style = {{color: 'black', marginTop: 10, flex: 1}}>
-          Multi-purpose filter
-        </Text>
-
-        <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} style = {{flex: 1}}>
-          <Surface width = {40} height = {40} >
-            {this.igImage()}
-          </Surface>
-        </TouchableOpacity>
-
+      <View style = {{flex: 1, flexDirection: 'column'}}>
+        <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
+          <View style = {{flex: 1}}>
+            {this.cameraButton()}
+          </View>
+          <View style = {{flex: 2}}>
+            <Text style = {styles.titleBarText}>
+              Create a Post
+            </Text>
+          </View>
+          <View style = {{flex: 1}}>
+            {this.detailsButton()}
+          </View>
         </View>
-        </View>
+        
+        <View>
+          <Surface width = {this.state.length} height = {this.state.length} ref = "surfacePic">
+            {filter}
+          </Surface>
 
+          <View style = {{flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+            <Text
+              style = {{color: 'black', marginTop: 10, flex: 1}}>
+              Original
+            </Text>
+    
+            <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} style = {{flex: 1}}>
+              <Surface width = {40} height = {40}>
+                {this.ogImage()}
+              </Surface>
+            </TouchableOpacity>
+    
+            <Text
+              style = {{color: 'black', marginTop: 10, flex: 1}}>
+              Monochrome
+            </Text>
+    
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} style = {{flex: 1}}>
+              <Surface width = {40} height = {40} >
+                {this.monoImage()}
+              </Surface>
+            </TouchableOpacity>
+    
+            <Text
+              style = {{color: 'black', marginTop: 10, flex: 1}}>
+              Vignette
+            </Text>
+    
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('vign')} style = {{flex: 1}}>
+              <Surface width = {40} height = {40} >
+                {this.vignetteImage()}
+              </Surface>
+            </TouchableOpacity>
+    
+            <Text
+              style = {{color: 'black', marginTop: 10, flex: 1}}>
+              Multi-purpose filter
+            </Text>
+    
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} style = {{flex: 1}}>
+              <Surface width = {40} height = {40} >
+                {this.igImage()}
+              </Surface>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     );
   }
   setFilterAndCapture(filt) {
@@ -187,41 +188,61 @@ class Camera extends Component {
         />
     );
   }
+
   renderBars() {
     return(
-      <View>
-        <ToolbarAndroid
-          title = 'Create a Post'
-          style = {styles.toolbar}
-          titleColor = 'white'
-          subtitleColor = 'white'
-          actions = {[
-            {title: 'Details', show: 'always', color: 'white'},
-            {title: 'Camera', show: 'always', color: 'white'}
-          ]}
-          onActionSelected = {this.onActionSelected.bind(this)}
-        />
+      <View style = {{flex: 1}}>
+        <View style = {styles.titleBar}>
+          <View style = {{flex: 1}}>
+            {this.cameraButton()}
+          </View>
+          <View style = {{flex: 2}}>
+            <Text style = {styles.titleBarText}>
+              Create a Post
+            </Text>
+          </View>
+          <View style = {{flex: 1}}>
+            {this.detailsButton()}
+          </View>
+        </View>
+
+        <View>
+        </View>
       </View>
     );
   }
 
-  onActionSelected(position) {
-    if (position == 0) {
-      var photoIDObj;
-      if (filteredPic) {
-        photoIDObj = {
-          isStatic: true,
-          uri: filteredPic
-        }
+  detailsButton() {
+    return (
+      <TouchableOpacity
+        style = {styles.button, {alignItems: 'flex-end'}}
+        onPress = {this.onActionSelected.bind(this)}>
+        <Text style = {{color: 'white'}}>Details</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  cameraButton() {
+    return (
+      <TouchableOpacity
+        style = {styles.button}
+        onPress = {() => {this.openCamera()}}>
+        <Text style = {{color: 'white'}}>Camera</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  onActionSelected() {
+    var photoIDObj;
+    if (filteredPic) {
+      photoIDObj = {
+        isStatic: true,
+        uri: filteredPic
       }
-      else {
-        photoIDObj = this.state.avatarSource;
-      }
-        this.props.navigator.push({component: PostDetails, state: photoIDObj});
+    } else {
+      photoIDObj = this.state.avatarSource;
     }
-    else if (position == 1) {
-      this.openCamera();
-    }
+    this.props.navigator.push({component: PostDetails, state: photoIDObj});
   }
 
   render() {
@@ -234,10 +255,24 @@ class Camera extends Component {
 }
 
 const styles = StyleSheet.create({
-  toolbar: {
-    height: 56,
+  titleBar: {
+    padding: 10,
+    position: 'absolute',
     backgroundColor: '#F26D6A',
-  }
+    top: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    flex: 3,
+    flexDirection: 'row'
+  },
+  titleBarText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  button: {
+  },
 });
 
 var options = {
