@@ -6,7 +6,7 @@ import React from 'react-native';
 const shaders = GL.Shaders.create({
   instagram: {
     frag: `
-    precision highp float;
+      precision highp float;
       varying vec2 uv;
       uniform sampler2D tex;
       uniform float saturation;
