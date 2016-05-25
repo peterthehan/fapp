@@ -35,7 +35,14 @@ class PoopApp extends Component {
           if(error) {
             this.setState({component: Login});
           } else {
-            this.setState({component: Main});
+            const self = this;
+            database.once("value", function(snapshot){
+              if(snapshot.child("users").hasChild(authData.uid)) {
+                self.setState({component: Main});
+              } else {
+                self.setState({component: Login});
+              }
+            });
           }
         });
       } else {
