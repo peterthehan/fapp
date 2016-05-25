@@ -39,23 +39,7 @@ class Notification extends Component {
 
   componentDidMount() {
     var notes = [];
-    userdata.on('child_removed', function (snap){
-      alert ("child removed");
-      notes.push("remove!");
-    });
-    var newItems = false;
-    userdata.on('child_added',function (snap){
-      if(!newItems) return;
-      alert ("child added");
-      notes.push("add!");
-    });
-    userdata.once('value', function(snap){
-      newItems = true;
-    });
-    userdata.on('child_changed',function (snap){
-      alert ("child changed");
-      notes.push("change! impossible! haven't implemented yet!");
-    });
+    {this.event()};
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(notes)
     });
@@ -86,13 +70,32 @@ class Notification extends Component {
     );
   }
 
+  event(){
+    userdata.on('child_removed', function (snap){
+      alert ("child removed");
+      notes.push("remove ya!");
+    });
+    var newItems = false;
+    userdata.on('child_added',function (snap){
+      if(!newItems) return;
+      alert ("child added");
+      notes.push("someone just added an event yo!");
+    });
+    userdata.once('value', function(snap){
+      newItems = true;
+    });
+    userdata.on('child_changed',function (snap){
+      alert ("child changed");
+      notes.push("change! boi impossible! haven't implemented yet!");
+    });
+  }
+
   following(){
+    alert ("someone stalking you!");
   }
 
   posts(){
-  }
-
-  events(){
+    alert ("you post some random stuff!");
   }
 
 }
