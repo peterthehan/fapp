@@ -318,7 +318,7 @@ const options = {
   maxWidth: 370, // photos only
   mediaType: 'photo', // 'photo' or 'video'
   noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
-  quality: .5, // 0 to 1, photos only
+  quality: 1, // 0 to 1, photos only
   takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
   title: 'Select Avatar', // specify null or empty string to remove the title
   videoQuality: 'high', // 'low', 'medium', or 'high'
