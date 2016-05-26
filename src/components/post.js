@@ -9,6 +9,7 @@ import React, {
   Text,
   TouchableOpacity,
   View,
+  Modal,
 } from 'react-native';
 
 import Firebase from 'firebase';
@@ -17,10 +18,15 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
+const windowSize = Dimensions.get('window');
+
 class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      favorited: false,
+      liked: false,
+      modalVisible: false,
     };
   }
 
@@ -96,7 +102,7 @@ class Post extends Component {
 
   picture() {
     // TODO
-    // this.props.navigator.push({component: Post, state: post.postID});
+    this.setModalVisible(true);
   }
 
   favorite() {
@@ -152,73 +158,226 @@ class Post extends Component {
     }
   }
 
+  getFavoriteColorModal() {
+    if(this.state.favorited) {
+      return 'orange';
+    } else {
+      return 'black';
+    }
+  }
+
   messages() {
     alert("Go to messages page.");
   }
 
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
   render() {
     return(
-      <View style = {styles.item}>
-        <View>
+      <View>
+        <View style = {styles.item}>
+          <View>
+            <TouchableOpacity
+              onPress = {this.profile.bind(this)}
+              style = {styles.userView}>
+              <Image
+                resizeMode = "cover"
+                source = {{uri: this.state.userPhoto}}
+                style = {styles.userPhoto}
+              />
+              <Text style = {styles.userName}>
+                {this.state.user}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style = {styles.descriptionView}>
+            <Text style = {styles.description}>
+              {this.state.description}
+            </Text>
+          </View>
           <TouchableOpacity
-            onPress = {this.profile.bind(this)}
-            style = {styles.userView}>
+            onPress = {this.picture.bind(this)}
+            style = {styles.photo}>
             <Image
               resizeMode = "cover"
-              source = {{uri: this.state.userPhoto}}
-              style = {styles.userPhoto}
+              source = {this.state.photo}
+              style = {{flex: 1}}
             />
-            <Text style = {styles.userName}>
-              {this.state.user}
-            </Text>
           </TouchableOpacity>
-        </View>
-        <View style = {styles.descriptionView}>
-          <Text style = {styles.description}>
-            {this.state.description}
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress = {this.picture.bind(this)}
-          style = {styles.photo}>
-          <Image
-            resizeMode = "cover"
-            source = {this.state.photo}
-            style = {{flex: 1}}
-          />
-        </TouchableOpacity>
 
-        <View style = {styles.buttonView}>
+          <View style = {styles.buttonView}>
           <TouchableOpacity
-            onPress = {this.favorite.bind(this)}
+            onPress = {() => this.favorite()}
             style = {styles.button}>
             <MaterialIcon
               color = {this.getFavoriteColor()}
-              name = "star"
+              name = 'star'
               size = {16}
             />
           </TouchableOpacity>
+
+          <Text style = {styles.button, {color: 'black', fontSize: 12}}>
+            {this.state.rating}
+          </Text>
+
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.messages.bind(this)}>
-            <IonIcon
-              color = "deepskyblue"
-              name = "ios-chatboxes"
+            onPress = {() => this.messages()}>
+            <MaterialIcon
+              color = 'black'
+              name = 'textsms'
               size = {16}
             />
           </TouchableOpacity>
+
+          <Text style = {styles.button, {color: 'black', fontSize: 12}}>
+            0
+          </Text>
+          </View>
         </View>
+        <Modal
+          onRequestClose = {() => {this.setModalVisible(false)}}
+          visible = {this.state.modalVisible}>
+          <View style = {styles.container}>
+            <View style = {styles.modalUserBar}>
+              <TouchableOpacity onPress = {() => {this.setModalVisible(false); this.props.navigator.push({component: Profile, state: this.state.userID});}}>
+                <View style = {styles.modalUser}>
+                  <Image
+                    resizeMode = 'cover'
+                    style = {{borderRadius: 90, width: 20, height: 20, marginRight: 4}}
+                    source = {{uri: this.state.userPhoto}}
+                  />
+                  <Text>
+                    {this.state.user}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress = {() => {this.setModalVisible(false);}}>
+                <MaterialIcon
+                  borderWidth = {7}
+                  color = 'black'
+                  name = 'close'
+                  size = {25}
+                />
+              </TouchableOpacity>
+            </View>
+            <Image
+              resizeMode = 'cover'
+              source = {this.state.photo}
+              style = {styles.modalPhoto}
+            />
+            <View style = {styles.buttonViewModal}>
+              <TouchableOpacity
+                onPress = {() => this.favorite()}
+                style = {styles.button}>
+                <MaterialIcon
+                  color = {this.getFavoriteColorModal()}
+                  name = 'star'
+                  size = {20}
+                />
+              </TouchableOpacity>
+
+              <Text style = {styles.button, {fontSize: 12}}>
+                {this.state.rating}
+              </Text>
+
+              <TouchableOpacity
+                onPress = {() => {alert("Go to messages page.");}}
+                style = {styles.button}>
+                <MaterialIcon
+                  color = 'black'
+                  name = 'textsms'
+                  size = {20}
+                />
+              </TouchableOpacity>
+
+              <Text style = {styles.button, {fontSize: 12}}>
+                0
+              </Text>
+
+            </View>
+            <Text style = {styles.descriptionModal}>
+              <Text style = {{fontWeight: 'bold'}}>
+                Description:&nbsp;
+              </Text>
+              {this.state.description}
+            </Text>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginBottom: 4,
+    marginLeft: 8,
+    marginRight: 8,
+    marginTop: 4,
+  },
+  buttonView: {
+    alignItems: 'center',
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    left: 0,
+    padding: 4,
+    right: 0,
+  },
+  buttonViewModal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingLeft: 5,
+  },
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    flex: 1,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 20,
+  },
+  descriptionModal: {
+    marginLeft: 2,
+    padding: 5,
+  },
+  descriptionView: {
+    padding: 12,
+  },
+  description: {
+    color: 'black'
+  },
   item: {
     backgroundColor: 'white',
     borderColor: 'gray',
     borderWidth: 1,
     margin: 8,
+  },
+  modalPhoto: {
+    height: windowSize.width,
+    width: windowSize.width,
+  },
+  modalUser: {
+    flexDirection: 'row',
+  },
+  modalUserBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10,
+  },
+  photoTouch: {
+    height: windowSize.width / 2 - 6,
+    width: windowSize.width / 2 - 6,
+  },
+  photo: {
+    height: (Dimensions.get("window").width - 16) * 9 / 16,
+    width: Dimensions.get("window").width - 16,
   },
   userView: {
     flexDirection: 'row',
@@ -233,26 +392,6 @@ const styles = StyleSheet.create({
   userName: {
     padding: 4,
   },
-  photo: {
-    height: (Dimensions.get("window").width - 16) * 9 / 16,
-    width: Dimensions.get("window").width - 16,
-  },
-  descriptionView: {
-    padding: 12,
-  },
-  description: {
-    color: 'black'
-  },
-  buttonView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  button: {
-    marginBottom: 4,
-    marginLeft: 8,
-    marginRight: 8,
-    marginTop: 4,
-  }
 });
 
 module.exports = Post;
