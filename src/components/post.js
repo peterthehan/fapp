@@ -153,7 +153,8 @@ class Post extends Component {
   }
 
   messages() {
-    alert("Go to messages page.");
+    alert ("should go to message");
+    this.props.navigator.push({component: Message});
   }
 
   render() {

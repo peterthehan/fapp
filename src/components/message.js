@@ -104,13 +104,6 @@ class Message extends Component {
         <Button
           buttonStyles = {styles.button}
           buttonTextStyles = {ButtonStyles.primaryButtonText}
-          onPress = {this.createGuestList.bind(this)}
-          text = "Invite Friends!"
-          underlayColor = {"#A2A2A2"}
-        />
-        <Button
-          buttonStyles = {styles.button}
-          buttonTextStyles = {ButtonStyles.primaryButtonText}
           onPress = {this.createMessage.bind(this)}
           text = "Write Your Message!"
           underlayColor = {"#A2A2A2"}
