@@ -15,6 +15,7 @@ import Firebase from 'firebase';
 import GridView from '../components/grid-view';
 import Post from '../components/post';
 import TitleBar from '../components/title-bar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -67,6 +68,25 @@ class Profile extends Component {
     );
   }
 
+  getFriendsText(){
+      return ("Add Friend");
+  }
+
+  addFriend(){
+
+  }
+
+  getFollowingText(){
+      return ("Follow");
+  }
+
+  getFollowingIcon(){
+      return ('note-add');
+  }
+
+  addFollow(){
+
+  }
 
   render() {
     return(
@@ -93,6 +113,36 @@ class Profile extends Component {
             {this.state.name}
           </Text>
         </View>
+        <View style = {{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}>
+          <TouchableOpacity
+            onPress = {() => this.addFriend()}
+            style = {styles.button}>
+            <Icon
+              color = 'grey'
+              name = 'account-circle'
+              size = {36}
+            />
+            <Text>
+              {this.getFriendsText()}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress = {() => this.addFollow()}
+            style = {styles.button}>
+            <Icon
+              color = 'grey'
+              name = {this.getFollowingIcon()}
+              size = {36}
+            />
+            <Text>
+              {this.getFollowingText()}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <GridView
           dataSource = {this.state.items}
           onRefresh = {this.queryData.bind(this)}
@@ -109,6 +159,11 @@ const styles = StyleSheet.create({
     height: 100,
     margin: 10,
     width: 100,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   }
 });
 
