@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
   Dimensions,
   StyleSheet,
@@ -9,27 +10,34 @@ import React, {
   View,
 } from 'react-native';
 
+import Firebase from 'firebase'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import GridView from './grid-view';
 
-const tempComments = ["Comment 1", "Comment 2", "Comment 3", "Comment 4", "Comment 5", "Comment 6", "Comment 7", "Comment 8"];
+let database = new Firebase("poopapp1.firebaseio.com");
 
 class Comments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: []
+      dataSource: [],
+      loggedUser: ""
     };
   }
 
   componentDidMount() {
     this.queryData();
+    const self = this;
+    AsyncStorage.getItem('user_data', (error, result) => {
+      self.setState({
+        loggedUser: JSON.parse(result).uid
+      });
+    });
   }
 
   queryData() {
     // TODO: query database for comments
-    this.setState({dataSource: tempComments});
   }
 
   renderRow(comment) {
@@ -45,7 +53,16 @@ class Comments extends Component {
   updateText(text) {
     // database stuff
     this.refs['newCommentInput'].clear();
-    alert(text);
+    var comments = this.props.id;
+    var self = this;
+
+    // get the id of the logged in user
+    this.state.dataSource.push(text);
+    database.child(self.props.type + "/" + self.props.id + "/commentList").push({
+      userID: self.state.loggedUser,
+      description: text
+    });
+    this.forceUpdate();
   }
 
   render() {

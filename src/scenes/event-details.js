@@ -29,6 +29,7 @@ class EventDetails extends Component {
   componentDidMount() {
     var eventSnapshot = this.props.state;
     this.setState({
+      key: eventSnapshot.key(),
       description: eventSnapshot.val().description,
       endDate: eventSnapshot.val().endDate,
       endTime: eventSnapshot.val().endTime,
@@ -88,7 +89,10 @@ class EventDetails extends Component {
             <Text style = {styles.sectionTitle}>
               Comments
             </Text>
-            <Comments />
+            <Comments
+              id = {this.state.key}
+              type = {"events"}
+            />
           </View>
         </ScrollView>
       </View>
