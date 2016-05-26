@@ -1,6 +1,7 @@
 'use strict'
 
 import React, {
+  Alert,
   Component,
   DatePickerAndroid,
   StyleSheet,
@@ -288,17 +289,32 @@ class CreateEvent extends Component {
   }
 
   createEvent() {
-    events.push({
-      description: this.state.description,
-      endDate: this.state.dateEnd,
-      endTime: this.state.timeEnd,
-      isPublic: this.state.publicEvent,
-      photo: 'https://s-media-cache-ak0.pinimg.com/236x/d8/0d/1e/d80d1efe3a4b6b4d8bd186bdd788902c.jpg',
-      startDate: this.state.dateStart,
-      startTime: this.state.timeStart,
-      title: this.state.title,
-    });
-    this.props.navigator.pop();
+
+    if( this.state.dateEnd === dateEndStr) {
+      Alert.alert('', 'Missing end date.');
+    } else if( this.state.dateStart == dateStartStr) {
+      Alert.alert('', 'Missing start date.');
+    } else if( this.state.description === '') {
+      Alert.alert('', 'Missing event description.');
+    } else if( this.state.timeEnd === timeEndStr) {
+      Alert.alert('', 'Missing end time.');
+    } else if( this.state.timeStart === timeStartStr) {
+      Alert.alert('', 'Missing start time.');
+    } else if( this.state.title === '') {
+      Alert.alert('', 'Missing event title');
+    } else{
+      events.push({
+        description: this.state.description,
+        endDate: this.state.dateEnd,
+        endTime: this.state.timeEnd,
+        isPublic: this.state.publicEvent,
+        photo: 'https://s-media-cache-ak0.pinimg.com/236x/d8/0d/1e/d80d1efe3a4b6b4d8bd186bdd788902c.jpg',
+        startDate: this.state.dateStart,
+        startTime: this.state.timeStart,
+        title: this.state.title,
+      });
+      this.props.navigator.pop();
+    }
   }
 
   clearEvent() {
@@ -314,6 +330,7 @@ class CreateEvent extends Component {
     });
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
