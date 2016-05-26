@@ -15,7 +15,7 @@ import React, {
 import Firebase from 'firebase';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-
+import Message from "./message";
 import Profile from "../scenes/profile";
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -163,6 +163,7 @@ class SmallPost extends Component {
 
   messages() {
     alert("Go to messages page.");
+    this.props.navigator.push({component: Message});
   }
 
   setModalVisible(visible) {
