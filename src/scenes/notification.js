@@ -19,40 +19,33 @@ import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com/");
-
+let userdata = new Firebase("poopapp1.firebaseio.com/events");
 class Notification extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({
+    /*const ds = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
-    });
+    });*/
     this.state = {
-      dataSource: ds.cloneWithRows([
+      /*dataSource: ds.cloneWithRows([
         'You have 1 new follower: tester',
         'You followed tester'
-      ])
+      ])*/
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      })
     };
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('user_data', (error, result) => {
-      this.setState({
-        userID: JSON.parse(result).uid,
-      });
-    });
-    this.listenForItems();
-  }
-
-  listenForItems() {
-    var data = database.child('post')
-    data.on("child_added", function(snapshot, prevChildKey) {
-      var newPost = snapshot.val();
-      alert ("create post");
+    var notes = [];
+    {this.event(notes)};
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows([notes])
     });
   }
 
   render() {
-    {this.listenForItems()}
     return (
       <View style = {{flex: 1}}>
         <TitleBar
@@ -63,7 +56,7 @@ class Notification extends Component {
         <ListView
           dataSource = {this.state.dataSource}
           renderRow = {(rowData) =>
-            <TouchableOpacity onPress = {this.generate} underlayColor = 'lemonchiffon'>
+            <TouchableOpacity onPress = {this.test} underlayColor = 'lemonchiffon'>
               <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
                 <Text style = {TextStyles.text}>
                   {rowData}
@@ -77,10 +70,36 @@ class Notification extends Component {
     );
   }
 
-  following() {
+  test(){
+    alert ("you press an item!");
   }
 
-  posts() {
+  event(notes){
+    userdata.on('child_removed', function (snap){
+      alert ("event removed");
+      notes.push("remove ya!");
+    });
+    var newItems = false;
+    userdata.on('child_added',function (snap){
+      if(!newItems) return;
+      alert ("event added");
+      notes.push("someone just added an event yo!\n");
+    });
+    userdata.once('value', function(snap){
+      newItems = true;
+    });
+    userdata.on('child_changed',function (snap){
+      alert ("event changed");
+      notes.push("change! boi impossible! haven't implemented yet!");
+    });
+  }
+
+  following(){
+    alert ("someone stalking you!");
+  }
+
+  posts(){
+    alert ("you post some random stuff!");
   }
 
   events() {
