@@ -61,9 +61,17 @@ class Following extends Component {
 
     // this section loads the postIDs into myBlob and pushes them to dataSource
     database.once("value", function(snapshot) {
-      var postsSnapshot = snapshot.child("posts");
-      postsSnapshot.forEach(function(postSnapshot) {
-        myBlob.push(postSnapshot);
+      var followingList = snapshot.child("users/" + self.props.state + "/followingList");
+      followingList.forEach(function(followingSnapshot){
+        var follower = snapshot.child("users/" + followingSnapshot.val().userId);
+        if(follower.hasChild("postList")){
+          var postList = follower.child("postList");
+          postList.forEach(function(postSnapshot){
+            var postId = postSnapshot.val().postId;
+            var postData = snapshot.child("posts/" + postId);
+            myBlob.push(postData);
+          });
+        }
       });
       self.setState({dataSource: myBlob});
     });

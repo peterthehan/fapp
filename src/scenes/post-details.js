@@ -31,7 +31,38 @@ class Tags extends Component {
   }
 
   render() {
-    var limit = 100;
+    let delimiter = /\s+/;
+
+    //split string
+    let _text = this.state.tags;
+    let token, index, parts = [];
+    while (_text) {
+      delimiter.lastIndex = 0;
+      token = delimiter.exec(_text);
+      if (token === null) {
+        break;
+      }
+      index = token.index;
+      if (token[0].length === 0) {
+        index = 1;
+      }
+      parts.push(_text.substr(0, index));
+      parts.push(token[0]);
+      index = index + token[0].length;
+      _text = _text.slice(index);
+    }
+    parts.push(_text);
+
+    //highlight hashtags
+    parts = parts.map((tags) => {
+      if (/^#/.test(tags)) {
+        return <Text key={tags} style={styles.hashtag}>{tags}</Text>;
+      } else {
+        return tags;
+      }
+    });
+
+    var limit = 1000;
     return(
       <View style = {{flex: 1}}>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
@@ -47,51 +78,67 @@ class Tags extends Component {
               buttonStyles = {styles.button, {alignItems: 'flex-end'}}
               onPress = {this.onPress.bind(this)}
               text = "Post"
-              underlayColor = {'white'}
+              buttonTextStyles = {{color: 'white'}}
             />
           </View>
         </View>
 
         <View>
-        <TextInput
-          onChangeText = {(text) => this.setState({description: text})}
-          placeholder = {"Give a description"}
-          placeholderTextColor = 'black'
-          style = {{color: 'black'}}
-          underlineColorAndroid = 'black'
-          value = {this.state.description}
-        />
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({description: text})}
+            placeholder = {"Give a description"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.description}
+          />
+  
+          <View>
+            <TextInput
+              multiline = {true}
+              style = {styles.multiline}
+              maxLength = {limit}
+              placeholder = {"Add tags (separate with #)"}
+              placeholderTextColor = 'black'
+              underlineColorAndroid = 'black'
+              value = {this.state.location}
+              onChangeText={(text) => {
+                this.setState({tags: text});
+              }}>
+              <Text>{parts}</Text>
+            </TextInput>
+          </View>
+  
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({location: text})}
+            placeholder = {"Enter location"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.location}
+          />
+  
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({recipe: text})}
+            placeholder = {"Cooked it yourself? Add a recipe!"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.recipe}
+          />
 
-        <TextInput
-          onChangeText = {(text) => this.setState({tags: text})}
-          placeholder = {"Add tags"}
-          placeholderTextColor = 'black'
-          style = {{color: 'black'}}
-          underlineColorAndroid = 'black'
-          value = {this.state.tags}
-        />
-
-        <TextInput
-          onChangeText = {(text) => this.setState({location: text})}
-          placeholder = {"Enter location"}
-          placeholderTextColor = 'black'
-          style = {{color: 'black'}}
-          underlineColorAndroid = 'black'
-          value = {this.state.location}
-        />
-
-        <TextInput
-          onChangeText = {(text) => this.setState({recipe: text})}
-          placeholder = {"Cooked it yourself? Add a recipe!"}
-          placeholderTextColor = 'black'
-          style = {{color: 'black'}}
-          underlineColorAndroid = 'black'
-          value = {this.state.recipe}
-        />
-        <Image
-          source =  {this.state.image}
-          style = {{flex: 1}}
-        />
+          <View>
+            <Image
+              source =  {this.state.image}
+              style = {{flex: 1}}
+            />
+          </View>
         </View>
       </View>
     );
@@ -139,6 +186,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
+  },
+  hashtag: {
+    color: 'blue'
+  },
+  multiline: {
+    height: 60,
+    padding: 4,
+    marginTop: 10,
+    color: 'black'
   },
 });
 
