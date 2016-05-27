@@ -77,7 +77,7 @@ class Notification extends Component {
   event(notes){
     userdata.on('child_removed', function (snap){
       alert ("event removed");
-      notes.push("remove ya!");
+      notes.push("remove ya!\n");
     });
     var newItems = false;
     userdata.on('child_added',function (snap){
@@ -90,7 +90,7 @@ class Notification extends Component {
     });
     userdata.on('child_changed',function (snap){
       alert ("event changed");
-      notes.push("change! boi impossible! haven't implemented yet!");
+      notes.push("change! boi impossible! haven't implemented yet!\n");
     });
   }
 
