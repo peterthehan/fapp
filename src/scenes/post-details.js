@@ -27,39 +27,29 @@ class Tags extends Component {
       image: this.props.state,
       location: '',
       recipe: '',
-      tags: '',
     };
   }
 
   render() {
     let delimiter = /\s+/;
 
-    //split string
-    let _text = this.state.tags;
-    let token, index, parts = [];
-    while (_text) {
-      delimiter.lastIndex = 0;
-      token = delimiter.exec(_text);
-      if (token === null) {
-        break;
+    let tags = [];
+    let rendered = [];
+    let tagText = this.state.description;
+    let tokens = tagText.split(delimiter);
+    tokens.forEach(function(entry, i){
+      if(i !== tokens.length - 1){
+        if(entry.startsWith("#")){
+          if(tags.indexOf(entry) === -1){
+            tags.push(entry);
+            rendered.push(<Text style = {styles.hashtag}>{entry} </Text>);
+          }
+        } else {
+          rendered.push(entry + " ");
+        }
       }
-      index = token.index;
-      if (token[0].length === 0) {
-        index = 1;
-      }
-      parts.push(_text.substr(0, index));
-      parts.push(token[0]);
-      index = index + token[0].length;
-      _text = _text.slice(index);
-    }
-    parts.push(_text);
-
-    //highlight hashtags
-    parts = parts.map((tags) => {
-      if (/^#/.test(tags)) {
-        return <Text key={tags} style={styles.hashtag}>{tags}</Text>;
-      } else {
-        return tags;
+      else{
+        rendered.push(entry);
       }
     });
 
@@ -101,25 +91,11 @@ class Tags extends Component {
             placeholder = {"Give a description"}
             placeholderTextColor = 'black'
             underlineColorAndroid = 'black'
-            value = {this.state.description}
-          />
-  
-          <View>
-            <TextInput
-              multiline = {true}
-              style = {styles.multiline}
-              maxLength = {limit}
-              placeholder = {"Add tags (separate with #)"}
-              placeholderTextColor = 'black'
-              underlineColorAndroid = 'black'
-              value = {this.state.location}
-              onChangeText={(text) => {
-                this.setState({tags: text});
-              }}>
-              <Text>{parts}</Text>
-            </TextInput>
-          </View>
-  
+            value = {""}
+          >
+            <Text>{rendered}</Text>
+          </TextInput>
+
           <TextInput
             multiline = {true}
             style = {styles.multiline}
@@ -130,7 +106,7 @@ class Tags extends Component {
             underlineColorAndroid = 'black'
             value = {this.state.location}
           />
-  
+
           <TextInput
             multiline = {true}
             style = {styles.multiline}
