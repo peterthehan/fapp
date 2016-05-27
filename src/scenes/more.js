@@ -74,7 +74,7 @@ class More extends Component {
   }
 
   following() {
-    this.props.navigator.push({component: Following});
+    this.props.navigator.push({component: Following, state: this.state.userID});
   }
 }
 
