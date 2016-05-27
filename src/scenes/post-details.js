@@ -14,6 +14,7 @@ import React, {
 import Firebase from 'firebase';
 
 import Button from '../components/button';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import TextStyles from '../styles/text-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -67,6 +68,14 @@ class Tags extends Component {
       <View style = {{flex: 1}}>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
           <View style = {{flex: 1}}>
+            <TouchableOpacity onPress = {() => this.props.navigator.pop()}>
+              <Icon
+              borderWidth = {7}
+              color = "white"
+              name = "arrow-back"
+              size = {25}
+              />
+            </TouchableOpacity>
           </View>
           <View style = {{flex: 2}}>
             <Text style = {styles.titleBarText}>
