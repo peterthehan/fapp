@@ -165,7 +165,7 @@ class Camera extends Component {
     return(
       <Saturation
         factor = {0}
-        image = {this.state.avatarSource}
+        image = {this.ogImage()}
         style = {{flex: 1}}
       />
     );
@@ -180,7 +180,7 @@ class Camera extends Component {
       sepia = {.5}
       gray = {.1}
       mixFactor = {0}
-      tex = {this.state.avatarSource}
+      tex = {this.ogImage()}
     />
     );
   }
@@ -195,7 +195,7 @@ class Camera extends Component {
         mixFactor = {0}
         saturation = {1}
         sepia = {1}
-        tex = {this.state.avatarSource}
+        tex = {this.ogImage()}
       />
     );
   }
@@ -210,7 +210,7 @@ class Camera extends Component {
           sepia = {.25}
           gray = {0}
           mixFactor = {.25}
-          tex = {this.state.avatarSource}
+          tex = {this.ogImage()}
         />
     );
   }
