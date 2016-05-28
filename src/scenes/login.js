@@ -98,8 +98,7 @@ class Login extends Component {
       database.authWithPassword({
         "email": this.state.email,
         "password": this.state.password
-      },
-        (error, user_data) => {
+      }, (error, user_data) => {
           if(error) {
             Alert.alert('Error!', 'Log in failed. Please try again.');
           } else {
