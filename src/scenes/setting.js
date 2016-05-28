@@ -28,13 +28,15 @@ class Setting extends Component {
     super(props);
 
     this.state = {
-      email: '',
+      newEmail: '',
       name: '',
       oldEmail: '',
       password: '',
       profilePic: '',
       newPic: '',
       user: '',
+      newPW: '',
+      curEmail: '',
     };
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
@@ -62,6 +64,22 @@ class Setting extends Component {
     });
   }
 
+  authorize(){
+    database.authWithPassword({
+      "email": this.state.curEmail,
+      "password": this.state.password
+    },
+      (error, user_data) => {
+        if(error) {
+          Alert.alert('Error!', 'Authorize failed. Please try again.');
+        } else {
+          AsyncStorage.setItem('user_data', JSON.stringify(user_data));
+          Alert.alert("Authorization succeed");
+        }
+      }
+    );
+  }
+
   render() {
     return (
       <View style = {SceneStyles.container}>
@@ -71,27 +89,40 @@ class Setting extends Component {
           text = "Setting"
         />
         <View style = {{alignItems: 'center'}}>
-          <Text style = {TextStyles.blackText}>
-             {this.state.name}
-          </Text>
-          <Text style = {TextStyles.blackText}>
-             {this.state.oldEmail}
-          </Text>
-          <Image
-            style = {{
-              height: Dimensions.get("window").width / 5,
-              width: Dimensions.get("window").width / 5,
-            }}
-            resizeMode = {Image.resizeMode.center}
-            source = {{uri: this.state.profilePic}}
+          <Text> Please Authorize First</Text>
+          <TextInput
+            keyboardType = 'email-address'
+            onChangeText = {(text) => this.setState({curEmail: text})}
+            placeholder = {"Email"}
+            placeholderTextColor = 'gray'
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'black'
+            value = {this.state.curEmail}
           />
           <TextInput
-            onChangeText = {(text) => this.setState({email: text})}
-            placeholder = {"Email"}
-            placeholderTextColor = 'black'
+            onChangeText = {(text) => this.setState({password: text})}
+            placeholder = {"Password"}
+            placeholderTextColor = 'gray'
+            secureTextEntry = {true}
+            style = {TextStyles.textInput}
+            underlineColorAndroid = 'black'
+            value = {this.state.password}
+          />
+
+          <Button
+            buttonStyles = {ButtonStyles.transparentButton}
+            buttonTextStyles = {ButtonStyles.blackButtonText}
+            onPress = {this.authorize.bind(this)}
+            text = "authorize"
+            underlayColor = {'#B18C40'}
+          />
+          <TextInput
+            onChangeText = {(text) => this.setState({newEmail: text})}
+            placeholder = {"Enter your new email address"}
+            placeholderTextColor = 'gray'
             style = {SceneStyles.textInput}
             underlineColorAndroid = 'black'
-            value = {this.state.email}
+            value = {this.state.newEmail}
           />
 
           <Button
@@ -100,6 +131,16 @@ class Setting extends Component {
             onPress = {this.changeEmail}
             text = "Change Email"
             underlayColor = {"#A2A2A2"}
+          />
+
+          <TextInput
+            secureTextEntry={true}
+            onChangeText = {(text) => this.setState({newPW: text})}
+            placeholder = {"Enter your new password"}
+            placeholderTextColor = 'gray'
+            style = {SceneStyles.textInput}
+            underlineColorAndroid = 'black'
+            value = {this.state.newPW}
           />
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
@@ -111,8 +152,8 @@ class Setting extends Component {
 
           <TextInput
             onChangeText = {(text) => this.setState({newPic: text})}
-            placeholder = {"Picture URL"}
-            placeholderTextColor = 'black'
+            placeholder = {"Enter your new profile picture URL"}
+            placeholderTextColor = 'gray'
             style = {SceneStyles.textInput}
             underlineColorAndroid = 'black'
             value = {this.state.newPic}
@@ -130,7 +171,7 @@ class Setting extends Component {
             buttonTextStyles = {ButtonStyles.blackButtonText}
             onPress = {this.logout}
             text = "Logout"
-            underlayColor = {"#A2A2A2"}
+            underlayColor = {"black"}
           />
         </View>
       </View>
@@ -146,16 +187,14 @@ class Setting extends Component {
   }
 
   changeEmail() {
+    alert (this.state.user.provider);
     database.changeEmail({
       oldEmail: this.state.user.password.email,
-      newEmail: this.state.email,
-      password: "1"
+      newEmail: this.state.newEmail,
+      password: this.state.password
     }, function(error) {
       if(error) {
         switch(error.code) {
-          case "INVALID_PASSWORD":
-            Alert.alert('Error!', 'The specified user account password is incorrect.');
-            break;
           case "INVALID_USER":
             Alert.alert('Error!', 'The specified user account does not exist.');
             break;
@@ -168,16 +207,16 @@ class Setting extends Component {
     });
     var ref = database.child("users");
     ref.child(this.state.user.uid).update({
-      email: this.state.email
+      email: this.state.newEmail
     });
   }
 
-  // TODO
   changePassword() {
+
     database.changePassword({
-      email: this.state.user.password.email,
-      oldPassword: "asdf",
-      newPassword: "asdf"
+      email: this.state.oldEmail,
+      oldPassword: this.state.password,
+      newPassword: this.state.newPW,
       }, function(error) {
         if(error === null) {
           Alert.alert('Success!', 'Password has been changed.');
