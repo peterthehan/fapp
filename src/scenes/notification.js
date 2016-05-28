@@ -157,6 +157,22 @@ class Notification extends Component {
         self.notification("User", "Event Added: " + snapshot.val().title, "events", snapshot.key());
       }
     });
+
+    /*
+    events.once("value", function(eventsSnapshot){
+      eventsSnapshot.forEach(function(eventSnapshot){
+        var firstEventChanged = true;
+        events.child(eventSnapshot.key()).limitToLast(1).on('child_changed', function(snapshot, prevChildKey){
+          if(firstEventChanged) {
+            firstEventChanged = false;
+          } else {
+            // assuming comments additions / removals are the only way events are changed
+            self.notification("User", "Comment Added: " + snapshot.child("commentList") + "<-this should wrong", "events", snapshot.key());
+          }
+        });
+      });
+    });
+    */
   }
 
   followingListener(){
