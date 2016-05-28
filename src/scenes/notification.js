@@ -3,6 +3,7 @@
 import React, {
   AsyncStorage,
   Component,
+  Dimensions,
   Text,
   TouchableOpacity,
   View,
@@ -136,21 +137,16 @@ class Notification extends Component {
   }
 
   eventListener(){
-    let self = this;
+    const self = this;
 
     const events = database.child("events");
-
-    var size = 0;
-    events.once("value", function(snapshot){
-      size = snapshot.numChildren();
-    });
 
     var firstEventRemove = true;
     events.limitToLast(1).on('child_removed', function(snapshot, prevChildKey){
       if(firstEventRemove) {
         firstEventRemove = false;
       } else {
-        self.notification("User", "Event Removed", "events", snapshot.key());
+        self.notification("User", "Event Removed: " + snapshot.val().title, "events", snapshot.key());
       }
     });
     var firstEventAdded = true;
@@ -160,19 +156,23 @@ class Notification extends Component {
       } else {
         self.notification("User", "Event Added: " + snapshot.val().title, "events", snapshot.key());
       }
-      /*
-      doing this doesn't work because commentList doesn't exist. i think we need
-      to have a events.on("child_changed") and listen for when the first comment
-      is created (which will then create a commentList) and then call the stuff below...
-      const commentList = snapshot.child("commentList");
-      commentList.endAt().limit(1).on("child_added", function(commentSnapshot, prevChildKey){
-        self.notification("User", "Comment on Event Added", "events", snapshot.key());
-      });
-      commentList.endAt().limit(1).on("child_removed", function(commentSnapshot, prevChildKey){
-        self.notification("User", "Comment on Event Removed", "events", snapshot.key());
-      });
-      */
     });
+
+    /*
+    events.once("value", function(eventsSnapshot){
+      eventsSnapshot.forEach(function(eventSnapshot){
+        var firstEventChanged = true;
+        events.child(eventSnapshot.key()).limitToLast(1).on('child_changed', function(snapshot, prevChildKey){
+          if(firstEventChanged) {
+            firstEventChanged = false;
+          } else {
+            // assuming comments additions / removals are the only way events are changed
+            self.notification("User", "Comment Added: " + snapshot.child("commentList") + "<-this should wrong", "events", snapshot.key());
+          }
+        });
+      });
+    });
+    */
   }
 
   followingListener(){
