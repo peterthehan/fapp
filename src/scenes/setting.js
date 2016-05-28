@@ -82,7 +82,7 @@ class Setting extends Component {
               width: 40,
             }}
             resizeMode = {Image.resizeMode.center}
-            source = {{uri: "http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png"}}
+            source = {{uri: this.state.profilePic}}
           />
           <TextInput
             onChangeText = {(text) => this.setState({email: text})}
@@ -141,7 +141,7 @@ class Setting extends Component {
     ref.child(this.state.user.uid).update({
       profilePic: this.state.newPic
     });
-    alert ("your profile picture just got updated!");
+    Alert.alert('Success!', 'Profile picture has been changed. Please log out and log in again.');
   }
 
   changeEmail() {
