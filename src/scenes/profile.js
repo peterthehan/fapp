@@ -52,10 +52,45 @@ class Profile extends Component {
           });
         }
 
+        var isFriends = false;
+        var friendsList = snapshot.child(loggedUserId + "/friendsList");
+        if(typeof friendsList != 'undefined') {
+          friendsList.forEach(function(friends) {
+            if(friends.val().userId == self.props.state) {
+              isFriends = true;
+            }
+          });
+        }
+        var youRequested = false;
+        var theyRequested = false;
+        if (!isFriends){
+          var yourRequests = snapshot.child(loggedUserId + "/friendRequests");
+          if(typeof yourRequests != 'undefined') {
+            yourRequests.forEach(function(request) {
+              if(request.val().userId == self.props.state) {
+                theyRequested = true;
+              }
+            });
+          }
+          if (!theyRequested){
+            var theirRequests = snapshot.child(self.props.state + "/friendRequests");
+            if(typeof theirRequests != 'undefined') {
+              theirRequests.forEach(function(request) {
+                if(request.val().userId == loggedUserId) {
+                  youRequested = true;
+                }
+              });
+            }
+          }
+        }
+
         self.setState({
           loggedUser: loggedUserId,
           following: isFollowing,
           followers: numFollows.val(),
+          friends: isFriends,
+          yourRequest: youRequested,
+          theirRequest: theyRequested,
         });
       });
     });
@@ -72,11 +107,47 @@ class Profile extends Component {
         });
       }
 
+      var isFriends = false;
+      var friendsList = snapshot.child("users/" + loggedUserId + "/friendsList");
+      if(typeof friendsList != 'undefined') {
+        friendsList.forEach(function(friends) {
+          if(friends.val().userId == self.props.state) {
+            isFriends = true;
+          }
+        });
+      }
+
+      var youRequested = false;
+      var theyRequested = false;
+      if (!isFriends){
+        var yourRequests = snapshot.child("users/" + loggedUserId + "/friendRequests");
+        if(typeof yourRequests != 'undefined') {
+          yourRequests.forEach(function(request) {
+            if(request.val().userId == self.props.state) {
+              theyRequested = true;
+            }
+          });
+        }
+        if (!theyRequested){
+          var theirRequests = snapshot.child("users/" + self.props.state + "/friendRequests");
+          if(typeof theirRequests != 'undefined') {
+            theirRequests.forEach(function(request) {
+              if(request.val().userId == loggedUserId) {
+                youRequested = true;
+              }
+            });
+          }
+        }
+      }
+
       var numFollows = snapshot.child("users/" + self.props.state + "/followers");
 
       self.setState({
         following: isFollowing,
         followers: numFollows.val(),
+        friends: isFriends,
+        yourRequest: youRequested,
+        theirRequest: theyRequested,
       });
     });
   }
@@ -115,11 +186,171 @@ class Profile extends Component {
   }
 
   getFriendsText(){
-    return ("Add Friend");
+    if (this.state.friends){
+      return (
+        <View>
+          <Text style={{color: 'blue'}}>
+            Friends
+          </Text>
+        </View>);
+    }
+    else if (this.state.yourRequest){
+      return(
+        <View>
+          <Text style={{color: 'grey'}}>
+            Request Sent
+          </Text>
+        </View>);
+    }
+    else if (this.state.theirRequest){
+      return(
+        <View>
+          <Text style={{color: 'grey'}}>
+            Accept Request
+          </Text>
+        </View>);
+    }
+    else {
+      return (
+        <View>
+          <Text style={{color: 'grey'}}>
+            Add Friend
+          </Text>
+        </View>);
+    }
+  }
+
+  getFriendsColor(){
+    if (this.state.friends){
+      return ('blue');
+    }
+    else{
+      return ('grey');
+    }
   }
 
   addFriend(){
+    var yourFriends = database.child("users/" + this.state.loggedUser + "/friendsList");
+    var theirFriends = database.child("users/" + this.props.state + "/friendsList");
+    var theirRequests = database.child("users/" + this.props.state + "/friendRequests");
+    var numYourFriends = database.child("users/" + this.state.loggedUser + "/friends");
+    var numTheirFriends = database.child("users/" + this.props.state + "/friends");
+    var numYourFollowers = database.child("users/" + this.state.loggedUser + "/followers");
 
+    var self = this;
+
+    if(!this.state.friends && !this.state.yourRequest && !this.state.theirRequest) //This is the case where neither of you has sent a request. We want to send a friend request.
+    {
+      theirRequests.push({userId: this.state.loggedUser});
+      //we want to follow them!
+      if (!self.state.following){
+        self.addFollow();
+      }
+    }
+    else if (this.state.yourRequest)  //This is the case where you want to cancel your friend request
+    {
+      //delte your friend request in their friendRequests
+      database.child("users/").once("value", function(snapshot) {
+        var requestData = snapshot.child(self.props.state + "/friendRequests");
+        if(typeof requestData != 'undefined') {
+          requestData.forEach(function(request) {
+            if(request.val().userId == self.state.loggedUser) {
+              var toDelete = database.child("users/" + self.props.state + "/friendRequests/" + request.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+      //unfollow them
+      if (self.state.following){
+        self.addFollow();
+      }
+    }
+    else if (this.state.theirRequest) //This is the case where they sent a friend request. We want to add them as a friend.
+    {
+      //delete their friend request in your friendRequests
+      database.child("users/").once("value", function(snapshot) {
+        var requestData = snapshot.child(self.state.loggedUser + "/friendRequests");
+        if(typeof requestData != 'undefined') {
+          requestData.forEach(function(request) {
+            if(request.val().userId == self.props.state) {
+              var toDelete = database.child("users/" + self.state.loggedUser + "/friendRequests/" + request.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+        //add them as friends
+        yourFriends.push({userId: self.props.state});
+        theirFriends.push({userId: self.state.loggedUser});
+        numYourFriends.transaction(function(currentFriends) {
+          return currentFriends + 1;
+        });
+        numTheirFriends.transaction(function(currentFriends) {
+          return currentFriends + 1;
+        });
+      });
+      //we want to follow them!
+      if (!self.state.following){
+        self.addFollow();
+      }
+    }
+    else //This is the case wehre you guys are friends. You want to delete them and unfollow for both
+    {
+      var theyWereFollowing = false;
+      database.child("users/").once("value", function(snapshot) {
+        //delete them on your friendsList
+        var yourFriendsData = snapshot.child(self.state.loggedUser + "/friendsList");
+        if(typeof yourFriendsData != 'undefined') {
+          yourFriendsData.forEach(function(friend) {
+            if(friend.val().userId == self.props.state) {
+              var toDelete = database.child("users/" + self.state.loggedUser + "/friendsList/" + friend.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+        //delete yourself on their friendsList
+        var theirFriendsData = snapshot.child(self.props.state + "/friendsList");
+        if(typeof theirFriendsData != 'undefined') {
+          theirFriendsData.forEach(function(friend) {
+            if(friend.val().userId == self.state.loggedUser) {
+              var toDelete = database.child("users/" + self.props.state + "/friendsList/" + friend.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+
+        //have them unfollow you
+        var followData = snapshot.child(self.props.state + "/followingList");
+        if(typeof followData != 'undefined') {
+          followData.forEach(function(follower) {
+            if(follower.val().userId == self.state.loggedUser) {
+              theyWereFollowing = true;
+              var toDelete = database.child("users/" + self.props.state + "/followingList/" + follower.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+
+      });
+
+      //unfollow them
+      if (this.state.following){
+        self.addFollow();
+      }
+
+      //only decrease your follower count if they were following you before
+      if (theyWereFollowing){
+        numYourFollowers.transaction(function(currentFollowers){
+          return currentFollowers - 1;
+        });
+      }
+      numYourFriends.transaction(function(currentFriends) {
+        return currentFriends - 1;
+      });
+      numTheirFriends.transaction(function(currentFriends) {
+        return currentFriends - 1;
+      });
+    }
   }
 
   getFollowingText(){
@@ -195,13 +426,11 @@ class Profile extends Component {
             onPress = {() => this.addFriend()}
             style = {styles.button}>
             <Icon
-              color = 'grey'
+              color = {this.getFriendsColor()}
               name = 'account-circle'
               size = {36}
             />
-            <Text>
-              {this.getFriendsText()}
-            </Text>
+            {this.getFriendsText()}
           </TouchableOpacity>
           <TouchableOpacity
             onPress = {() => this.addFollow()}
