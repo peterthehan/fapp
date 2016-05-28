@@ -75,8 +75,27 @@ class ForgotPassword extends Component {
   submit() {
     if(this.state.email === "") {
       Alert.alert('', 'Enter your email.');
+    } else {
+      database.resetPassword({
+        email: this.state.email
+      }, (error) => {
+          if(error) {
+            switch(error.code) {
+              case "INVALID_USER":
+                Alert.alert('Error!', 'The specified user account does not exist.');
+                break;
+              default:
+                Alert.alert('Error!', 'Error resetting password.');
+            }
+          } else {
+            Alert.alert('Success!', 'Temporary password was sent to your email!');
+            this.props.navigator.pop();
+          }
+        });
+      this.setState({
+        email: '',
+      });
     }
-    Alert.alert('', 'Access database.');
   }
 
   goToLogin() {
