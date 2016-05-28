@@ -1,10 +1,9 @@
 'use strict';
 
 import React, {
-  Alert,
   AsyncStorage,
   Component,
-  ListView,
+  Dimensions,
   Text,
   TouchableOpacity,
   View,
@@ -14,35 +13,75 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
 
+import EventDetails from './event-details';
+import GridView from '../components/grid-view';
 import Button from '../components/button';
 import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com/");
-let userdata = new Firebase("poopapp1.firebaseio.com/events");
+
 class Notification extends Component {
   constructor(props) {
     super(props);
-    /*const ds = new ListView.DataSource({
+    /*new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
-    });*/
+    })*/
     this.state = {
-      /*dataSource: ds.cloneWithRows([
-        'You have 1 new follower: tester',
-        'You followed tester'
-      ])*/
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      })
+      dataSource: []
     };
   }
 
   componentDidMount() {
-    var notes = [];
-    {this.event(notes)};
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows([notes])
+    var self = this;
+
+    AsyncStorage.getItem('user_data', (error, result) => {
+      var loggedUserId = JSON.parse(result).uid;
+
+      var myBlob = [];
+
+      var notifications = database.child("users/" + loggedUserId + "/notificationList");
+      notifications.once("value", function(snapshot){
+        snapshot.forEach(function(snapshot){
+          let item = {
+            user: snapshot.val().user,
+            message: snapshot.val().message,
+            date: snapshot.val().date,
+            type: snapshot.val().type,
+            id: snapshot.val().id
+          };
+          myBlob.push(item);
+        });
+
+        self.setState({
+          userId: loggedUserId,
+          dataSource: myBlob
+        });
+      });
     });
+
+    this.eventListener();
+    this.followingListener();
+  }
+
+  renderRow(rowData){
+    return (
+      <View style = {{flex: 1}}>
+        <TouchableOpacity
+          onPress = {() => this.goTo(rowData)}
+          underlayColor = 'lemonchiffon'>
+          <View style = {{flex: 1, height: 50, backgroundColor: 'azure', alignItems: 'center', justifyContent: 'center'}}>
+            <Text style = {TextStyles.text}>
+              {rowData.message}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  queryData(){
+
   }
 
   render() {
@@ -52,57 +91,91 @@ class Notification extends Component {
           navigator = {this.props.navigator}
           text = "Notification"
         />
-        <View style = {{flex:1, backgroundColor: 'white'}}>
-        <ListView
+        <GridView
           dataSource = {this.state.dataSource}
-          renderRow = {(rowData) =>
-            <TouchableOpacity onPress = {this.test} underlayColor = 'lemonchiffon'>
-              <View style = {{flex: 1, height: 50, backgroundColor: 'azure', padding: 10, alignItems: 'center'}}>
-                <Text style = {TextStyles.text}>
-                  {rowData}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          }
+          onRefresh = {this.queryData.bind(this)}
+          renderRow = {this.renderRow.bind(this)}
         />
-        </View>
       </View>
     );
   }
 
-  test(){
-    alert ("you press an item!");
+  goTo(rowData){
+    const navigator = this.props.navigator;
+    switch(rowData.type){
+      case "events":
+        database.child("events/" + rowData.id).once("value", function(snapshot){
+          navigator.push({component: EventDetails, state: snapshot});
+        });
+        break;
+      case "posts":
+        database.child("posts/" + rowData.id).once("value", function(snapshot){
+          /*
+          we need to implement a postdetails page that has everything about the post like recipe
+          navigator.push({component: PostDetails, state: snapshot});
+          */
+        });
+        break;
+    }
   }
 
-  event(notes){
-    userdata.on('child_removed', function (snap){
-      alert ("event removed");
-      notes.push("remove ya!\n");
-    });
-    var newItems = false;
-    userdata.on('child_added',function (snap){
-      if(!newItems) return;
-      alert ("event added");
-      notes.push("someone just added an event yo!\n");
-    });
-    userdata.once('value', function(snap){
-      newItems = true;
-    });
-    userdata.on('child_changed',function (snap){
-      alert ("event changed");
-      notes.push("change! boi impossible! haven't implemented yet!\n");
-    });
+  notification(u, m, t, i){
+    var item = {
+      user: u,
+      message: m,
+      date: "need date somehow",
+      type: t,
+      id: i,
+    };
+
+    this.state.dataSource.push(item);
+
+    const notificationList = database.child("users/" + this.state.userId + "/notificationList");
+    notificationList.push(item);
+
+    this.forceUpdate();
   }
 
-  following(){
-    alert ("someone stalking you!");
+  eventListener(){
+    const self = this;
+
+    const events = database.child("events");
+
+    var firstEventRemove = true;
+    events.limitToLast(1).on('child_removed', function(snapshot, prevChildKey){
+      if(firstEventRemove) {
+        firstEventRemove = false;
+      } else {
+        self.notification("User", "Event Removed: " + snapshot.val().title, "events", snapshot.key());
+      }
+    });
+    var firstEventAdded = true;
+    events.limitToLast(1).on('child_added', function(snapshot, prevChildKey){
+      if(firstEventAdded) {
+        firstEventAdded = false;
+      } else {
+        self.notification("User", "Event Added: " + snapshot.val().title, "events", snapshot.key());
+      }
+    });
+
+    /*
+    events.once("value", function(eventsSnapshot){
+      eventsSnapshot.forEach(function(eventSnapshot){
+        var firstEventChanged = true;
+        events.child(eventSnapshot.key()).limitToLast(1).on('child_changed', function(snapshot, prevChildKey){
+          if(firstEventChanged) {
+            firstEventChanged = false;
+          } else {
+            // assuming comments additions / removals are the only way events are changed
+            self.notification("User", "Comment Added: " + snapshot.child("commentList") + "<-this should wrong", "events", snapshot.key());
+          }
+        });
+      });
+    });
+    */
   }
 
-  posts(){
-    alert ("you post some random stuff!");
-  }
-
-  events() {
+  followingListener(){
   }
 }
 

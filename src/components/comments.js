@@ -4,9 +4,11 @@ import React, {
   AsyncStorage,
   Component,
   Dimensions,
+  Image,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -28,24 +30,49 @@ class Comments extends Component {
 
   componentDidMount() {
     this.queryData();
+  }
+
+  queryData() {
     const self = this;
+    var myBlob = [];
     AsyncStorage.getItem('user_data', (error, result) => {
+      var commentList = database.child(self.props.type + "/" + self.props.id + "/commentList");
+      commentList.once("value", function(snapshot){
+        snapshot.forEach(function(commentSnapshot){
+          var user = database.child("users/" + commentSnapshot.val().userId);
+          user.once("value", function(userSnapshot){
+            var comment = {
+              description: commentSnapshot.val().description,
+              userId: commentSnapshot.val().userId,
+              userProPic: userSnapshot.val().profilePic,
+            }
+            myBlob.push(comment);
+          });
+        });
+      });
       self.setState({
-        loggedUser: JSON.parse(result).uid
+        dataSource: myBlob,
+        loggedUser: JSON.parse(result).uid,
       });
     });
   }
 
-  queryData() {
-    // TODO: query database for comments
-  }
-
   renderRow(comment) {
     return (
-      <View style = {styles.postView}>
-        <Text>
-          {comment}
-        </Text>
+      <View style = {styles.commentView}>
+        <TouchableOpacity
+          style = {styles.userImageTouch}
+          onPress = {() => {}}>
+          <Image
+            style = {styles.userImage}
+            source = {{uri: comment.userProPic}}
+          />
+        </TouchableOpacity>
+        <View style = {styles.descriptionView}>
+          <Text style = {styles.description}>
+            {comment.description}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -53,28 +80,30 @@ class Comments extends Component {
   updateText(text) {
     // database stuff
     this.refs['newCommentInput'].clear();
-    var comments = this.props.id;
-    var self = this;
 
-    // get the id of the logged in user
-    this.state.dataSource.push(text);
-    database.child(self.props.type + "/" + self.props.id + "/commentList").push({
-      userID: self.state.loggedUser,
-      description: text
+    var comment = {
+      description: text,
+      userId: this.state.loggedUser,
+    }
+    database.child(this.props.type + "/" + this.props.id + "/commentList").push(comment);
+
+    const self = this;
+    var user = database.child("users/" + this.state.loggedUser);
+    user.once("value", function(userSnapshot){
+      comment.userProPic = userSnapshot.val().profilePic;
+      self.state.dataSource.push(comment);
+      self.forceUpdate();
     });
-    this.forceUpdate();
   }
 
   render() {
     return (
       <View style = {styles.container}>
-        <View style = {styles.commentView}>
-          <GridView
-            dataSource = {this.state.dataSource}
-            onRefresh = {this.queryData.bind(this)}
-            renderRow = {this.renderRow.bind(this)}
-          />
-        </View>
+        <GridView
+          dataSource = {this.state.dataSource}
+          renderRow = {this.renderRow.bind(this)}
+          onRefresh = {this.queryData.bind(this)}
+        />
         <TextInput
           onSubmitEditing = {(event) => this.updateText(event.nativeEvent.text)}
           placeholder = {"Add a comment"}
@@ -90,18 +119,30 @@ class Comments extends Component {
 
 const styles = StyleSheet.create({
   container: {
-  },
-  commentView: {
+    flex: 1,
   },
   textInput: {
   },
-  postView: {
+  commentView: {
+    width: Dimensions.get("window").width,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: 'gray',
-    height: 50,
-    justifyContent: 'center',
-    paddingLeft: 20,
-    width: Dimensions.get("window").width,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  userImageTouch: {
+  },
+  userImage: {
+    width: 25,
+    height: 25,
+    margin: 5,
+  },
+  descriptionView: {
+    width: Dimensions.get("window").width - 45,
+  },
+  description: {
   },
 });
 
