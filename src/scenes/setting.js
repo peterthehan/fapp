@@ -32,10 +32,13 @@ class Setting extends Component {
       oldEmail: '',
       password: '',
       profilePic: '',
+      newPic: '',
+      user: '',
     };
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
     this.logout = this.logout.bind(this);
+    this.changeProfilePicture = this.changeProfilePicture.bind(this);
   }
 
   componentDidMount(){
@@ -67,18 +70,20 @@ class Setting extends Component {
           text = "Setting"
         />
         <View style = {{alignItems: 'center'}}>
-          <Image
-            source = {{uri: this.state.profilePic}}
-            style = {SceneStyles.image}
-          />
-
           <Text style = {TextStyles.blackText}>
              {this.state.name}
           </Text>
           <Text style = {TextStyles.blackText}>
              {this.state.oldEmail}
           </Text>
-
+          <Image
+            style = {{
+              height: 40,
+              width: 40,
+            }}
+            resizeMode = {Image.resizeMode.center}
+            source = {{uri: "http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png"}}
+          />
           <TextInput
             onChangeText = {(text) => this.setState({email: text})}
             placeholder = {"Email"}
@@ -102,6 +107,23 @@ class Setting extends Component {
             text = "Change Password"
             underlayColor = {"#A2A2A2"}
           />
+
+          <TextInput
+            onChangeText = {(text) => this.setState({newPic: text})}
+            placeholder = {"Picture URL"}
+            placeholderTextColor = 'black'
+            style = {SceneStyles.textInput}
+            underlineColorAndroid = 'black'
+            value = {this.state.newPic}
+          />
+          <Button
+            buttonStyles = {ButtonStyles.transparentButton}
+            buttonTextStyles = {ButtonStyles.blackButtonText}
+            onPress = {this.changeProfilePicture}
+            text = "Change Profile Picture"
+            underlayColor = {"#A2A2A2"}
+          />
+
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.blackButtonText}
@@ -115,6 +137,11 @@ class Setting extends Component {
   }
 
   changeProfilePicture() {
+    var ref = database.child("users");
+    ref.child(this.state.user.uid).update({
+      profilePic: this.state.newPic
+    });
+    alert ("your profile picture just got updated!");
   }
 
   changeEmail() {
