@@ -16,6 +16,7 @@ import Firebase from 'firebase';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import FullImage from '../scenes/full-image';
 import PostDetails from "../scenes/post-details";
 import Profile from "../scenes/profile";
 
@@ -171,6 +172,11 @@ class SmallPost extends Component {
     this.props.navigator.push({component: PostDetails, state: this.state.post});
   }
 
+  fullImage(){
+    this.setState({modalVisible: false});
+    this.props.navigator.push({component: FullImage, state: this.state.photo});
+  }
+
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -248,11 +254,14 @@ class SmallPost extends Component {
                 />
               </TouchableOpacity>
             </View>
-            <Image
-              resizeMode = 'cover'
-              source = {this.state.photo}
-              style = {styles.modalPhoto}
-            />
+            <TouchableOpacity
+              onPress = {this.fullImage.bind(this)}>
+              <Image
+                resizeMode = 'cover'
+                source = {this.state.photo}
+                style = {styles.modalPhoto}
+              />
+            </TouchableOpacity>
             <View style = {styles.buttonViewModal}>
               <TouchableOpacity
                 onPress = {() => this.favorite()}

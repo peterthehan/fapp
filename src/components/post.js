@@ -16,6 +16,7 @@ import Firebase from 'firebase';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import FullImage from '../scenes/full-image';
 import PostDetails from "../scenes/post-details";
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -106,9 +107,9 @@ class Post extends Component {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  picture() {
-    // TODO
-    this.setModalVisible(true);
+  fullImage(){
+    this.setState({modalVisible: false});
+    this.props.navigator.push({component: FullImage, state: this.state.photo});
   }
 
   favorite() {
@@ -205,7 +206,7 @@ class Post extends Component {
             </Text>
           </View>
           <TouchableOpacity
-            onPress = {this.picture.bind(this)}
+            onPress = {() => this.setModalVisible(true)}
             style = {styles.photo}>
             <Image
               resizeMode = "cover"
@@ -271,11 +272,14 @@ class Post extends Component {
                 />
               </TouchableOpacity>
             </View>
-            <Image
-              resizeMode = 'cover'
-              source = {this.state.photo}
-              style = {styles.modalPhoto}
-            />
+            <TouchableOpacity
+              onPress = {this.fullImage.bind(this)}>
+              <Image
+                resizeMode = 'cover'
+                source = {this.state.photo}
+                style = {styles.modalPhoto}
+              />
+            </TouchableOpacity>
             <View style = {styles.buttonViewModal}>
               <TouchableOpacity
                 onPress = {() => this.favorite()}

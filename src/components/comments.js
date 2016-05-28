@@ -24,7 +24,8 @@ class Comments extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      loggedUser: ""
+      loggedUser: "",
+      userName: "",
     };
   }
 
@@ -51,9 +52,14 @@ class Comments extends Component {
           });
         });
       });
-      self.setState({
-        dataSource: myBlob,
-        loggedUser: JSON.parse(result).uid,
+
+      var userId = JSON.parse(result).uid;
+      database.child("users/" + userId).once("value", function(snapshot){
+        self.setState({
+          dataSource: myBlob,
+          loggedUser: userId,
+          userName: snapshot.val().firstName + " " + snapshot.val().lastName,
+        });
       });
     });
   }
@@ -96,7 +102,7 @@ class Comments extends Component {
     var comment = {
       description: text,
       userId: this.state.loggedUser,
-    }
+    };
     database.child(this.props.type + "/" + this.props.id + "/commentList").push(comment);
 
 
@@ -113,12 +119,13 @@ class Comments extends Component {
 
     var commentsNum = database.child(this.props.type + "/" + this.props.id + "/comments");
     commentsNum.transaction(function(currentCount){
-      return currentCount+1;
+      return currentCount + 1;
     });
 
     var user = database.child("users/" + this.state.loggedUser);
     user.once("value", function(userSnapshot){
       comment.userProPic = userSnapshot.val().profilePic;
+      comment.userName = self.state.userName;
       self.state.dataSource.push(comment);
       self.forceUpdate();
     });

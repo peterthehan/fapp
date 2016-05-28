@@ -55,6 +55,14 @@ class PostDetails extends Component {
           />
           <View style = {styles.sectionView}>
             <Text style = {styles.sectionTitle}>
+              User
+            </Text>
+            <Text style = {styles.description}>
+              {this.state.user}
+            </Text>
+          </View>
+          <View style = {styles.sectionView}>
+            <Text style = {styles.sectionTitle}>
               Description
             </Text>
             <Text style = {styles.description}>
