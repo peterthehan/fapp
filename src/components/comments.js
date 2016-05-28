@@ -45,6 +45,7 @@ class Comments extends Component {
               description: commentSnapshot.val().description,
               userId: commentSnapshot.val().userId,
               userProPic: userSnapshot.val().profilePic,
+              userName: userSnapshot.val().firstName + " " + userSnapshot.val().lastName,
             }
             myBlob.push(comment);
           });
@@ -73,7 +74,12 @@ class Comments extends Component {
             source = {{uri: comment.userProPic}}
           />
         </TouchableOpacity>
-        <View style = {styles.descriptionView}>
+        <View style = {styles.textView}>
+          <TouchableOpacity onPress = {() => this.profile(comment.userId)}>
+            <Text style = {styles.userName}>
+              {comment.userName}
+            </Text>
+          </TouchableOpacity>
           <Text style = {styles.description}>
             {comment.description}
           </Text>
@@ -133,23 +139,29 @@ const styles = StyleSheet.create({
   textInput: {
   },
   commentView: {
-    width: Dimensions.get("window").width,
     flexDirection: 'row',
-    alignItems: 'center',
+    width: Dimensions.get("window").width,
     borderBottomWidth: 1,
     borderColor: 'gray',
     paddingLeft: 10,
     paddingRight: 10,
   },
   userImageTouch: {
+    paddingTop: 10,
+    alignItems: 'center',
   },
   userImage: {
     width: 25,
     height: 25,
     margin: 5,
   },
-  descriptionView: {
-    width: Dimensions.get("window").width - 45,
+  textView: {
+    paddingVertical: 10,
+    paddingLeft: 10,
+    flex: 1,
+  },
+  userName: {
+    fontWeight: 'bold',
   },
   description: {
   },
