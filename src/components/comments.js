@@ -91,6 +91,10 @@ class Comments extends Component {
       userId: this.state.loggedUser,
     }
     database.child(this.props.type + "/" + this.props.id + "/commentList").push(comment);
+    var commentsNum = database.child(this.props.type + "/" + this.props.id + "/comments");
+    commentsNum.transaction(function(currentCount){
+      return currentCount+1;
+    });
 
     const self = this;
     var user = database.child("users/" + this.state.loggedUser);

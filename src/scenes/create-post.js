@@ -142,6 +142,7 @@ class CreatePost extends Component {
           description: self.state.description,
           photoID: self.state.image,
           rating: 0,
+          comments: 0,
           user: userName,
           userID: usid,
         });

@@ -64,6 +64,7 @@ class Post extends Component {
           photo: postSnapshot.val().photoID,
           postID: postSnapshot.key().toString(),
           rating: postSnapshot.val().rating,
+          comments: postSnapshot.val().comments,
           user: postSnapshot.val().user,
           userID: userid,
           userPhoto: proPic,
@@ -89,10 +90,12 @@ class Post extends Component {
       }
 
       var rating = snapshot.child("posts/" + postSnapshot.key() + "/rating");
+      var comments = snapshot.child("posts/" + postSnapshot.key() + "/comments");
 
       self.setState({
         favorited: didFav,
         rating: rating.val(),
+        comments: comments.val(),
       });
     });
   }
@@ -237,7 +240,7 @@ class Post extends Component {
           </TouchableOpacity>
 
           <Text style = {styles.button, {color: 'black', fontSize: 12}}>
-            0
+            {this.state.comments}
           </Text>
           </View>
         </View>
@@ -299,7 +302,7 @@ class Post extends Component {
               </TouchableOpacity>
 
               <Text style = {styles.button, {fontSize: 12}}>
-                0
+                {this.state.comments}
               </Text>
 
             </View>
