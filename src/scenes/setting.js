@@ -4,6 +4,7 @@ import React, {
   Alert,
   AsyncStorage,
   Component,
+  Dimensions,
   Image,
   Navigator,
   Text,
@@ -78,8 +79,8 @@ class Setting extends Component {
           </Text>
           <Image
             style = {{
-              height: 40,
-              width: 40,
+              height: Dimensions.get("window").width / 5,
+              width: Dimensions.get("window").width / 5,
             }}
             resizeMode = {Image.resizeMode.center}
             source = {{uri: this.state.profilePic}}
