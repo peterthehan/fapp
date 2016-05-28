@@ -57,12 +57,17 @@ class Comments extends Component {
     });
   }
 
+  profile(userId){
+    const Profile = require('../scenes/profile');
+    this.props.navigator.push({component: Profile, state: userId});
+  }
+
   renderRow(comment) {
     return (
       <View style = {styles.commentView}>
         <TouchableOpacity
           style = {styles.userImageTouch}
-          onPress = {() => {}}>
+          onPress = {() => this.profile(comment.userId)}>
           <Image
             style = {styles.userImage}
             source = {{uri: comment.userProPic}}

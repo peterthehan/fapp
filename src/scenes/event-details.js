@@ -90,6 +90,7 @@ class EventDetails extends Component {
               Comments
             </Text>
             <Comments
+              navigator = {this.props.navigator}
               id = {this.state.key}
               type = {"events"}
             />
