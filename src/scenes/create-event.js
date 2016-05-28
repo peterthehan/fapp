@@ -2,6 +2,7 @@
 
 import React, {
   Alert,
+  AsyncStorage,
   Component,
   DatePickerAndroid,
   StyleSheet,
@@ -29,6 +30,15 @@ let events = new Firebase("poopapp1.firebaseio.com/events");
 class CreateEvent extends Component {
   constructor(props) {
     super(props);
+    var self = this;
+    var loggedUserId;
+    AsyncStorage.getItem('user_data', (error, result) => {
+      loggedUserId = JSON.parse(result).uid;
+
+      self.setState({
+        loggedUser: loggedUserId,
+      });
+    });
     this.state = {
       dateEnd: dateEndStr,
       dateStart: dateStartStr,
@@ -304,6 +314,7 @@ class CreateEvent extends Component {
       Alert.alert('', 'Missing event title');
     } else{
       events.push({
+        userID: this.state.loggedUser,
         description: this.state.description,
         endDate: this.state.dateEnd,
         endTime: this.state.timeEnd,
