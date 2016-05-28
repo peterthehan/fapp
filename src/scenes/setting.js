@@ -4,6 +4,7 @@ import React, {
   Alert,
   AsyncStorage,
   Component,
+  Dimensions,
   Image,
   Navigator,
   Text,
@@ -32,10 +33,13 @@ class Setting extends Component {
       oldEmail: '',
       password: '',
       profilePic: '',
+      newPic: '',
+      user: '',
     };
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
     this.logout = this.logout.bind(this);
+    this.changeProfilePicture = this.changeProfilePicture.bind(this);
   }
 
   componentDidMount(){
@@ -67,18 +71,20 @@ class Setting extends Component {
           text = "Setting"
         />
         <View style = {{alignItems: 'center'}}>
-          <Image
-            source = {{uri: this.state.profilePic}}
-            style = {SceneStyles.image}
-          />
-
           <Text style = {TextStyles.blackText}>
              {this.state.name}
           </Text>
           <Text style = {TextStyles.blackText}>
              {this.state.oldEmail}
           </Text>
-
+          <Image
+            style = {{
+              height: Dimensions.get("window").width / 5,
+              width: Dimensions.get("window").width / 5,
+            }}
+            resizeMode = {Image.resizeMode.center}
+            source = {{uri: this.state.profilePic}}
+          />
           <TextInput
             onChangeText = {(text) => this.setState({email: text})}
             placeholder = {"Email"}
@@ -102,6 +108,23 @@ class Setting extends Component {
             text = "Change Password"
             underlayColor = {"#A2A2A2"}
           />
+
+          <TextInput
+            onChangeText = {(text) => this.setState({newPic: text})}
+            placeholder = {"Picture URL"}
+            placeholderTextColor = 'black'
+            style = {SceneStyles.textInput}
+            underlineColorAndroid = 'black'
+            value = {this.state.newPic}
+          />
+          <Button
+            buttonStyles = {ButtonStyles.transparentButton}
+            buttonTextStyles = {ButtonStyles.blackButtonText}
+            onPress = {this.changeProfilePicture}
+            text = "Change Profile Picture"
+            underlayColor = {"#A2A2A2"}
+          />
+
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.blackButtonText}
@@ -115,6 +138,11 @@ class Setting extends Component {
   }
 
   changeProfilePicture() {
+    var ref = database.child("users");
+    ref.child(this.state.user.uid).update({
+      profilePic: this.state.newPic
+    });
+    Alert.alert('Success!', 'Profile picture has been changed. Please log out and log in again.');
   }
 
   changeEmail() {
