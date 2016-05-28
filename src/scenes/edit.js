@@ -13,7 +13,7 @@ import React, {
 import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
-import PostDetails from './post-details';
+import CreatePost from './create-post';
 
 class Edit extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class Edit extends Component {
           actions = {[
             {title: 'Details', show: 'always'},
           ]}
-          onActionSelected = {this.postDetails.bind(this)}
+          onActionSelected = {this.createPost.bind(this)}
           style = {styles.toolbar}
           title = 'Create a Post'
         />
@@ -37,8 +37,8 @@ class Edit extends Component {
     );
   }
 
-  postDetails() {
-    this.props.navigator.push({component: PostDetails});
+  createPost() {
+    this.props.navigator.push({component: CreatePost});
   }
 }
 
