@@ -228,7 +228,7 @@ class Post extends Component {
 
           <TouchableOpacity
             style = {styles.button}
-            onPress = {() => this.messages()}>
+            onPress = {this.messages.bind(this)}>
             <MaterialIcon
               color = 'black'
               name = 'textsms'
@@ -289,7 +289,7 @@ class Post extends Component {
               </Text>
 
               <TouchableOpacity
-                onPress = {() => {alert("Go to messages page.");}}
+                onPress = {this.messages.bind(this)}
                 style = {styles.button}>
                 <MaterialIcon
                   color = 'black'
