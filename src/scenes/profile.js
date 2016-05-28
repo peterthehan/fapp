@@ -29,6 +29,8 @@ class Profile extends Component {
       items: [],
       name: '',
       profilePic: '',
+      numberFriends: 0,
+      followers: 0,
     };
   }
 
@@ -40,10 +42,12 @@ class Profile extends Component {
     AsyncStorage.getItem('user_data', (error, result) => {
       loggedUserId = JSON.parse(result).uid;
       var numFollows;
+      var numFriends;
       database.child("users/").once("value", function(snapshot) {
         var isFollowing;
         var followingList = snapshot.child(loggedUserId + "/followingList");
         numFollows = snapshot.child(self.props.state + "/followers");
+        numFriends = snapshot.child(self.props.state + "/friends");
         if(typeof followingList != 'undefined') {
           followingList.forEach(function(following) {
             if(following.val().userId == self.props.state) {
@@ -88,6 +92,7 @@ class Profile extends Component {
           loggedUser: loggedUserId,
           following: isFollowing,
           followers: numFollows.val(),
+          numberFriends: numFriends.val(),
           friends: isFriends,
           yourRequest: youRequested,
           theirRequest: theyRequested,
@@ -95,9 +100,9 @@ class Profile extends Component {
       });
     });
 
-    database.on("value", function(snapshot) {
+    database.child("users/").on("value", function(snapshot) {
       var isFollowing;
-      var followingList = snapshot.child("users/" + loggedUserId + "/followingList");
+      var followingList = snapshot.child(loggedUserId + "/followingList");
 
       if(typeof followingList != 'undefined') {
         followingList.forEach(function(following) {
@@ -108,7 +113,7 @@ class Profile extends Component {
       }
 
       var isFriends = false;
-      var friendsList = snapshot.child("users/" + loggedUserId + "/friendsList");
+      var friendsList = snapshot.child(loggedUserId + "/friendsList");
       if(typeof friendsList != 'undefined') {
         friendsList.forEach(function(friends) {
           if(friends.val().userId == self.props.state) {
@@ -120,7 +125,7 @@ class Profile extends Component {
       var youRequested = false;
       var theyRequested = false;
       if (!isFriends){
-        var yourRequests = snapshot.child("users/" + loggedUserId + "/friendRequests");
+        var yourRequests = snapshot.child(loggedUserId + "/friendRequests");
         if(typeof yourRequests != 'undefined') {
           yourRequests.forEach(function(request) {
             if(request.val().userId == self.props.state) {
@@ -129,7 +134,7 @@ class Profile extends Component {
           });
         }
         if (!theyRequested){
-          var theirRequests = snapshot.child("users/" + self.props.state + "/friendRequests");
+          var theirRequests = snapshot.child(self.props.state + "/friendRequests");
           if(typeof theirRequests != 'undefined') {
             theirRequests.forEach(function(request) {
               if(request.val().userId == loggedUserId) {
@@ -140,11 +145,13 @@ class Profile extends Component {
         }
       }
 
-      var numFollows = snapshot.child("users/" + self.props.state + "/followers");
+      var numFollows = snapshot.child(self.props.state + "/followers");
+      var numFriends = snapshot.child(self.props.state + "/friends");
 
       self.setState({
         following: isFollowing,
         followers: numFollows.val(),
+        numberFriends: numFriends.val(),
         friends: isFriends,
         yourRequest: youRequested,
         theirRequest: theyRequested,
@@ -413,7 +420,29 @@ class Profile extends Component {
 
   showFriends(){
     if (this.state.loggedUser == this.props.state){
-      return (<View></View>);
+      return (
+        <View style = {{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}>
+          <View style = {styles.button}>
+            <Text style={{fontSize: 28}}>
+              {this.state.followers}
+            </Text>
+            <Text>
+              Followers
+            </Text>
+          </View>
+          <View style = {styles.button}>
+            <Text style={{fontSize: 28}}>
+              {this.state.numberFriends}
+            </Text>
+            <Text>
+              Friends
+            </Text>
+          </View>
+        </View>);
     }
     else{
       return(
@@ -448,6 +477,14 @@ class Profile extends Component {
             </Text>
             <Text>
               Followers
+            </Text>
+          </View>
+          <View style = {styles.button}>
+            <Text style={{fontSize: 28}}>
+              {this.state.numberFriends}
+            </Text>
+            <Text>
+              Friends
             </Text>
           </View>
         </View>
