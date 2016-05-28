@@ -16,6 +16,8 @@ import Firebase from 'firebase';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import PostDetails from "../scenes/post-details";
+
 let database = new Firebase("poopapp1.firebaseio.com");
 
 const windowSize = Dimensions.get('window');
@@ -55,6 +57,7 @@ class Post extends Component {
         }
 
         self.setState({
+          post: postSnapshot,
           description: postSnapshot.val().description,
           favorited: didFav,
           loggedUser: loggedUserId,
@@ -167,7 +170,8 @@ class Post extends Component {
   }
 
   messages() {
-    alert("Go to messages page.");
+    this.setState({modalVisible: false});
+    this.props.navigator.push({component: PostDetails, state: this.state.post});
   }
 
   setModalVisible(visible) {

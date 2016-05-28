@@ -16,6 +16,7 @@ import Firebase from 'firebase';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
+import PostDetails from "../scenes/post-details";
 import Profile from "../scenes/profile";
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -57,6 +58,7 @@ class SmallPost extends Component {
         }
 
         self.setState({
+          post: postSnapshot,
           description: postSnapshot.val().description,
           favorited: didFav,
           loggedUser: loggedUserId,
@@ -161,8 +163,9 @@ class SmallPost extends Component {
     }
   }
 
-  messages() {
-    alert("Go to messages page.");
+  details() {
+    this.setState({modalVisible: false});
+    this.props.navigator.push({component: PostDetails, state: this.state.post});
   }
 
   setModalVisible(visible) {
@@ -198,7 +201,7 @@ class SmallPost extends Component {
 
                 <TouchableOpacity
                   style = {styles.button}
-                  onPress = {() => this.messages()}>
+                  onPress = {this.details.bind(this)}>
                   <MaterialIcon
                     color = 'white'
                     name = 'textsms'
@@ -263,7 +266,7 @@ class SmallPost extends Component {
               </Text>
 
               <TouchableOpacity
-                onPress = {() => {alert("Go to messages page.");}}
+                onPress = {this.details.bind(this)}
                 style = {styles.button}>
                 <MaterialIcon
                   color = 'black'
