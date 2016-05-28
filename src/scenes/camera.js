@@ -14,7 +14,7 @@ import React, {
 import {Surface} from 'gl-react-native';
 
 import Instagram from '../components/instagram';
-import PostDetails from './post-details';
+import CreatePost from './create-post';
 import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
 
@@ -269,7 +269,7 @@ class Camera extends Component {
     } else {
       photoIDObj = this.state.avatarSource;
     }
-    this.props.navigator.push({component: PostDetails, state: photoIDObj});
+    this.props.navigator.push({component: CreatePost, state: photoIDObj});
   }
 
   render() {

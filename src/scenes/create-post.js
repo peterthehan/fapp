@@ -19,7 +19,7 @@ import TextStyles from '../styles/text-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
-class Tags extends Component {
+class CreatePost extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -183,4 +183,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = Tags;
+module.exports = CreatePost;
