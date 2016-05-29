@@ -9,6 +9,7 @@ import React, {
   Navigator,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -22,6 +23,8 @@ import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
+var ImagePickerManager = require('NativeModules').ImagePickerManager;
+
 
 class Setting extends Component {
   constructor(props) {
@@ -33,10 +36,10 @@ class Setting extends Component {
       oldEmail: '',
       password: '',
       profilePic: '',
-      newPic: '',
       user: '',
       newPW: '',
       curEmail: '',
+      image: "http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png",
     };
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
@@ -76,7 +79,35 @@ class Setting extends Component {
           AsyncStorage.setItem('user_data', JSON.stringify(user_data));
           Alert.alert("Authorization succeed");
         }
+      });
+    }
+
+  openCamera() {
+    ImagePickerManager.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if(response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if(response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          image: source,
+        });
+
       }
+    });
+  }
+
+  cameraButton() {
+    return (
+      <TouchableOpacity
+        onPress = {() => {this.openCamera()}}>
+        <Text style = {{color: 'black', fontSize: 16}}>
+          Choose Profile Picture
+        </Text>
+      </TouchableOpacity>
     );
   }
 
@@ -90,6 +121,20 @@ class Setting extends Component {
         />
         <View style = {{alignItems: 'center'}}>
           <Text> Please Authorize First</Text>
+          <Text style = {TextStyles.blackText}>
+             {this.state.name}
+          </Text>
+          <Text style = {TextStyles.blackText}>
+             {this.state.oldEmail}
+          </Text>
+          <Image
+            style = {{
+              height: Dimensions.get("window").width / 5,
+              width: Dimensions.get("window").width / 5,
+            }}
+            resizeMode = {Image.resizeMode.center}
+            source = {{uri: this.state.profilePic.uri}}
+          />
           <TextInput
             keyboardType = 'email-address'
             onChangeText = {(text) => this.setState({curEmail: text})}
@@ -150,19 +195,12 @@ class Setting extends Component {
             underlayColor = {"#A2A2A2"}
           />
 
-          <TextInput
-            onChangeText = {(text) => this.setState({newPic: text})}
-            placeholder = {"Enter your new profile picture URL"}
-            placeholderTextColor = 'gray'
-            style = {SceneStyles.textInput}
-            underlineColorAndroid = 'black'
-            value = {this.state.newPic}
-          />
+          {this.cameraButton()}
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.blackButtonText}
-            onPress = {this.changeProfilePicture}
-            text = "Change Profile Picture"
+            onPress = {this.changeProfilePicture.bind(this)}
+            text = "Set Profile Picture"
             underlayColor = {"#A2A2A2"}
           />
 
@@ -176,14 +214,6 @@ class Setting extends Component {
         </View>
       </View>
     );
-  }
-
-  changeProfilePicture() {
-    var ref = database.child("users");
-    ref.child(this.state.user.uid).update({
-      profilePic: this.state.newPic
-    });
-    Alert.alert('Success!', 'Profile picture has been changed. Please log out and log in again.');
   }
 
   changeEmail() {
@@ -231,6 +261,30 @@ class Setting extends Component {
       database.unauth();
     });
   }
+
+  changeProfilePicture() {
+    var ref = database.child("users");
+    ref.child(this.state.user.uid).update({
+      profilePic: this.state.image,
+    });
+  }
 }
+
+const options = {
+  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  angle: 0, // android only, photos only
+  cameraType: 'back', // 'front' or 'back'
+  cancelButtonTitle: 'Cancel',
+  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+  durationLimit: 10, // video recording max time in seconds
+  maxHeight: 370, // photos only
+  maxWidth: 370, // photos only
+  mediaType: 'photo', // 'photo' or 'video'
+  noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  quality: 1, // 0 to 1, photos only
+  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+  title: 'Select Avatar', // specify null or empty string to remove the title
+  videoQuality: 'high', // 'low', 'medium', or 'high'
+};
 
 module.exports = Setting;

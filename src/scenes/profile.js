@@ -166,7 +166,7 @@ class Profile extends Component {
     database.once("value", function(snapshot) {
       // user
       var usersnapshot = snapshot.child("users/" + self.props.state);
-      var proPic = usersnapshot.val().profilePic;
+      var proPic = usersnapshot.val().profilePic.uri;
 
       // posts
       var userPostsSnapshot = usersnapshot.child("postList");
