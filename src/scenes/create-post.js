@@ -150,7 +150,10 @@ class CreatePost extends Component {
           userID: usid,
         });
 
-        self.state.tags.forEach((t) => database.child("posts/" + post.key() + "/tags").push({tag: t}));
+        self.state.tags.forEach((t) => {
+          database.child("posts/" + post.key() + "/tags").push({tag: t});
+          database.child("tags/" + t.substring(1) + "/postList").push({postId: post.key()});
+        });
 
         postList.push({
           postId: post.key(),
