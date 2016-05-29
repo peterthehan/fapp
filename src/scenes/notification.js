@@ -5,6 +5,7 @@ import React, {
   Component,
   Dimensions,
   Image,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -83,6 +84,35 @@ class Notification extends Component {
   renderRow(rowData){
       if (rowData.type == "events") //If the notification is for an event
       {
+        if (rowData.action == "comment") //This is when someone comments on your event
+        {
+          var nameText;
+          var profilePicture;
+          var commentText;
+          database.child("users/" + rowData.who).once("value", function(snapshot){
+            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
+            profilePicture = snapshot.val().profilePic;
+          });
+          commentText = rowData.details;
+          return (
+            <View style = {styles.container}>
+              <TouchableOpacity
+                style = {styles.descriptionView}
+                onPress = {() => this.goTo(rowData)}
+                underlayColor = 'lemonchiffon'>
+                <Image
+                  style = {styles.userImage}
+                  source = {{uri: profilePicture}}
+                />
+                <Text style = {styles.description}>
+                  {nameText} commented on your event. "{commentText}"
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+      }
+      else if (rowData.type == "posts"){
         if (rowData.action == "comment") //This is when someone comments on your post
         {
           var nameText;
@@ -94,23 +124,43 @@ class Notification extends Component {
           });
           commentText = rowData.details;
           return (
-            <View style = {{flex: 1}}>
+            <View style = {styles.container}>
               <TouchableOpacity
+                style = {styles.descriptionView}
                 onPress = {() => this.goTo(rowData)}
                 underlayColor = 'lemonchiffon'>
-                <View style = {{flex: 1, flexDirection: 'row', height: 50, backgroundColor: 'azure', alignItems: 'center', justifyContent: 'center'}}>
-                  <Image
-                    style = {{
-                      width: 25,
-                      height: 25,
-                      margin: 5,
-                    }}
-                    source = {{uri: profilePicture}}
-                  />
-                  <Text style = {TextStyles.text}>
-                    {nameText} commented on your event. "{commentText}"
-                  </Text>
-                </View>
+                <Image
+                  style = {styles.userImage}
+                  source = {{uri: profilePicture}}
+                />
+                <Text style = {styles.description}>
+                  {nameText} commented on your post. "{commentText}"
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+        else if (rowData.action == "like") //This is when someone 'likes' your post
+        {
+          var nameText;
+          var profilePicture;
+          database.child("users/" + rowData.who).once("value", function(snapshot){
+            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
+            profilePicture = snapshot.val().profilePic;
+          });
+          return (
+            <View style = {styles.container}>
+              <TouchableOpacity
+                style = {styles.descriptionView}
+                onPress = {() => this.goTo(rowData)}
+                underlayColor = 'lemonchiffon'>
+                <Image
+                  style = {styles.userImage}
+                  source = {{uri: profilePicture}}
+                />
+                <Text style = {styles.description}>
+                  {nameText} liked your post.
+                </Text>
               </TouchableOpacity>
             </View>
           );
@@ -160,5 +210,28 @@ class Notification extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: Dimensions.get("window").width,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  userImage: {
+    width: 25,
+    height: 25,
+    margin: 5,
+  },
+  descriptionView: {
+    paddingVertical: 10,
+    paddingLeft: 10,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  description: {
+  }
+});
 
 module.exports = Notification;
