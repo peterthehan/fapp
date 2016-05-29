@@ -123,7 +123,7 @@ class Post extends Component {
       postRated.push({userId: this.state.loggedUser});
       notification.push({
         userID: this.state.loggedUser,
-        type: "post",
+        type: "posts",
         objectID: this.state.postID,
         action: "like",
         textDetails: "nothing",
