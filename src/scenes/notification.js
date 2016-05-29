@@ -70,7 +70,7 @@ class Notification extends Component {
           var commentText;
           database.child("users/" + rowData.who).once("value", function(snapshot){
             nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic;
+            profilePicture = snapshot.val().profilePic.uri;
           });
           commentText = rowData.details;
           return (
@@ -99,7 +99,7 @@ class Notification extends Component {
           var commentText;
           database.child("users/" + rowData.who).once("value", function(snapshot){
             nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic;
+            profilePicture = snapshot.val().profilePic.uri;
           });
           commentText = rowData.details;
           return (
@@ -125,7 +125,7 @@ class Notification extends Component {
           var profilePicture;
           database.child("users/" + rowData.who).once("value", function(snapshot){
             nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic;
+            profilePicture = snapshot.val().profilePic.uri;
           });
           return (
             <View style = {styles.container}>
