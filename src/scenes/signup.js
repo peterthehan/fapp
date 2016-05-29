@@ -146,7 +146,7 @@ class Signup extends Component {
               email: this.state.email,
               firstName: this.state.firstName,
               lastName: this.state.lastName,
-              profilePic: "http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png",
+              profilePic: {uri: 'http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png', isStatic: true},
             });
             Alert.alert('Success!', 'Your account was created!');
             this.props.navigator.pop();
