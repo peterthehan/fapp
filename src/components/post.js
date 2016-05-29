@@ -116,10 +116,18 @@ class Post extends Component {
     var userFaved = database.child("users/" + this.state.loggedUser + "/favoritedList");
     var postRated = database.child("posts/" + this.state.postID + "/ratedList");
     var ratedVal = database.child("posts/" + this.state.postID + "/rating");
+    var notification = database.child("users/" + this.state.userID + "/notifications");
 
     if(!this.state.favorited) {
       userFaved.push({postId: this.state.postID});
       postRated.push({userId: this.state.loggedUser});
+      notification.push({
+        userID: this.state.loggedUser,
+        type: "post",
+        objectID: this.state.postID,
+        action: "like",
+        textDetails: "nothing",
+      });
       ratedVal.transaction(function(currentRating) {
         return currentRating + 1;
       });
