@@ -38,48 +38,26 @@ class Notification extends Component {
   componentDidMount() {
     var self = this;
     var loggedUserId;
-    var myBlob = [];
     AsyncStorage.getItem('user_data', (error, result) => {
       loggedUserId = JSON.parse(result).uid;
 
-      var notifications = database.child("users/" + loggedUserId + "/notifications");
-      notifications.once("value", function(snapshot){
-        snapshot.forEach(function(snapshot){
-          let item = {
-            who: snapshot.val().userID,
-            type: snapshot.val().type,
-            object: snapshot.val().objectID,
-            action: snapshot.val().action,
-            details: snapshot.val().textDetails,
-          };
-          myBlob.push(item);
-        });
-
-        self.setState({
-          userId: loggedUserId,
-          dataSource: myBlob
-        });
-      });
-    });
-
-    database.child("users/" + loggedUserId + "/notifications").on("value", function(snapshot){
-      snapshot.forEach(function(snapshot){
-        let item = {
-          who: snapshot.val().userID,
-          type: snapshot.val().type,
-          object: snapshot.val().objectID,
-          action: snapshot.val().action,
-          details: snapshot.val().textDetails,
-        };
-        myBlob.push(item);
-      });
-
       self.setState({
         userId: loggedUserId,
-        dataSource: myBlob,
+      });
+
+      var notifications = database.child("users/" + loggedUserId + "/notifications");
+      notifications.on("child_added", function(notificationSnapshot){
+        let item = {
+          who: notificationSnapshot.val().userID,
+          type: notificationSnapshot.val().type,
+          object: notificationSnapshot.val().objectID,
+          action: notificationSnapshot.val().action,
+          details: notificationSnapshot.val().textDetails,
+        };
+        self.state.dataSource.push(item);
+        self.forceUpdate();
       });
     });
-
   }
 
   renderRow(rowData){
