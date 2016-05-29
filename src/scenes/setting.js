@@ -242,6 +242,7 @@ class Setting extends Component {
         ref.child(this.state.user.uid).update({
           profilePic: this.state.image,
         });
+        this.setState({profilePic: this.state.image});
       }
     });
   }
