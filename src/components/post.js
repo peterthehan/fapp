@@ -121,13 +121,15 @@ class Post extends Component {
     if(!this.state.favorited) {
       userFaved.push({postId: this.state.postID});
       postRated.push({userId: this.state.loggedUser});
-      notification.push({
-        userID: this.state.loggedUser,
-        type: "post",
-        objectID: this.state.postID,
-        action: "like",
-        textDetails: "nothing",
-      });
+      if (this.state.loggedUser != this.state.userID){
+        notification.push({
+          userID: this.state.loggedUser,
+          type: "posts",
+          objectID: this.state.postID,
+          action: "like",
+          textDetails: "nothing",
+        });
+      }
       ratedVal.transaction(function(currentRating) {
         return currentRating + 1;
       });

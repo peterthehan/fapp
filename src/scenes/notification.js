@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Share from 'react-native-share';
 
 import EventDetails from './event-details';
+import PostDetails from './post-details';
 import GridView from '../components/grid-view';
 import Button from '../components/button';
 import TextStyles from '../styles/text-styles';
@@ -200,11 +201,8 @@ class Notification extends Component {
         });
         break;
       case "posts":
-        database.child("posts/" + rowData.id).once("value", function(snapshot){
-          /*
-          we need to implement a postdetails page that has everything about the post like recipe
+        database.child("posts/" + rowData.object).once("value", function(snapshot){
           navigator.push({component: PostDetails, state: snapshot});
-          */
         });
         break;
     }
