@@ -27,6 +27,7 @@ class CreatePost extends Component {
       image: this.props.state,
       location: '',
       recipe: '',
+      tags: [],
     };
   }
 
@@ -52,6 +53,8 @@ class CreatePost extends Component {
         rendered.push(entry);
       }
     });
+
+    this.state.tags = tags;
 
     var limit = 1000;
     return(
@@ -146,6 +149,9 @@ class CreatePost extends Component {
           user: userName,
           userID: usid,
         });
+
+        self.state.tags.forEach((t) => database.child("posts/" + post.key() + "/tags").push({tag: t}));
+
         postList.push({
           postId: post.key(),
         });
