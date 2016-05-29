@@ -76,16 +76,17 @@ class Notification extends Component {
           return (
             <View style = {styles.container}>
               <TouchableOpacity
-                style = {styles.descriptionView}
-                onPress = {() => this.goTo(rowData)}
-                underlayColor = 'lemonchiffon'>
+                style = {styles.touchView}
+                onPress = {() => this.goTo(rowData)}>
                 <Image
                   style = {styles.userImage}
                   source = {{uri: profilePicture}}
                 />
-                <Text style = {styles.description}>
-                  {nameText} commented on your event. "{commentText}"
-                </Text>
+                <View style = {styles.descriptionView}>
+                  <Text style = {styles.description}>
+                    {nameText} commented on your event. "{commentText}"
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           );
@@ -105,16 +106,17 @@ class Notification extends Component {
           return (
             <View style = {styles.container}>
               <TouchableOpacity
-                style = {styles.descriptionView}
-                onPress = {() => this.goTo(rowData)}
-                underlayColor = 'lemonchiffon'>
+                style = {styles.touchView}
+                onPress = {() => this.goTo(rowData)}>
                 <Image
                   style = {styles.userImage}
                   source = {{uri: profilePicture}}
                 />
-                <Text style = {styles.description}>
-                  {nameText} commented on your post. "{commentText}"
-                </Text>
+                <View style = {styles.descriptionView}>
+                  <Text style = {styles.description}>
+                    {nameText} commented on your post. "{commentText}"
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           );
@@ -130,16 +132,17 @@ class Notification extends Component {
           return (
             <View style = {styles.container}>
               <TouchableOpacity
-                style = {styles.descriptionView}
-                onPress = {() => this.goTo(rowData)}
-                underlayColor = 'lemonchiffon'>
+                style = {styles.touchView}
+                onPress = {() => this.goTo(rowData)}>
                 <Image
                   style = {styles.userImage}
                   source = {{uri: profilePicture}}
                 />
-                <Text style = {styles.description}>
-                  {nameText} liked your post.
-                </Text>
+                <View style = {styles.descriptionView}>
+                  <Text style = {styles.description}>
+                    {nameText} liked your post.
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
           );
@@ -192,19 +195,18 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     borderBottomWidth: 1,
     borderColor: 'gray',
-    paddingLeft: 10,
-    paddingRight: 10,
   },
   userImage: {
     width: 25,
     height: 25,
-    margin: 5,
+    margin: 10,
+  },
+  touchView: {
+    flexDirection: 'row',
   },
   descriptionView: {
-    paddingVertical: 10,
-    paddingLeft: 10,
     flex: 1,
-    flexDirection: 'row',
+    padding: 10,
   },
   description: {
   }
