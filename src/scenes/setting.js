@@ -82,35 +82,6 @@ class Setting extends Component {
       });
     }
 
-  openCamera() {
-    ImagePickerManager.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-      if(response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if(response.error) {
-        console.log('ImagePickerManager Error: ', response.error);
-      } else {
-        // You can display the image using either data:
-        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-        this.setState({
-          image: source,
-        });
-
-      }
-    });
-  }
-
-  cameraButton() {
-    return (
-      <TouchableOpacity
-        onPress = {() => {this.openCamera()}}>
-        <Text style = {{color: 'black', fontSize: 16}}>
-          Choose Profile Picture
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-
   render() {
     return (
       <View style = {SceneStyles.container}>
@@ -195,12 +166,11 @@ class Setting extends Component {
             underlayColor = {"#A2A2A2"}
           />
 
-          {this.cameraButton()}
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.blackButtonText}
-            onPress = {this.changeProfilePicture.bind(this)}
-            text = "Set Profile Picture"
+            onPress = {() => {this.changeProfilePicture()}}
+            text = "Change Profile Picture"
             underlayColor = {"#A2A2A2"}
           />
 
@@ -242,7 +212,6 @@ class Setting extends Component {
   }
 
   changePassword() {
-
     database.changePassword({
       email: this.state.oldEmail,
       oldPassword: this.state.password,
@@ -256,16 +225,30 @@ class Setting extends Component {
       });
   }
 
-  logout() {
-    AsyncStorage.removeItem('user_data').then(() => {
-      database.unauth();
+  changeProfilePicture() {
+    ImagePickerManager.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if(response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if(response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          image: source,
+        });
+        var ref = database.child("users");
+        ref.child(this.state.user.uid).update({
+          profilePic: this.state.image,
+        });
+      }
     });
   }
 
-  changeProfilePicture() {
-    var ref = database.child("users");
-    ref.child(this.state.user.uid).update({
-      profilePic: this.state.image,
+  logout() {
+    AsyncStorage.removeItem('user_data').then(() => {
+      database.unauth();
     });
   }
 }
@@ -273,7 +256,7 @@ class Setting extends Component {
 const options = {
   allowsEditing: false, // Built in functionality to resize, reposition the image after selection
   angle: 0, // android only, photos only
-  cameraType: 'back', // 'front' or 'back'
+  cameraType: 'front', // 'front' or 'back'
   cancelButtonTitle: 'Cancel',
   chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
   durationLimit: 10, // video recording max time in seconds
