@@ -4,6 +4,7 @@ import React, {
   AsyncStorage,
   Component,
   Dimensions,
+  Image,
   Text,
   TouchableOpacity,
   View,
@@ -34,21 +35,20 @@ class Notification extends Component {
 
   componentDidMount() {
     var self = this;
-
+    var loggedUserId;
+    var myBlob = [];
     AsyncStorage.getItem('user_data', (error, result) => {
-      var loggedUserId = JSON.parse(result).uid;
+      loggedUserId = JSON.parse(result).uid;
 
-      var myBlob = [];
-
-      var notifications = database.child("users/" + loggedUserId + "/notificationList");
+      var notifications = database.child("users/" + loggedUserId + "/notifications");
       notifications.once("value", function(snapshot){
         snapshot.forEach(function(snapshot){
           let item = {
-            user: snapshot.val().user,
-            message: snapshot.val().message,
-            date: snapshot.val().date,
+            who: snapshot.val().userID,
             type: snapshot.val().type,
-            id: snapshot.val().id
+            object: snapshot.val().objectID,
+            action: snapshot.val().action,
+            details: snapshot.val().textDetails,
           };
           myBlob.push(item);
         });
@@ -60,24 +60,65 @@ class Notification extends Component {
       });
     });
 
-    this.eventListener();
-    this.followingListener();
+    database.child("users/" + loggedUserId + "/notifications").on("value", function(snapshot){
+      snapshot.forEach(function(snapshot){
+        let item = {
+          who: snapshot.val().userID,
+          type: snapshot.val().type,
+          object: snapshot.val().objectID,
+          action: snapshot.val().action,
+          details: snapshot.val().textDetails,
+        };
+        myBlob.push(item);
+      });
+
+      self.setState({
+        userId: loggedUserId,
+        dataSource: myBlob,
+      });
+    });
+
   }
 
   renderRow(rowData){
-    return (
-      <View style = {{flex: 1}}>
-        <TouchableOpacity
-          onPress = {() => this.goTo(rowData)}
-          underlayColor = 'lemonchiffon'>
-          <View style = {{flex: 1, height: 50, backgroundColor: 'azure', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style = {TextStyles.text}>
-              {rowData.message}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
+      if (rowData.type == "events") //If the notification is for an event
+      {
+        if (rowData.action == "comment") //This is when someone comments on your post
+        {
+          var nameText;
+          var profilePicture;
+          var commentText;
+          database.child("users/" + rowData.who).once("value", function(snapshot){
+            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
+            profilePicture = snapshot.val().profilePic;
+          });
+          commentText = rowData.details;
+          return (
+            <View style = {{flex: 1}}>
+              <TouchableOpacity
+                onPress = {() => this.goTo(rowData)}
+                underlayColor = 'lemonchiffon'>
+                <View style = {{flex: 1, flexDirection: 'row', height: 50, backgroundColor: 'azure', alignItems: 'center', justifyContent: 'center'}}>
+                  <Image
+                    style = {{
+                      width: 25,
+                      height: 25,
+                      margin: 5,
+                    }}
+                    source = {{uri: profilePicture}}
+                  />
+                  <Text style = {TextStyles.text}>
+                    {nameText} commented on your event. "{commentText}"
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          );
+        }
+      }
+      return (
+        <View><Text>{rowData.object}</Text></View>
+      );
   }
 
   queryData(){
@@ -104,7 +145,7 @@ class Notification extends Component {
     const navigator = this.props.navigator;
     switch(rowData.type){
       case "events":
-        database.child("events/" + rowData.id).once("value", function(snapshot){
+        database.child("events/" + rowData.object).once("value", function(snapshot){
           navigator.push({component: EventDetails, state: snapshot});
         });
         break;
@@ -117,65 +158,6 @@ class Notification extends Component {
         });
         break;
     }
-  }
-
-  notification(u, m, t, i){
-    var item = {
-      user: u,
-      message: m,
-      date: "need date somehow",
-      type: t,
-      id: i,
-    };
-
-    this.state.dataSource.push(item);
-
-    const notificationList = database.child("users/" + this.state.userId + "/notificationList");
-    notificationList.push(item);
-
-    this.forceUpdate();
-  }
-
-  eventListener(){
-    const self = this;
-
-    const events = database.child("events");
-
-    var firstEventRemove = true;
-    events.limitToLast(1).on('child_removed', function(snapshot, prevChildKey){
-      if(firstEventRemove) {
-        firstEventRemove = false;
-      } else {
-        self.notification("User", "Event Removed: " + snapshot.val().title, "events", snapshot.key());
-      }
-    });
-    var firstEventAdded = true;
-    events.limitToLast(1).on('child_added', function(snapshot, prevChildKey){
-      if(firstEventAdded) {
-        firstEventAdded = false;
-      } else {
-        self.notification("User", "Event Added: " + snapshot.val().title, "events", snapshot.key());
-      }
-    });
-
-    /*
-    events.once("value", function(eventsSnapshot){
-      eventsSnapshot.forEach(function(eventSnapshot){
-        var firstEventChanged = true;
-        events.child(eventSnapshot.key()).limitToLast(1).on('child_changed', function(snapshot, prevChildKey){
-          if(firstEventChanged) {
-            firstEventChanged = false;
-          } else {
-            // assuming comments additions / removals are the only way events are changed
-            self.notification("User", "Comment Added: " + snapshot.child("commentList") + "<-this should wrong", "events", snapshot.key());
-          }
-        });
-      });
-    });
-    */
-  }
-
-  followingListener(){
   }
 }
 
