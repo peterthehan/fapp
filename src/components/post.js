@@ -44,7 +44,7 @@ class Post extends Component {
       database.once("value", function(snapshot) {
         var userid = postSnapshot.val().userID;
         var userSnapshot = snapshot.child("users/" + userid);
-        var proPic = userSnapshot.val().profilePic;
+        var proPic = userSnapshot.val().profilePic.uri;
 
         var didFav = false;
         var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");
@@ -77,7 +77,7 @@ class Post extends Component {
     database.on("value", function(snapshot) {
       var userid = postSnapshot.val().userID;
       var userSnapshot = snapshot.child("users/" + userid);
-      var proPic = userSnapshot.val().profilePic;
+      var proPic = userSnapshot.val().profilePic.uri;
 
       var didFav = false;
       var favData = snapshot.child("users/" + loggedUserId + "/favoritedList");

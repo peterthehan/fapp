@@ -45,7 +45,7 @@ class Comments extends Component {
             var comment = {
               description: commentSnapshot.val().description,
               userId: commentSnapshot.val().userId,
-              userProPic: userSnapshot.val().profilePic,
+              userProPic: userSnapshot.val().profilePic.uri,
               userName: userSnapshot.val().firstName + " " + userSnapshot.val().lastName,
             }
             myBlob.push(comment);
@@ -126,7 +126,7 @@ class Comments extends Component {
 
     var user = database.child("users/" + this.state.loggedUser);
     user.once("value", function(userSnapshot){
-      comment.userProPic = userSnapshot.val().profilePic;
+      comment.userProPic = userSnapshot.val().profilePic.uri;
       comment.userName = self.state.userName;
       self.state.dataSource.push(comment);
       self.forceUpdate();
