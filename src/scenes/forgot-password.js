@@ -48,7 +48,7 @@ class ForgotPassword extends Component {
             onChangeText = {(text) => this.setState({email: text})}
             placeholder = {"Email"}
             placeholderTextColor = 'white'
-            style = {TextStyles.textInput}
+            style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
           />
@@ -88,7 +88,7 @@ class ForgotPassword extends Component {
                 Alert.alert('Error!', 'Error resetting password.');
             }
           } else {
-            Alert.alert('Success!', 'Temporary password was sent to your email!');
+            Alert.alert('Success!', 'Temporary password was sent to your email.');
             this.props.navigator.pop();
           }
         });

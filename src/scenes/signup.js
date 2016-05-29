@@ -67,7 +67,7 @@ class Signup extends Component {
             onChangeText = {(text) => this.setState({email: text})}
             placeholder = {"Email"}
             placeholderTextColor = 'white'
-            style = {TextStyles.textInput}
+            style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
           />
@@ -76,7 +76,7 @@ class Signup extends Component {
             placeholder = {"Password"}
             placeholderTextColor = 'white'
             secureTextEntry = {true}
-            style = {TextStyles.textInput}
+            style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
           />
@@ -85,7 +85,7 @@ class Signup extends Component {
             placeholder = {"Confirm Password"}
             placeholderTextColor = 'white'
             secureTextEntry = {true}
-            style = {TextStyles.textInput}
+            style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.passwordConfirm}
           />
@@ -121,7 +121,7 @@ class Signup extends Component {
       Alert.alert('', 'Enter your password.');
     } else if(this.state.passwordConfirm === "") {
       Alert.alert('', 'Confirm your password.');
-    } else if(this.state.password != this.state.passwordConfirm) {
+    } else if(this.state.password !== this.state.passwordConfirm) {
       Alert.alert('Error!', 'The specified passwords do not match.');
     } else {
       database.createUser({
@@ -137,7 +137,7 @@ class Signup extends Component {
                 Alert.alert('Error!', 'The specified email is not a valid email.');
               break;
               default:
-                Alert.alert('Error!', 'Error creating user.');
+                Alert.alert('Error!', 'Error creating user account.');
             }
           } else {
             var ref = database.child("users");

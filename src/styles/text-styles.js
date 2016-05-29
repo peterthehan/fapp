@@ -3,18 +3,13 @@
 import React, {StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
-  whiteText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: 'center',
-  },
   blackText: {
     color: 'black',
     fontSize: 16,
     textAlign: 'center',
   },
-  textInput: {
-    color: 'white',
+  blackTextInput: {
+    color: 'black',
     height: 36,
     marginLeft: 16,
     marginRight: 16,
@@ -33,5 +28,16 @@ module.exports = StyleSheet.create({
     flex: 1,
     height: 36,
     marginRight: 16,
-  }
+  },
+  whiteText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  whiteTextInput: {
+    color: 'white',
+    height: 36,
+    marginLeft: 16,
+    marginRight: 16,
+  },
 });

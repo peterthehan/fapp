@@ -69,7 +69,7 @@ class More extends Component {
   }
 
   setting() {
-    this.props.navigator.push({component: Setting, state: this.state.userID});
+    this.props.navigator.push({component: Setting});
   }
 }
 
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   buttonStyle: {
     alignItems: 'stretch',
     fontSize: 18,
-    margin: 12,
+    margin: 14,
     textAlign: 'left',
   },
 });
