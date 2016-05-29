@@ -17,6 +17,7 @@ import Share from 'react-native-share';
 
 import EventDetails from './event-details';
 import PostDetails from './post-details';
+import Profile from './profile';
 import GridView from '../components/grid-view';
 import Button from '../components/button';
 import TextStyles from '../styles/text-styles';
@@ -148,6 +149,35 @@ class Notification extends Component {
           );
         }
       }
+      else if (rowData.type == "users"){
+        var nameText;
+        var profilePicture;
+        database.child("users/" + rowData.who).once("value", function(snapshot){
+          nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
+          profilePicture = snapshot.val().profilePic.uri;
+        });
+        var message =
+          rowData.action === "friendRequest" ? "sent you a friend request." :
+          rowData.action === "friendAccept" ? "accepted your friend request." :
+          "";
+        return (
+          <View style = {styles.container}>
+            <TouchableOpacity
+              style = {styles.touchView}
+              onPress = {() => this.goTo(rowData)}>
+              <Image
+                style = {styles.userImage}
+                source = {{uri: profilePicture}}
+              />
+              <View style = {styles.descriptionView}>
+                <Text style = {styles.description}>
+                  {nameText} {message}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
+      }
       return (
         <View><Text>{rowData.object}</Text></View>
       );
@@ -185,6 +215,8 @@ class Notification extends Component {
         database.child("posts/" + rowData.object).once("value", function(snapshot){
           navigator.push({component: PostDetails, state: snapshot});
         });
+      case "users":
+        navigator.push({component: Profile, state: rowData.object});
         break;
     }
   }

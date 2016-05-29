@@ -243,12 +243,24 @@ class Profile extends Component {
     var numYourFriends = database.child("users/" + this.state.loggedUser + "/friends");
     var numTheirFriends = database.child("users/" + this.props.state + "/friends");
     var numYourFollowers = database.child("users/" + this.state.loggedUser + "/followers");
+    var yourNotifications = database.child("users/" + this.state.loggedUser + "/notifications");
+    var theirNotifications = database.child("users/" + this.props.state + "/notifications");
 
     var self = this;
 
     if(!this.state.friends && !this.state.yourRequest && !this.state.theirRequest) //This is the case where neither of you has sent a request. We want to send a friend request.
     {
       theirRequests.push({userId: this.state.loggedUser});
+
+      //send notification
+      theirNotifications.push({
+        userID: this.state.loggedUser,
+        type: "users",
+        objectID: this.state.loggedUser,
+        action: "friendRequest",
+        textDetails: "nothing",
+      });
+
       //we want to follow them!
       if (!self.state.following){
         self.addFollow();
@@ -256,13 +268,26 @@ class Profile extends Component {
     }
     else if (this.state.yourRequest)  //This is the case where you want to cancel your friend request
     {
-      //delte your friend request in their friendRequests
+      //delete your friend request in their friendRequests and notifications
       database.child("users/").once("value", function(snapshot) {
+        //friendRequests
         var requestData = snapshot.child(self.props.state + "/friendRequests");
         if(typeof requestData != 'undefined') {
           requestData.forEach(function(request) {
             if(request.val().userId == self.state.loggedUser) {
               var toDelete = database.child("users/" + self.props.state + "/friendRequests/" + request.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+
+        //notifications
+        var notificationData = snapshot.child(self.props.state + "/notifications");
+        if(typeof notificationData != 'undefined') {
+          notificationData.forEach(function(request) {
+            if(request.val().action == "friendRequest" &&
+              request.val().userID == self.state.loggedUser) {
+              var toDelete = theirNotifications.child(request.key().toString());
               toDelete.set(null);
             }
           });
@@ -295,6 +320,15 @@ class Profile extends Component {
         numTheirFriends.transaction(function(currentFriends) {
           return currentFriends + 1;
         });
+
+        //send notifications
+        theirNotifications.push({
+          userID: self.state.loggedUser,
+          type: "users",
+          objectID: self.state.loggedUser,
+          action: "friendAccept",
+          textDetails: "nothing",
+        })
       });
       //we want to follow them!
       if (!self.state.following){
