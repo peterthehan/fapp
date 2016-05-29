@@ -113,6 +113,8 @@ class Comments extends Component {
           userID: self.state.loggedUser,
           type: self.props.type,
           objectID: self.props.id,
+          action: "comment",
+          textDetails: text,
         });
       }
     });
