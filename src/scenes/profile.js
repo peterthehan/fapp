@@ -13,6 +13,8 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
+
+import FriendList from './friend-list';
 import GridView from '../components/grid-view';
 import Post from '../components/post';
 import TitleBar from '../components/title-bar';
@@ -460,6 +462,10 @@ class Profile extends Component {
     }
   }
 
+  friendList(){
+    this.props.navigator.push({component: FriendList, state: this.props.state});
+  }
+
   showFriends(){
     if (this.state.loggedUser == this.props.state){
       return (
@@ -476,14 +482,16 @@ class Profile extends Component {
               Followers
             </Text>
           </View>
-          <View style = {styles.button}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.friendList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
               Friends
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>);
     }
     else{
@@ -521,14 +529,16 @@ class Profile extends Component {
               Followers
             </Text>
           </View>
-          <View style = {styles.button}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.friendList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
               Friends
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       );
     }
