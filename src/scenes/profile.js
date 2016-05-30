@@ -13,6 +13,9 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
+
+import FriendList from './friend-list';
+import FollowingList from './following-list';
 import GridView from '../components/grid-view';
 import Post from '../components/post';
 import TitleBar from '../components/title-bar';
@@ -423,6 +426,7 @@ class Profile extends Component {
   }
 
   addFollow(){
+    var theirNotifications = database.child("users/" + this.props.state + "/notifications");
     var userFollowing = database.child("users/" + this.state.loggedUser + "/followingList");
     var numFollowers = database.child("users/" + this.props.state + "/followers");
 
@@ -430,6 +434,13 @@ class Profile extends Component {
       userFollowing.push({userId: this.props.state});
       numFollowers.transaction(function(currentFollowers) {
         return currentFollowers + 1;
+      });
+      theirNotifications.push({
+        userID: this.state.loggedUser,
+        type: "users",
+        objectID: this.state.loggedUser,
+        action: "following",
+        textDetails: "nothing",
       });
     } else {
       var self = this;
@@ -452,6 +463,14 @@ class Profile extends Component {
     }
   }
 
+  followingList(){
+    this.props.navigator.push({component: FollowingList, state: this.props.state});
+  }
+
+  friendList(){
+    this.props.navigator.push({component: FriendList, state: this.props.state});
+  }
+
   showFriends(){
     if (this.state.loggedUser == this.props.state){
       return (
@@ -460,22 +479,26 @@ class Profile extends Component {
           justifyContent: 'center',
           flexDirection: 'row',
         }}>
-          <View style = {styles.button}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.followingList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.followers}
             </Text>
             <Text>
               Followers
             </Text>
-          </View>
-          <View style = {styles.button}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.friendList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
               Friends
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>);
     }
     else{
@@ -505,22 +528,26 @@ class Profile extends Component {
             />
             {this.getFollowingText()}
           </TouchableOpacity>
-          <View style = {styles.button}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.followingList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.followers}
             </Text>
             <Text>
               Followers
             </Text>
-          </View>
-          <View style = {styles.button}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.friendList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
               Friends
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       );
     }
