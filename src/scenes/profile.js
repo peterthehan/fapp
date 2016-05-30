@@ -15,6 +15,7 @@ import React, {
 import Firebase from 'firebase';
 
 import FriendList from './friend-list';
+import FollowingList from './following-list';
 import GridView from '../components/grid-view';
 import Post from '../components/post';
 import TitleBar from '../components/title-bar';
@@ -462,6 +463,10 @@ class Profile extends Component {
     }
   }
 
+  followingList(){
+    this.props.navigator.push({component: FollowingList, state: this.props.state});
+  }
+
   friendList(){
     this.props.navigator.push({component: FriendList, state: this.props.state});
   }
@@ -474,14 +479,16 @@ class Profile extends Component {
           justifyContent: 'center',
           flexDirection: 'row',
         }}>
-          <View style = {styles.button}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.followingList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.followers}
             </Text>
             <Text>
               Followers
             </Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.friendList.bind(this)}>
@@ -521,14 +528,16 @@ class Profile extends Component {
             />
             {this.getFollowingText()}
           </TouchableOpacity>
-          <View style = {styles.button}>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.followingList.bind(this)}>
             <Text style={{fontSize: 28}}>
               {this.state.followers}
             </Text>
             <Text>
               Followers
             </Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.friendList.bind(this)}>
