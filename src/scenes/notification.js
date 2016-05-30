@@ -202,7 +202,7 @@ class Notification extends Component {
           renderRow = {this.renderRow.bind(this)}
         />
         <Button
-          buttonStyles = {ButtonStyles.transparentButton}
+          buttonStyles = {ButtonStyles.primaryButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
           onPress = {this.clear.bind(this)}
           text = "clear"
@@ -220,7 +220,7 @@ class Notification extends Component {
     });
     var ref = database.child("users");
     ref.child(this.state.userId).update({
-      notification: []
+      notifications: []
     });
   }
 
