@@ -23,6 +23,9 @@ class ChangeEmail extends Component {
       oldEmail: '',
       password: '',
     };
+  }
+
+  componentDidMount(){
     this.getEmail();
   }
 
@@ -80,11 +83,10 @@ class ChangeEmail extends Component {
   }
 
   getEmail() {
-    database.once("value",
+    database.child("users/" + database.getAuth().uid).once("value",
       (snapshot) => {
-        var user = snapshot.child("users/" + database.getAuth().uid);
         this.setState({
-          oldEmail: user.val().email
+          oldEmail: snapshot.val().email
         });
       }
     );
