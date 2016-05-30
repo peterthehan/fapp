@@ -62,6 +62,8 @@ class Camera extends Component {
           isStatic: true,
         };
         var post = ref.push({
+          comments: 0,
+          date: Date.now(),
           description: self.state.description,
           photoID: photoIDObj,
           rating: 0,
