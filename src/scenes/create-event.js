@@ -6,18 +6,18 @@ import React, {
   Component,
   DatePickerAndroid,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   TimePickerAndroid,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
 import Firebase from 'firebase';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import Button from '../components/button';
-import ButtonStyles from '../styles/button-styles';
 import TitleBar from '../components/title-bar';
 
 const dateStartStr = 'Pick a Start Date';
@@ -54,9 +54,11 @@ class CreateEvent extends Component {
     return(
       <View style = {styles.container}>
         {this.renderTitleBar()}
-        {this.renderTitleInput()}
+        <View style = {{flexDirection: 'row'}}>
+          {this.renderTitleInput()}
+          {this.renderToggle()}
+        </View>
         {this.renderDateTimeInput()}
-        {this.renderToggle()}
         {this.renderDescriptionInput()}
         {this.renderButtons()}
       </View>
@@ -148,7 +150,7 @@ class CreateEvent extends Component {
 
   renderTitleInput() {
     return (
-      <View>
+      <View style = {styles.titleView}>
         <Text style = {styles.smallText}>
           Title
         </Text>
@@ -160,6 +162,38 @@ class CreateEvent extends Component {
           underlineColorAndroid = 'gray'
           value = {this.state.title}
         />
+      </View>
+    );
+  }
+
+  renderToggle() {
+    return(
+      <View style = {styles.visibilityView}>
+        <View style = {styles.toggleView}>
+          <TouchableOpacity
+            onPress = {() => this.setState({publicEvent: true})}
+            disabled = {this.state.publicEvent ? true : false}
+          >
+            <MaterialIcon
+              color = {this.state.publicEvent ? '#F26D6A' : 'gray'}
+              name = {'public'}
+              size = {36}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress = {() => this.setState({publicEvent: false})}
+            disabled = {this.state.publicEvent ? false : true}
+          >
+            <MaterialIcon
+              color = {this.state.publicEvent ? 'gray' : '#F26D6A'}
+              name = {'group'}
+              size = {36}
+            />
+          </TouchableOpacity>
+        </View>
+        <Text style = {styles.visibilityText}>
+          {this.state.publicEvent ? ' Public Event' : 'Private Event'}
+        </Text>
       </View>
     );
   }
@@ -226,42 +260,31 @@ class CreateEvent extends Component {
     );
   }
 
-  renderToggle() {
-    return(
-      <View style = {styles.visibilityView}>
-        <Switch
-          onValueChange = {(value) => this.setState({publicEvent: value})}
-          style = {styles.visibilityToggle}
-          value = {this.state.publicEvent}
-        />
-        <Text style = {styles.visibilityText}>
-          {this.state.publicEvent ? ' Public Event' : 'Private Event'}
-        </Text>
-      </View>
-    );
-  }
-
   renderDescriptionInput() {
-    var limit = 1000;
+    var limit = 140;
     var remainder = limit - this.state.description.length;
-    var remainderColor = remainder > 5 ? 'blue' : 'red';
+    var remainderColor = remainder > 5 ? 'gray' : '#B71C1C';
 
     return (
       <View style = {styles.descriptionView}>
-        <TextInput
-          maxLength = {limit}
-          multiline = {true}
-          numberOfLines = {5}
-          onChangeText = {(text) => this.setState({description: text})}
-          placeholder = {"Leave a short description of your event for your guests"}
-          placeholderTextColor = 'gray'
-          style = {{color: 'black'}}
-          underlineColorAndroid = 'gray'
-          value = {this.state.description}
-        />
-        <Text style = {{color: remainderColor}}>
-          remaining: {remainder}
+        <Text style = {styles.smallText}>
+          Description
         </Text>
+        <View style = {styles.descriptionInput}>
+          <TextInput
+            maxLength = {limit}
+            multiline = {true}
+            numberOfLines = {3}
+            onChangeText = {(text) => this.setState({description: text})}
+            placeholder = {"Leave a short description of your event for your guests"}
+            placeholderTextColor = 'gray'
+            underlineColorAndroid = 'gray'
+            value = {this.state.description}
+          />
+          <Text style = {[styles.remainderText, {color: remainderColor}]}>
+            {remainder} / {limit}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -271,21 +294,21 @@ class CreateEvent extends Component {
       <View style = {{alignItems: 'center'}}>
         <Button
           buttonStyles = {styles.button}
-          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          buttonTextStyles = {styles.buttonText}
           onPress = {this.createGuestList.bind(this)}
           text = "Invite Friends!"
           underlayColor = {"#A2A2A2"}
         />
         <Button
           buttonStyles = {styles.button}
-          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          buttonTextStyles = {styles.buttonText}
           onPress = {this.createEvent.bind(this)}
           text = "Create Event!"
           underlayColor = {"#A2A2A2"}
         />
         <Button
           buttonStyles = {styles.button}
-          buttonTextStyles = {ButtonStyles.primaryButtonText}
+          buttonTextStyles = {styles.buttonText}
           onPress = {this.clearEvent.bind(this)}
           text = "Clear"
           underlayColor = {"#A2A2A2"}
@@ -299,19 +322,18 @@ class CreateEvent extends Component {
   }
 
   createEvent() {
-
-    if( this.state.dateEnd === dateEndStr) {
-      Alert.alert('', 'Missing end date.');
+    if( this.state.title === '') {
+      Alert.alert('', 'Missing event title');
     } else if( this.state.dateStart == dateStartStr) {
       Alert.alert('', 'Missing start date.');
-    } else if( this.state.description === '') {
-      Alert.alert('', 'Missing event description.');
-    } else if( this.state.timeEnd === timeEndStr) {
-      Alert.alert('', 'Missing end time.');
     } else if( this.state.timeStart === timeStartStr) {
       Alert.alert('', 'Missing start time.');
-    } else if( this.state.title === '') {
-      Alert.alert('', 'Missing event title');
+    } else if( this.state.dateEnd === dateEndStr) {
+      Alert.alert('', 'Missing end date.');
+    } else if( this.state.timeEnd === timeEndStr) {
+      Alert.alert('', 'Missing end time.');
+    } else if( this.state.description === '') {
+      Alert.alert('', 'Missing event description.');
     } else{
       events.push({
         userID: this.state.loggedUser,
@@ -352,6 +374,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginLeft: 5,
   },
+  titleView: {
+    flex: 3,
+  },
   titleInput: {
     height: 32,
     paddingTop: 0,
@@ -372,8 +397,12 @@ const styles = StyleSheet.create({
   dateInputText: {
   },
   visibilityView: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  toggleView: {
     flexDirection: 'row',
-    marginLeft: 10,
   },
   visibilityToggle: {
   },
@@ -381,20 +410,27 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   descriptionView: {
+  },
+  descriptionInput: {
     borderColor: 'gray',
     borderWidth: 1,
     margin: 5,
   },
-  descriptionInput: {
+  remainderText: {
+    alignSelf: 'flex-end',
+    marginRight: 10,
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#009688',
+    backgroundColor: '#F26D6A',
     marginBottom: 4,
     marginLeft: 16,
     marginRight: 16,
     marginTop: 4,
     padding: 12,
+  },
+  buttonText: {
+    color: 'white',
   },
 });
 

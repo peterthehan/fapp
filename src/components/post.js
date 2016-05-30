@@ -13,7 +13,6 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import FullImage from '../scenes/full-image';

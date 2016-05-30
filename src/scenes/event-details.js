@@ -8,8 +8,11 @@ import React, {
   StyleSheet,
   Switch,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
+
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
@@ -22,7 +25,7 @@ class EventDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isGoing: false,
+      status: '',
     }
   }
 
@@ -61,6 +64,49 @@ class EventDetails extends Component {
               </Text>
             </View>
           </Image>
+          <View style = {styles.sectionView}>
+            <View style = {styles.statusView}>
+              <TouchableOpacity
+                onPress = {() => this.setState({status: 'yes'})}
+                style = {styles.statusButton}
+                disabled = {this.state.status === 'yes' ? true : false}>
+                <MaterialIcon
+                  color = {this.state.status === 'yes' ? '#F26D6A' : 'gray'}
+                  name = 'restaurant'
+                  size = {16}
+                />
+                <Text style = {[styles.statusText, {color: this.state.status === 'yes' ? '#F26D6A' : 'gray'}]}>
+                  Going
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress = {() => this.setState({status: 'maybe'})}
+                style = {styles.statusButton}
+                disabled = {this.state.status === 'maybe' ? true : false}>
+                <MaterialIcon
+                  color = {this.state.status === 'maybe' ? '#F26D6A' : 'gray'}
+                  name = 'help-outline'
+                  size = {16}
+                />
+                <Text style = {[styles.statusText, {color: this.state.status === 'maybe' ? '#F26D6A' : 'gray'}]}>
+                  Interested
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress = {() => this.setState({status: 'no'})}
+                style = {styles.statusButton}
+                disabled = {this.state.status === 'no' ? true : false}>
+                <MaterialIcon
+                  color = {this.state.status === 'no' ? '#F26D6A' : 'gray'}
+                  name = 'hotel'
+                  size = {16}
+                />
+                <Text style = {[styles.statusText, {color: this.state.status === 'no' ? '#F26D6A' : 'gray'}]}>
+                  Not going
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style = {styles.sectionView}>
             <Text style = {styles.sectionTitle}>
               Starts
@@ -111,6 +157,18 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'column',
+  },
+  statusView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  statusButton: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statusText: {
+
   },
   dateTime: {
   },
