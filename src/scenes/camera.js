@@ -5,35 +5,75 @@ import React, {
   Dimensions,
   Image,
   StyleSheet,
+  ScrollView,
   Text,
   ToolbarAndroid,
   TouchableOpacity,
   View,
+  AsyncStorage,
+  TextInput,
 } from 'react-native';
 
 import {Surface} from 'gl-react-native';
 
 import Instagram from '../components/instagram';
-import CreatePost from './create-post';
 import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
+import Firebase from 'firebase';
+import Button from '../components/button';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import TextStyles from '../styles/text-styles';
+import ButtonStyles from '../styles/button-styles';
+
+let database = new Firebase("poopapp1.firebaseio.com");
 
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 var filteredPic = null;
 var length = Dimensions.get('window').width;
-var filterSize = 60;
+var filterSize = 40;
 
 class Camera extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      description: '',
+      location: '',
+      recipe: '',
       avatarSource: null,
       filter: null,
-      // filteredPic: null,
       length: length,
       test: 'help',
+      tags: [],
     };
     this.onCapture1 = this.onCapture1.bind(this);
+  }
+
+  onPress() {
+    var self = this;
+    AsyncStorage.getItem('user_data', (error, result) => {
+      var usid = JSON.parse(result).uid;
+      var ref = database.child("posts");
+      var postList = database.child("users/" + usid + "/postList");
+      database.once("value", function(snapshot){
+        var usersnapshot = snapshot.child("users/" + usid);
+        var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
+        var photoIDObj = {
+          uri: filteredPic,
+          isStatic: true,
+        };
+        var post = ref.push({
+          description: self.state.description,
+          photoID: photoIDObj,
+          rating: 0,
+          user: userName,
+          userID: usid,
+        });
+        postList.push({
+          postId: post.key(),
+        });
+      });
+    });
+    this.props.navigator.pop();
   }
 
   onCapture1() {
@@ -54,8 +94,8 @@ class Camera extends Component {
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
           avatarSource: source,
+          filteredPic: source,
         });
-
       }
     });
   }
@@ -79,71 +119,123 @@ class Camera extends Component {
         filter = this.ogImage();
         break;
     }
+    let delimiter = /\s+/;
+
+    let tags = [];
+    let rendered = [];
+    let tagText = this.state.description;
+    let tokens = tagText.split(delimiter);
+    tokens.forEach(function(entry, i){
+      if(i !== tokens.length - 1){
+        if(entry.startsWith("#")){
+          if(tags.indexOf(entry) === -1){
+            tags.push(entry);
+            rendered.push(<Text style = {styles.hashtag}>{entry} </Text>);
+          }
+        } else {
+          rendered.push(entry + " ");
+        }
+      }
+      else{
+        rendered.push(entry);
+      }
+    });
+    var limit = 1000;
+
     return (
       <View>
-      <View style = {{flex: 1, flexDirection: 'column'}}>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
           <View style = {{flex: 1}}>
             {this.cameraButton()}
           </View>
-          <View style = {{flex: 2}}>
+          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
           </View>
-          <View style = {{flex: 1}}>
-            {this.detailsButton()}
-          </View>
-        </View>
-        </View>
+      </View>
 
-        <View style = {{marginTop:3, marginLeft: 3, marginRight: 5, marginBottom: 10, borderColor: 'black', borderWidth: 1}}>
-          <Surface width = {this.state.length - 3} height = {this.state.length - 3} ref = "surfacePic">
+      <View>
+        <View style = {{marginTop:3, marginLeft: 3, marginRight: 5, marginBottom: 10, alignItems: 'center'}}>
+          <Surface width = {this.state.length - 150} height = {this.state.length - 150} ref = "surfacePic">
             {filter}
           </Surface>
         </View>
 
-        <View style = {{flex: 1, flexDirection: "row", justifyContent: "space-around" }}>
+        <View style = {styles.filterButton}>
+            <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} >
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.ogImage()}
+              </Surface>
+            </TouchableOpacity>
 
-          <View style = {styles.filterButton}>
-          <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} >
-            <Surface width = {filterSize} height = {filterSize}>
-              {this.ogImage()}
-            </Surface>
-          </TouchableOpacity>
-          </View>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.monoImage()}
+              </Surface>
+            </TouchableOpacity>
 
-          <View style = {styles.filterButton}>
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')} >
-            <Surface width = {filterSize} height = {filterSize} >
-              {this.monoImage()}
-            </Surface>
-          </TouchableOpacity>
-          </View>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('filter1')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.filter1Image()}
+              </Surface>
+            </TouchableOpacity>
 
-          <View style = {styles.filterButton}>
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('filter1')} >
-            <Surface width = {filterSize} height = {filterSize} >
-              {this.filter1Image()}
-            </Surface>
-          </TouchableOpacity>
-          </View>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.igImage()}
+              </Surface>
+            </TouchableOpacity>
 
-          <View style = {styles.filterButton}>
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')} >
-            <Surface width = {filterSize} height = {filterSize} >
-              {this.igImage()}
-            </Surface>
-          </TouchableOpacity>
-          </View>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('test')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.testImage()}
+              </Surface>
+            </TouchableOpacity>
+        </View>
+        <View>
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({description: text})}
+            placeholder = {"Give a description"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {""}
+          >
+            <Text>{rendered}</Text>
+          </TextInput>
 
-          <View style = {styles.filterButton}>
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('test')} >
-            <Surface width = {filterSize} height = {filterSize} >
-              {this.testImage()}
-            </Surface>
-          </TouchableOpacity>
-          </View>
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({location: text})}
+            placeholder = {"Enter location"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.location}
+          />
+
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({recipe: text})}
+            placeholder = {"Cooked it yourself? Add a recipe!"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.recipe}
+          />
+          <Button
+            buttonStyles = {ButtonStyles.primaryButton}
+            onPress = {this.onPress.bind(this)}
+            text = "Post"
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
+            underlayColor = {'#B18C40'}
+          />
+        </View>
         </View>
       </View>
     );
@@ -172,16 +264,17 @@ class Camera extends Component {
   }
 
   filter1Image() {
-    return (<Instagram
-      brightness = {1}
-      saturation = {1}
-      contrast = {.6}
-      hue = {.5}
-      sepia = {.5}
-      gray = {.1}
-      mixFactor = {0}
-      tex = {this.ogImage()}
-    />
+    return (
+      <Instagram
+        brightness = {1}
+        saturation = {1}
+        contrast = {.6}
+        hue = {.5}
+        sepia = {.5}
+        gray = {.1}
+        mixFactor = {0}
+        tex = {this.ogImage()}
+      />
     );
   }
 
@@ -222,28 +315,13 @@ class Camera extends Component {
           <View style = {{flex: 1}}>
             {this.cameraButton()}
           </View>
-          <View style = {{flex: 2}}>
+          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
           </View>
-          <View style = {{flex: 1}}>
-            {this.detailsButton()}
-          </View>
         </View>
       </View>
-    );
-  }
-
-  detailsButton() {
-    return (
-      <TouchableOpacity
-        style = {styles.button, {alignItems: 'flex-end'}}
-        onPress = {this.onActionSelected.bind(this)}>
-        <Text style = {{color: 'white'}}>
-          Details
-        </Text>
-      </TouchableOpacity>
     );
   }
 
@@ -259,18 +337,7 @@ class Camera extends Component {
     );
   }
 
-  onActionSelected() {
-    var photoIDObj;
-    if(filteredPic) {
-      photoIDObj = {
-        uri: filteredPic,
-        isStatic: true,
-      }
-    } else {
-      photoIDObj = this.state.avatarSource;
-    }
-    this.props.navigator.push({component: CreatePost, state: photoIDObj});
-  }
+
 
   render() {
     if(this.state.avatarSource) {
@@ -282,7 +349,21 @@ class Camera extends Component {
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flexDirection: 'row'
+  },
+  hashtag: {
+    color: 'blue'
+  },
+  multiline: {
+    height: 60,
+    padding: 4,
+    marginTop: 2,
+    color: 'black'
+  },
   button: {
+    height: 20,
+    width: 60,
   },
   titleBar: {
     alignItems: 'center',
@@ -301,6 +382,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filterButton: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
 
