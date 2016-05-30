@@ -423,6 +423,7 @@ class Profile extends Component {
   }
 
   addFollow(){
+    var theirNotifications = database.child("users/" + this.props.state + "/notifications");
     var userFollowing = database.child("users/" + this.state.loggedUser + "/followingList");
     var numFollowers = database.child("users/" + this.props.state + "/followers");
 
@@ -430,6 +431,13 @@ class Profile extends Component {
       userFollowing.push({userId: this.props.state});
       numFollowers.transaction(function(currentFollowers) {
         return currentFollowers + 1;
+      });
+      theirNotifications.push({
+        userID: this.state.loggedUser,
+        type: "users",
+        objectID: this.state.loggedUser,
+        action: "following",
+        textDetails: "nothing",
       });
     } else {
       var self = this;

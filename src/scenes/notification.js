@@ -158,6 +158,7 @@ class Notification extends Component {
         });
         var message =
           rowData.action === "friendRequest" ? "sent you a friend request." :
+          rowData.action === "following" ? "is following you." :
           rowData.action === "friendAccept" ? "accepted your friend request." :
           "";
         return (
