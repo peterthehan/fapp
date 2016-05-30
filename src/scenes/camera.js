@@ -17,20 +17,20 @@ import React, {
 import {Surface} from 'gl-react-native';
 
 import Instagram from '../components/instagram';
-import CreatePost from './create-post';
 import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
 import Firebase from 'firebase';
 import Button from '../components/button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TextStyles from '../styles/text-styles';
+import ButtonStyles from '../styles/button-styles';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 var filteredPic = null;
 var length = Dimensions.get('window').width;
-var filterSize = 60;
+var filterSize = 40;
 
 class Camera extends Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class Camera extends Component {
       filter: null,
       length: length,
       test: 'help',
+      tags: [],
     };
     this.onCapture1 = this.onCapture1.bind(this);
   }
@@ -56,9 +57,13 @@ class Camera extends Component {
       database.once("value", function(snapshot){
         var usersnapshot = snapshot.child("users/" + usid);
         var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
+        var photoIDObj = {
+          uri: filteredPic,
+          isStatic: true,
+        };
         var post = ref.push({
           description: self.state.description,
-          photoID: filteredPic,
+          photoID: photoIDObj,
           rating: 0,
           user: userName,
           userID: usid,
@@ -89,6 +94,7 @@ class Camera extends Component {
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
           avatarSource: source,
+          filteredPic: source,
         });
       }
     });
@@ -137,95 +143,100 @@ class Camera extends Component {
     var limit = 1000;
 
     return (
-      <View style = {{height: 900, width: 400}}>
+      <View>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
           <View style = {{flex: 1}}>
             {this.cameraButton()}
           </View>
-          <View style = {{flex: 2}}>
+          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
           </View>
-          <View style = {{flex: 1}}>
-            {this.detailsButton()}
-          </View>
       </View>
 
-      <ScrollView style = {{height: 400, width: 400}}>
-      <View style = {{marginTop:3, marginLeft: 3, marginRight: 5, marginBottom: 10, borderColor: 'black', borderWidth: 1}}>
-        <Surface width = {this.state.length - 3} height = {this.state.length - 3} ref = "surfacePic">
-          {filter}
-        </Surface>
-      </View>
+      <View>
+        <View style = {{marginTop:3, marginLeft: 3, marginRight: 5, marginBottom: 10, alignItems: 'center'}}>
+          <Surface width = {this.state.length - 150} height = {this.state.length - 150} ref = "surfacePic">
+            {filter}
+          </Surface>
+        </View>
 
-      <View style = {styles.filterButton}>
-          <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} >
+        <View style = {styles.filterButton}>
+            <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} >
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.ogImage()}
+              </Surface>
+            </TouchableOpacity>
 
-            <Text>Filter1</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.monoImage()}
+              </Surface>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')}>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('filter1')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.filter1Image()}
+              </Surface>
+            </TouchableOpacity>
 
-            <Text>Filter1</Text>
-          </TouchableOpacity>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.igImage()}
+              </Surface>
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('filter1')}>
+            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('test')}>
+              <Surface width = {filterSize} height = {filterSize}>
+                {this.testImage()}
+              </Surface>
+            </TouchableOpacity>
+        </View>
+        <View>
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({description: text})}
+            placeholder = {"Give a description"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {""}
+          >
+            <Text>{rendered}</Text>
+          </TextInput>
 
-          <Text>Filter1</Text>
-          </TouchableOpacity>
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({location: text})}
+            placeholder = {"Enter location"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.location}
+          />
 
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')}>
-
-            <Text>Filter1</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress = {()=> this.setFilterAndCapture('test')}>
-
-            <Text>Filter1</Text>
-          </TouchableOpacity>
-      </View>
-        <TextInput
-          multiline = {true}
-          style = {styles.multiline}
-          maxLength = {limit}
-          onChangeText = {(text) => this.setState({description: text})}
-          placeholder = {"Give a description"}
-          placeholderTextColor = 'black'
-          underlineColorAndroid = 'black'
-          value = {""}
-        >
-          <Text>{rendered}</Text>
-        </TextInput>
-
-        <TextInput
-          multiline = {true}
-          style = {styles.multiline}
-          maxLength = {limit}
-          onChangeText = {(text) => this.setState({location: text})}
-          placeholder = {"Enter location"}
-          placeholderTextColor = 'black'
-          underlineColorAndroid = 'black'
-          value = {this.state.location}
-        />
-
-        <TextInput
-          multiline = {true}
-          style = {styles.multiline}
-          maxLength = {limit}
-          onChangeText = {(text) => this.setState({recipe: text})}
-          placeholder = {"Cooked it yourself? Add a recipe!"}
-          placeholderTextColor = 'black'
-          underlineColorAndroid = 'black'
-          value = {this.state.recipe}
-        />
-      <Button
-      buttonStyles = {styles.button, {alignItems: 'center'}}
-      onPress = {this.onPress.bind(this)}
-      text = "Post"
-      buttonTextStyles = {{color: 'white'}}
-      />
-      </ScrollView>
+          <TextInput
+            multiline = {true}
+            style = {styles.multiline}
+            maxLength = {limit}
+            onChangeText = {(text) => this.setState({recipe: text})}
+            placeholder = {"Cooked it yourself? Add a recipe!"}
+            placeholderTextColor = 'black'
+            underlineColorAndroid = 'black'
+            value = {this.state.recipe}
+          />
+          <Button
+            buttonStyles = {ButtonStyles.primaryButton}
+            onPress = {this.onPress.bind(this)}
+            text = "Post"
+            buttonTextStyles = {ButtonStyles.whiteButtonText}
+            underlayColor = {'#B18C40'}
+          />
+        </View>
+        </View>
       </View>
     );
   }
@@ -253,16 +264,17 @@ class Camera extends Component {
   }
 
   filter1Image() {
-    return (<Instagram
-      brightness = {1}
-      saturation = {1}
-      contrast = {.6}
-      hue = {.5}
-      sepia = {.5}
-      gray = {.1}
-      mixFactor = {0}
-      tex = {this.ogImage()}
-    />
+    return (
+      <Instagram
+        brightness = {1}
+        saturation = {1}
+        contrast = {.6}
+        hue = {.5}
+        sepia = {.5}
+        gray = {.1}
+        mixFactor = {0}
+        tex = {this.ogImage()}
+      />
     );
   }
 
@@ -303,28 +315,13 @@ class Camera extends Component {
           <View style = {{flex: 1}}>
             {this.cameraButton()}
           </View>
-          <View style = {{flex: 2}}>
+          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
           </View>
-          <View style = {{flex: 1}}>
-            {this.detailsButton()}
-          </View>
         </View>
       </View>
-    );
-  }
-
-  detailsButton() {
-    return (
-      <TouchableOpacity
-        style = {styles.button, {alignItems: 'flex-end'}}
-        onPress = {this.onActionSelected.bind(this)}>
-        <Text style = {{color: 'white'}}>
-          Details
-        </Text>
-      </TouchableOpacity>
     );
   }
 
@@ -340,18 +337,7 @@ class Camera extends Component {
     );
   }
 
-  onActionSelected() {
-    var photoIDObj;
-    if(filteredPic) {
-      photoIDObj = {
-        uri: filteredPic,
-        isStatic: true,
-      }
-    } else {
-      photoIDObj = this.state.avatarSource;
-    }
-    this.props.navigator.push({component: CreatePost, state: photoIDObj});
-  }
+
 
   render() {
     if(this.state.avatarSource) {
@@ -372,10 +358,12 @@ const styles = StyleSheet.create({
   multiline: {
     height: 60,
     padding: 4,
-    marginTop: 10,
+    marginTop: 2,
     color: 'black'
   },
   button: {
+    height: 20,
+    width: 60,
   },
   titleBar: {
     alignItems: 'center',

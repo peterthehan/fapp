@@ -42,9 +42,6 @@ class TabBar extends Component{
               <TouchableOpacity
                 key = {tab}
                 onPress = {() => {
-                  if(i == 2) {
-                    this.openCamera();
-                  }
                   this.props.goToPage(i)}
                 }
                 style = {styles.tab}>
@@ -84,22 +81,6 @@ class TabBar extends Component{
     return `rgb(${red}, ${green}, ${blue})`;
   }
 
-  openCamera() {
-    ImagePickerManager.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-      if(response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePickerManager Error: ', response.error);
-      } else {
-        // You can display the image using either data:
-        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-        this.setState({
-          avatarSource: source
-        });
-      }
-    });
-  }
 }
 
 const styles = StyleSheet.create({
