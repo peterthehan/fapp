@@ -51,18 +51,22 @@ class Signup extends Component {
               style = {TextStyles.leftTextInput}
               underlineColorAndroid = 'white'
               value = {this.state.firstName}
+              onSubmitEditing={(event) => {this.refs.LastName.focus();}}
             />
             <TextInput
+              ref = 'LastName'
               onChangeText = {(text) => this.setState({lastName: text})}
               placeholder = {"Last Name"}
               placeholderTextColor = 'white'
               style = {TextStyles.rightTextInput}
               underlineColorAndroid = 'white'
               value = {this.state.lastName}
+              onSubmitEditing={(event) => {this.refs.Email.focus();}}
             />
           </View>
 
           <TextInput
+            ref = 'Email'
             keyboardType = 'email-address'
             onChangeText = {(text) => this.setState({email: text})}
             placeholder = {"Email"}
@@ -70,8 +74,10 @@ class Signup extends Component {
             style = {TextStyles.textInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
+            onSubmitEditing={(event) => {this.refs.NewPassword.focus();}}
           />
           <TextInput
+            ref = 'NewPassword'
             onChangeText = {(text) => this.setState({password: text})}
             placeholder = {"Password"}
             placeholderTextColor = 'white'
@@ -79,8 +85,10 @@ class Signup extends Component {
             style = {TextStyles.textInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
+            onSubmitEditing={(event) => {this.refs.ConfirmPass.focus();}}
           />
           <TextInput
+            ref = 'ConfirmPass'
             onChangeText = {(text) => this.setState({passwordConfirm: text})}
             placeholder = {"Confirm Password"}
             placeholderTextColor = 'white'
@@ -88,6 +96,7 @@ class Signup extends Component {
             style = {TextStyles.textInput}
             underlineColorAndroid = 'white'
             value = {this.state.passwordConfirm}
+            onSubmitEditing={() => {this.signup()}}
           />
 
           <Button
