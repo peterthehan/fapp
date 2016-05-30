@@ -2,7 +2,6 @@
 
 import React, {
   Alert,
-  AsyncStorage,
   Component,
   Text,
   TextInput,
@@ -23,9 +22,7 @@ class ChangeEmail extends Component {
       email: '',
       oldEmail: '',
       password: '',
-      user: '',
     };
-    this.getUser();
     this.getEmail();
   }
 
@@ -82,22 +79,6 @@ class ChangeEmail extends Component {
     );
   }
 
-  getUser() {
-    AsyncStorage.getItem('user_data').then((user_data_json) => {
-      let user_data = JSON.parse(user_data_json);
-      this.setState({
-        user: user_data,
-      });
-    });
-    database.once("value", function(snapshot) {
-      var usersnapshot = snapshot.child("users/" + self.props.state);
-      self.setState({
-        email: usersnapshot.val().email,
-      });
-    });
-    Alert.alert('', this.state.user.password.email);
-  }
-
   getEmail() {
     database.once("value",
       (snapshot) => {
@@ -109,27 +90,12 @@ class ChangeEmail extends Component {
     );
   }
 
-  authorize() {
-    Alert.alert('', this.state.password);
-    database.authWithPassword({
-      email: this.state.oldEmail,
-      password: this.state.password
-    }, (error, authData) => {
-      if(error) {
-        Alert.alert('Error!', 'Authentication failed.');
-      } else {
-        Alert.alert('Authenticated successfully with payload.');
-      }
-    });
-  }
-
   changeEmail() {
     if(this.state.email === "") {
       Alert.alert('', 'Enter your new email.');
     } else if(this.state.password === "") {
       Alert.alert('', 'Enter your password.');
     } else {
-      this.authorize();
       database.changeEmail({
         oldEmail: this.state.oldEmail,
         newEmail: this.state.email,
@@ -144,8 +110,9 @@ class ChangeEmail extends Component {
               Alert.alert('Error!', 'Error changing user email.');
           }
         } else {
-          Alert.alert('Success!', 'User email was changed.');
+          database.child("users/" + database.getAuth().uid).update({email: this.state.email});
 
+          Alert.alert('Success!', 'User email was changed.');
           this.setState({
             email: '',
             oldEmail: this.state.email

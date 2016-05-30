@@ -87,23 +87,10 @@ class ChangePassword extends Component {
       (snapshot) => {
         var user = snapshot.child("users/" + database.getAuth().uid);
         this.setState({
-          oldEmail: user.val().email
+          email: user.val().email
         });
       }
     );
-  }
-
-  authorize() {
-    database.authWithPassword({
-      "email": this.state.email,
-      "password": this.state.oldPassword
-    }, (error, authData) => {
-      if(error) {
-        Alert.alert('Error!', 'Authentication failed.');
-      } else {
-        Alert.alert('Authenticated successfully with payload.');
-      }
-    });
   }
 
   changePassword() {
@@ -116,7 +103,6 @@ class ChangePassword extends Component {
     } else if(this.state.newPassword !== this.state.confirmPassword) {
       Alert.alert('Error!', 'The specified passwords do not match.');
     } else {
-      this.authorize();
       database.changePassword({
         email: this.state.email,
         oldPassword: this.state.oldPassword,

@@ -125,8 +125,8 @@ class Signup extends Component {
       Alert.alert('Error!', 'The specified passwords do not match.');
     } else {
       database.createUser({
-        'email': this.state.email,
-        'password': this.state.password
+        email: this.state.email,
+        password: this.state.password
         }, (error, userData) => {
           if(error) {
             switch(error.code) {
@@ -150,7 +150,6 @@ class Signup extends Component {
             });
             Alert.alert('Success!', 'Your account was created!');
             this.props.navigator.pop();
-
             this.setState({
               email: '',
               firstName: '',
@@ -160,7 +159,6 @@ class Signup extends Component {
         }
       );
     }
-
     this.setState({
       password: '',
       passwordConfirm: ''
