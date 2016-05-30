@@ -50,8 +50,11 @@ class Login extends Component {
             style = {TextStyles.textInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
+            onSubmitEditing={(event) => {this.refs.Password.focus();}}
           />
+
           <TextInput
+            ref = 'Password'
             onChangeText = {(text) => this.setState({password: text})}
             placeholder = {"Password"}
             placeholderTextColor = 'white'
@@ -59,6 +62,7 @@ class Login extends Component {
             style = {TextStyles.textInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
+            onSubmitEditing={() => {this.login()}}
           />
 
           <Button
