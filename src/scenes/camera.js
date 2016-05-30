@@ -61,10 +61,9 @@ class Camera extends Component {
           uri: filteredPic,
           isStatic: true,
         };
-        var date = Date.now();
         var post = ref.push({
           comments: 0,
-          date: date,
+          date: Date.now(),
           description: self.state.description,
           photoID: photoIDObj,
           rating: 0,
