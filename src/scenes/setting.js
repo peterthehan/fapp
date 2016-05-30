@@ -10,6 +10,7 @@ import React, {
 import Button from '../components/button';
 import ChangeEmail from './change-email';
 import ChangePassword from './change-password';
+import ChangeProfilePicture from './change-profile-picture';
 import Login from './login';
 import TitleBar from '../components/title-bar';
 
@@ -29,6 +30,13 @@ class Setting extends Component {
           hasBack = {"true"}
           navigator = {this.props.navigator}
           text = "Settings"
+        />
+        <Button
+          buttonStyles = {{}}
+          buttonTextStyles = {styles.buttonStyle}
+          onPress = {this.changeProfilePicture.bind(this)}
+          text = "Change your profile picture"
+          underlayColor = {'gray'}
         />
         <Button
           buttonStyles = {{}}
@@ -53,6 +61,9 @@ class Setting extends Component {
         />
       </View>
     );
+  }
+  changeProfilePicture() {
+    this.props.navigator.push({component: ChangeProfilePicture});
   }
 
   changeEmail() {

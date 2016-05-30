@@ -93,6 +93,19 @@ class ChangePassword extends Component {
     );
   }
 
+  authorize() {
+    database.authWithPassword({
+      "email": this.state.email,
+      "password": this.state.oldPassword
+    }, (error, authData) => {
+      if(error) {
+        Alert.alert('Error!', 'Authentication failed.');
+      } else {
+        Alert.alert('Authenticated successfully with payload.');
+      }
+    });
+  }
+
   changePassword() {
     if(this.state.oldPassword === "") {
       Alert.alert('', 'Enter your old password.');
@@ -103,6 +116,7 @@ class ChangePassword extends Component {
     } else if(this.state.newPassword !== this.state.confirmPassword) {
       Alert.alert('Error!', 'The specified passwords do not match.');
     } else {
+      this.authorize();
       database.changePassword({
         email: this.state.email,
         oldPassword: this.state.oldPassword,
