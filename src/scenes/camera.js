@@ -74,6 +74,7 @@ class Camera extends Component {
       });
     });
     this.props.navigator.pop();
+    this.setState({avatarSource: null});
   }
 
   onCapture1() {
