@@ -23,6 +23,9 @@ class ChangePassword extends Component {
       newPassword: '',
       oldPassword: '',
     };
+  }
+
+  componentDidMount() {
     this.getEmail();
   }
 
@@ -77,7 +80,6 @@ class ChangePassword extends Component {
           text = "Submit"
           underlayColor = {'gray'}
         />
-
       </View>
     );
   }
@@ -102,6 +104,8 @@ class ChangePassword extends Component {
       Alert.alert('', 'Confirm your new password.');
     } else if(this.state.newPassword !== this.state.confirmPassword) {
       Alert.alert('Error!', 'The specified passwords do not match.');
+    } else if(this.state.oldPassword === this.state.newPassword) {
+      Alert.alert('Error!', 'New password is the same as the old password.');
     } else {
       database.changePassword({
         email: this.state.email,

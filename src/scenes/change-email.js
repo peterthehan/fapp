@@ -25,7 +25,7 @@ class ChangeEmail extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getEmail();
   }
 
