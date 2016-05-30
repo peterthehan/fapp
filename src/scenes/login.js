@@ -47,7 +47,7 @@ class Login extends Component {
             onChangeText = {(text) => this.setState({email: text})}
             placeholder = {"Email"}
             placeholderTextColor = 'white'
-            style = {TextStyles.textInput}
+            style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
             onSubmitEditing={(event) => {this.refs.Password.focus();}}
@@ -59,7 +59,7 @@ class Login extends Component {
             placeholder = {"Password"}
             placeholderTextColor = 'white'
             secureTextEntry = {true}
-            style = {TextStyles.textInput}
+            style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
             onSubmitEditing={() => {this.login()}}
@@ -100,11 +100,11 @@ class Login extends Component {
       Alert.alert('', 'Enter your password.');
     } else {
       database.authWithPassword({
-        "email": this.state.email,
-        "password": this.state.password
+        email: this.state.email,
+        password: this.state.password
       }, (error, user_data) => {
           if(error) {
-            Alert.alert('Error!', 'Log in failed. Please try again.');
+            Alert.alert('Error!', 'Login failed. Please try again.');
           } else {
             AsyncStorage.setItem('user_data', JSON.stringify(user_data));
             this.props.navigator.resetTo({component: Main});
