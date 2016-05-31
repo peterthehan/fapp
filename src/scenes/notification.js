@@ -54,8 +54,9 @@ class Notification extends Component {
           object: notificationSnapshot.val().objectID,
           action: notificationSnapshot.val().action,
           details: notificationSnapshot.val().textDetails,
+          date: notificationSnapshot.val().date,
         };
-        self.state.dataSource.push(item);
+        self.state.dataSource.unshift(item);
         self.forceUpdate();
       });
     });

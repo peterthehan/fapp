@@ -115,6 +115,7 @@ class Comments extends Component {
           objectID: self.props.id,
           action: "comment",
           textDetails: text,
+          date: Date.now(),
         });
       }
     });
