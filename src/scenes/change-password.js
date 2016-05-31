@@ -53,8 +53,10 @@ class ChangePassword extends Component {
           }}
           underlineColorAndroid = 'black'
           value = {this.state.oldPassword}
+          onSubmitEditing = {(event) => {this.refs.NewPassword.focus();}}
         />
         <TextInput
+          ref = 'NewPassword'
           onChangeText = {(text) => this.setState({newPassword: text})}
           placeholder = {"New Password"}
           placeholderTextColor = 'gray'
@@ -62,8 +64,10 @@ class ChangePassword extends Component {
           style = {TextStyles.blackTextInput}
           underlineColorAndroid = 'black'
           value = {this.state.newPassword}
+          onSubmitEditing = {(event) => {this.refs.ConfirmPassword.focus();}}
         />
         <TextInput
+          ref = 'ConfirmPassword'
           onChangeText = {(text) => this.setState({confirmPassword: text})}
           placeholder = {"Confirm Password"}
           placeholderTextColor = 'gray'
@@ -71,6 +75,7 @@ class ChangePassword extends Component {
           style = {TextStyles.blackTextInput}
           underlineColorAndroid = 'black'
           value = {this.state.confirmPassword}
+          onSubmitEditing = {() => {this.changePassword()}}
         />
 
         <Button

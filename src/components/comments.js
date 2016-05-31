@@ -25,8 +25,8 @@ class Comments extends Component {
     super(props);
     this.state = {
       dataSource: [],
-      loggedUser: "",
-      userName: "",
+      loggedUser: '',
+      userName: '',
     };
   }
 
@@ -39,10 +39,10 @@ class Comments extends Component {
     var myBlob = [];
     AsyncStorage.getItem('user_data', (error, result) => {
       var commentList = database.child(self.props.type + "/" + self.props.id + "/commentList");
-      commentList.once("value", function(snapshot){
-        snapshot.forEach(function(commentSnapshot){
+      commentList.once("value", function(snapshot) {
+        snapshot.forEach(function(commentSnapshot) {
           var user = database.child("users/" + commentSnapshot.val().userId);
-          user.once("value", function(userSnapshot){
+          user.once("value", function(userSnapshot) {
             var comment = {
               description: commentSnapshot.val().description,
               userId: commentSnapshot.val().userId,
@@ -123,12 +123,12 @@ class Comments extends Component {
       });
 
       var commentsNum = database.child(this.props.type + "/" + this.props.id + "/comments");
-      commentsNum.transaction(function(currentCount){
+      commentsNum.transaction(function(currentCount) {
         return currentCount + 1;
       });
 
       var user = database.child("users/" + this.state.loggedUser);
-      user.once("value", function(userSnapshot){
+      user.once("value", function(userSnapshot) {
         comment.userProPic = userSnapshot.val().profilePic.uri;
         comment.userName = self.state.userName;
         self.state.dataSource.push(comment);
@@ -159,37 +159,38 @@ class Comments extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  textInput: {
-  },
   commentView: {
     flexDirection: 'row',
     width: Dimensions.get("window").width,
     borderBottomWidth: 1,
     borderColor: 'gray',
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 6,
+    paddingRight: 6,
   },
-  userImageTouch: {
-    paddingTop: 10,
-    alignItems: 'center',
+  container: {
+    flex: 1,
   },
-  userImage: {
-    width: 25,
-    height: 25,
-    margin: 5,
+  description: {
+  },
+  textInput: {
+    height: 40,
   },
   textView: {
-    paddingVertical: 10,
-    paddingLeft: 10,
+    paddingVertical: 6,
+    paddingLeft: 6,
     flex: 1,
+  },
+  userImage: {
+    width: 26,
+    height: 26,
+    margin: 4,
+  },
+  userImageTouch: {
+    paddingTop: 6,
+    alignItems: 'center',
   },
   userName: {
     fontWeight: 'bold',
-  },
-  description: {
   },
 });
 

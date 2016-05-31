@@ -50,7 +50,7 @@ class Login extends Component {
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
-            onSubmitEditing={(event) => {this.refs.Password.focus();}}
+            onSubmitEditing = {(event) => {this.refs.Password.focus();}}
           />
 
           <TextInput
@@ -62,7 +62,7 @@ class Login extends Component {
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
-            onSubmitEditing={() => {this.login()}}
+            onSubmitEditing = {() => {this.login()}}
           />
 
           <Button
