@@ -6,6 +6,7 @@ import React, {
   Dimensions,
   Image,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -560,29 +561,31 @@ class Profile extends Component {
           navigator = {this.props.navigator}
           text = "Profile"
         />
-        <View style = {{
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 8,
-        }}>
-          <Image
-            style = {{
-              height: Dimensions.get("window").width / 4,
-              width: Dimensions.get("window").width / 4,
-            }}
-            // resizeMode = {Image.resizeMode.center}
-            source = {{uri: this.state.profilePic}}
+        <ScrollView style = {{flex: 1}}>
+          <View style = {{
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 8,
+          }}>
+            <Image
+              style = {{
+                height: Dimensions.get("window").width / 4,
+                width: Dimensions.get("window").width / 4,
+              }}
+              // resizeMode = {Image.resizeMode.center}
+              source = {{uri: this.state.profilePic}}
+            />
+            <Text style = {{fontSize: 24, color: 'black',}}>
+              {this.state.name}
+            </Text>
+          </View>
+          {this.showFriends()}
+          <GridView
+            dataSource = {this.state.items}
+            onRefresh = {this.queryData.bind(this)}
+            renderRow = {this.renderRow.bind(this)}
           />
-          <Text style = {{fontSize: 24, color: 'black',}}>
-            {this.state.name}
-          </Text>
-        </View>
-        {this.showFriends()}
-        <GridView
-          dataSource = {this.state.items}
-          onRefresh = {this.queryData.bind(this)}
-          renderRow = {this.renderRow.bind(this)}
-        />
+        </ScrollView>
       </View>
     );
   }
