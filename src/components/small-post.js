@@ -303,9 +303,6 @@ class SmallPost extends Component {
 
             </View>
             <Text style = {styles.description}>
-              <Text style = {{fontWeight: 'bold'}}>
-                Description:&nbsp;
-              </Text>
               {this.state.description}
             </Text>
           </View>

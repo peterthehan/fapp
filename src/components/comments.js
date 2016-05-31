@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   AsyncStorage,
   Component,
   Dimensions,
@@ -95,43 +96,45 @@ class Comments extends Component {
   }
 
   updateText(text) {
-    // database stuff
-    this.refs['newCommentInput'].clear();
-    const self = this;
+    if(text === "") {
+      Alert.alert('', 'Comment is empty.');
+    } else {
+      // database stuff
+      this.refs['newCommentInput'].clear();
+      const self = this;
 
-    var comment = {
-      description: text,
-      userId: this.state.loggedUser,
-    };
-    database.child(this.props.type + "/" + this.props.id + "/commentList").push(comment);
+      var comment = {
+        description: text,
+        userId: this.state.loggedUser,
+      };
+      database.child(this.props.type + "/" + this.props.id + "/commentList").push(comment);
 
+      database.child(this.props.type + "/" + this.props.id + "/userID").once("value", function(snapshot) {
+        var ownerId = snapshot.val();
+        if (ownerId != self.state.loggedUser){
+          database.child("users/" + ownerId + "/notifications").push({
+            userID: self.state.loggedUser,
+            type: self.props.type,
+            objectID: self.props.id,
+            action: "comment",
+            textDetails: text,
+          });
+        }
+      });
 
-    database.child(this.props.type + "/" + this.props.id + "/userID").once("value", function(snapshot) {
-      var ownerId = snapshot.val();
-      if (ownerId != self.state.loggedUser){
-        database.child("users/" + ownerId + "/notifications").push({
-          userID: self.state.loggedUser,
-          type: self.props.type,
-          objectID: self.props.id,
-          action: "comment",
-          textDetails: text,
-          date: Date.now(),
-        });
-      }
-    });
+      var commentsNum = database.child(this.props.type + "/" + this.props.id + "/comments");
+      commentsNum.transaction(function(currentCount){
+        return currentCount + 1;
+      });
 
-    var commentsNum = database.child(this.props.type + "/" + this.props.id + "/comments");
-    commentsNum.transaction(function(currentCount){
-      return currentCount + 1;
-    });
-
-    var user = database.child("users/" + this.state.loggedUser);
-    user.once("value", function(userSnapshot){
-      comment.userProPic = userSnapshot.val().profilePic.uri;
-      comment.userName = self.state.userName;
-      self.state.dataSource.push(comment);
-      self.forceUpdate();
-    });
+      var user = database.child("users/" + this.state.loggedUser);
+      user.once("value", function(userSnapshot){
+        comment.userProPic = userSnapshot.val().profilePic.uri;
+        comment.userName = self.state.userName;
+        self.state.dataSource.push(comment);
+        self.forceUpdate();
+      });
+    }
   }
 
   render() {

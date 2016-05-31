@@ -567,7 +567,7 @@ class Profile extends Component {
         <View style = {{
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 30,
+          padding: 8,
         }}>
           <Image
             style = {{
@@ -577,7 +577,7 @@ class Profile extends Component {
             // resizeMode = {Image.resizeMode.center}
             source = {{uri: this.state.profilePic}}
           />
-          <Text style = {{fontSize: 25, color: 'black',}}>
+          <Text style = {{fontSize: 24, color: 'black',}}>
             {this.state.name}
           </Text>
         </View>

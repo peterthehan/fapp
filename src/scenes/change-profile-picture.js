@@ -3,12 +3,15 @@
 import React, {
   Alert,
   Component,
+  Dimensions,
+  Text,
   Image,
   View,
 } from 'react-native';
 
 import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
+import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -17,8 +20,12 @@ class ChangeProfilePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      profilePic: ''
     };
-    this.getEmail();
+  }
+
+  componentDidMount() {
+    this.getProfilePicture();
   }
 
   render() {
@@ -30,6 +37,27 @@ class ChangeProfilePicture extends Component {
           text = "Change Your Profile Picture"
         />
 
+        <Text style = {{marginTop: 14, marginLeft: 20}}>
+          Current Profile Picture
+        </Text>
+
+        <View style = {{padding: 8, alignItems: 'center'}}>
+          <Image
+            source = {{uri: this.state.profilePic}}
+            style = {{
+              height: Dimensions.get("window").width / 4,
+              width: Dimensions.get("window").width / 4,
+            }}>
+          </Image>
+        </View>
+
+        <Button
+          buttonStyles = {ButtonStyles.transparentButton}
+          buttonTextStyles = {ButtonStyles.blackButtonText}
+          onPress = {this.getNewProfilePicture.bind(this)}
+          text = "New Profile Picture"
+          underlayColor = {'gray'}
+        />
         <Button
           buttonStyles = {ButtonStyles.transparentButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
@@ -41,15 +69,18 @@ class ChangeProfilePicture extends Component {
     );
   }
 
-  getEmail() {
-    database.once("value",
+  getProfilePicture() {
+    database.child("users/" + database.getAuth().uid + "/profilePic").once("value",
       (snapshot) => {
-        var user = snapshot.child("users/" + database.getAuth().uid);
         this.setState({
-          oldEmail: user.val().email
+          profilePic: snapshot.val().uri
         });
       }
     );
+  }
+
+  getNewProfilePicture() {
+
   }
 
   changeProfilePicture() {
