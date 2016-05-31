@@ -192,7 +192,7 @@ class CreateEvent extends Component {
           </TouchableOpacity>
         </View>
         <Text style = {styles.visibilityText}>
-          {this.state.publicEvent ? ' Public Event' : 'Private Event'}
+          {this.state.publicEvent ? 'Public Event' : 'Private Event'}
         </Text>
       </View>
     );
@@ -291,7 +291,7 @@ class CreateEvent extends Component {
 
   renderButtons() {
     return (
-      <View style = {{alignItems: 'center'}}>
+      <View style = {styles.buttonView}>
         <Button
           buttonStyles = {styles.button}
           buttonTextStyles = {styles.buttonText}
@@ -351,7 +351,6 @@ class CreateEvent extends Component {
   }
 
   clearEvent() {
-    alert('Cleared :(');
     this.setState({
       description: '',
       dateEnd: dateEndStr,
@@ -420,14 +419,16 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginRight: 10,
   },
+  buttonView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
   button: {
     alignItems: 'center',
     backgroundColor: '#F26D6A',
-    marginBottom: 4,
-    marginLeft: 16,
-    marginRight: 16,
-    marginTop: 4,
     padding: 12,
+    margin: 10,
   },
   buttonText: {
     color: 'white',

@@ -148,10 +148,8 @@ class Camera extends Component {
     return (
       <View>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
-          <View style = {{flex: 1}}>
+          <View style = {{flex: 1, alignItems: 'center'}}>
             {this.cameraButton()}
-          </View>
-          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
@@ -298,16 +296,16 @@ class Camera extends Component {
 
   testImage() {
     return (
-        <Instagram
-          brightness = {1}
-          saturation = {1}
-          contrast = {1.5}
-          hue = {.25}
-          sepia = {.25}
-          gray = {0}
-          mixFactor = {.25}
-          tex = {this.ogImage()}
-        />
+      <Instagram
+        brightness = {1}
+        saturation = {1}
+        contrast = {1.5}
+        hue = {.25}
+        sepia = {.25}
+        gray = {0}
+        mixFactor = {.25}
+        tex = {this.ogImage()}
+      />
     );
   }
 
@@ -367,6 +365,7 @@ const styles = StyleSheet.create({
   button: {
     height: 20,
     width: 60,
+    position: 'absolute',
   },
   titleBar: {
     alignItems: 'center',
