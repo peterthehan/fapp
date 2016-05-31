@@ -45,13 +45,6 @@ class More extends Component {
         <Button
           buttonStyles = {{}}
           buttonTextStyles = {styles.buttonStyle}
-          onPress = {this.following.bind(this)}
-          text = "Following"
-          underlayColor = {'gray'}
-        />
-        <Button
-          buttonStyles = {{}}
-          buttonTextStyles = {styles.buttonStyle}
           onPress = {this.setting.bind(this)}
           text = "Settings"
           underlayColor = {'gray'}
@@ -62,10 +55,6 @@ class More extends Component {
 
   profile() {
     this.props.navigator.push({component: Profile, state: this.state.userID});
-  }
-
-  following() {
-    this.props.navigator.push({component: Following, state: this.state.userID});
   }
 
   setting() {
