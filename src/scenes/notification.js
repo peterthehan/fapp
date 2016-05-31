@@ -202,7 +202,7 @@ class Notification extends Component {
           renderRow = {this.renderRow.bind(this)}
         />
         <Button
-          buttonStyles = {ButtonStyles.primaryButton}
+          buttonStyles = {ButtonStyles.clearButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
           onPress = {this.clear.bind(this)}
           text = "clear"

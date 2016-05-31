@@ -16,6 +16,15 @@ module.exports = StyleSheet.create({
     marginTop: 4,
     padding: 12,
   },
+  clearButton: {
+    alignItems: 'center',
+    backgroundColor: '#DEB050',
+    marginBottom: 4,
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 4,
+    padding: 12,
+  },
   transparentButton: {
     alignItems: 'center',
     marginLeft: 16,
