@@ -12,14 +12,12 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Share from 'react-native-share';
-
 import EventDetails from './event-details';
 import PostDetails from './post-details';
 import Profile from './profile';
 import GridView from '../components/grid-view';
 import Button from '../components/button';
+import ButtonStyles from '../styles/button-styles';
 import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
@@ -32,7 +30,8 @@ class Notification extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     })*/
     this.state = {
-      dataSource: []
+      dataSource: [],
+      userId: '',
     };
   }
 
@@ -41,7 +40,9 @@ class Notification extends Component {
     var loggedUserId;
     AsyncStorage.getItem('user_data', (error, result) => {
       loggedUserId = JSON.parse(result).uid;
-
+      this.setState({
+        userId: loggedUserId,
+      })
       self.setState({
         userId: loggedUserId,
       });
@@ -200,8 +201,27 @@ class Notification extends Component {
           onRefresh = {this.queryData.bind(this)}
           renderRow = {this.renderRow.bind(this)}
         />
+        <Button
+          buttonStyles = {ButtonStyles.primaryButton}
+          buttonTextStyles = {ButtonStyles.blackButtonText}
+          onPress = {this.clear.bind(this)}
+          text = "clear"
+          borderRadius = {4}
+          underlayColor = {"black"}
+        />
       </View>
     );
+  }
+
+  clear() {
+    alert('Cleared :(');
+    this.setState({
+      dataSource: [],
+    });
+    var ref = database.child("users");
+    ref.child(this.state.userId).update({
+      notifications: []
+    });
   }
 
   goTo(rowData){
