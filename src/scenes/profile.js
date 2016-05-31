@@ -262,6 +262,7 @@ class Profile extends Component {
         objectID: this.state.loggedUser,
         action: "friendRequest",
         textDetails: "nothing",
+        date: Date.now(),
       });
 
       //we want to follow them!
@@ -331,6 +332,7 @@ class Profile extends Component {
           objectID: self.state.loggedUser,
           action: "friendAccept",
           textDetails: "nothing",
+          date: Date.now(),
         })
       });
       //we want to follow them!
@@ -441,6 +443,7 @@ class Profile extends Component {
         objectID: this.state.loggedUser,
         action: "following",
         textDetails: "nothing",
+        date: Date.now(),
       });
     } else {
       var self = this;

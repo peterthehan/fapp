@@ -127,6 +127,7 @@ class Post extends Component {
           objectID: this.state.postID,
           action: "like",
           textDetails: "nothing",
+          date: Date.now(),
         });
       }
       ratedVal.transaction(function(currentRating) {
