@@ -93,6 +93,34 @@ class Notification extends Component {
             </View>
           );
         }
+        else if (rowData.action == "invite") //This is when someone invites you to an event
+        {
+          var nameText;
+          var profilePicture;
+          var eventTitle;
+          database.child("users/" + rowData.who).once("value", function(snapshot){
+            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
+            profilePicture = snapshot.val().profilePic.uri;
+          });
+          eventTitle = rowData.details;
+          return (
+            <View style = {styles.container}>
+              <TouchableOpacity
+                style = {styles.touchView}
+                onPress = {() => this.goTo(rowData)}>
+                <Image
+                  style = {styles.userImage}
+                  source = {{uri: profilePicture}}
+                />
+                <View style = {styles.descriptionView}>
+                  <Text style = {styles.description}>
+                    {nameText} invited you to an event. "{eventTitle}"
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          );
+        }
       }
       else if (rowData.type == "posts"){
         if (rowData.action == "comment") //This is when someone comments on your post

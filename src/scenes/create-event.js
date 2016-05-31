@@ -5,6 +5,9 @@ import React, {
   AsyncStorage,
   Component,
   DatePickerAndroid,
+  Dimensions,
+  Image,
+  Modal,
   StyleSheet,
   Text,
   TextInput,
@@ -19,6 +22,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import Button from '../components/button';
 import TitleBar from '../components/title-bar';
+import GridView from '../components/grid-view';
 
 const dateStartStr = 'Pick a Start Date';
 const dateEndStr = 'Pick an End Date';
@@ -26,14 +30,32 @@ const timeStartStr = 'Pick a Start Time';
 const timeEndStr = 'Pick an End Time';
 
 let events = new Firebase("poopapp1.firebaseio.com/events");
+let users = new Firebase("poopapp1.firebaseio.com/users");
+
+const windowSize = Dimensions.get('window');
 
 class CreateEvent extends Component {
   constructor(props) {
     super(props);
     var self = this;
     var loggedUserId;
+    var myBlob = [];
     AsyncStorage.getItem('user_data', (error, result) => {
       loggedUserId = JSON.parse(result).uid;
+
+      users.child(loggedUserId + "/friendsList").once("value", function(snapshot) {
+        snapshot.forEach(function(friendIdSnapshot) {
+          users.child(friendIdSnapshot.val().userId).once("value", function(friendSnapshot){
+            let friend = {
+              userId: friendSnapshot.key(),
+              name: friendSnapshot.val().firstName + " " + friendSnapshot.val().lastName,
+              profilePic: friendSnapshot.val().profilePic,
+            };
+            myBlob.push(friend);
+          });
+        });
+        self.setState({dataSource: myBlob});
+      });
 
       self.setState({
         loggedUser: loggedUserId,
@@ -47,7 +69,13 @@ class CreateEvent extends Component {
       timeEnd: timeEndStr,
       timeStart: timeStartStr,
       title: '',
+      modalVisible: false,
+      invited: [],
     }
+  }
+
+  componentDidMount(){
+    this.queryData();
   }
 
   render() {
@@ -295,7 +323,7 @@ class CreateEvent extends Component {
         <Button
           buttonStyles = {styles.button}
           buttonTextStyles = {styles.buttonText}
-          onPress = {this.createGuestList.bind(this)}
+          onPress = {() => this.setModalVisible(true)}
           text = "Invite Friends!"
           underlayColor = {"#A2A2A2"}
         />
@@ -313,12 +341,102 @@ class CreateEvent extends Component {
           text = "Clear"
           underlayColor = {"#A2A2A2"}
         />
+        <Modal
+          onRequestClose = {() => {this.setModalVisible(false)}}
+          visible = {this.state.modalVisible}>
+          <View style = {styles.containerModal}>
+            <View style = {styles.modalUserBar}>
+              <TouchableOpacity onPress = {() => {this.setModalVisible(false);}}>
+                <MaterialIcon
+                  borderWidth = {7}
+                  color = 'black'
+                  name = 'close'
+                  size = {25}
+                />
+              </TouchableOpacity>
+            </View>
+            <GridView
+              dataSource = {this.state.dataSource}
+              onRefresh = {this.queryData.bind(this)}
+              renderRow = {this.renderRow.bind(this)}
+            />
+          </View>
+        </Modal>
       </View>
     );
   }
 
-  createGuestList() {
-    alert('Friends list unimplemented.');
+  inviteFriend(friend){
+    var isIn = false;
+    var i = this.state.invited.indexOf(friend.userId);
+    if (i != -1){
+      isIn = true;
+      this.state.invited.splice(i, 1);
+    }
+
+    if (!isIn){
+      this.state.invited.push(friend.userId);
+    }
+
+  }
+
+  getColorFriend(friend){
+    var isIn = false;
+
+    if (this.state.invited.indexOf(friend.userId) != -1){
+      isIn = true;
+    }
+
+    if (isIn){
+      return 'blue';
+    }
+    return 'white';
+  }
+
+  renderRow(friend) {
+    return (
+      <View style = {[styles.friendContainer, {backgroundColor: this.getColorFriend(friend)}]}>
+        <TouchableOpacity
+          style = {styles.friendTouchView}
+          onPress = {() => {
+            this.inviteFriend(friend);
+            this.forceUpdate();
+          }}>
+          <Image
+            style = {styles.friendUserImage}
+            source = {friend.profilePic}
+          />
+          <View style = {styles.friendNameView}>
+            <Text style = {styles.friendName}>
+              {friend.name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  queryData() {
+    var myBlob = [];
+    var self = this;
+
+    events.child("users/" + self.state.loggedUser + "/friendsList").once("value", function(snapshot) {
+      snapshot.forEach(function(friendIdSnapshot) {
+        events.child("users/" + friendIdSnapshot.val().userId).once("value", function(friendSnapshot){
+          let friend = {
+            userId: friendSnapshot.key(),
+            name: friendSnapshot.val().firstName + " " + friendSnapshot.val().lastName,
+            profilePic: friendSnapshot.val().profilePic,
+          };
+          myBlob.push(friend);
+        });
+      });
+      self.setState({dataSource: myBlob});
+    });
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   createEvent() {
@@ -335,7 +453,8 @@ class CreateEvent extends Component {
     } else if( this.state.description === '') {
       Alert.alert('', 'Missing event description.');
     } else{
-      events.push({
+
+      var eventRef = events.push({
         userID: this.state.loggedUser,
         description: this.state.description,
         endDate: this.state.dateEnd,
@@ -346,6 +465,18 @@ class CreateEvent extends Component {
         startTime: this.state.timeStart,
         title: this.state.title,
       });
+
+      for (var i = 0; i < this.state.invited.length; i++){
+        users.child(this.state.invited[i] + "/eventsList").push({eventId: eventRef.key()});
+        users.child(this.state.invited[i] + "/notifications").push({
+          userID: this.state.loggedUser,
+          type: "events",
+          objectID: eventRef.key(),
+          action: "invite",
+          textDetails: this.state.title,
+        });
+      }
+
       this.props.navigator.pop();
     }
   }
@@ -367,6 +498,15 @@ class CreateEvent extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
+  },
+  containerModal: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    flex: 1,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 20,
   },
   smallText: {
     color: '#F26D6A',
@@ -433,6 +573,31 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
   },
+  modalUserBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    margin: 10,
+  },
+  friendContainer: {
+    width: Dimensions.get("window").width,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+  },
+  friendUserImage: {
+    width: 25,
+    height: 25,
+    margin: 10,
+  },
+  friendTouchView: {
+    flexDirection: 'row',
+  },
+  friendNameView: {
+    flex: 1,
+    padding: 10,
+  },
+  friendName: {
+  }
 });
 
 module.exports = CreateEvent;
