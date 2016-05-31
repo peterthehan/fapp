@@ -217,6 +217,7 @@ class Notification extends Component {
         database.child("posts/" + rowData.object).once("value", function(snapshot){
           navigator.push({component: PostDetails, state: snapshot});
         });
+        break;
       case "users":
         navigator.push({component: Profile, state: rowData.object});
         break;
