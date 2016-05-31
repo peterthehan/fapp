@@ -51,7 +51,7 @@ class Home extends Component {
     database.once("value", function(snapshot) {
       var postsSnapshot = snapshot.child("posts");
       postsSnapshot.forEach(function(postSnapshot) {
-        myBlob.push(postSnapshot);
+        myBlob.unshift(postSnapshot);
       });
       self.setState({dataSource: myBlob});
     });
