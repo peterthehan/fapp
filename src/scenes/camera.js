@@ -254,7 +254,7 @@ class Camera extends Component {
             maxLength = {limit}
             onChangeText = {(text) => this.setState({description: text})}
             placeholder = {"Give a description"}
-            placeholderTextColor = 'black'
+            placeholderTextColor = 'gray'
             underlineColorAndroid = 'black'
             value = {""}
           >
@@ -267,7 +267,7 @@ class Camera extends Component {
             maxLength = {limit}
             onChangeText = {(text) => this.setState({location: text})}
             placeholder = {"Enter location"}
-            placeholderTextColor = 'black'
+            placeholderTextColor = 'gray'
             underlineColorAndroid = 'black'
             value = {this.state.location}
           />
@@ -278,16 +278,16 @@ class Camera extends Component {
             maxLength = {limit}
             onChangeText = {(text) => this.setState({recipe: text})}
             placeholder = {"Cooked it yourself? Add a recipe!"}
-            placeholderTextColor = 'black'
+            placeholderTextColor = 'gray'
             underlineColorAndroid = 'black'
             value = {this.state.recipe}
           />
           <Button
-            buttonStyles = {ButtonStyles.primaryButton}
+            buttonStyles = {ButtonStyles.transparentButton}
             onPress = {this.onPress.bind(this)}
             text = "Post"
-            buttonTextStyles = {ButtonStyles.whiteButtonText}
-            underlayColor = {'#B18C40'}
+            buttonTextStyles = {ButtonStyles.blackButtonText}
+            underlayColor = {'gray'}
           />
         </View>
         </View>
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
     color: 'blue'
   },
   multiline: {
-    height: 60,
+    height: 40,
     padding: 4,
     marginTop: 2,
     color: 'black'
