@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   description: {
   },
   textInput: {
-    height: 40,
+    height: 36,
   },
   textView: {
     paddingVertical: 6,

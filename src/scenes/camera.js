@@ -15,6 +15,7 @@ import React, {
 } from 'react-native';
 
 import {Surface} from 'gl-react-native';
+import ActionButton from 'react-native-action-button';
 import Firebase from 'firebase';
 
 import Button from '../components/button';
@@ -24,6 +25,7 @@ import Instagram from '../components/instagram';
 import Saturation from '../components/saturation';
 import TextStyles from '../styles/text-styles';
 import TimeStamp from '../util/time-stamp';
+import TitleBar from '../components/title-bar';
 import Vignette from '../components/vignette';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -48,7 +50,7 @@ class Camera extends Component {
     this.onCapture1 = this.onCapture1.bind(this);
   }
 
-  onPress() {
+  post() {
     var self = this;
     AsyncStorage.getItem('user_data', (error, result) => {
       var usid = JSON.parse(result).uid;
@@ -88,6 +90,11 @@ class Camera extends Component {
         });
       });
     });
+    this.props.navigator.pop();
+    this.setState({avatarSource: null});
+  }
+
+  cancel() {
     this.props.navigator.pop();
     this.setState({avatarSource: null});
   }
@@ -153,7 +160,6 @@ class Camera extends Component {
   }
 
   renderImage() {
-
     var filter;
     switch(this.state.filter) {
       case "sat":
@@ -173,23 +179,21 @@ class Camera extends Component {
         break;
     }
     let delimiter = /\s+/;
-
     let tags = [];
     let rendered = [];
     let tagText = this.state.description;
     let tokens = tagText.split(delimiter);
-    tokens.forEach(function(entry, i){
-      if(i !== tokens.length - 1){
-        if(entry.startsWith("#")){
-          if(tags.indexOf(entry) === -1){
+    tokens.forEach(function(entry, i) {
+      if(i !== tokens.length - 1) {
+        if(entry.startsWith("#")) {
+          if(tags.indexOf(entry) === -1) {
             tags.push(entry);
             rendered.push(<Text style = {styles.hashtag}>{entry} </Text>);
           }
         } else {
           rendered.push(entry + " ");
         }
-      }
-      else{
+      } else {
         rendered.push(entry);
       }
     });
@@ -198,97 +202,94 @@ class Camera extends Component {
     var limit = 1000;
 
     return (
-      <View>
-        <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
-          <View style = {{flex: 1, alignItems: 'center'}}>
-            {this.cameraButton()}
-            <Text style = {styles.titleBarText}>
-              Create a Post
-            </Text>
-          </View>
-      </View>
+      <View style = {{flex: 1}}>
+        <TitleBar
+          navigator = {this.props.navigator}
+          text = "Create A Post"
+        />
 
-      <View>
-        <View style = {{marginTop:3, marginLeft: 3, marginRight: 5, marginBottom: 10, alignItems: 'center'}}>
+        <View style = {{margin: 5, alignItems: 'center'}}>
           <Surface width = {this.state.length - 150} height = {this.state.length - 150} ref = "surfacePic">
             {filter}
           </Surface>
         </View>
 
         <View style = {styles.filterButton}>
-            <TouchableOpacity onPress ={()=> this.setFilterAndCapture(null)} >
-              <Surface width = {filterSize} height = {filterSize}>
-                {this.ogImage()}
-              </Surface>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('sat')}>
-              <Surface width = {filterSize} height = {filterSize}>
-                {this.monoImage()}
-              </Surface>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('filter1')}>
-              <Surface width = {filterSize} height = {filterSize}>
-                {this.filter1Image()}
-              </Surface>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('ig')}>
-              <Surface width = {filterSize} height = {filterSize}>
-                {this.igImage()}
-              </Surface>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress = {()=> this.setFilterAndCapture('test')}>
-              <Surface width = {filterSize} height = {filterSize}>
-                {this.testImage()}
-              </Surface>
-            </TouchableOpacity>
+          <TouchableOpacity onPress = {() => this.setFilterAndCapture(null)} >
+            <Surface width = {filterSize} height = {filterSize}>
+              {this.ogImage()}
+            </Surface>
+          </TouchableOpacity>
+          <TouchableOpacity onPress = {() => this.setFilterAndCapture('sat')}>
+            <Surface width = {filterSize} height = {filterSize}>
+              {this.monoImage()}
+            </Surface>
+          </TouchableOpacity>
+          <TouchableOpacity onPress = {() => this.setFilterAndCapture('filter1')}>
+            <Surface width = {filterSize} height = {filterSize}>
+              {this.filter1Image()}
+            </Surface>
+          </TouchableOpacity>
+          <TouchableOpacity onPress = {() => this.setFilterAndCapture('ig')}>
+            <Surface width = {filterSize} height = {filterSize}>
+              {this.igImage()}
+            </Surface>
+          </TouchableOpacity>
+          <TouchableOpacity onPress = {() => this.setFilterAndCapture('test')}>
+            <Surface width = {filterSize} height = {filterSize}>
+              {this.testImage()}
+            </Surface>
+          </TouchableOpacity>
         </View>
-        <View style = {{flex: 1}}>
+
+        <View>
           <TextInput
-            multiline = {true}
-            style = {styles.multiline}
             maxLength = {limit}
+            multiline = {true}
             onChangeText = {(text) => this.setState({description: text})}
             placeholder = {"Description"}
             placeholderTextColor = 'gray'
-            underlineColorAndroid = 'black'
-            value = {""}
-          >
-            <Text>{rendered}</Text>
-          </TextInput>
-
-          <TextInput
-            multiline = {true}
             style = {styles.multiline}
+            underlineColorAndroid = 'black'
+            value = {""}>
+            <Text>
+              {rendered}
+            </Text>
+          </TextInput>
+          <TextInput
             maxLength = {limit}
+            multiline = {true}
             onChangeText = {(text) => this.setState({location: text})}
             placeholder = {"Location"}
             placeholderTextColor = 'gray'
+            style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {this.state.location}
           />
-
           <TextInput
-            multiline = {true}
-            style = {styles.multiline}
             maxLength = {limit}
+            multiline = {true}
             onChangeText = {(text) => this.setState({recipe: text})}
             placeholder = {"Recipe"}
             placeholderTextColor = 'gray'
+            style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {this.state.recipe}
           />
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
-            onPress = {this.onPress.bind(this)}
-            text = "Post"
             buttonTextStyles = {ButtonStyles.blackButtonText}
+            onPress = {this.post.bind(this)}
+            text = "Post"
             underlayColor = {'gray'}
           />
-        </View>
+          <Button
+            buttonStyles = {ButtonStyles.transparentButton}
+            buttonTextStyles = {ButtonStyles.blackButtonText}
+            onPress = {this.cancel.bind(this)}
+            text = "Cancel"
+            underlayColor = {'gray'}
+          />
         </View>
       </View>
     );
@@ -296,18 +297,20 @@ class Camera extends Component {
 
   setFilterAndCapture(filt) {
     this.setState({filter: filt});
-    setTimeout(() => {this.onCapture1();},300);
+    setTimeout(() => {this.onCapture1();}, 300);
   }
 
   ogImage() {
-    return(
-      <Image source = {this.state.avatarSource}
-      style = {{flex: 1}}/>
+    return (
+      <Image
+        source = {this.state.avatarSource}
+        style = {{flex: 1}}
+      />
     );
   }
 
   monoImage() {
-    return(
+    return (
       <Saturation
         factor = {0}
         image = {this.ogImage()}
@@ -364,52 +367,31 @@ class Camera extends Component {
   renderBars() {
     return (
       <View style = {{flex: 1}}>
-        <View style = {styles.titleBar}>
-          <View style = {{flex: 1, alignItems: 'center'}}>
-            <Text style = {styles.titleBarText}>
-              Create a Post
-            </Text>
-          </View>
-        </View>
-
-        <View style = {{padding: 20, marginTop: 40}}>
-          <TouchableOpacity
-            style = {{flex: 1, alignItems: 'center', padding: 10}}
-            onPress = {this.takePicture.bind(this)}>
-            <Text>
-              <Icon name = "camera" color = '#F26D6ACC' size = {120}/>
-            </Text>
-            <Text
-              style = {{fontSize: 20, color: '#000000CC'}}>
-              &nbsp;Take Photo...
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style = {{flex: 1, alignItems: 'center', padding: 10}}
-            onPress = {this.choosePicture.bind(this)}>
-            <Text>
-              <Icon name = "file-image-o" color = '#F26D6ACC' size = {120}/>
-            </Text>
-            <Text
-              style = {{fontSize: 20, color: '#000000CC'}}>
-              &nbsp;Choose from Library...
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TitleBar
+          navigator = {this.props.navigator}
+          text = "Create A Post"
+        />
+        <ActionButton buttonColor = '#F26D6A'>
+          <ActionButton.Item
+            buttonColor = '#DEB050'
+            onPress = {this.takePicture.bind(this)}
+            title = 'Take a photo'>
+            <Icon
+              name = 'camera'
+              style = {styles.actionButtonIcon}
+            />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor = '#DEB050'
+            onPress = {this.choosePicture.bind(this)}
+            title = 'Choose from your library'>
+            <Icon
+              name = 'file-image-o'
+              style = {styles.actionButtonIcon}
+            />
+          </ActionButton.Item>
+        </ActionButton>
       </View>
-    );
-  }
-
-  cameraButton() {
-    return (
-      <TouchableOpacity
-        onPress = {() => {this.openCamera()}}
-        style = {styles.button}>
-        <Text style = {{color: 'white'}}>
-          Camera
-        </Text>
-      </TouchableOpacity>
     );
   }
 
@@ -423,45 +405,25 @@ class Camera extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    height: 20,
-    width: 60,
-    position: 'absolute',
-  },
-  content: {
-    flexDirection: 'row'
+  actionButtonIcon: {
+    color: 'white',
+    fontSize: 20,
+    height: 22,
   },
   hashtag: {
-    color: 'blue'
+    color: '#F26D6A',
   },
   filterButton: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 4,
   },
   multiline: {
-    height: 40,
-    padding: 4,
-    marginTop: 2,
-    color: 'black'
+    color: 'black',
+    height: 36,
+    marginHorizontal: 8,
   },
-  titleBar: {
-    alignItems: 'center',
-    backgroundColor: '#F26D6A',
-    flex: 3,
-    flexDirection: 'row',
-    left: 0,
-    padding: 10,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
-  titleBarText: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center',
-  },
-
 });
 
 const options = {

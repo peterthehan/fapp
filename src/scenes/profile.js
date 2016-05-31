@@ -201,28 +201,28 @@ class Profile extends Component {
     if(this.state.friends) {
       return (
         <View>
-          <Text style={{color: 'blue'}}>
+          <Text style = {{color: '#F26D6A'}}>
             Friends
           </Text>
         </View>);
     } else if(this.state.yourRequest) {
       return(
         <View>
-          <Text style={{color: 'grey'}}>
+          <Text style = {{color: 'grey'}}>
             Request Sent
           </Text>
         </View>);
     } else if(this.state.theirRequest) {
       return(
         <View>
-          <Text style={{color: 'grey'}}>
+          <Text style = {{color: 'grey'}}>
             Accept Request
           </Text>
         </View>);
     } else {
       return (
         <View>
-          <Text style={{color: 'grey'}}>
+          <Text style = {{color: 'grey'}}>
             Add Friend
           </Text>
         </View>);
@@ -230,10 +230,9 @@ class Profile extends Component {
   }
 
   getFriendsColor() {
-    if (this.state.friends){
-      return ('blue');
-    }
-    else{
+    if(this.state.friends) {
+      return ('#F26D6A');
+    } else {
       return ('grey');
     }
   }
@@ -254,7 +253,7 @@ class Profile extends Component {
     {
       theirRequests.push({userId: this.state.loggedUser});
 
-      //send notification
+      // send notification
       theirNotifications.push({
         userID: this.state.loggedUser,
         type: "users",
@@ -264,16 +263,15 @@ class Profile extends Component {
         date: TimeStamp.now(),
       });
 
-      //we want to follow them!
-      if (!self.state.following){
+      // we want to follow them!
+      if(!self.state.following) {
         self.addFollow();
       }
-    }
-    else if (this.state.yourRequest)  //This is the case where you want to cancel your friend request
+    } else if(this.state.yourRequest)  // This is the case where you want to cancel your friend request
     {
-      //delete your friend request in their friendRequests and notifications
+      // delete your friend request in their friendRequests and notifications
       database.child("users/").once("value", function(snapshot) {
-        //friendRequests
+        // friendRequests
         var requestData = snapshot.child(self.props.state + "/friendRequests");
         if(typeof requestData != 'undefined') {
           requestData.forEach(function(request) {
@@ -284,7 +282,7 @@ class Profile extends Component {
           });
         }
 
-        //notifications
+        // notifications
         var notificationData = snapshot.child(self.props.state + "/notifications");
         if(typeof notificationData != 'undefined') {
           notificationData.forEach(function(request) {
@@ -296,14 +294,13 @@ class Profile extends Component {
           });
         }
       });
-      //unfollow them
-      if (self.state.following) {
+      // unfollow them
+      if(self.state.following) {
         self.addFollow();
       }
-    }
-    else if (this.state.theirRequest) //This is the case where they sent a friend request. We want to add them as a friend.
+    } else if (this.state.theirRequest) // This is the case where they sent a friend request. We want to add them as a friend.
     {
-      //delete their friend request in your friendRequests
+      // delete their friend request in your friendRequests
       database.child("users/").once("value", function(snapshot) {
         var requestData = snapshot.child(self.state.loggedUser + "/friendRequests");
         if(typeof requestData != 'undefined') {
@@ -338,12 +335,11 @@ class Profile extends Component {
       if (!self.state.following) {
         self.addFollow();
       }
-    }
-    else //This is the case wehre you guys are friends. You want to delete them and unfollow for both
+    } else // This is the case wehre you guys are friends. You want to delete them and unfollow for both
     {
       var theyWereFollowing = false;
       database.child("users/").once("value", function(snapshot) {
-        //delete them on your friendsList
+        // delete them on your friendsList
         var yourFriendsData = snapshot.child(self.state.loggedUser + "/friendsList");
         if(typeof yourFriendsData != 'undefined') {
           yourFriendsData.forEach(function(friend) {
@@ -353,7 +349,7 @@ class Profile extends Component {
             }
           });
         }
-        //delete yourself on their friendsList
+        // delete yourself on their friendsList
         var theirFriendsData = snapshot.child(self.props.state + "/friendsList");
         if(typeof theirFriendsData != 'undefined') {
           theirFriendsData.forEach(function(friend) {
@@ -364,7 +360,7 @@ class Profile extends Component {
           });
         }
 
-        //have them unfollow you
+        // have them unfollow you
         var followData = snapshot.child(self.props.state + "/followingList");
         if(typeof followData != 'undefined') {
           followData.forEach(function(follower) {
