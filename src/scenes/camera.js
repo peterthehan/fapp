@@ -70,6 +70,13 @@ class Camera extends Component {
           user: userName,
           userID: usid,
         });
+
+
+        self.state.tags.forEach((t) => {
+          database.child("posts/" + post.key() + "/tags").push({tag: t});
+          database.child("tags/" + t.substring(1) + "/postList").push({postId: post.key()});
+        });
+
         postList.push({
           postId: post.key(),
         });
@@ -179,20 +186,19 @@ class Camera extends Component {
         rendered.push(entry);
       }
     });
+
+    this.state.tags = tags;
+
     var limit = 1000;
 
     return (
       <View>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
-          <View style = {{flex: 1}}>
+          <View style = {{flex: 1, alignItems: 'center'}}>
             {this.cameraButton()}
-          </View>
-          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
-          </View>
-          <View style = {{flex: 1}}>
           </View>
       </View>
 
@@ -361,7 +367,7 @@ class Camera extends Component {
         </View>
 
         <View style = {{padding: 20, marginTop: 40}}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style = {{flex: 1, alignItems: 'center', padding: 10}}
             onPress = {this.takePicture.bind(this)}>
             <Text>
@@ -373,7 +379,7 @@ class Camera extends Component {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style = {{flex: 1, alignItems: 'center', padding: 10}}
             onPress = {this.choosePicture.bind(this)}>
             <Text>
@@ -426,6 +432,7 @@ const styles = StyleSheet.create({
   button: {
     height: 20,
     width: 60,
+    position: 'absolute',
   },
   titleBar: {
     alignItems: 'center',
