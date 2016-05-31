@@ -70,6 +70,12 @@ class Camera extends Component {
           user: userName,
           userID: usid,
         });
+
+        self.state.tags.forEach((t) => {
+          database.child("posts/" + post.key() + "/tags").push({tag: t});
+          database.child("tags/" + t.substring(1) + "/postList").push({postId: post.key()});
+        });
+
         postList.push({
           postId: post.key(),
         });
@@ -143,6 +149,9 @@ class Camera extends Component {
         rendered.push(entry);
       }
     });
+
+    this.state.tags = tags;
+
     var limit = 1000;
 
     return (
