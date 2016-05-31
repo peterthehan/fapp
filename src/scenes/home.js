@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
   Dimensions,
   RefreshControl,
@@ -8,70 +9,49 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import GridView from '../components/grid-view';
-import Profile from "../scenes/profile";
-import SearchBar from '../components/search-bar';
-import SceneStyles from '../styles/scene-styles';
 import TitleBar from '../components/title-bar';
-import SmallPost from '../components/small-post';
+import All from './all';
+import Following from './following';
 
 let database = new Firebase("poopapp1.firebaseio.com");
-
-const windowSize = Dimensions.get('window');
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: [],
-      open: false,
     };
   }
 
   componentDidMount() {
-    this.queryData();
-  }
-
-  renderRow(post) {
-    return (
-      <SmallPost
-        navigator = {this.props.navigator}
-        id = {post}
-      />
-    );
-  }
-
-  queryData() {
-    var myBlob = [];
-    var self = this;
-
-    // this section loads the postIDs into myBlob and pushes them to dataSource
-    database.child("posts").once("value", function(snapshot) {
-      snapshot.forEach(function(postSnapshot) {
-        myBlob.push(postSnapshot);
+    AsyncStorage.getItem('user_data', (error, result) => {
+      this.setState({
+        userID: JSON.parse(result).uid,
       });
-      myBlob.sort((a, b) => {
-        return b.val().date - a.val().date;
-      });
-      self.setState({dataSource: myBlob});
     });
   }
 
   render() {
     return(
-      <View style = {SceneStyles.container}>
+      <View style = {{flex: 1, backgroundColor: '#f3f3f3'}}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Home"
         />
-        <SearchBar/>
-        <GridView
-          dataSource = {this.state.dataSource}
-          onRefresh = {this.queryData.bind(this)}
-          renderRow = {this.renderRow.bind(this)}
-        />
+        <ScrollableTabView initialPage = {0}>
+          <View
+            tabLabel = "All"
+            style = {{flex: 1}}><All 
+            navigator = {this.props.navigator}
+            tabLabel = "All"/></View>
+          <View
+            tabLabel = "Following"
+            style = {{flex: 1}}><Following 
+            navigator = {this.props.navigator}
+            tabLabel = "Following"
+            state = {this.state.userID}/></View>
+        </ScrollableTabView>
       </View>
     );
   }

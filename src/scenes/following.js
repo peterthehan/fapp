@@ -12,6 +12,7 @@ import GridView from '../components/grid-view';
 import Post from '../components/post';
 import Profile from "../scenes/profile";
 import SearchBar from '../components/search-bar';
+import SceneStyles from '../styles/scene-styles';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -26,12 +27,7 @@ class Following extends Component {
 
   render() {
     return (
-      <View style = {{flex: 1}}>
-        <TitleBar
-          hasBack = {"true"}
-          navigator = {this.props.navigator}
-          text = "Following"
-        />
+      <View style = {SceneStyles.container}>
         <SearchBar />
         <GridView
           dataSource = {this.state.dataSource}
