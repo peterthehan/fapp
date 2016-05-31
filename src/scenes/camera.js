@@ -46,6 +46,7 @@ class Camera extends Component {
       length: length,
       test: 'help',
       tags: [],
+      enableScroll: false,
     };
     this.onCapture1 = this.onCapture1.bind(this);
   }
@@ -202,7 +203,7 @@ class Camera extends Component {
     var limit = 1000;
 
     return (
-      <View style = {{flex: 1}}>
+      <ScrollView ref = 'scrollView' showsVerticalScrollIndicator={this.state.enableScroll} scrollEnabled={this.state.enableScroll} style = {{flex: 1}}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Create A Post"
@@ -251,12 +252,15 @@ class Camera extends Component {
             placeholderTextColor = 'gray'
             style = {styles.multiline}
             underlineColorAndroid = 'black'
-            value = {""}>
+            value = {""}
+            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 100)}}
+            >
             <Text>
               {rendered}
             </Text>
           </TextInput>
           <TextInput
+            ref = 'location'
             maxLength = {limit}
             multiline = {true}
             onChangeText = {(text) => this.setState({location: text})}
@@ -265,6 +269,7 @@ class Camera extends Component {
             style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {this.state.location}
+            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 100)}}
           />
           <TextInput
             maxLength = {limit}
@@ -275,6 +280,7 @@ class Camera extends Component {
             style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {this.state.recipe}
+            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 100)}}
           />
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
@@ -291,7 +297,7 @@ class Camera extends Component {
             underlayColor = {'gray'}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
