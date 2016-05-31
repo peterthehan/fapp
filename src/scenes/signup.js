@@ -51,7 +51,7 @@ class Signup extends Component {
               style = {TextStyles.leftTextInput}
               underlineColorAndroid = 'white'
               value = {this.state.firstName}
-              onSubmitEditing={(event) => {this.refs.LastName.focus();}}
+              onSubmitEditing = {(event) => {this.refs.LastName.focus();}}
             />
             <TextInput
               ref = 'LastName'
@@ -61,7 +61,7 @@ class Signup extends Component {
               style = {TextStyles.rightTextInput}
               underlineColorAndroid = 'white'
               value = {this.state.lastName}
-              onSubmitEditing={(event) => {this.refs.Email.focus();}}
+              onSubmitEditing = {(event) => {this.refs.Email.focus();}}
             />
           </View>
 
@@ -74,7 +74,7 @@ class Signup extends Component {
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
-            onSubmitEditing={(event) => {this.refs.NewPassword.focus();}}
+            onSubmitEditing = {(event) => {this.refs.NewPassword.focus();}}
           />
           <TextInput
             ref = 'NewPassword'
@@ -85,7 +85,7 @@ class Signup extends Component {
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
-            onSubmitEditing={(event) => {this.refs.ConfirmPass.focus();}}
+            onSubmitEditing = {(event) => {this.refs.ConfirmPass.focus();}}
           />
           <TextInput
             ref = 'ConfirmPass'
@@ -96,7 +96,7 @@ class Signup extends Component {
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.passwordConfirm}
-            onSubmitEditing={() => {this.signup()}}
+            onSubmitEditing = {() => {this.signup()}}
           />
 
           <Button

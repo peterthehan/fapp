@@ -51,7 +51,7 @@ class ForgotPassword extends Component {
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
-            onSubmitEditing={() => {this.submit()}}
+            onSubmitEditing = {() => {this.submit()}}
           />
 
           <Button

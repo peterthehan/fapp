@@ -54,14 +54,17 @@ class ChangeEmail extends Component {
         />
 
         <TextInput
+          keyboardType = 'email-address'
           onChangeText = {(text) => this.setState({email: text})}
           placeholder = {"New Email"}
           placeholderTextColor = 'gray'
           style = {TextStyles.blackTextInput}
           underlineColorAndroid = 'black'
           value = {this.state.email}
+          onSubmitEditing = {(event) => {this.refs.Password.focus();}}
         />
         <TextInput
+          ref = 'Password'
           onChangeText = {(text) => this.setState({password: text})}
           placeholder = {"Password"}
           placeholderTextColor = 'gray'
@@ -69,6 +72,7 @@ class ChangeEmail extends Component {
           style = {TextStyles.blackTextInput}
           underlineColorAndroid = 'black'
           value = {this.state.password}
+          onSubmitEditing = {() => {this.changeEmail()}}
         />
 
         <Button
