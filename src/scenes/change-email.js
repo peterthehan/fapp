@@ -112,6 +112,12 @@ class ChangeEmail extends Component {
             case "INVALID_PASSWORD":
               Alert.alert('Error!', 'The specified user account password is incorrect.');
               break;
+            case "EMAIL_TAKEN":
+              Alert.alert('Error!', 'The specified email address is already in use.');
+              break;
+            case "INVALID_EMAIL":
+              Alert.alert('Error!', 'The specified email is not a valid email address.');
+              break;
             default:
               Alert.alert('Error!', 'Error changing user email.');
           }
