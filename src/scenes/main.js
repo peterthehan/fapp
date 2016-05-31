@@ -10,7 +10,6 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import Camera from './camera';
 import Event from './event';
-import Following from './following';
 import Home from './home';
 import More from './more';
 import Notification from './notification';

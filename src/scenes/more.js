@@ -8,7 +8,6 @@ import React, {
 } from 'react-native';
 
 import Button from '../components/button';
-import Following from './following';
 import Profile from './profile';
 import Setting from './setting';
 import TitleBar from '../components/title-bar';
