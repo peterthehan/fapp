@@ -31,7 +31,12 @@ class All extends Component {
   }
 
   componentDidMount() {
-    this.queryData();
+    let self = this;
+
+    database.child("posts").on("child_added", function(snapshot) {
+      self.state.dataSource.push(snapshot);
+      self.forceUpdate();
+    });
   }
 
   renderRow(post) {
@@ -44,19 +49,6 @@ class All extends Component {
   }
 
   queryData() {
-    var myBlob = [];
-    var self = this;
-
-    // this section loads the postIDs into myBlob and pushes them to dataSource
-    database.child("posts").once("value", function(snapshot) {
-      snapshot.forEach(function(postSnapshot) {
-        myBlob.push(postSnapshot);
-      });
-      myBlob.sort((a, b) => {
-        return b.val().date - a.val().date;
-      });
-      self.setState({dataSource: myBlob});
-    });
   }
 
   render() {

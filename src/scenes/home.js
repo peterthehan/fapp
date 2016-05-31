@@ -39,18 +39,16 @@ class Home extends Component {
           navigator = {this.props.navigator}
           text = "Home"
         />
-        <ScrollableTabView initialPage = {0}>
-          <View
+        <ScrollableTabView>
+          <All
+            navigator = {this.props.navigator}
             tabLabel = "All"
-            style = {{flex: 1}}><All 
-            navigator = {this.props.navigator}
-            tabLabel = "All"/></View>
-          <View
-            tabLabel = "Following"
-            style = {{flex: 1}}><Following 
+          />
+          <Following
             navigator = {this.props.navigator}
             tabLabel = "Following"
-            state = {this.state.userID}/></View>
+            state = {this.state.userID}
+          />
         </ScrollableTabView>
       </View>
     );

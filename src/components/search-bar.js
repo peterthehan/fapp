@@ -16,7 +16,7 @@ class SearchBar extends Component {
   render() {
     return (
       <TextInput
-        onChangeText = {(text) => this.setState({text})}
+        onChangeText = {(text) => this.props.onChangeText(text)}
         placeholder = "Search"
         placeholderTextColor = 'gray'
         style = {{height: 40}}
