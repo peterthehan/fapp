@@ -14,13 +14,16 @@ import ButtonStyles from '../styles/button-styles';
 import TextStyles from '../styles/text-styles';
 import TitleBar from '../components/title-bar';
 
+var ImagePickerManager = require('NativeModules').ImagePickerManager;
+
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class ChangeProfilePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profilePic: ''
+      profilePic: '',
+      image: '',
     };
   }
 
@@ -80,12 +83,46 @@ class ChangeProfilePicture extends Component {
   }
 
   getNewProfilePicture() {
-
+    ImagePickerManager.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if(response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if(response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          profilePic: source.uri,
+          image: source,
+        });
+      }
+    });
   }
 
   changeProfilePicture() {
-
+    var ref = database.child("users");
+    ref.child(database.getAuth().uid).update({
+      profilePic: this.state.image,
+    });
   }
 }
+
+const options = {
+  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  angle: 0, // android only, photos only
+  cameraType: 'front', // 'front' or 'back'
+  cancelButtonTitle: 'Cancel',
+  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+  durationLimit: 10, // video recording max time in seconds
+  maxHeight: 370, // photos only
+  maxWidth: 370, // photos only
+  mediaType: 'photo', // 'photo' or 'video'
+  noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  quality: 1, // 0 to 1, photos only
+  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+  title: 'Select Avatar', // specify null or empty string to remove the title
+  videoQuality: 'high', // 'low', 'medium', or 'high'
+};
 
 module.exports = ChangeProfilePicture;
