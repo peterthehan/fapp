@@ -485,7 +485,7 @@ class Profile extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.followingList.bind(this)}>
-            <Text style={{fontSize: 28}}>
+            <Text style = {{fontSize: 28}}>
               {this.state.followers}
             </Text>
             <Text>
@@ -495,7 +495,7 @@ class Profile extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.friendList.bind(this)}>
-            <Text style={{fontSize: 28}}>
+            <Text style = {{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
@@ -533,22 +533,22 @@ class Profile extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.followingList.bind(this)}>
-            <Text style={{fontSize: 28}}>
-              {this.state.followers}
-            </Text>
-            <Text>
-              Followers
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style = {styles.button}
             onPress = {this.friendList.bind(this)}>
-            <Text style={{fontSize: 28}}>
+            <Text style = {{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
               Friends
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.followingList.bind(this)}>
+            <Text style = {{fontSize: 28}}>
+              {this.state.followers}
+            </Text>
+            <Text>
+              Followers
             </Text>
           </TouchableOpacity>
         </View>
@@ -594,16 +594,12 @@ class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-  item: {
-    height: 100,
-    margin: 10,
-    width: 100,
-  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
-  }
+    paddingLeft: 4,
+    paddingRight: 4,
+  },
 });
 
 module.exports = Profile;
