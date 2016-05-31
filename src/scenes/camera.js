@@ -322,10 +322,8 @@ class Camera extends Component {
     return (
       <View style = {{flex: 1}}>
         <View style = {styles.titleBar}>
-          <View style = {{flex: 1}}>
+          <View style = {{flex: 1, alignItems: 'center'}}>
             {this.cameraButton()}
-          </View>
-          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
