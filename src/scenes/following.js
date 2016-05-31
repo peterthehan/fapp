@@ -74,7 +74,7 @@ class Following extends Component {
         }
       });
       myBlob.sort((a, b) => {
-        return a.val().date - b.val().date;
+        return b.val().date - a.val().date;
       });
       self.setState({dataSource: myBlob});
     });
