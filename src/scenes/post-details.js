@@ -104,11 +104,10 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   sectionView: {
-    backgroundColor: 'white',
     borderBottomWidth: 1,
     borderColor: 'gray',
     justifyContent: 'center',
-    padding: 8,
+    padding: 4,
   },
 });
 
