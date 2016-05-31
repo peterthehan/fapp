@@ -219,8 +219,8 @@ class SmallPost extends Component {
                 </Text>
 
                 <TouchableOpacity
-                  style = {styles.button}
-                  onPress = {this.details.bind(this)}>
+                  onPress = {this.details.bind(this)}
+                  style = {styles.button}>
                   <MaterialIcon
                     color = 'white'
                     name = 'textsms'
@@ -315,8 +315,8 @@ class SmallPost extends Component {
 const styles = StyleSheet.create({
   button: {
     marginBottom: 4,
-    marginLeft: 4,
-    marginRight: 3,
+    marginLeft: 6,
+    marginRight: 6,
     marginTop: 4,
   },
   buttonView: {
