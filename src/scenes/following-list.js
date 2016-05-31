@@ -20,10 +20,8 @@ import TitleBar from '../components/title-bar';
 let database = new Firebase("poopapp1.firebaseio.com");
 
 class FollowingList extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
-
     this.state = {
       dataSource: [],
     };
@@ -52,7 +50,7 @@ class FollowingList extends Component {
     });
   }
 
-  profile(following){
+  profile(following) {
     const Profile = require('../scenes/profile');
     this.props.navigator.push({component: Profile, state: following.userId});
   }

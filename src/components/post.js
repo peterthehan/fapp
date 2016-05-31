@@ -409,6 +409,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   userName: {
+    marginLeft: 4,
     padding: 4,
   },
 });

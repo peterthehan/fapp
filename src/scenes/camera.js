@@ -15,19 +15,18 @@ import React, {
 } from 'react-native';
 
 import {Surface} from 'gl-react-native';
+import Firebase from 'firebase';
 
+import Button from '../components/button';
+import ButtonStyles from '../styles/button-styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Instagram from '../components/instagram';
 import Saturation from '../components/saturation';
-import Vignette from '../components/vignette';
-import Firebase from 'firebase';
-import Button from '../components/button';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import TextStyles from '../styles/text-styles';
-import ButtonStyles from '../styles/button-styles';
 import TimeStamp from '../util/time-stamp';
+import Vignette from '../components/vignette';
 
 let database = new Firebase("poopapp1.firebaseio.com");
-
 var ImagePickerManager = require('NativeModules').ImagePickerManager;
 var filteredPic = null;
 var length = Dimensions.get('window').width;
@@ -247,13 +246,13 @@ class Camera extends Component {
               </Surface>
             </TouchableOpacity>
         </View>
-        <View>
+        <View style = {{flex: 1}}>
           <TextInput
             multiline = {true}
             style = {styles.multiline}
             maxLength = {limit}
             onChangeText = {(text) => this.setState({description: text})}
-            placeholder = {"Give a description"}
+            placeholder = {"Description"}
             placeholderTextColor = 'gray'
             underlineColorAndroid = 'black'
             value = {""}
@@ -266,7 +265,7 @@ class Camera extends Component {
             style = {styles.multiline}
             maxLength = {limit}
             onChangeText = {(text) => this.setState({location: text})}
-            placeholder = {"Enter location"}
+            placeholder = {"Location"}
             placeholderTextColor = 'gray'
             underlineColorAndroid = 'black'
             value = {this.state.location}
@@ -277,7 +276,7 @@ class Camera extends Component {
             style = {styles.multiline}
             maxLength = {limit}
             onChangeText = {(text) => this.setState({recipe: text})}
-            placeholder = {"Cooked it yourself? Add a recipe!"}
+            placeholder = {"Recipe"}
             placeholderTextColor = 'gray'
             underlineColorAndroid = 'black'
             value = {this.state.recipe}
@@ -424,22 +423,27 @@ class Camera extends Component {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    height: 20,
+    width: 60,
+    position: 'absolute',
+  },
   content: {
     flexDirection: 'row'
   },
   hashtag: {
     color: 'blue'
   },
+  filterButton: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
   multiline: {
     height: 40,
     padding: 4,
     marginTop: 2,
     color: 'black'
-  },
-  button: {
-    height: 20,
-    width: 60,
-    position: 'absolute',
   },
   titleBar: {
     alignItems: 'center',
@@ -457,11 +461,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
-  filterButton: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
+
 });
 
 const options = {

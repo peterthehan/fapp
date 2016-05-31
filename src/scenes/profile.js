@@ -81,7 +81,7 @@ class Profile extends Component {
               }
             });
           }
-          if (!theyRequested){
+          if(!theyRequested) {
             var theirRequests = snapshot.child(self.props.state + "/friendRequests");
             if(typeof theirRequests != 'undefined') {
               theirRequests.forEach(function(request) {
@@ -378,14 +378,14 @@ class Profile extends Component {
 
       });
 
-      //unfollow them
-      if (this.state.following) {
+      // unfollow them
+      if(this.state.following) {
         self.addFollow();
       }
 
-      //only decrease your follower count if they were following you before
-      if (theyWereFollowing){
-        numYourFollowers.transaction(function(currentFollowers){
+      // only decrease your follower count if they were following you before
+      if(theyWereFollowing) {
+        numYourFollowers.transaction(function(currentFollowers) {
           return currentFollowers - 1;
         });
       }
@@ -399,15 +399,14 @@ class Profile extends Component {
   }
 
   getFollowingText() {
-    if (this.state.following){
+    if(this.state.following) {
       return (
         <View>
-          <Text style = {{color: 'blue'}}>
+          <Text style = {{color: '#F26D6A'}}>
             Following
           </Text>
         </View>);
-    }
-    else {
+    } else {
       return (
         <View>
           <Text style = {{color: 'grey'}}>
@@ -418,10 +417,9 @@ class Profile extends Component {
   }
 
   getFollowingColor() {
-    if (this.state.following) {
-      return ('blue');
-    }
-    else{
+    if(this.state.following) {
+      return ('#F26D6A');
+    } else {
       return ('grey');
     }
   }
@@ -474,7 +472,7 @@ class Profile extends Component {
   }
 
   showFriends() {
-    if (this.state.loggedUser == this.props.state) {
+    if(this.state.loggedUser == this.props.state) {
       return (
         <View style = {{
           alignItems: 'center',
