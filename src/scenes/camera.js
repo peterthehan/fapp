@@ -24,6 +24,7 @@ import Button from '../components/button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TextStyles from '../styles/text-styles';
 import ButtonStyles from '../styles/button-styles';
+import TimeStamp from '../util/time-stamp';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -69,7 +70,7 @@ class Camera extends Component {
         }
         var post = ref.push({
           comments: 0,
-          date: Date.now(),
+          date: TimeStamp.now(),
           description: self.state.description,
           photoID: photoIDObj,
           rating: 0,

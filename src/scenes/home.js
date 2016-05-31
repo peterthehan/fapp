@@ -48,10 +48,12 @@ class Home extends Component {
     var self = this;
 
     // this section loads the postIDs into myBlob and pushes them to dataSource
-    database.once("value", function(snapshot) {
-      var postsSnapshot = snapshot.child("posts");
-      postsSnapshot.forEach(function(postSnapshot) {
-        myBlob.unshift(postSnapshot);
+    database.child("posts").once("value", function(snapshot) {
+      snapshot.forEach(function(postSnapshot) {
+        myBlob.push(postSnapshot);
+      });
+      myBlob.sort((a, b) => {
+        return b.val().date - a.val().date;
       });
       self.setState({dataSource: myBlob});
     });

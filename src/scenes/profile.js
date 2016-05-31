@@ -14,13 +14,14 @@ import React, {
 } from 'react-native';
 
 import Firebase from 'firebase';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import FriendList from './friend-list';
 import FollowingList from './following-list';
 import GridView from '../components/grid-view';
 import Post from '../components/post';
+import TimeStamp from '../util/time-stamp';
 import TitleBar from '../components/title-bar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -260,7 +261,7 @@ class Profile extends Component {
         objectID: this.state.loggedUser,
         action: "friendRequest",
         textDetails: "nothing",
-        date: Date.now(),
+        date: TimeStamp.now(),
       });
 
       //we want to follow them!
@@ -330,7 +331,7 @@ class Profile extends Component {
           objectID: self.state.loggedUser,
           action: "friendAccept",
           textDetails: "nothing",
-          date: Date.now(),
+          date: TimeStamp.now(),
         })
       });
       //we want to follow them!
@@ -441,7 +442,7 @@ class Profile extends Component {
         objectID: this.state.loggedUser,
         action: "following",
         textDetails: "nothing",
-        date: Date.now(),
+        date: TimeStamp.now(),
       });
     } else {
       var self = this;

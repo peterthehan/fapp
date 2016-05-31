@@ -18,6 +18,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FullImage from '../scenes/full-image';
 import PostDetails from "../scenes/post-details";
 import Profile from "../scenes/profile";
+import TimeStamp from '../util/time-stamp';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -137,7 +138,7 @@ class SmallPost extends Component {
           objectID: this.state.postID,
           action: "like",
           textDetails: "nothing",
-          date: Date.now(),
+          date: TimeStamp.now(),
         });
       }
       ratedVal.transaction(function(currentRating) {
