@@ -57,10 +57,16 @@ class Camera extends Component {
       database.once("value", function(snapshot){
         var usersnapshot = snapshot.child("users/" + usid);
         var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
-        var photoIDObj = {
-          uri: filteredPic,
-          isStatic: true,
-        };
+        if (filteredPic)
+        {
+          var photoIDObj = {
+            uri: filteredPic,
+            isStatic: true,
+          };
+        }
+        else {
+          var photoIDObj = this.state.avatarSource;
+        }
         var post = ref.push({
           comments: 0,
           date: Date.now(),
@@ -104,8 +110,8 @@ class Camera extends Component {
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
           avatarSource: source,
-          filteredPic: source,
         });
+        filteredPic = source.uri;
       }
     });
   }
@@ -121,9 +127,9 @@ class Camera extends Component {
         // You can display the image using either data:
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
-          avatarSource: source,
-          filteredPic: source,
+          avatarSource: source
         });
+        filteredPic = source.uri;
       }
     });
   }
@@ -139,14 +145,15 @@ class Camera extends Component {
         // You can display the image using either data:
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
-          avatarSource: source,
-          filteredPic: source,
+          avatarSource: source
         });
+        filteredPic = source.uri;
       }
     });
   }
 
   renderImage() {
+
     var filter;
     switch(this.state.filter) {
       case "sat":
@@ -186,7 +193,6 @@ class Camera extends Component {
         rendered.push(entry);
       }
     });
-
     this.state.tags = tags;
 
     var limit = 1000;
