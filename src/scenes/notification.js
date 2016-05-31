@@ -62,15 +62,15 @@ class Notification extends Component {
     });
   }
 
-  renderRow(rowData){
-      if (rowData.type == "events") //If the notification is for an event
+  renderRow(rowData) {
+      if(rowData.type == "events") //If the notification is for an event
       {
-        if (rowData.action == "comment") //This is when someone comments on your event
+        if(rowData.action == "comment") //This is when someone comments on your event
         {
           var nameText;
           var profilePicture;
           var commentText;
-          database.child("users/" + rowData.who).once("value", function(snapshot){
+          database.child("users/" + rowData.who).once("value", function(snapshot) {
             nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
             profilePicture = snapshot.val().profilePic.uri;
           });
@@ -185,8 +185,7 @@ class Notification extends Component {
       );
   }
 
-  queryData(){
-
+  queryData() {
   }
 
   render() {
@@ -205,7 +204,7 @@ class Notification extends Component {
     );
   }
 
-  goTo(rowData){
+  goTo(rowData) {
     const navigator = this.props.navigator;
     switch(rowData.type){
       case "events":
@@ -234,14 +233,19 @@ const styles = StyleSheet.create({
   userImage: {
     width: 25,
     height: 25,
-    margin: 10,
+    marginBottom: 8,
+    marginLeft: 8,
+    marginRight: 4,
+    marginTop: 8,
   },
   touchView: {
     flexDirection: 'row',
   },
   descriptionView: {
     flex: 1,
-    padding: 10,
+    paddingLeft: 4,
+    paddingRight: 8,
+    paddingVertical: 8,
   },
   description: {
   }
