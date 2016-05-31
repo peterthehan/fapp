@@ -321,9 +321,6 @@ class Post extends Component {
 
             </View>
             <Text style = {styles.descriptionModal}>
-              <Text style = {{fontWeight: 'bold'}}>
-                Description:&nbsp;
-              </Text>
               {this.state.description}
             </Text>
           </View>

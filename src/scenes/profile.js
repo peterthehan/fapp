@@ -70,7 +70,7 @@ class Profile extends Component {
         }
         var youRequested = false;
         var theyRequested = false;
-        if (!isFriends){
+        if(!isFriends) {
           var yourRequests = snapshot.child(loggedUserId + "/friendRequests");
           if(typeof yourRequests != 'undefined') {
             yourRequests.forEach(function(request) {
@@ -127,7 +127,7 @@ class Profile extends Component {
 
       var youRequested = false;
       var theyRequested = false;
-      if (!isFriends){
+      if(!isFriends) {
         var yourRequests = snapshot.child(loggedUserId + "/friendRequests");
         if(typeof yourRequests != 'undefined') {
           yourRequests.forEach(function(request) {
@@ -136,7 +136,7 @@ class Profile extends Component {
             }
           });
         }
-        if (!theyRequested){
+        if(!theyRequested) {
           var theirRequests = snapshot.child(self.props.state + "/friendRequests");
           if(typeof theirRequests != 'undefined') {
             theirRequests.forEach(function(request) {
@@ -196,31 +196,28 @@ class Profile extends Component {
   }
 
   getFriendsText(){
-    if (this.state.friends){
+    if(this.state.friends) {
       return (
         <View>
           <Text style={{color: 'blue'}}>
             Friends
           </Text>
         </View>);
-    }
-    else if (this.state.yourRequest){
+    } else if(this.state.yourRequest) {
       return(
         <View>
           <Text style={{color: 'grey'}}>
             Request Sent
           </Text>
         </View>);
-    }
-    else if (this.state.theirRequest){
+    } else if(this.state.theirRequest) {
       return(
         <View>
           <Text style={{color: 'grey'}}>
             Accept Request
           </Text>
         </View>);
-    }
-    else {
+    } else {
       return (
         <View>
           <Text style={{color: 'grey'}}>
@@ -230,7 +227,7 @@ class Profile extends Component {
     }
   }
 
-  getFriendsColor(){
+  getFriendsColor() {
     if (this.state.friends){
       return ('blue');
     }
@@ -239,7 +236,7 @@ class Profile extends Component {
     }
   }
 
-  addFriend(){
+  addFriend() {
     var yourFriends = database.child("users/" + this.state.loggedUser + "/friendsList");
     var theirFriends = database.child("users/" + this.props.state + "/friendsList");
     var theirRequests = database.child("users/" + this.props.state + "/friendRequests");
@@ -298,7 +295,7 @@ class Profile extends Component {
         }
       });
       //unfollow them
-      if (self.state.following){
+      if (self.state.following) {
         self.addFollow();
       }
     }
@@ -336,7 +333,7 @@ class Profile extends Component {
         })
       });
       //we want to follow them!
-      if (!self.state.following){
+      if (!self.state.following) {
         self.addFollow();
       }
     }
@@ -380,7 +377,7 @@ class Profile extends Component {
       });
 
       //unfollow them
-      if (this.state.following){
+      if (this.state.following) {
         self.addFollow();
       }
 
@@ -399,11 +396,11 @@ class Profile extends Component {
     }
   }
 
-  getFollowingText(){
+  getFollowingText() {
     if (this.state.following){
       return (
         <View>
-          <Text style={{color: 'blue'}}>
+          <Text style = {{color: 'blue'}}>
             Following
           </Text>
         </View>);
@@ -411,15 +408,15 @@ class Profile extends Component {
     else {
       return (
         <View>
-          <Text style={{color: 'grey'}}>
+          <Text style = {{color: 'grey'}}>
             Follow
           </Text>
         </View>);
     }
   }
 
-  getFollowingColor(){
-    if (this.state.following){
+  getFollowingColor() {
+    if (this.state.following) {
       return ('blue');
     }
     else{
@@ -427,7 +424,7 @@ class Profile extends Component {
     }
   }
 
-  addFollow(){
+  addFollow() {
     var theirNotifications = database.child("users/" + this.props.state + "/notifications");
     var userFollowing = database.child("users/" + this.state.loggedUser + "/followingList");
     var numFollowers = database.child("users/" + this.props.state + "/followers");
@@ -466,16 +463,16 @@ class Profile extends Component {
     }
   }
 
-  followingList(){
+  followingList() {
     this.props.navigator.push({component: FollowingList, state: this.props.state});
   }
 
-  friendList(){
+  friendList() {
     this.props.navigator.push({component: FriendList, state: this.props.state});
   }
 
-  showFriends(){
-    if (this.state.loggedUser == this.props.state){
+  showFriends() {
+    if (this.state.loggedUser == this.props.state) {
       return (
         <View style = {{
           alignItems: 'center',
@@ -485,7 +482,7 @@ class Profile extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.followingList.bind(this)}>
-            <Text style={{fontSize: 28}}>
+            <Text style = {{fontSize: 28}}>
               {this.state.followers}
             </Text>
             <Text>
@@ -495,7 +492,7 @@ class Profile extends Component {
           <TouchableOpacity
             style = {styles.button}
             onPress = {this.friendList.bind(this)}>
-            <Text style={{fontSize: 28}}>
+            <Text style = {{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
@@ -503,9 +500,8 @@ class Profile extends Component {
             </Text>
           </TouchableOpacity>
         </View>);
-    }
-    else{
-      return(
+    } else {
+      return (
         <View style = {{
           alignItems: 'center',
           justifyContent: 'center',
@@ -533,22 +529,22 @@ class Profile extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.followingList.bind(this)}>
-            <Text style={{fontSize: 28}}>
-              {this.state.followers}
-            </Text>
-            <Text>
-              Followers
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style = {styles.button}
             onPress = {this.friendList.bind(this)}>
-            <Text style={{fontSize: 28}}>
+            <Text style = {{fontSize: 28}}>
               {this.state.numberFriends}
             </Text>
             <Text>
               Friends
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style = {styles.button}
+            onPress = {this.followingList.bind(this)}>
+            <Text style = {{fontSize: 28}}>
+              {this.state.followers}
+            </Text>
+            <Text>
+              Followers
             </Text>
           </TouchableOpacity>
         </View>
@@ -557,7 +553,7 @@ class Profile extends Component {
   }
 
   render() {
-    return(
+    return (
       <View style = {{flex: 1}}>
         <TitleBar
           hasBack = {true}
@@ -567,7 +563,7 @@ class Profile extends Component {
         <View style = {{
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 30,
+          padding: 8,
         }}>
           <Image
             style = {{
@@ -577,7 +573,7 @@ class Profile extends Component {
             // resizeMode = {Image.resizeMode.center}
             source = {{uri: this.state.profilePic}}
           />
-          <Text style = {{fontSize: 25, color: 'black',}}>
+          <Text style = {{fontSize: 24, color: 'black',}}>
             {this.state.name}
           </Text>
         </View>
@@ -594,16 +590,12 @@ class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-  item: {
-    height: 100,
-    margin: 10,
-    width: 100,
-  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
-  }
+    paddingLeft: 4,
+    paddingRight: 4,
+  },
 });
 
 module.exports = Profile;
