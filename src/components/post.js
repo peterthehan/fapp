@@ -107,7 +107,7 @@ class Post extends Component {
     this.props.navigator.push({component: Profile, state: this.state.userID});
   }
 
-  fullImage(){
+  fullImage() {
     this.setState({modalVisible: false});
     this.props.navigator.push({component: FullImage, state: this.state.photo});
   }
@@ -172,7 +172,7 @@ class Post extends Component {
     if(this.state.favorited) {
       return 'orange';
     } else {
-      return 'grey';
+      return 'black';
     }
   }
 
@@ -333,41 +333,36 @@ class Post extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    marginBottom: 4,
-    marginLeft: 8,
-    marginRight: 8,
-    marginTop: 4,
+    marginHorizontal: 8,
+    marginVertical: 4,
   },
   buttonView: {
     alignItems: 'center',
-    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'center',
-    left: 0,
     padding: 4,
-    right: 0,
   },
   buttonViewModal: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingLeft: 5,
+    paddingLeft: 4,
   },
   container: {
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 4,
     flex: 1,
-    marginBottom: 20,
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 20,
+    marginHorizontal: 8,
+    marginVertical: 16,
   },
   descriptionModal: {
-    marginLeft: 2,
-    padding: 5,
+    marginLeft: 4,
+    padding: 4,
   },
   descriptionView: {
-    padding: 12,
+    marginBottom: 4,
+    marginLeft: 4,
+    padding: 4,
   },
   description: {
     color: 'black'
@@ -388,7 +383,7 @@ const styles = StyleSheet.create({
   modalUserBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 10,
+    margin: 8,
   },
   photoTouch: {
     height: windowSize.width / 2 - 6,
@@ -406,11 +401,13 @@ const styles = StyleSheet.create({
     borderRadius: 90,
     height: 30,
     width: 30,
-    padding: 4,
+    paddingLeft: 4,
+    paddingTop: 4,
   },
   userName: {
+    color: 'black',
     marginLeft: 4,
-    padding: 4,
+    paddingTop: 4,
   },
 });
 
