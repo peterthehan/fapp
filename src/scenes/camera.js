@@ -21,7 +21,7 @@ import Saturation from '../components/saturation';
 import Vignette from '../components/vignette';
 import Firebase from 'firebase';
 import Button from '../components/button';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import TextStyles from '../styles/text-styles';
 import ButtonStyles from '../styles/button-styles';
 
@@ -70,12 +70,6 @@ class Camera extends Component {
           user: userName,
           userID: usid,
         });
-
-        self.state.tags.forEach((t) => {
-          database.child("posts/" + post.key() + "/tags").push({tag: t});
-          database.child("tags/" + t.substring(1) + "/postList").push({postId: post.key()});
-        });
-
         postList.push({
           postId: post.key(),
         });
@@ -93,6 +87,42 @@ class Camera extends Component {
 
   openCamera() {
     ImagePickerManager.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if(response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if(response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          avatarSource: source,
+          filteredPic: source,
+        });
+      }
+    });
+  }
+
+  takePicture() {
+    ImagePickerManager.launchCamera(options, (response) => {
+      console.log('Response = ', response);
+      if(response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if(response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          avatarSource: source,
+          filteredPic: source,
+        });
+      }
+    });
+  }
+
+  choosePicture() {
+    ImagePickerManager.launchImageLibrary(options, (response) => {
       console.log('Response = ', response);
       if(response.didCancel) {
         console.log('User cancelled image picker');
@@ -149,19 +179,20 @@ class Camera extends Component {
         rendered.push(entry);
       }
     });
-
-    this.state.tags = tags;
-
     var limit = 1000;
 
     return (
       <View>
         <View style = {styles.titleBar, {padding: 10, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F26D6A'}}>
-          <View style = {{flex: 1, alignItems: 'center'}}>
+          <View style = {{flex: 1}}>
             {this.cameraButton()}
+          </View>
+          <View style = {{flex: 2, alignItems: 'center'}}>
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
+          </View>
+          <View style = {{flex: 1}}>
           </View>
       </View>
 
@@ -305,16 +336,16 @@ class Camera extends Component {
 
   testImage() {
     return (
-      <Instagram
-        brightness = {1}
-        saturation = {1}
-        contrast = {1.5}
-        hue = {.25}
-        sepia = {.25}
-        gray = {0}
-        mixFactor = {.25}
-        tex = {this.ogImage()}
-      />
+        <Instagram
+          brightness = {1}
+          saturation = {1}
+          contrast = {1.5}
+          hue = {.25}
+          sepia = {.25}
+          gray = {0}
+          mixFactor = {.25}
+          tex = {this.ogImage()}
+        />
     );
   }
 
@@ -323,11 +354,36 @@ class Camera extends Component {
       <View style = {{flex: 1}}>
         <View style = {styles.titleBar}>
           <View style = {{flex: 1, alignItems: 'center'}}>
-            {this.cameraButton()}
             <Text style = {styles.titleBarText}>
               Create a Post
             </Text>
           </View>
+        </View>
+
+        <View style = {{padding: 20, marginTop: 40}}>
+          <TouchableOpacity 
+            style = {{flex: 1, alignItems: 'center', padding: 10}}
+            onPress = {this.takePicture.bind(this)}>
+            <Text>
+              <Icon name = "camera" color = '#F26D6ACC' size = {120}/>
+            </Text>
+            <Text
+              style = {{fontSize: 20, color: '#000000CC'}}>
+              &nbsp;Take Photo...
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style = {{flex: 1, alignItems: 'center', padding: 10}}
+            onPress = {this.choosePicture.bind(this)}>
+            <Text>
+              <Icon name = "file-image-o" color = '#F26D6ACC' size = {120}/>
+            </Text>
+            <Text
+              style = {{fontSize: 20, color: '#000000CC'}}>
+              &nbsp;Choose from Library...
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -344,8 +400,6 @@ class Camera extends Component {
       </TouchableOpacity>
     );
   }
-
-
 
   render() {
     if(this.state.avatarSource) {
@@ -372,7 +426,6 @@ const styles = StyleSheet.create({
   button: {
     height: 20,
     width: 60,
-    position: 'absolute',
   },
   titleBar: {
     alignItems: 'center',
