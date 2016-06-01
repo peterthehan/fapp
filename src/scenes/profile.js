@@ -423,10 +423,12 @@ class Profile extends Component {
   addFollow() {
     var theirNotifications = database.child("users/" + this.props.state + "/notifications");
     var userFollowing = database.child("users/" + this.state.loggedUser + "/followingList");
+    var theirFollowers = database.child("users/" + this.props.state + "/followersList");
     var numFollowers = database.child("users/" + this.props.state + "/followers");
 
     if(!this.state.following) {
       userFollowing.push({userId: this.props.state});
+      theirFollowers.push({userId: this.state.loggedUser});
       numFollowers.transaction(function(currentFollowers) {
         return currentFollowers + 1;
       });
@@ -441,11 +443,24 @@ class Profile extends Component {
     } else {
       var self = this;
 
+      //delete from your followingList
       database.child("users/" + self.state.loggedUser + "/followingList").once("value", function(followData) {
         if(typeof followData != 'undefined') {
           followData.forEach(function(follower) {
             if(follower.val().userId == self.props.state) {
               var toDelete = database.child("users/" + self.state.loggedUser + "/followingList/" + follower.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+
+      //delete from their followersList
+      database.child("users/" + self.props.state + "/followersList").once("value", function(followData) {
+        if(typeof followData != 'undefined') {
+          followData.forEach(function(follower) {
+            if(follower.val().userId == self.state.loggedUser) {
+              var toDelete = database.child("users/" + self.props.state + "/followersList/" + follower.key().toString() + "/userId");
               toDelete.set(null);
             }
           });
