@@ -15,7 +15,6 @@ import Firebase from 'firebase';
 import CreateEvent from '../scenes/create-event';
 import EventPost from '../components/event-post';
 import GridView from '../components/grid-view';
-import SearchBar from '../components/search-bar';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -84,7 +83,6 @@ class Event extends Component {
           navigator = {this.props.navigator}
           text = "Events"
         />
-        <SearchBar />
         <GridView
           dataSource = {this.state.dataSource}
           onRefresh = {this.queryData.bind(this)}

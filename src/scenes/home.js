@@ -28,6 +28,7 @@ class Home extends Component {
       dataSourceAll: [],
       dataSourceFollowing: [],
       selectedOption: 'All',
+      searchText: '',
     };
   }
 
@@ -59,43 +60,81 @@ class Home extends Component {
     var myBlob = [];
     var self = this;
 
-    // this section loads the postIDs into myBlob and pushes them to dataSourceAll
-    database.child("posts").once("value", function(snapshot) {
-      snapshot.forEach(function(postSnapshot) {
-        myBlob.push(postSnapshot);
+    if(this.state.searchText === ''){
+      // this section loads the postIDs into myBlob and pushes them to dataSourceAll
+      database.child("posts").once("value", function(snapshot) {
+        snapshot.forEach(function(postSnapshot) {
+          myBlob.push(postSnapshot);
+        });
+        myBlob.sort((a, b) => {
+          return b.val().date - a.val().date;
+        });
+        self.setState({dataSourceAll: []});
+        self.setState({dataSourceAll: myBlob});
       });
-      myBlob.sort((a, b) => {
-        return b.val().date - a.val().date;
+    } else {
+      database.child("tags/" + this.state.searchText + "/postList").once("value", function(snapshot){
+        snapshot.forEach(function(postElementSnapshot){
+          database.child("posts/" + postElementSnapshot.val().postId).once("value", function(postSnapshot){
+            myBlob.push(postSnapshot);
+          });
+        });
+        myBlob.sort((a, b) => {
+          return b.val().date - a.val().date;
+        });
+        self.setState({dataSourceAll: []});
+        self.setState({dataSourceAll: myBlob});
       });
-      self.setState({dataSourceAll: []});
-      self.setState({dataSourceAll: myBlob});
-    });
+    }
   }
 
   queryDataFollowing() {
     var myBlob = [];
     var self = this;
 
-    // this section loads the postIDs into myBlob and pushes them to dataSourceFollowing
-    database.once("value", function(snapshot) {
-      var followingList = snapshot.child("users/" + self.state.userId + "/followingList");
-      followingList.forEach(function(followingSnapshot) {
-        var follower = snapshot.child("users/" + followingSnapshot.val().userId);
-        if(follower.hasChild("postList")) {
-          var postList = follower.child("postList");
-          postList.forEach(function(postSnapshot) {
-            var postId = postSnapshot.val().postId;
-            var postData = snapshot.child("posts/" + postId);
-            myBlob.push(postData);
+    if(this.state.searchText === ''){
+      // this section loads the postIDs into myBlob and pushes them to dataSourceFollowing
+      database.once("value", function(snapshot) {
+        var followingList = snapshot.child("users/" + self.state.userId + "/followingList");
+        followingList.forEach(function(followingSnapshot) {
+          var follower = snapshot.child("users/" + followingSnapshot.val().userId);
+          if(follower.hasChild("postList")) {
+            var postList = follower.child("postList");
+            postList.forEach(function(postSnapshot) {
+              var postId = postSnapshot.val().postId;
+              var postData = snapshot.child("posts/" + postId);
+              myBlob.push(postData);
+            });
+          }
+        });
+        myBlob.sort((a, b) => {
+          return b.val().date - a.val().date;
+        });
+        self.setState({dataSourceFollowing: []});
+        self.setState({dataSourceFollowing: myBlob});
+      });
+    } else {
+      var following = [];
+      database.child("users/" + database.getAuth().uid + "/followingList").once("value", function(snapshot){
+        snapshot.forEach(function(followingSnapshot){
+          following.push(followingSnapshot.val().userId);
+        });
+      });
+      database.child("tags/" + this.state.searchText + "/postList").once("value", function(snapshot){
+        snapshot.forEach(function(postElementSnapshot){
+          database.child("posts/" + postElementSnapshot.val().postId).once("value", function(postSnapshot){
+            if(following.indexOf(postSnapshot.val().userID) >= 0){
+              myBlob.push(postSnapshot);
+            }
           });
-        }
+        });
+        myBlob.sort((a, b) => {
+          return b.val().date - a.val().date;
+        });
+        self.setState({dataSourceFollowing: []});
+        self.setState({dataSourceFollowing: myBlob});
       });
-      myBlob.sort((a, b) => {
-        return b.val().date - a.val().date;
-      });
-      self.setState({dataSourceFollowing: []});
-      self.setState({dataSourceFollowing: myBlob});
-    });
+    }
   }
 
   renderFeed() {
@@ -124,6 +163,15 @@ class Home extends Component {
     });
   }
 
+  onChangeText(text){
+    this.setState({searchText: text});
+    if(this.state.selectedOption === 'All'){
+      this.queryDataAll();
+    } else {
+      this.queryDataFollowing();
+    }
+  }
+
   render() {
     const options = [
       "All",
@@ -144,7 +192,7 @@ class Home extends Component {
           selectedTint = {'#F26D6A'}
           tint = {'white'}
         />
-        <SearchBar/>
+        <SearchBar onChangeText = {this.onChangeText.bind(this)}/>
         {this.renderFeed()}
       </View>
     );
