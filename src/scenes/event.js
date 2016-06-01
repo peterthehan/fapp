@@ -49,7 +49,16 @@ class Event extends Component {
       var usersEvents = snapshot.child("users/" + database.getAuth().uid + "/eventsList");
       usersEvents.forEach(function(eventIdSnapshot) {
         var eventToPush = snapshot.child("events/" + eventIdSnapshot.val().eventId);
-        myBlob.push(eventToPush);
+
+        var isIn = false;
+        for (var i = 0; i < myBlob.length; i++){
+          if (myBlob[i].key() === eventToPush.key()){
+            isIn = true;
+          }
+        }
+        if (!isIn){
+          myBlob.push(eventToPush);
+        }
       });
       self.setState({dataSource: myBlob});
     });
