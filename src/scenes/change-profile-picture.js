@@ -42,7 +42,7 @@ class ChangeProfilePicture extends Component {
         />
 
         <Text style = {{marginTop: 14, marginLeft: 20}}>
-          Current Profile Picture:
+          Current Profile Picture
         </Text>
 
         <View style = {{padding: 8, alignItems: 'center'}}>
@@ -73,14 +73,14 @@ class ChangeProfilePicture extends Component {
           buttonStyles = {ButtonStyles.transparentButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
           onPress = {this.getNewProfilePicture.bind(this)}
-          text = "Choose Profile Picture"
+          text = "New Profile Picture"
           underlayColor = {'gray'}
         />
         <Button
           buttonStyles = {ButtonStyles.transparentButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
           onPress = {this.changeProfilePicture.bind(this)}
-          text = "Confirm Change"
+          text = "Submit"
           underlayColor = {'gray'}
         />
       </View>
@@ -116,15 +116,15 @@ class ChangeProfilePicture extends Component {
   }
 
   changeProfilePicture() {
-    if(this.state.newProfilePic == ''|| this.state.newProfilePic.uri == this.state.profilePic){
-      Alert.alert('Error!','Select a new user profile picture.');
-    } else{
+    if(this.state.newProfilePic === '' || this.state.newProfilePic.uri === this.state.profilePic) {
+      Alert.alert('Error!', 'Select a new user profile picture.');
+    } else {
       var ref = database.child("users");
       ref.child(database.getAuth().uid).update({
         profilePic: this.state.newProfilePic,
       });
       this.setState({profilePic: this.state.newProfilePic.uri});
-      Alert.alert('Success!','User profile picture was changed.');
+      Alert.alert('Success!', 'User profile picture was changed.');
     }
   }
 }
@@ -135,7 +135,6 @@ const options = {
   cameraType: 'front', // 'front' or 'back'
   cancelButtonTitle: 'Cancel',
   chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
-  durationLimit: 10, // video recording max time in seconds
   maxHeight: 370, // photos only
   maxWidth: 370, // photos only
   mediaType: 'photo', // 'photo' or 'video'
@@ -143,7 +142,6 @@ const options = {
   quality: 1, // 0 to 1, photos only
   takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
   title: 'Select Avatar', // specify null or empty string to remove the title
-  videoQuality: 'high', // 'low', 'medium', or 'high'
 };
 
 module.exports = ChangeProfilePicture;
