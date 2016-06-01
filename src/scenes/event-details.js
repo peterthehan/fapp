@@ -4,6 +4,7 @@ import React, {
   Component,
   Dimensions,
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   Switch,
@@ -18,6 +19,7 @@ import Button from '../components/button';
 import ButtonStyles from '../styles/button-styles';
 import Comments from '../components/comments';
 import TitleBar from '../components/title-bar';
+import GridView from '../components/grid-view';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -27,11 +29,13 @@ class EventDetails extends Component {
     this.state = {
       status: '',
       photo: 'default',
+      modalVisible: false,
     }
   }
 
   componentDidMount() {
     var eventSnapshot = this.props.state;
+    var self = this;
     this.setState({
       key: eventSnapshot.key(),
       description: eventSnapshot.val().description,
@@ -43,6 +47,40 @@ class EventDetails extends Component {
       startTime: eventSnapshot.val().startTime,
       title: eventSnapshot.val().title,
     });
+
+    var loggedUserId = database.getAuth().uid;
+    self.setState({
+      loggedUser: loggedUserId,
+    });
+
+    database.child("events/").on("value", function(snapshot) {
+      var isGoing = 'no';
+      var myBlob = [];
+      var goingList = snapshot.child(eventSnapshot.key() + "/goingList");
+
+      if(typeof goingList != 'undefined') {
+        goingList.forEach(function(going) {
+          database.child("users/" + going.val().userID).on("value", function(userSnapshot) {
+            var proPic = userSnapshot.val().profilePic;
+            var name = userSnapshot.val().firstName + " " + userSnapshot.val().lastName;
+            myBlob.push({profilePic: proPic, username: name});
+          });
+
+
+          if(going.val().userID == loggedUserId) {
+            isGoing = 'yes';
+          }
+        });
+      }
+      var numGoing = snapshot.child(eventSnapshot.key() + "/going");
+
+      self.setState({
+        status: isGoing,
+        numberGoing: numGoing.val(),
+        dataSource: myBlob,
+      });
+    });
+
   }
 
   render() {
@@ -67,45 +105,42 @@ class EventDetails extends Component {
           </Image>
           <View style = {styles.sectionView}>
             <View style = {styles.statusView}>
-              <TouchableOpacity
-                onPress = {() => this.setState({status: 'yes'})}
-                style = {styles.statusButton}
-                disabled = {this.state.status === 'yes' ? true : false}>
-                <MaterialIcon
-                  color = {this.state.status === 'yes' ? '#F26D6A' : 'gray'}
-                  name = 'restaurant'
-                  size = {16}
-                />
-                <Text style = {[styles.statusText, {color: this.state.status === 'yes' ? '#F26D6A' : 'gray'}]}>
-                  Going
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress = {() => this.setState({status: 'maybe'})}
-                style = {styles.statusButton}
-                disabled = {this.state.status === 'maybe' ? true : false}>
-                <MaterialIcon
-                  color = {this.state.status === 'maybe' ? '#F26D6A' : 'gray'}
-                  name = 'help-outline'
-                  size = {16}
-                />
-                <Text style = {[styles.statusText, {color: this.state.status === 'maybe' ? '#F26D6A' : 'gray'}]}>
-                  Interested
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress = {() => this.setState({status: 'no'})}
-                style = {styles.statusButton}
-                disabled = {this.state.status === 'no' ? true : false}>
-                <MaterialIcon
-                  color = {this.state.status === 'no' ? '#F26D6A' : 'gray'}
-                  name = 'hotel'
-                  size = {16}
-                />
-                <Text style = {[styles.statusText, {color: this.state.status === 'no' ? '#F26D6A' : 'gray'}]}>
-                  Not going
-                </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              onPress = {() => this.setModalVisible(true)}
+              style = {styles.statusButton}>
+              <Text>
+                {this.state.numberGoing}
+              </Text>
+              <Text style = {[styles.statusText, {color: 'gray'}]}>
+                Who is going?
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress = {() => this.goingButton()}
+              style = {styles.statusButton}
+              disabled = {this.state.status === 'yes' ? true : false}>
+              <MaterialIcon
+                color = {this.state.status === 'yes' ? '#F26D6A' : 'gray'}
+                name = 'restaurant'
+                size = {16}
+              />
+              <Text style = {[styles.statusText, {color: this.state.status === 'yes' ? '#F26D6A' : 'gray'}]}>
+                Going
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress = {() => this.notGoingButton()}
+              style = {styles.statusButton}
+              disabled = {this.state.status === 'no' ? true : false}>
+              <MaterialIcon
+                color = {this.state.status === 'no' ? '#F26D6A' : 'gray'}
+                name = 'hotel'
+                size = {16}
+              />
+              <Text style = {[styles.statusText, {color: this.state.status === 'no' ? '#F26D6A' : 'gray'}]}>
+                Not going
+              </Text>
+            </TouchableOpacity>
             </View>
           </View>
           <View style = {styles.sectionView}>
@@ -143,13 +178,87 @@ class EventDetails extends Component {
             />
           </View>
         </ScrollView>
+        <Modal
+          onRequestClose = {() => {this.setModalVisible(false)}}
+          visible = {this.state.modalVisible}>
+          <View style = {styles.containerModal}>
+            <View style = {styles.modalUserBar}>
+              <TouchableOpacity onPress = {() => {this.setModalVisible(false);}}>
+                <MaterialIcon
+                  borderWidth = {7}
+                  color = 'black'
+                  name = 'close'
+                  size = {25}
+                />
+              </TouchableOpacity>
+            </View>
+            <GridView
+              dataSource = {this.state.dataSource}
+              onRefresh = {this.queryData.bind(this)}
+              renderRow = {this.renderRow.bind(this)}
+            />
+          </View>
+        </Modal>
       </View>
     );
   }
 
-  goToGuestList() {
-    alert('Guest list not implemented.');
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
+
+  goingButton(){
+    database.child("events/" + this.state.key + "/goingList").push({userID: this.state.loggedUser});
+
+    var numGoing = database.child("events/" + this.state.key + "/going");
+    numGoing.transaction(function(currentGoing) {
+      return currentGoing + 1;
+    });
+  }
+
+  notGoingButton(){
+    var self = this;
+    var numGoing = database.child("events/" + this.state.key + "/going");
+
+    database.child("events/").once("value", function(snapshot) {
+      var goingList = snapshot.child(self.state.key + "/goingList");
+      if(typeof goingList != 'undefined') {
+        goingList.forEach(function(request) {
+          if(request.val().userID == self.state.loggedUser) {
+            var toDelete = database.child("events/" + self.state.key + "/goingList/" + request.key().toString() + "/userID");
+            toDelete.set(null);
+          }
+        });
+      }
+
+      numGoing.transaction(function(currentGoing) {
+        return currentGoing - 1;
+      });
+    });
+  }
+
+  renderRow(friend) {
+    return (
+      <View style = {styles.friendContainer}>
+        <View style = {styles.friendTouchView}>
+          <Image
+            style = {styles.friendUserImage}
+            source = {friend.profilePic}
+          />
+          <View style = {styles.friendNameView}>
+            <Text style = {styles.friendName}>
+              {friend.username}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  queryData() {
+
+  }
+
 }
 
 const styles = StyleSheet.create({
@@ -204,6 +313,40 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
+  containerModal: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    flex: 1,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 20,
+  },
+  modalUserBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    margin: 10,
+  },
+  friendContainer: {
+    width: Dimensions.get("window").width,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+  },
+  friendUserImage: {
+    width: 25,
+    height: 25,
+    margin: 10,
+  },
+  friendTouchView: {
+    flexDirection: 'row',
+  },
+  friendNameView: {
+    flex: 1,
+    padding: 6,
+  },
+  friendName: {
+  }
 });
 
 module.exports = EventDetails;

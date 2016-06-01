@@ -420,7 +420,7 @@ class CreateEvent extends Component {
     }
 
     if (isIn){
-      return 'blue';
+      return '#F26D6A';
     }
     return 'white';
   }
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
   },
   friendNameView: {
     flex: 1,
-    padding: 10,
+    padding: 6,
   },
   friendName: {
   }
