@@ -14,12 +14,11 @@ import React, {
 import Firebase from 'firebase';
 
 import GridView from '../components/grid-view';
-import SearchBar from '../components/search-bar';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
-class FollowingList extends Component {
+class FollowersList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,10 +79,9 @@ class FollowingList extends Component {
       <View style = {{flex: 1}}>
         <TitleBar
           navigator = {this.props.navigator}
-          text = "Following List"
+          text = "Followers List"
           hasBack = {'true'}
         />
-        <SearchBar/>
         <GridView
           dataSource = {this.state.dataSource}
           onRefresh = {this.queryData.bind(this)}
@@ -116,4 +114,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = FollowingList;
+module.exports = FollowersList;

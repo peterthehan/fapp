@@ -3,6 +3,7 @@
 import React, {
   Alert,
   Component,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,7 +11,6 @@ import React, {
   View,
 } from 'react-native';
 
-import AppBar from '../components/app-bar';
 import Button from '../components/button';
 import Policy from './about-policy';
 import Source from './about-source';
@@ -44,80 +44,90 @@ class About extends Component {
           Version 1.0.0
         </Text>
 
-        <AppBar
-          image = {require('../images/logo.png')}
-        />
+        <View style = {styles.imageView}>
+          <Image
+            style = {styles.image}
+            source = {require('../images/logo.png')}
+          />
+        </View>
 
-        <Text style = {styles.memberTitle}>
-          Product Manager&nbsp;
-          <Text style = {styles.memberName}>
-            Peter Han
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Software Development Lead&nbsp;
-          <Text style = {styles.memberName}>
-            Andrew Han
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Quality Assurance Lead&nbsp;
-          <Text style = {styles.memberName}>
-            RJ Dioneda
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-           Algorithm Specialist&nbsp;
-          <Text style = {styles.memberName}>
-            Jessica Lin
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          User Interface Specialist&nbsp;
-          <Text style = {styles.memberName}>
-             Emma Li
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Software Architect&nbsp;
-          <Text style = {styles.memberName}>
-            Vinson Gong
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Business Analyst&nbsp;
-          <Text style = {styles.memberName}>
-            Ketan Kelkar
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Senior System Analyst&nbsp;
-          <Text style = {styles.memberName}>
-            David Le
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Database Specialist&nbsp;
-          <Text style = {styles.memberName}>
-            Daniel Seong
-          </Text>
-        </Text>
-        <Text style = {styles.memberTitle}>
-          Database Specialist&nbsp;
-          <Text style = {styles.memberName}>
-            Jonathan Shuai
-          </Text>
-        </Text>
+        <View style = {styles.memberView}>
+          <View style = {styles.memberTitleView}>
+            <Text style = {styles.memberTitle}>
+              Product Manager
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Software Development Lead
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Quality Assurance Lead
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Algorithm Specialist
+            </Text>
+            <Text style = {styles.memberTitle}>
+              User Interface Specialist
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Software Architect
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Business Analyst
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Senior System Analyst
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Database Specialist
+            </Text>
+            <Text style = {styles.memberTitle}>
+              Database Specialist
+            </Text>
+          </View>
+
+          <View style = {styles.memberNameView}>
+            <Text style = {styles.memberName}>
+              Peter Han
+            </Text>
+            <Text style = {styles.memberName}>
+              Andrew Han
+            </Text>
+            <Text style = {styles.memberName}>
+              RJ Dioneda
+            </Text>
+            <Text style = {styles.memberName}>
+              Jessica Lin
+            </Text>
+            <Text style = {styles.memberName}>
+              Emma Li
+            </Text>
+            <Text style = {styles.memberName}>
+              Vinson Gong
+            </Text>
+            <Text style = {styles.memberName}>
+              Ketan Kelkar
+            </Text>
+            <Text style = {styles.memberName}>
+              David Le
+            </Text>
+            <Text style = {styles.memberName}>
+              Daniel Seong
+            </Text>
+            <Text style = {styles.memberName}>
+              Jonathan Shuai
+            </Text>
+          </View>
+        </View>
 
         <Button
-          buttonStyles = {styles.buttonStyle1}
+          buttonStyles = {styles.buttonStyle}
           buttonTextStyles = {styles.buttonTextStyles}
           onPress = {this.source.bind(this)}
           text = "Open Source Libraries"
           underlayColor = {'gray'}
         />
         <Button
-          buttonStyles = {styles.buttonStyle2}
+          buttonStyles = {styles.buttonStyle}
           buttonTextStyles = {styles.buttonTextStyles}
           onPress = {this.policy.bind(this)}
           text = "Privacy Policy"
@@ -147,16 +157,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  buttonStyle1: {
+  imageView: {
     alignItems: 'center',
-    marginHorizontal: 16,
-    marginTop: 8,
-    padding: 12,
+    margin: 10,
   },
-  buttonStyle2: {
+  image: {
+    width: 100,
+    height: 100,
+  },
+  buttonStyle: {
     alignItems: 'center',
     marginHorizontal: 16,
-    padding: 12,
+    marginTop: 4,
+    padding: 8,
   },
   buttonTextStyles: {
     fontSize: 16,
@@ -165,14 +178,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
+  memberView: {
+    flexDirection: 'row',
+  },
+  memberTitleView: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  memberTitle: {
+    fontSize: 13,
+    textAlign: 'right',
+    margin: 3,
+  },
+  memberNameView: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
   memberName: {
     color: '#F26D6A',
     fontWeight: 'bold',
-  },
-  memberTitle: {
-    fontSize: 14,
-    marginLeft: 54,
+    fontSize: 13,
     textAlign: 'left',
+    margin: 3,
   },
 });
 

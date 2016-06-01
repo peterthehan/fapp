@@ -17,7 +17,7 @@ import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import FriendList from './friend-list';
-import FollowingList from './following-list';
+import FollowersList from './followers-list';
 import GridView from '../components/grid-view';
 import Post from '../components/post';
 import TimeStamp from '../util/time-stamp';
@@ -473,8 +473,8 @@ class Profile extends Component {
     }
   }
 
-  followingList() {
-    this.props.navigator.push({component: FollowingList, state: this.props.state});
+  followersList() {
+    this.props.navigator.push({component: FollowersList, state: this.props.state});
   }
 
   friendList() {
@@ -491,7 +491,7 @@ class Profile extends Component {
         }}>
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.followingList.bind(this)}>
+            onPress = {this.followersList.bind(this)}>
             <Text style = {{fontSize: 28}}>
               {this.state.followers}
             </Text>
@@ -549,7 +549,7 @@ class Profile extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style = {styles.button}
-            onPress = {this.followingList.bind(this)}>
+            onPress = {this.followersList.bind(this)}>
             <Text style = {{fontSize: 28}}>
               {this.state.followers}
             </Text>

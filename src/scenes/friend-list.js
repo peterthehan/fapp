@@ -14,7 +14,6 @@ import React, {
 import Firebase from 'firebase';
 
 import GridView from '../components/grid-view';
-import SearchBar from '../components/search-bar';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -85,7 +84,6 @@ class FriendList extends Component {
           text = "Friend List"
           hasBack = {'true'}
         />
-        <SearchBar/>
         <GridView
           dataSource = {this.state.dataSource}
           onRefresh = {this.queryData.bind(this)}
