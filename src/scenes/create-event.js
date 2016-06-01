@@ -32,6 +32,8 @@ const timeEndStr = 'Pick an End Time';
 let events = new Firebase("poopapp1.firebaseio.com/events");
 let users = new Firebase("poopapp1.firebaseio.com/users");
 
+var ImagePickerManager = require('NativeModules').ImagePickerManager;
+
 const windowSize = Dimensions.get('window');
 
 class CreateEvent extends Component {
@@ -71,6 +73,8 @@ class CreateEvent extends Component {
       title: '',
       modalVisible: false,
       invited: [],
+
+      image: '',
     }
   }
 
@@ -78,10 +82,38 @@ class CreateEvent extends Component {
     this.queryData();
   }
 
+  blah() {
+    ImagePickerManager.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if(response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if(response.error) {
+        console.log('ImagePickerManager Error: ', response.error);
+      } else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+        this.setState({
+          image: source,
+        });
+      }
+    });
+  }
+
   render() {
     return(
       <View style = {styles.container}>
         {this.renderTitleBar()}
+        <View style={{backgroundColor: 'grey', justifyContent:'center', alignItems:'center'}}>
+          <TouchableOpacity
+            onPress = {()=>this.blah()}
+            style={{height: Dimensions.get("window").width/2, width: Dimensions.get("window").width/2,}}
+          >
+            <Image
+              source={this.state.image}
+              style={{borderWidth:2, borderColor: 'black', flex:1, height: Dimensions.get("window").width/2, width: Dimensions.get("window").width/2}}
+            />
+          </TouchableOpacity>
+        </View>
         <View style = {{flexDirection: 'row'}}>
           {this.renderTitleInput()}
           {this.renderToggle()}
@@ -453,20 +485,18 @@ class CreateEvent extends Component {
     } else if( this.state.description === '') {
       Alert.alert('', 'Missing event description.');
     } else{
-
       var eventRef = events.push({
         userID: this.state.loggedUser,
         description: this.state.description,
         endDate: this.state.dateEnd,
         endTime: this.state.timeEnd,
         isPublic: this.state.publicEvent,
-        photo: 'https://s-media-cache-ak0.pinimg.com/236x/d8/0d/1e/d80d1efe3a4b6b4d8bd186bdd788902c.jpg',
+        photo: this.state.image === '' ? {uri: 'http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png', isStatic: true} : this.state.image,
         startDate: this.state.dateStart,
         startTime: this.state.timeStart,
         title: this.state.title,
       });
 
-      users.child(this.state.loggedUser + "/eventsList").push({eventId: eventRef.key()});
       for (var i = 0; i < this.state.invited.length; i++){
         users.child(this.state.invited[i] + "/eventsList").push({eventId: eventRef.key()});
         users.child(this.state.invited[i] + "/notifications").push({
@@ -499,6 +529,7 @@ class CreateEvent extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
+    flex:1,
   },
   containerModal: {
     backgroundColor: 'white',
@@ -601,4 +632,20 @@ const styles = StyleSheet.create({
   }
 });
 
+const options = {
+  allowsEditing: false, // Built in functionality to resize, reposition the image after selection
+  angle: 0, // android only, photos only
+  cameraType: 'front', // 'front' or 'back'
+  cancelButtonTitle: 'Cancel',
+  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+  durationLimit: 10, // video recording max time in seconds
+  maxHeight: 370, // photos only
+  maxWidth: 370, // photos only
+  mediaType: 'photo', // 'photo' or 'video'
+  noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  quality: 1, // 0 to 1, photos only
+  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+  title: 'Select Avatar', // specify null or empty string to remove the title
+  videoQuality: 'high', // 'low', 'medium', or 'high'
+};
 module.exports = CreateEvent;
