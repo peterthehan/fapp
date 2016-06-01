@@ -19,7 +19,7 @@ let database = new Firebase("poopapp1.firebaseio.com");
 
 console.ignoredYellowBox = ['Warning'];
 
-class PoopApp extends Component {
+class Fapp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,4 +89,4 @@ class PoopApp extends Component {
   }
 }
 
-AppRegistry.registerComponent('PoopProject', () => PoopApp);
+AppRegistry.registerComponent('Fapp', () => Fapp);

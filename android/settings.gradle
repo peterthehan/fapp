@@ -1,4 +1,4 @@
-rootProject.name = 'PoopProject'
+rootProject.name = 'Fapp'
 
 include ':app'
 include ':react-native-share'
