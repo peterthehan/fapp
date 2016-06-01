@@ -20,19 +20,14 @@ class SearchBar extends Component {
     return (
       <View>
       <TextInput
-        onChangeText = {(text) => this.setState({content: text})}
+        onChangeText = {(text) => {this.setState({content: text});
+        this.props.onSearchChange (this.state.content)}}
         placeholder = "Search"
         placeholderTextColor = 'gray'
         style = {{height: 40}}
         underlineColorAndroid = 'gray'
       />
-      <Button
-        buttonStyles = {{}}
-        buttonTextStyles = {{}}
-        onPress = {(content) => this.props.onSearchChange (this.state.content)}
-        text = "submit"
-        underlayColor = {'gray'}
-      />
+      
       </View>
     );
   }
