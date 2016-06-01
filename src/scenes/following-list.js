@@ -35,7 +35,7 @@ class FollowingList extends Component {
     var myBlob = [];
     var self = this;
 
-    database.child("users/" + this.props.state + "/followingList").once("value", function(snapshot) {
+    database.child("users/" + this.props.state + "/followersList").once("value", function(snapshot) {
       snapshot.forEach(function(followingIdSnapshot) {
         database.child("users/" + followingIdSnapshot.val().userId).once("value", function(followingSnapshot){
           let following = {
