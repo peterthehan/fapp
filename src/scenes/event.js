@@ -77,6 +77,10 @@ class Event extends Component {
     this.props.navigator.push({component: CreateEvent});
   }
 
+  onSearchChange(text){
+    alert (text);
+  }
+
   render() {
     return (
       <View style = {{flex: 1}}>
@@ -84,7 +88,7 @@ class Event extends Component {
           navigator = {this.props.navigator}
           text = "Events"
         />
-        <SearchBar />
+        <SearchBar onSearchChange = {this.onSearchChange}/>
         <GridView
           dataSource = {this.state.dataSource}
           onRefresh = {this.queryData.bind(this)}
