@@ -91,7 +91,7 @@ class Camera extends Component {
       });
     });
     this.props.navigator.pop();
-    this.setState({avatarSource: null});
+    this.setState({avatarSource: null, description: '', location: '', recipe: ''});
   }
 
   cancel() {
@@ -202,7 +202,7 @@ class Camera extends Component {
     var limit = 1000;
 
     return (
-      <ScrollView ref = 'scrollView' showsVerticalScrollIndicator={this.state.enableScroll} scrollEnabled={this.state.enableScroll} style = {{flex: 1}}>
+      <ScrollView ref = 'scrollView' keyboardShouldPersistTaps={true} showsVerticalScrollIndicator={this.state.enableScroll} scrollEnabled={this.state.enableScroll} style = {{flex: 1}}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Create A Post"
@@ -244,6 +244,7 @@ class Camera extends Component {
 
         <View>
           <TextInput
+            ref = 'descriptionRef'
             maxLength = {limit}
             //multiline = {true}
             onChangeText = {(text) => this.setState({description: text})}
@@ -253,7 +254,8 @@ class Camera extends Component {
             underlineColorAndroid = 'black'
             value = {""}
             onSubmitEditing = {() => {this.refs.location.focus();}}
-            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 150)}}
+            onEndEditing = {() => {this.setState({enableScroll: false})}}
+            onFocus = {() => {setTimeout(() => {this.setState({enableScroll: true})}, 150)}}
             >
             <Text>
               {rendered}
@@ -270,11 +272,13 @@ class Camera extends Component {
             underlineColorAndroid = 'black'
             value = {this.state.location}
             onSubmitEditing = {() => {this.refs.recipe.focus();}}
-            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 150)}}
+            onEndEditing = {() => {this.setState({enableScroll: false})}}
+            onFocus = {() => {setTimeout(() => {this.setState({enableScroll: true})}, 150)}}
           />
           <TextInput
+            ref = 'recipe'
             maxLength = {limit}
-            multiline = {true}
+            //multiline = {true}
             onChangeText = {(text) => this.setState({recipe: text})}
             placeholder = {"Recipe"}
             placeholderTextColor = 'gray'
@@ -282,12 +286,13 @@ class Camera extends Component {
             underlineColorAndroid = 'black'
             value = {this.state.recipe}
             onSubmitEditing = {() => {this.post()}}
-            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 150)}}
+            onEndEditing = {() => {this.setState({enableScroll: false})}}
+            onFocus = {() => {setTimeout(() => {this.setState({enableScroll: true})}, 150)}}
           />
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
             buttonTextStyles = {ButtonStyles.blackButtonText}
-            onPress = {this.post.bind(this)}
+            onPress = {() => {this.post()}}
             text = "Post"
             underlayColor = {'gray'}
           />
