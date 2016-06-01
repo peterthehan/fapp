@@ -25,7 +25,7 @@ class About extends Component {
           navigator = {this.props.navigator}
           text = "About"
         />
-        <Text> add description </Text>
+        <Text> Come download our gorgeous app! </Text>
       </View>
     );
   }
