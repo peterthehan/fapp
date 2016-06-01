@@ -497,6 +497,7 @@ class CreateEvent extends Component {
         title: this.state.title,
       });
 
+      users.child(this.state.loggedUser + "/eventsList").push({eventId: eventRef.key()});
       for (var i = 0; i < this.state.invited.length; i++){
         users.child(this.state.invited[i] + "/eventsList").push({eventId: eventRef.key()});
         users.child(this.state.invited[i] + "/notifications").push({
