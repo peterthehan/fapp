@@ -8,6 +8,7 @@ import React, {
   Dimensions,
   Image,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -73,7 +74,7 @@ class CreateEvent extends Component {
       title: '',
       modalVisible: false,
       invited: [],
-
+      enableScroll: false,
       image: '',
     }
   }
@@ -101,7 +102,7 @@ class CreateEvent extends Component {
 
   render() {
     return(
-      <View style = {styles.container}>
+      <ScrollView ref = 'scrollView' keyboardShouldPersistTaps={true} showsVerticalScrollIndicator={this.state.enableScroll} scrollEnabled={this.state.enableScroll} style = {styles.container}>
         {this.renderTitleBar()}
         <View style={{backgroundColor: 'grey', justifyContent:'center', alignItems:'center'}}>
           <TouchableOpacity
@@ -118,10 +119,29 @@ class CreateEvent extends Component {
           {this.renderTitleInput()}
           {this.renderToggle()}
         </View>
-        {this.renderDateTimeInput()}
-        {this.renderDescriptionInput()}
-        {this.renderButtons()}
-      </View>
+        <View>
+          {this.renderDateTimeInput()}
+          {this.renderDescriptionInput()}
+          {this.renderButtons()}
+          <View style={{flexDirection: 'column'}}>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+            <Text>&nbsp;</Text>
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 
@@ -221,6 +241,8 @@ class CreateEvent extends Component {
           style = {styles.titleInput}
           underlineColorAndroid = 'gray'
           value = {this.state.title}
+          onEndEditing = {() => {this.setState({enableScroll: false})}}
+          onFocus = {() => {setTimeout(() => {this.setState({enableScroll: true})}, 150)}}
         />
       </View>
     );
@@ -340,6 +362,8 @@ class CreateEvent extends Component {
             placeholderTextColor = 'gray'
             underlineColorAndroid = 'gray'
             value = {this.state.description}
+            onEndEditing = {() => {this.setState({enableScroll: false})}}
+            onFocus = {() => {setTimeout(() => {this.setState({enableScroll: true})}, 150)}}
           />
           <Text style = {[styles.remainderText, {color: remainderColor}]}>
             {remainder} / {limit}
