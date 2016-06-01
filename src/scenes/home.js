@@ -25,7 +25,8 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: [],
+      dataSourceAll: [],
+      dataSourceFollowing: [],
       selectedOption: 'All',
     };
   }
@@ -66,8 +67,8 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
-      self.setState({dataSource: []});
-      self.setState({dataSource: myBlob});
+      self.setState({dataSourceAll: []});
+      self.setState({dataSourceAll: myBlob});
     });
   }
 
@@ -92,8 +93,8 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
-      self.setState({dataSource: []});
-      self.setState({dataSource: myBlob});
+      self.setState({dataSourceFollowing: []});
+      self.setState({dataSourceFollowing: myBlob});
     });
   }
 
@@ -101,7 +102,7 @@ class Home extends Component {
     if(this.state.selectedOption === "All") {
       return (
         <GridView
-          dataSource = {this.state.dataSource}
+          dataSource = {this.state.dataSourceAll}
           onRefresh = {this.queryDataAll.bind(this)}
           renderRow = {this.renderRowAll.bind(this)}
         />
@@ -109,7 +110,7 @@ class Home extends Component {
     } else {
       return (
         <GridView
-          dataSource = {this.state.dataSource}
+          dataSource = {this.state.dataSourceFollowing}
           onRefresh = {this.queryDataFollowing.bind(this)}
           renderRow = {this.renderRowFollowing.bind(this)}
         />
