@@ -22,8 +22,9 @@ class ChangeProfilePicture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profilePic: 'default',
-      image: '',
+      profilePic: '',
+      newProfilePic: '',
+      newProfilePicText: '',
     };
   }
 
@@ -41,7 +42,7 @@ class ChangeProfilePicture extends Component {
         />
 
         <Text style = {{marginTop: 14, marginLeft: 20}}>
-          Current Profile Picture
+          Current Profile Picture:
         </Text>
 
         <View style = {{padding: 8, alignItems: 'center'}}>
@@ -54,18 +55,32 @@ class ChangeProfilePicture extends Component {
           </Image>
         </View>
 
+        <Text style = {{marginTop: 14, marginLeft: 20}}>
+          {this.state.newProfilePicText}
+        </Text>
+
+        <View style = {{padding: 8, alignItems: 'center'}}>
+          <Image
+            source = {{uri: this.state.newProfilePic.uri}}
+            style = {{
+              height: Dimensions.get("window").width / 4,
+              width: Dimensions.get("window").width / 4,
+            }}>
+          </Image>
+        </View>
+
         <Button
           buttonStyles = {ButtonStyles.transparentButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
           onPress = {this.getNewProfilePicture.bind(this)}
-          text = "New Profile Picture"
+          text = "Choose Profile Picture"
           underlayColor = {'gray'}
         />
         <Button
           buttonStyles = {ButtonStyles.transparentButton}
           buttonTextStyles = {ButtonStyles.blackButtonText}
           onPress = {this.changeProfilePicture.bind(this)}
-          text = "Submit"
+          text = "Confirm Change"
           underlayColor = {'gray'}
         />
       </View>
@@ -76,7 +91,7 @@ class ChangeProfilePicture extends Component {
     database.child("users/" + database.getAuth().uid + "/profilePic").once("value",
       (snapshot) => {
         this.setState({
-          profilePic: snapshot.val().uri
+          profilePic: snapshot.val().uri,
         });
       }
     );
@@ -93,18 +108,24 @@ class ChangeProfilePicture extends Component {
         // You can display the image using either data:
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
         this.setState({
-          profilePic: source.uri,
-          image: source,
+          newProfilePic: source,
+          newProfilePicText: "New Profile Picture:",
         });
       }
     });
   }
 
   changeProfilePicture() {
-    var ref = database.child("users");
-    ref.child(database.getAuth().uid).update({
-      profilePic: this.state.image,
-    });
+    if(this.state.newProfilePic == ''|| this.state.newProfilePic.uri == this.state.profilePic){
+      Alert.alert('Error!','Select a new user profile picture.');
+    } else{
+      var ref = database.child("users");
+      ref.child(database.getAuth().uid).update({
+        profilePic: this.state.newProfilePic,
+      });
+      this.setState({profilePic: this.state.newProfilePic.uri});
+      Alert.alert('Success!','User profile picture was changed.');
+    }
   }
 }
 
