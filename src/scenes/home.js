@@ -25,19 +25,13 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSourceAll: [],
-      dataSourceFollowing: [],
-      open: false,
+      dataSource: [],
       selectedOption: 'All',
     };
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('user_data', (error, result) => {
-      this.setState({
-        userId: JSON.parse(result).uid,
-      });
-    });
+    this.setState({userId: database.getAuth().uid});
     this.queryDataAll();
     this.queryDataFollowing();
   }
@@ -63,16 +57,18 @@ class Home extends Component {
   queryDataAll() {
     var myBlob = [];
     var self = this;
-      // this section loads the postIDs into myBlob and pushes them to dataSourceAll
-      database.child("posts").once("value", function(snapshot) {
-        snapshot.forEach(function(postSnapshot) {
-          myBlob.push(postSnapshot);
-        });
-        myBlob.sort((a, b) => {
-          return b.val().date - a.val().date;
-        });
-        self.setState({dataSourceAll: myBlob});
+
+    // this section loads the postIDs into myBlob and pushes them to dataSourceAll
+    database.child("posts").once("value", function(snapshot) {
+      snapshot.forEach(function(postSnapshot) {
+        myBlob.push(postSnapshot);
       });
+      myBlob.sort((a, b) => {
+        return b.val().date - a.val().date;
+      });
+      self.setState({dataSource: []});
+      self.setState({dataSource: myBlob});
+    });
   }
 
   queryDataFollowing() {
@@ -80,10 +76,11 @@ class Home extends Component {
     var self = this;
 
     // this section loads the postIDs into myBlob and pushes them to dataSourceFollowing
-    database.child("users/" + self.state.userId + "/followingList").once("value", function(followingList) {
-      followingList.forEach(function(followingSnapshot){
-        var follower = database.child("users/" + followingSnapshot.val().userId);
-        if(follower.hasChild("postList")){
+    database.once("value", function(snapshot) {
+      var followingList = snapshot.child("users/" + self.state.userId + "/followingList");
+      followingList.forEach(function(followingSnapshot) {
+        var follower = snapshot.child("users/" + followingSnapshot.val().userId);
+        if(follower.hasChild("postList")) {
           var postList = follower.child("postList");
           postList.forEach(function(postSnapshot) {
             var postId = postSnapshot.val().postId;
@@ -95,7 +92,8 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
-      self.setState({dataSourceFollowing: myBlob});
+      self.setState({dataSource: []});
+      self.setState({dataSource: myBlob});
     });
   }
 
@@ -103,7 +101,7 @@ class Home extends Component {
     if(this.state.selectedOption === "All") {
       return (
         <GridView
-          dataSource = {this.state.dataSourceAll}
+          dataSource = {this.state.dataSource}
           onRefresh = {this.queryDataAll.bind(this)}
           renderRow = {this.renderRowAll.bind(this)}
         />
@@ -111,7 +109,7 @@ class Home extends Component {
     } else {
       return (
         <GridView
-          dataSource = {this.state.dataSourceFollowing}
+          dataSource = {this.state.dataSource}
           onRefresh = {this.queryDataFollowing.bind(this)}
           renderRow = {this.renderRowFollowing.bind(this)}
         />
@@ -122,7 +120,7 @@ class Home extends Component {
   setSelectedOption(selectedOption) {
     this.setState({
       selectedOption
-    })
+    });
   }
 
   render() {
