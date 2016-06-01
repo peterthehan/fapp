@@ -89,7 +89,7 @@ class Notification extends Component {
                     {nameText} commented on your event. "{commentText}"
                   </Text>
                 </View>
-              </TouchableOpacity>/
+              </TouchableOpacity>
             </View>
           );
         }
