@@ -98,9 +98,11 @@ class ChangeEmail extends Component {
 
   changeEmail() {
     if(this.state.email === "") {
-      Alert.alert('', 'Enter your new email.');
+      Alert.alert('Error!', 'Enter your new email.');
     } else if(this.state.password === "") {
-      Alert.alert('', 'Enter your password.');
+      Alert.alert('Error!', 'Enter your password.');
+    } else if(this.state.oldEmail == this.state.email){
+      Alert.alert('Error!', 'The specified email is same as the current email.');
     } else {
       database.changeEmail({
         oldEmail: this.state.oldEmail,
