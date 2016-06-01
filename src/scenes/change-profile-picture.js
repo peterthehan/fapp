@@ -88,8 +88,7 @@ class ChangeProfilePicture extends Component {
   }
 
   getProfilePicture() {
-    database.child("users/" + database.getAuth().uid + "/profilePic").once("value",
-      (snapshot) => {
+    database.child("users/" + database.getAuth().uid + "/profilePic").once("value", (snapshot) => {
         this.setState({
           profilePic: snapshot.val().uri,
         });

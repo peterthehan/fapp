@@ -27,17 +27,12 @@ class Home extends Component {
     this.state = {
       dataSourceAll: [],
       dataSourceFollowing: [],
-      open: false,
       selectedOption: 'All',
     };
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('user_data', (error, result) => {
-      this.setState({
-        userId: JSON.parse(result).uid,
-      });
-    });
+    this.setState({userId: database.getAuth().uid});
     this.queryDataAll();
     this.queryDataFollowing();
   }
@@ -72,6 +67,7 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
+      self.setState({dataSourceAll: []});
       self.setState({dataSourceAll: myBlob});
     });
   }
@@ -97,6 +93,7 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
+      self.setState({dataSourceFollowing: []});
       self.setState({dataSourceFollowing: myBlob});
     });
   }
@@ -128,7 +125,7 @@ class Home extends Component {
   setSelectedOption(selectedOption) {
     this.setState({
       selectedOption
-    })
+    });
   }
 
   render() {

@@ -28,9 +28,6 @@ let database = new Firebase("poopapp1.firebaseio.com/");
 class Notification extends Component {
   constructor(props) {
     super(props);
-    /*new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    })*/
     this.state = {
       dataSource: []
     };
@@ -48,148 +45,32 @@ class Notification extends Component {
 
       var notifications = database.child("users/" + loggedUserId + "/notifications");
       notifications.on("child_added", function(notificationSnapshot){
-        let item = {
-          who: notificationSnapshot.val().userID,
-          type: notificationSnapshot.val().type,
-          object: notificationSnapshot.val().objectID,
-          action: notificationSnapshot.val().action,
-          details: notificationSnapshot.val().textDetails,
-          date: notificationSnapshot.val().date,
-        };
-        self.state.dataSource.unshift(item);
-        self.forceUpdate();
+        database.child("users/" + notificationSnapshot.val().userID).once("value", function(snapshot) {
+          let item = {
+            type: notificationSnapshot.val().type,
+            object: notificationSnapshot.val().objectID,
+            action: notificationSnapshot.val().action,
+            details: notificationSnapshot.val().textDetails,
+            date: notificationSnapshot.val().date,
+            nameText: snapshot.val().firstName + " " + snapshot.val().lastName,
+            profilePicture: snapshot.val().profilePic,
+          };
+          self.state.dataSource.unshift(item);
+          self.forceUpdate();
+        });
       });
     });
   }
 
   renderRow(rowData) {
-      if(rowData.type == "events") //If the notification is for an event
+    var commentText;
+    var eventTitle;
+
+    if(rowData.type == "events") //If the notification is for an event
+    {
+      if(rowData.action == "comment") //This is when someone comments on your event
       {
-        if(rowData.action == "comment") //This is when someone comments on your event
-        {
-          var nameText;
-          var profilePicture;
-          var commentText;
-          database.child("users/" + rowData.who).once("value", function(snapshot) {
-            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic.uri;
-          });
-          commentText = rowData.details;
-          return (
-            <View style = {styles.container}>
-              <TouchableOpacity
-                style = {styles.touchView}
-                onPress = {() => this.goTo(rowData)}>
-                <Image
-                  style = {styles.userImage}
-                  source = {{uri: profilePicture}}
-                />
-                <View style = {styles.descriptionView}>
-                  <Text style = {styles.description}>
-                    {nameText} commented on your event. "{commentText}"
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }
-        else if (rowData.action == "invite") //This is when someone invites you to an event
-        {
-          var nameText;
-          var profilePicture;
-          var eventTitle;
-          database.child("users/" + rowData.who).once("value", function(snapshot){
-            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic.uri;
-          });
-          eventTitle = rowData.details;
-          return (
-            <View style = {styles.container}>
-              <TouchableOpacity
-                style = {styles.touchView}
-                onPress = {() => this.goTo(rowData)}>
-                <Image
-                  style = {styles.userImage}
-                  source = {{uri: profilePicture}}
-                />
-                <View style = {styles.descriptionView}>
-                  <Text style = {styles.description}>
-                    {nameText} invited you to an event. "{eventTitle}"
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }
-      }
-      else if (rowData.type == "posts"){
-        if (rowData.action == "comment") //This is when someone comments on your post
-        {
-          var nameText;
-          var profilePicture;
-          var commentText;
-          database.child("users/" + rowData.who).once("value", function(snapshot){
-            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic.uri;
-          });
-          commentText = rowData.details;
-          return (
-            <View style = {styles.container}>
-              <TouchableOpacity
-                style = {styles.touchView}
-                onPress = {() => this.goTo(rowData)}>
-                <Image
-                  style = {styles.userImage}
-                  source = {{uri: profilePicture}}
-                />
-                <View style = {styles.descriptionView}>
-                  <Text style = {styles.description}>
-                    {nameText} commented on your post. "{commentText}"
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }
-        else if (rowData.action == "like") //This is when someone 'likes' your post
-        {
-          var nameText;
-          var profilePicture;
-          database.child("users/" + rowData.who).once("value", function(snapshot){
-            nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-            profilePicture = snapshot.val().profilePic.uri;
-          });
-          return (
-            <View style = {styles.container}>
-              <TouchableOpacity
-                style = {styles.touchView}
-                onPress = {() => this.goTo(rowData)}>
-                <Image
-                  style = {styles.userImage}
-                  source = {{uri: profilePicture}}
-                />
-                <View style = {styles.descriptionView}>
-                  <Text style = {styles.description}>
-                    {nameText} liked your post.
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }
-      }
-      else if (rowData.type == "users"){
-        var nameText;
-        var profilePicture;
-        database.child("users/" + rowData.who).once("value", function(snapshot){
-          nameText = snapshot.val().firstName + " " + snapshot.val().lastName;
-          profilePicture = snapshot.val().profilePic.uri;
-        });
-        var message =
-          rowData.action === "friendRequest" ? "sent you a friend request." :
-          rowData.action === "following" ? "is following you." :
-          rowData.action === "friendAccept" ? "accepted your friend request." :
-          "";
+        commentText = rowData.details;
         return (
           <View style = {styles.container}>
             <TouchableOpacity
@@ -197,20 +78,109 @@ class Notification extends Component {
               onPress = {() => this.goTo(rowData)}>
               <Image
                 style = {styles.userImage}
-                source = {{uri: profilePicture}}
+                source = {rowData.profilePicture}
               />
               <View style = {styles.descriptionView}>
                 <Text style = {styles.description}>
-                  {nameText} {message}
+                  {rowData.nameText} commented on your event. "{commentText}"
                 </Text>
               </View>
             </TouchableOpacity>
           </View>
         );
       }
+      else if (rowData.action == "invite") //This is when someone invites you to an event
+      {
+        eventTitle = rowData.details;
+        return (
+          <View style = {styles.container}>
+            <TouchableOpacity
+              style = {styles.touchView}
+              onPress = {() => this.goTo(rowData)}>
+              <Image
+                style = {styles.userImage}
+                source = {rowData.profilePicture}
+              />
+              <View style = {styles.descriptionView}>
+                <Text style = {styles.description}>
+                  {rowData.nameText} invited you to an event. "{eventTitle}"
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
+      }
+    }
+    else if (rowData.type == "posts"){
+      if (rowData.action == "comment") //This is when someone comments on your post
+      {
+        commentText = rowData.details;
+        return (
+          <View style = {styles.container}>
+            <TouchableOpacity
+              style = {styles.touchView}
+              onPress = {() => this.goTo(rowData)}>
+              <Image
+                style = {styles.userImage}
+                source = {rowData.profilePicture}
+              />
+              <View style = {styles.descriptionView}>
+                <Text style = {styles.description}>
+                  {rowData.nameText} commented on your post. "{commentText}"
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
+      }
+      else if (rowData.action == "like") //This is when someone 'likes' your post
+      {
+        return (
+          <View style = {styles.container}>
+            <TouchableOpacity
+              style = {styles.touchView}
+              onPress = {() => this.goTo(rowData)}>
+              <Image
+                style = {styles.userImage}
+                source = {rowData.profilePicture}
+              />
+              <View style = {styles.descriptionView}>
+                <Text style = {styles.description}>
+                  {rowData.nameText} liked your post.
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
+      }
+    }
+    else if (rowData.type == "users"){
+      var message =
+        rowData.action === "friendRequest" ? "sent you a friend request." :
+        rowData.action === "following" ? "is following you." :
+        rowData.action === "friendAccept" ? "accepted your friend request." :
+        "";
       return (
-        <View><Text>{rowData.object}</Text></View>
+        <View style = {styles.container}>
+          <TouchableOpacity
+            style = {styles.touchView}
+            onPress = {() => this.goTo(rowData)}>
+            <Image
+              style = {styles.userImage}
+              source = {rowData.profilePicture}
+            />
+            <View style = {styles.descriptionView}>
+              <Text style = {styles.description}>
+                {rowData.nameText} {message}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       );
+    }
+    return (
+      <View><Text>{rowData.object}</Text></View>
+    );
   }
 
   queryData() {

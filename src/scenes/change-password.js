@@ -90,11 +90,9 @@ class ChangePassword extends Component {
   }
 
   getEmail() {
-    database.once("value",
-      (snapshot) => {
-        var user = snapshot.child("users/" + database.getAuth().uid);
+    database.child("users/" + database.getAuth().uid).once("value", (snapshot) => {
         this.setState({
-          email: user.val().email
+          email: snapshot.val().email
         });
       }
     );

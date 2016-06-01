@@ -441,8 +441,7 @@ class Profile extends Component {
     } else {
       var self = this;
 
-      database.child("users/").once("value", function(snapshot) {
-        var followData = snapshot.child(self.state.loggedUser + "/followingList");
+      database.child("users/" + self.state.loggedUser + "/followingList").once("value", function(followData) {
         if(typeof followData != 'undefined') {
           followData.forEach(function(follower) {
             if(follower.val().userId == self.props.state) {
