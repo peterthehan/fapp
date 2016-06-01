@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  AsyncStorage,
   Component,
   Dimensions,
   Image,
@@ -42,7 +43,14 @@ class Event extends Component {
     database.once("value", function(snapshot){
       var eventsSnapshot = snapshot.child("events");
       eventsSnapshot.forEach(function(eventSnapshot) {
-        myBlob.push(eventSnapshot);
+        if (eventSnapshot.val().isPublic){
+          myBlob.push(eventSnapshot);
+        }
+      });
+      var usersEvents = snapshot.child("users/" + database.getAuth().uid + "/eventsList");
+      usersEvents.forEach(function(eventIdSnapshot) {
+        var eventToPush = snapshot.child("events/" + eventIdSnapshot.val().eventId);
+        myBlob.push(eventToPush);
       });
       self.setState({dataSource: myBlob});
     });
