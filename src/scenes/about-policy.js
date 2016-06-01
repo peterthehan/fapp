@@ -1,10 +1,8 @@
 'use strict';
 
 import React, {
-  Alert,
   Component,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -28,10 +26,10 @@ class Policy extends Component {
         <TitleBar
           hasBack = {"true"}
           navigator = {this.props.navigator}
-          text = "Open Source Libraries Used"
+          text = "Privacy Policy"
         />
         <ScrollView>
-          <Text>
+          <Text style = {{margin: 12,}}>
             This privacy policy discloses the privacy practices for Fapp. This privacy policy applies solely to information collected by this web site. It will notify you of the following:
             1.) What personally identifiable information is collected from you through the web site, how it is used and with whom it may be shared.
             2.) What choices are available to you regarding the use of your data.
@@ -43,10 +41,10 @@ class Policy extends Component {
             Unless you ask us not to, we may contact you via email in the future to tell you about specials, new products or services, or changes to this privacy policy.
             Your Access to and Control Over Information
             You may opt out of any future contacts from us at any time. You can do the following at any time by contacting us via the email address or phone number given on our website:
-               • See what data we have about you, if any.
-               • Change/correct any data we have about you.
-               • Have us delete any data we have about you.
-               • Express any concern you have about our use of your data.
+            1.) See what data we have about you, if any.
+            2.) Change/correct any data we have about you.
+            3.) Have us delete any data we have about you.
+            4.) Express any concern you have about our use of your data.
             Security
             We take precautions to protect your information. When you submit sensitive information via the website, your information is protected both online and offline.
             Wherever we collect sensitive information (such as credit card data), that information is encrypted and transmitted to us in a secure way. You can verify this by looking for a closed lock icon at the bottom of your web browser, or looking for "https" at the beginning of the address of the web page.
@@ -65,17 +63,5 @@ class Policy extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  buttonStyle: {
-    alignItems: 'stretch',
-    fontSize: 18,
-    margin: 14,
-    textAlign: 'left',
-  },
-  library: {
-    marginLeft: 4,
-  },
-});
 
 module.exports = Policy;
