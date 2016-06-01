@@ -16,6 +16,12 @@ import Notification from './notification';
 import TabBar from '../components/tab-bar';
 
 class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+
   render() {
     return(
       <View style = {{flex: 1, backgroundColor: '#f3f3f3'}}>

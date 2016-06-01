@@ -8,16 +8,16 @@ import React, {
   View,
 } from 'react-native';
 
-import Firebase from 'firebase';
 import {SegmentedControls} from 'react-native-radio-buttons';
+import Firebase from 'firebase';
 
 import GridView from '../components/grid-view';
-import Profile from "../scenes/profile";
 import Post from '../components/post';
-import SearchBar from '../components/search-bar';
+import Profile from "../scenes/profile";
 import SceneStyles from '../styles/scene-styles';
-import TitleBar from '../components/title-bar';
+import SearchBar from '../components/search-bar';
 import SmallPost from '../components/small-post';
+import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
 
@@ -28,7 +28,7 @@ class Home extends Component {
       dataSourceAll: [],
       dataSourceFollowing: [],
       open: false,
-      selectedOption: 'All'
+      selectedOption: 'All',
     };
   }
 
@@ -38,7 +38,6 @@ class Home extends Component {
         userId: JSON.parse(result).uid,
       });
     });
-
     this.queryDataAll();
     this.queryDataFollowing();
   }
@@ -46,8 +45,8 @@ class Home extends Component {
   renderRowAll(post) {
     return (
       <SmallPost
-        navigator = {this.props.navigator}
         id = {post}
+        navigator = {this.props.navigator}
       />
     );
   }
@@ -84,11 +83,11 @@ class Home extends Component {
     // this section loads the postIDs into myBlob and pushes them to dataSourceFollowing
     database.once("value", function(snapshot) {
       var followingList = snapshot.child("users/" + self.state.userId + "/followingList");
-      followingList.forEach(function(followingSnapshot){
+      followingList.forEach(function(followingSnapshot) {
         var follower = snapshot.child("users/" + followingSnapshot.val().userId);
-        if(follower.hasChild("postList")){
+        if(follower.hasChild("postList")) {
           var postList = follower.child("postList");
-          postList.forEach(function(postSnapshot){
+          postList.forEach(function(postSnapshot) {
             var postId = postSnapshot.val().postId;
             var postData = snapshot.child("posts/" + postId);
             myBlob.push(postData);
@@ -103,7 +102,7 @@ class Home extends Component {
   }
 
   renderFeed() {
-    if (this.state.selectedOption === "All") {
+    if(this.state.selectedOption === "All") {
       return (
         <GridView
           dataSource = {this.state.dataSourceAll}
@@ -134,19 +133,19 @@ class Home extends Component {
       "Following"
     ];
 
-    return(
+    return (
       <View style = {{flex: 1, backgroundColor: '#f3f3f3'}}>
         <TitleBar
           navigator = {this.props.navigator}
           text = "Home"
         />
         <SegmentedControls
-          tint= {'white'}
-          selectedTint= {'#F26D6A'}
-          backTint= {'#F26D6A'}
-          options={ options }
-          onSelection={ this.setSelectedOption.bind(this) }
-          selectedOption={ this.state.selectedOption }
+          backTint = {'#F26D6A'}
+          onSelection = {this.setSelectedOption.bind(this)}
+          options = {options}
+          selectedOption = {this.state.selectedOption}
+          selectedTint = {'#F26D6A'}
+          tint = {'white'}
         />
         <SearchBar/>
         {this.renderFeed()}

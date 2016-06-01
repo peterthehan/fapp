@@ -11,7 +11,6 @@ import React, {
 import ZoomableImage from '../components/zoomable-image';
 
 class FullImage extends Component {
-
   render() {
     return (
       <View style = {styles.container}>

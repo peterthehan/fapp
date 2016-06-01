@@ -36,7 +36,7 @@ class PoopApp extends Component {
             this.setState({component: Login});
           } else {
             const self = this;
-            database.once("value", function(snapshot){
+            database.once("value", function(snapshot) {
               if(snapshot.child("users").hasChild(authData.uid)) {
                 self.setState({component: Main});
               } else {
@@ -51,13 +51,14 @@ class PoopApp extends Component {
     });
   }
 
-  bindBackButton(navigator){
+  bindBackButton(navigator) {
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      if (navigator && navigator.getCurrentRoutes().length > 1) {
+      if(navigator && navigator.getCurrentRoutes().length > 1) {
         navigator.pop();
         return true;
+      } else {
+        return false;
       }
-      return false;
     });
   }
 
@@ -65,11 +66,11 @@ class PoopApp extends Component {
     if(this.state.component) {
       return (
         <Navigator
-          ref = {(nav) => {this.bindBackButton(nav);}}
-          initialRoute = {{component: this.state.component}}
           configureScene = {(route, routeStack) => {
             return Navigator.SceneConfigs.FloatFromRight
           }}
+          initialRoute = {{component: this.state.component}}
+          ref = {(nav) => {this.bindBackButton(nav);}}
           renderScene = {(route, navigator) => {
             if(route.component) {
               return (

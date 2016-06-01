@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {
+  Alert,
   AsyncStorage,
   Component,
   StyleSheet,
@@ -11,7 +12,7 @@ import Button from '../components/button';
 import ChangeEmail from './change-email';
 import ChangePassword from './change-password';
 import ChangeProfilePicture from './change-profile-picture';
-import Login from './login';
+import Logout from './logout';
 import TitleBar from '../components/title-bar';
 
 let database = new Firebase("poopapp1.firebaseio.com");
@@ -78,6 +79,8 @@ class Setting extends Component {
     AsyncStorage.removeItem('user_data').then(() => {
       database.unauth();
     });
+    this.props.navigator.resetTo({component: Logout});
+    Alert.alert('', 'You have been logged out. Please close the application.');
   }
 }
 
