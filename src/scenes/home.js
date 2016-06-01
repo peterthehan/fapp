@@ -137,7 +137,7 @@ class Home extends Component {
       <View style = {{flex: 1, backgroundColor: '#f3f3f3'}}>
         <TitleBar
           navigator = {this.props.navigator}
-          text = "Home"
+          text = "Fapp"
         />
         <SegmentedControls
           backTint = {'#F26D6A'}
