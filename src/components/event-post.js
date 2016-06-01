@@ -58,7 +58,7 @@ class EventPost extends Component {
         <View style = {styles.imageView}>
           <Image
             resizeMode = "cover"
-            source = {{uri: this.state.photo}}
+            source = {this.state.photo}
             style = {styles.photo}
           />
         </View>

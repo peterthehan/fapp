@@ -4,7 +4,6 @@ import React, {
   AsyncStorage,
   Component,
   Dimensions,
-  Image,
   Text,
   TouchableOpacity,
   View,

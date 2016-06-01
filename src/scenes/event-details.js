@@ -56,7 +56,7 @@ class EventDetails extends Component {
         <ScrollView style = {styles.content}>
           <Image
             resizeMode = "cover"
-            source = {{uri: this.state.photo}}
+            source = {this.state.photo}
             style = {styles.photo}
           >
             <View style = {styles.titleView}>
