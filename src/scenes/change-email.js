@@ -87,8 +87,7 @@ class ChangeEmail extends Component {
   }
 
   getEmail() {
-    database.child("users/" + database.getAuth().uid).once("value",
-      (snapshot) => {
+    database.child("users/" + database.getAuth().uid).once("value", (snapshot) => {
         this.setState({
           oldEmail: snapshot.val().email
         });

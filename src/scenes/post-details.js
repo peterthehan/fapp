@@ -16,8 +16,6 @@ import ButtonStyles from '../styles/button-styles';
 import Comments from '../components/comments';
 import TitleBar from '../components/title-bar';
 
-let database = new Firebase("poopapp1.firebaseio.com");
-
 class PostDetails extends Component {
 
   constructor(props){

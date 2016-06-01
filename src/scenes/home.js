@@ -63,17 +63,16 @@ class Home extends Component {
   queryDataAll() {
     var myBlob = [];
     var self = this;
-
-    // this section loads the postIDs into myBlob and pushes them to dataSourceAll
-    database.child("posts").once("value", function(snapshot) {
-      snapshot.forEach(function(postSnapshot) {
-        myBlob.push(postSnapshot);
+      // this section loads the postIDs into myBlob and pushes them to dataSourceAll
+      database.child("posts").once("value", function(snapshot) {
+        snapshot.forEach(function(postSnapshot) {
+          myBlob.push(postSnapshot);
+        });
+        myBlob.sort((a, b) => {
+          return b.val().date - a.val().date;
+        });
+        self.setState({dataSourceAll: myBlob});
       });
-      myBlob.sort((a, b) => {
-        return b.val().date - a.val().date;
-      });
-      self.setState({dataSourceAll: myBlob});
-    });
   }
 
   queryDataFollowing() {
@@ -81,11 +80,10 @@ class Home extends Component {
     var self = this;
 
     // this section loads the postIDs into myBlob and pushes them to dataSourceFollowing
-    database.once("value", function(snapshot) {
-      var followingList = snapshot.child("users/" + self.state.userId + "/followingList");
-      followingList.forEach(function(followingSnapshot) {
-        var follower = snapshot.child("users/" + followingSnapshot.val().userId);
-        if(follower.hasChild("postList")) {
+    database.child("users/" + self.state.userId + "/followingList").once("value", function(followingList) {
+      followingList.forEach(function(followingSnapshot){
+        var follower = database.child("users/" + followingSnapshot.val().userId);
+        if(follower.hasChild("postList")){
           var postList = follower.child("postList");
           postList.forEach(function(postSnapshot) {
             var postId = postSnapshot.val().postId;

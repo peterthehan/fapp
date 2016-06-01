@@ -39,8 +39,7 @@ class Event extends Component {
     var self = this;
 
     // this section loads the postIDs into myBlob and pushes them to dataSource
-    database.once("value", function(snapshot){
-      var eventsSnapshot = snapshot.child("events");
+    database.child("events").once("value", function(eventsSnapshot){
       eventsSnapshot.forEach(function(eventSnapshot) {
         if (eventSnapshot.val().isPublic){
           myBlob.push(eventSnapshot);
