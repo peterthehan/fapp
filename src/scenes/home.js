@@ -25,19 +25,13 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSourceAll: [],
-      dataSourceFollowing: [],
-      open: false,
+      dataSource: [],
       selectedOption: 'All',
     };
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('user_data', (error, result) => {
-      this.setState({
-        userId: JSON.parse(result).uid,
-      });
-    });
+    this.setState({userId: database.getAuth().uid});
     this.queryDataAll();
     this.queryDataFollowing();
   }
@@ -72,7 +66,8 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
-      self.setState({dataSourceAll: myBlob});
+      self.setState({dataSource: []});
+      self.setState({dataSource: myBlob});
     });
   }
 
@@ -97,7 +92,8 @@ class Home extends Component {
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
-      self.setState({dataSourceFollowing: myBlob});
+      self.setState({dataSource: []});
+      self.setState({dataSource: myBlob});
     });
   }
 
@@ -105,7 +101,7 @@ class Home extends Component {
     if(this.state.selectedOption === "All") {
       return (
         <GridView
-          dataSource = {this.state.dataSourceAll}
+          dataSource = {this.state.dataSource}
           onRefresh = {this.queryDataAll.bind(this)}
           renderRow = {this.renderRowAll.bind(this)}
         />
@@ -113,7 +109,7 @@ class Home extends Component {
     } else {
       return (
         <GridView
-          dataSource = {this.state.dataSourceFollowing}
+          dataSource = {this.state.dataSource}
           onRefresh = {this.queryDataFollowing.bind(this)}
           renderRow = {this.renderRowFollowing.bind(this)}
         />
@@ -124,7 +120,7 @@ class Home extends Component {
   setSelectedOption(selectedOption) {
     this.setState({
       selectedOption
-    })
+    });
   }
 
   render() {

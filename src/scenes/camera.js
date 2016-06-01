@@ -57,9 +57,8 @@ class Camera extends Component {
       var usid = JSON.parse(result).uid;
       var ref = database.child("posts");
       var postList = database.child("users/" + usid + "/postList");
-      database.once("value", function(snapshot){
-        var usersnapshot = snapshot.child("users/" + usid);
-        var userName = usersnapshot.val().firstName + " " + usersnapshot.val().lastName;
+      database.child("users/" + usid).once("value", function(userSnapshot){
+        var userName = userSnapshot.val().firstName + " " + userSnapshot.val().lastName;
         if (filteredPic)
         {
           var photoIDObj = {
@@ -68,7 +67,7 @@ class Camera extends Component {
           };
         }
         else {
-          var photoIDObj = this.state.avatarSource;
+          var photoIDObj = self.state.avatarSource;
         }
         var post = ref.push({
           comments: 0,

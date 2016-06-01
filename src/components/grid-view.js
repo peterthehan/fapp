@@ -30,7 +30,7 @@ class GridView extends Component {
             titleColor = 'black'
           />
         }>
-        {this.props.dataSource.map(this.props.renderRow)}
+        {this.props.dataSource.map((element) => this.props.renderRow(element))}
       </ScrollView>
     );
   }
