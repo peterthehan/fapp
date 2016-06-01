@@ -33,7 +33,7 @@ class Profile extends Component {
     this.state = {
       items: [],
       name: '',
-      profilePic: '',
+      profilePic: 'default',
       numberFriends: 0,
       followers: 0,
     };

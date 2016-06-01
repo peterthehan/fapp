@@ -48,6 +48,13 @@ class More extends Component {
           text = "Settings"
           underlayColor = {'gray'}
         />
+        <Button
+          buttonStyles = {{}}
+          buttonTextStyles = {styles.buttonStyle}
+          onPress = {this.setting.bind(this)}
+          text = "About"
+          underlayColor = {'gray'}
+        />
       </View>
     );
   }

@@ -26,6 +26,7 @@ class EventDetails extends Component {
     super(props);
     this.state = {
       status: '',
+      photo: 'default',
     }
   }
 

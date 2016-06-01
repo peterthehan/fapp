@@ -30,6 +30,7 @@ class Post extends Component {
       favorited: false,
       liked: false,
       modalVisible: false,
+      userPhoto: 'default',
     };
   }
 
