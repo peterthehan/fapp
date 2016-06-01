@@ -245,14 +245,15 @@ class Camera extends Component {
         <View>
           <TextInput
             maxLength = {limit}
-            multiline = {true}
+            //multiline = {true}
             onChangeText = {(text) => this.setState({description: text})}
             placeholder = {"Description"}
             placeholderTextColor = 'gray'
             style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {""}
-            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 100)}}
+            onSubmitEditing = {() => {this.refs.location.focus();}}
+            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 150)}}
             >
             <Text>
               {rendered}
@@ -261,14 +262,15 @@ class Camera extends Component {
           <TextInput
             ref = 'location'
             maxLength = {limit}
-            multiline = {true}
+            //multiline = {true}
             onChangeText = {(text) => this.setState({location: text})}
             placeholder = {"Location"}
             placeholderTextColor = 'gray'
             style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {this.state.location}
-            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 100)}}
+            onSubmitEditing = {() => {this.refs.recipe.focus();}}
+            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 150)}}
           />
           <TextInput
             maxLength = {limit}
@@ -279,7 +281,8 @@ class Camera extends Component {
             style = {styles.multiline}
             underlineColorAndroid = 'black'
             value = {this.state.recipe}
-            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 100)}}
+            onSubmitEditing = {() => {this.post()}}
+            onFocus = {() => {setTimeout(() => {this.refs.scrollView.scrollTo({y:Dimensions.get('window').height}), this.setState({enableScroll: true})}, 150)}}
           />
           <Button
             buttonStyles = {ButtonStyles.transparentButton}
