@@ -8,7 +8,6 @@ import React, {
   View,
 } from 'react-native';
 
-import DismissKeyboard from 'react-native-dismiss-keyboard';
 import Firebase from 'firebase';
 
 import AppBar from '../components/app-bar';
@@ -28,7 +27,7 @@ class Signup extends Component {
       firstName: '',
       lastName: '',
       password: '',
-      passwordConfirm: ''
+      passwordConfirm: '',
     };
   }
 
@@ -46,57 +45,57 @@ class Signup extends Component {
           <View style = {TextStyles.oneLine}>
             <TextInput
               onChangeText = {(text) => this.setState({firstName: text})}
+              onSubmitEditing = {(event) => {this.refs.LastName.focus();}}
               placeholder = {"First Name"}
               placeholderTextColor = 'white'
               style = {TextStyles.leftTextInput}
               underlineColorAndroid = 'white'
               value = {this.state.firstName}
-              onSubmitEditing = {(event) => {this.refs.LastName.focus();}}
             />
             <TextInput
-              ref = 'LastName'
               onChangeText = {(text) => this.setState({lastName: text})}
+              onSubmitEditing = {(event) => {this.refs.Email.focus();}}
               placeholder = {"Last Name"}
               placeholderTextColor = 'white'
+              ref = 'LastName'
               style = {TextStyles.rightTextInput}
               underlineColorAndroid = 'white'
               value = {this.state.lastName}
-              onSubmitEditing = {(event) => {this.refs.Email.focus();}}
             />
           </View>
 
           <TextInput
-            ref = 'Email'
             keyboardType = 'email-address'
             onChangeText = {(text) => this.setState({email: text})}
+            onSubmitEditing = {(event) => {this.refs.NewPassword.focus();}}
             placeholder = {"Email"}
             placeholderTextColor = 'white'
+            ref = 'Email'
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
-            onSubmitEditing = {(event) => {this.refs.NewPassword.focus();}}
           />
           <TextInput
-            ref = 'NewPassword'
             onChangeText = {(text) => this.setState({password: text})}
+            onSubmitEditing = {(event) => {this.refs.ConfirmPass.focus();}}
             placeholder = {"Password"}
             placeholderTextColor = 'white'
+            ref = 'NewPassword'
             secureTextEntry = {true}
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
-            onSubmitEditing = {(event) => {this.refs.ConfirmPass.focus();}}
           />
           <TextInput
-            ref = 'ConfirmPass'
             onChangeText = {(text) => this.setState({passwordConfirm: text})}
+            onSubmitEditing = {() => {this.signup()}}
             placeholder = {"Confirm Password"}
             placeholderTextColor = 'white'
+            ref = 'ConfirmPass'
             secureTextEntry = {true}
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.passwordConfirm}
-            onSubmitEditing = {() => {this.signup()}}
           />
 
           <Button
@@ -117,7 +116,6 @@ class Signup extends Component {
       </View>
     );
   }
-
 
   signup() {
     if(this.state.firstName === "") {
@@ -149,15 +147,13 @@ class Signup extends Component {
                 Alert.alert('Error!', 'Error creating user account.');
             }
           } else {
-            var ref = database.child("users");
-            var uid = userData.uid;
-            ref.child(uid).set({
+            database.child("users").child(userData.uid).set({
               email: this.state.email,
               firstName: this.state.firstName,
-              lastName: this.state.lastName,
-              profilePic: {uri: 'http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png', isStatic: true},
               followers: 0,
               friends: 0,
+              lastName: this.state.lastName,
+              profilePic: {uri: 'http://icons.iconarchive.com/icons/graphicloads/food-drink/256/egg-icon.png', isStatic: true},
             });
             Alert.alert('Success!', 'Your account was created!');
             this.props.navigator.pop();
