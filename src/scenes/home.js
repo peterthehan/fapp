@@ -121,6 +121,10 @@ class Home extends Component {
     }
   }
 
+  onSearchChange(text){
+    alert (text);
+  }
+
   setSelectedOption(selectedOption) {
     this.setState({
       selectedOption
@@ -147,7 +151,7 @@ class Home extends Component {
           selectedTint = {'#F26D6A'}
           tint = {'white'}
         />
-        <SearchBar/>
+        <SearchBar onSearchChange = {this.onSearchChange}/>
         {this.renderFeed()}
       </View>
     );

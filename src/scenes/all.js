@@ -51,10 +51,14 @@ class All extends Component {
   queryData() {
   }
 
+  onSearchChange(text){
+    alert (text);
+  }
+
   render() {
     return(
       <View style = {SceneStyles.container}>
-        <SearchBar/>
+        <SearchBar onSearchChange = {this.onSearchChange}/>
         <GridView
           dataSource = {this.state.dataSource}
           onRefresh = {this.queryData.bind(this)}
