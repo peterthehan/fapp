@@ -10,6 +10,7 @@ import React, {
 import Button from '../components/button';
 import Profile from './profile';
 import Setting from './setting';
+import About from './about';
 import TitleBar from '../components/title-bar';
 
 class More extends Component {
@@ -48,6 +49,13 @@ class More extends Component {
           text = "Settings"
           underlayColor = {'gray'}
         />
+        <Button
+          buttonStyles = {{}}
+          buttonTextStyles = {styles.buttonStyle}
+          onPress = {this.about.bind(this)}
+          text = "About"
+          underlayColor = {'gray'}
+        />
       </View>
     );
   }
@@ -58,6 +66,10 @@ class More extends Component {
 
   setting() {
     this.props.navigator.push({component: Setting});
+  }
+
+  about() {
+    this.props.navigator.push({component: About});
   }
 }
 

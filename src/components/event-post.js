@@ -22,7 +22,7 @@ class EventPost extends Component {
     super(props);
     this.state = {
       id: '',
-      photo: '',
+      photo: 'default',
       title: '',
     }
     this.showDetails = this.showDetails.bind(this);
