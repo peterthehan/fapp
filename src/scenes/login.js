@@ -45,24 +45,23 @@ class Login extends Component {
           <TextInput
             keyboardType = 'email-address'
             onChangeText = {(text) => this.setState({email: text})}
+            onSubmitEditing = {(event) => {this.refs.Password.focus();}}
             placeholder = {"Email"}
             placeholderTextColor = 'white'
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
-            onSubmitEditing = {(event) => {this.refs.Password.focus();}}
           />
-
           <TextInput
-            ref = 'Password'
             onChangeText = {(text) => this.setState({password: text})}
+            onSubmitEditing = {() => {this.login()}}
             placeholder = {"Password"}
             placeholderTextColor = 'white'
+            ref = 'Password'
             secureTextEntry = {true}
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.password}
-            onSubmitEditing = {() => {this.login()}}
           />
 
           <Button

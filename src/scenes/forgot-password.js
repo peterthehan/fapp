@@ -46,12 +46,12 @@ class ForgotPassword extends Component {
           <TextInput
             keyboardType = 'email-address'
             onChangeText = {(text) => this.setState({email: text})}
+            onSubmitEditing = {() => {this.submit()}}
             placeholder = {"Email"}
             placeholderTextColor = 'white'
             style = {TextStyles.whiteTextInput}
             underlineColorAndroid = 'white'
             value = {this.state.email}
-            onSubmitEditing = {() => {this.submit()}}
           />
 
           <Button
@@ -86,7 +86,7 @@ class ForgotPassword extends Component {
                 Alert.alert('Error!', 'The specified user account does not exist.');
                 break;
               default:
-                Alert.alert('Error!', 'Error resetting password.');
+                Alert.alert('Error!', 'Error searching for user account.');
             }
           } else {
             Alert.alert('Success!', 'Temporary password was sent to your email.');
