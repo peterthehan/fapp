@@ -7,10 +7,10 @@ import React, {
   View,
 } from 'react-native';
 
+import About from './about';
 import Button from '../components/button';
 import Profile from './profile';
 import Setting from './setting';
-import About from './about';
 import TitleBar from '../components/title-bar';
 
 class More extends Component {
