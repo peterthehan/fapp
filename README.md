@@ -34,7 +34,7 @@ Currently, Fapp is only supported on Android. The application can be installed i
 ##### Running the APK
 1. Download the APK [here](https://github.com/Johj/fapp/raw/master/app-release.apk).
 2. Give permissions to install on your device.
-3. If your device denies installation due to the apk being unsigned, take steps to disable that on your device and continue with the installation.
+3. If your device denies installation due to the APK being unsigned, take steps to disable that on your device and continue with the installation.
 4. The application should install and appear in your applications drawer.
 
 ## Usage
