@@ -62,8 +62,8 @@ The application can be installed in two ways:
 
 ## Open Source Libraries
  - firebase 2.4.2
- - gl-react 2.2.0
- - gl-react-native 2.24.0
+ - [gl-react 2.2.0](https://github.com/ProjectSeptemberInc/gl-react)
+ - [gl-react-native 2.24.0](https://github.com/ProjectSeptemberInc/gl-react-native)
  - react 0.14.8
  - react-native 0.25.1
  - [react-native-action-button 1.1.5](https://github.com/mastermoo/react-native-action-button)
