@@ -6,7 +6,7 @@ Fapp is a new social media platform centered around a daily necessity ubiquitous
  - [Usage](#usage)
  - [Team](#team)
  - [Feedback](#feedback)
- - [Open Source Libraries](#feedback)
+ - [Open Source Libraries](#open-source-libraries)
  - [License](#license)
 
 ## Installation
@@ -28,41 +28,38 @@ The application can be installed in two ways:
 3. If your device denies installation due to the apk being unsigned, take steps to disable that on your device and continue with the installation.
 4. The application should install and appear in your applications drawer.
 
-Usage
+## Usage
 
 
+## Team
 
-Team
+##### Team POOP (People Order Our Programs)
+ - **Project Manager**: Peter Han
+ - **Software Development Lead**: Andrew Han
+ - **Quality Assurance Lead**: RJ Dioneda
+ - **Algorithm Specialist**: Jessica Lin
+ - **User Interface Specialist**: Emma Li
+ - **Software Architect**: Vinson Gong
+ - **Business Analyst**: Ketan Kelkar
+ - **Senior System Analyst**: David Le
+ - **Database Specialist**: Daniel Seong
+ - **Database Specialist**: Jonathan Shuai
 
-Team POOP (People Order Our Programs)
-Project Manager: Peter Han
-Software Development Lead: Andrew Han
-Quality Assurance Lead: RJ Dioneda
-Algorithm Specialist: Jessica Lin
-User Interface Specialist: Emma Li
-Software Architect: Vinson Gong
-Business Analyst: Ketan Kelkar
-Senior System Analyst: David Le
-Database Specialist: Daniel Seong
-Database Specialist: Jonathan Shuai
+## Open Source Libraries
+ - firebase 2.4.2
+ - gl-react 2.2.0
+ - gl-react-native 2.24.0
+ - react 0.14.8
+ - react-native 0.25.1
+ - react-native-action-button 1.1.5
+ - react-native-animatable 0.6.0
+ - react-native-image-picker 0.18.15
+ - react-native-radio-buttons 0.11.0
+ - react-native-scrollable-tab-view 0.4.2
+ - react-native-share 1.0.10
+ - react-native-slider 0.7.1
+ - react-native-vector-icons 2.0.2
 
-Open Source Libraries
+## License
 
-firebase 2.4.2
-gl-react 2.2.0
-gl-react-native 2.24.0
-react 0.14.8
-react-native 0.25.1
-react-native-action-button 1.1.5
-react-native-animatable 0.6.0
-react-native-image-picker 0.18.15
-react-native-radio-buttons 0.11.0
-react-native-scrollable-tab-view 0.4.2
-react-native-share 1.0.10
-react-native-slider 0.7.1
-react-native-vector-icons 2.0.2
-
-License
-
-Apache License
-https://raw.githubusercontent.com/Johj/fapp/master/LICENSE
+[Apache License](https://raw.githubusercontent.com/Johj/fapp/master/LICENSE)
