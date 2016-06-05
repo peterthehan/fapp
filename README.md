@@ -37,7 +37,7 @@ Currently, Fapp is only supported on Android. The application can be installed i
 4. The application should install and appear in your applications drawer.
 
 ## Usage
-[Please refer to our extensive documentation.](https://github.com/Johj/fapp/tree/master/artifacts)
+Please refer to our extensive [documentation](https://github.com/Johj/fapp/tree/master/artifacts).
 
 ## Known Errors
 1. If the application crashes during runtime, please kindly reload the application.
