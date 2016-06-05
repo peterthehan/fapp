@@ -55,7 +55,7 @@ Please refer to our extensive [documentation](https://github.com/Johj/fapp/tree/
  - User Interface Specialist: **[Emma Li](https://github.com/emui1155665)**
  - Software Architect: **[Vinson Gong](https://github.com/vinsongong)**
  - Business Analyst: **[Ketan Kelkar](https://github.com/krkelkar)**
- - Senior System Analyst: **[David Le]()**
+ - Senior System Analyst: **[David Le](https://github.com/ledavid79)**
  - Database Specialist: **[Daniel Seong](https://github.com/thedseong)**
  - Database Specialist: **[Jonathan Shuai](https://github.com/jonathanshuai)**
 
