@@ -1,6 +1,6 @@
 ![alt text](https://raw.githubusercontent.com/Johj/fapp/master/src/images/logo.png "Fapp Icon")
 # Fapp
-Fapp is a new social media platform centered around a daily necessity ubiquitous to all cultures and identities: food.
+Fapp is a new social media application that provides a platform for users to capture, share, and explore diverse experiences of foods and drinks. Whether you prefer gourmet courses, have a sweet tooth for desserts, or feel *thirsty* for fancy drinks, Fapp  will provide users with a straightforward and streamline network to satisfy their cravings.
 
 ## Table of Contents
  - [Requirements](#requirements)
@@ -14,7 +14,7 @@ Fapp is a new social media platform centered around a daily necessity ubiquitous
 ## Requirements
 **Suggested Environment**
 
-Samsung Galaxy S6:
+Samsung Galaxy S6
  - Android Version 6.0 API 23
  - 3072 MB RAM
  - 1440x2560 640 dpi
