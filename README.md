@@ -66,14 +66,14 @@ The application can be installed in two ways:
  - gl-react-native 2.24.0
  - react 0.14.8
  - react-native 0.25.1
- - react-native-action-button 1.1.5
- - react-native-animatable 0.6.0
- - react-native-image-picker 0.18.15
- - react-native-radio-buttons 0.11.0
- - react-native-scrollable-tab-view 0.4.2
- - react-native-share 1.0.10
- - react-native-slider 0.7.1
- - react-native-vector-icons 2.0.2
+ - [react-native-action-button 1.1.5](https://github.com/mastermoo/react-native-action-button)
+ - [react-native-animatable 0.6.0](https://github.com/oblador/react-native-animatable)
+ - [react-native-image-picker 0.18.15](https://github.com/marcshilling/react-native-image-picker)
+ - [react-native-radio-buttons 0.11.0](https://github.com/ArnaudRinquin/react-native-radio-buttons)
+ - [react-native-scrollable-tab-view 0.4.2](https://github.com/skv-headless/react-native-scrollable-tab-view)
+ - [react-native-share 1.0.10](https://github.com/EstebanFuentealba/react-native-share)
+ - [react-native-slider 0.7.1](https://github.com/jeanregisser/react-native-slider)
+ - [react-native-vector-icons 2.0.2](https://github.com/oblador/react-native-vector-icons)
 
 ## License
 [Apache License](https://raw.githubusercontent.com/Johj/fapp/master/LICENSE)
