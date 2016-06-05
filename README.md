@@ -41,9 +41,9 @@ Currently, Fapp is only supported on Android. The application can be installed i
 Please refer to our extensive [documentation](https://github.com/Johj/fapp/tree/master/artifacts).
 
 ## Known Errors
-1. If the application crashes during runtime, please kindly reload the application.
-2. The logout action does not take you back to the login scene. You must close the application and rerun.
-3. If you encounter any errors, please let us know [here](https://github.com/Johj/fapp/issues).
+ - If the application crashes during runtime, please kindly reload the application.
+ - The logout action does not take you back to the login scene. You must close the application and rerun.
+ - If you encounter any other issues, please let us know [here](https://github.com/Johj/fapp/issues).
 
 ## Team
 
