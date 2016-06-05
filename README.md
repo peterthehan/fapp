@@ -27,7 +27,7 @@ Currently, Fapp is only supported on Android. The application can be installed i
 1. Set up the React-Native environment following the "Getting Started" guide on: https://facebook.github.io/react-native/docs/getting-started.html.
 2. `git clone https://github.com/Johj/fapp`
 3. `cd fapp && npm install`
-5. Open your emulator (Genymotion is suggested).
+5. Open your emulator ([Genymotion](https://www.genymotion.com/) is suggested).
 6. On one bash terminal, `cd` into the folder and run: `react-native start`. Leave this open in the background.
 7. On another bash terminal, `cd` into the folder and run: `react-native run-android`.
 
