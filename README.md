@@ -1,3 +1,4 @@
+![alt text](https://raw.githubusercontent.com/Johj/fapp/master/src/images/logo.png "Fapp Icon")
 # Fapp
 Fapp is a new social media platform centered around a daily necessity ubiquitous to all cultures and identities: food.
 
@@ -25,10 +26,10 @@ Currently, Fapp is only supported on Android. The application can be installed i
 ##### Running on an Emulator
 1. Set up the React-Native environment following the "Getting Started" guide on: https://facebook.github.io/react-native/docs/getting-started.html.
 2. `git clone https://github.com/Johj/fapp`
-3. `npm install`
-4. Open your emulator (Genymotion is suggested).
-5. On one bash terminal, run: `react-native start`. Leave this open in the background.
-6. On another bash terminal, run: `react-native run-android`.
+3. `cd fapp && npm install`
+5. Open your emulator (Genymotion is suggested).
+6. On one bash terminal, `cd` into the folder and run: `react-native start`. Leave this open in the background.
+7. On another bash terminal, `cd` into the folder and run: `react-native run-android`.
 
 ##### Running the apk
 1. Download the apk at https://github.com/Johj/fapp/raw/master/app-release.apk.
