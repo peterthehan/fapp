@@ -179,6 +179,10 @@ class Profile extends Component {
         var postSnapshot = snapshot.child("posts/" + userPostSnapshot.val().postId);
         myBlob.push(postSnapshot);
       });
+      
+      myBlob.sort((a, b) => {
+        return b.val().date - a.val().date;
+      });
 
       self.setState({
         items: myBlob,
