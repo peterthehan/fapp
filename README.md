@@ -7,7 +7,6 @@ Fapp is a new social media platform centered around a daily necessity ubiquitous
  - [Usage](#usage)
  - [Known Errors](#known-errors)
  - [Team](#team)
- - [Feedback](#feedback)
  - [Open Source Libraries](#open-source-libraries)
  - [License](#license)
 
@@ -21,9 +20,7 @@ Samsung Galaxy S6:
  - 4 processors
 
 ## Installation
-Currently Fapp is only supported on Android.
-
-The application can be installed in two ways:
+Currently, Fapp is only supported on Android. The application can be installed in two ways:
 
 ##### Running on an Emulator
 1. Set up the React-Native environment following the "Getting Started" guide on: https://facebook.github.io/react-native/docs/getting-started.html.
@@ -45,6 +42,7 @@ The application can be installed in two ways:
 ## Known Errors
 1. If the application crashes during runtime, please kindly reload the application.
 2. The logout action does not take you back to the login scene. You must close the application and rerun.
+3. If you encounter any errors, please let us know [here](https://github.com/Johj/fapp/issues).
 
 ## Team
 
