@@ -60,11 +60,11 @@ Please refer to our extensive [documentation](https://github.com/Johj/fapp/tree/
  - Database Specialist: **[Jonathan Shuai](https://github.com/jonathanshuai)**
 
 ## Open Source Libraries
- - firebase 2.4.2
+ - [firebase 2.4.2](https://www.firebase.com/)
  - [gl-react 2.2.0](https://github.com/ProjectSeptemberInc/gl-react)
  - [gl-react-native 2.24.0](https://github.com/ProjectSeptemberInc/gl-react-native)
- - react 0.14.8
- - react-native 0.25.1
+ - [react 0.14.8](https://github.com/facebook/react)
+ - [react-native 0.25.1](https://github.com/facebook/react-native)
  - [react-native-action-button 1.1.5](https://github.com/mastermoo/react-native-action-button)
  - [react-native-animatable 0.6.0](https://github.com/oblador/react-native-animatable)
  - [react-native-image-picker 0.18.15](https://github.com/marcshilling/react-native-image-picker)
