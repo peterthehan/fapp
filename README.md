@@ -1,6 +1,6 @@
 ![alt text](https://raw.githubusercontent.com/Johj/fapp/master/src/images/logo.png "Fapp Icon")
 # Fapp
-Fapp is a new social media application that provides a platform for users to capture, share, and explore diverse experiences of foods and drinks. Whether you prefer gourmet courses, have a sweet tooth for desserts, or feel *thirsty* for fancy drinks, Fapp  will provide users with a straightforward and streamline network to satisfy their cravings.
+Fapp (Food app) is a new social media application that provides a platform for users to capture, share, and explore diverse experiences of foods and drinks. Whether you prefer gourmet courses, have a sweet tooth for desserts, or feel *thirsty* for fancy drinks, Fapp  will provide users with a straightforward and streamline network to satisfy their cravings.
 
 ## Table of Contents
  - [Requirements](#requirements)
