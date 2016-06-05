@@ -24,7 +24,7 @@ Samsung Galaxy S6:
 Currently, Fapp is only supported on Android. The application can be installed in two ways:
 
 ##### Running on an Emulator
-1. Set up the React-Native environment following the "[Getting Started](https://facebook.github.io/react-native/docs/getting-started.html)" guide.
+1. Set up the React-Native environment following the [Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) guide.
 2. `git clone https://github.com/Johj/fapp`
 3. `cd fapp && npm install`
 5. Open your emulator ([Genymotion](https://www.genymotion.com/) is suggested).
