@@ -362,8 +362,9 @@ const styles = StyleSheet.create({
   },
   descriptionView: {
     marginBottom: 4,
-    marginLeft: 4,
     padding: 4,
+    width: windowSize.width - 8,
+    flex: 1,
   },
   description: {
     color: 'black'
@@ -387,12 +388,10 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   photoTouch: {
-    height: windowSize.width / 2 - 6,
-    width: windowSize.width / 2 - 6,
   },
   photo: {
-    height: (Dimensions.get("window").width - 16) * 9 / 16,
-    width: Dimensions.get("window").width - 16,
+    height: (Dimensions.get("window").width - 8) * 9 / 16,
+    width: Dimensions.get("window").width - 8,
   },
   userView: {
     flexDirection: 'row',
