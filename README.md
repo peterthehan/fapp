@@ -6,7 +6,7 @@ Fapp (Food app) is a new social media application that provides a platform for u
  - [Requirements](#requirements)
  - [Installation](#installation)
  - [Usage](#usage)
- - [Known Errors](#known-errors)
+ - [Known Issues](#known-issues)
  - [Team](#team)
  - [Open Source Libraries](#open-source-libraries)
  - [License](#license)
