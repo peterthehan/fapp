@@ -2,15 +2,21 @@
 Fapp is a new social media platform centered around a daily necessity ubiquitous to all cultures and identities: food.
 
 ## Table of Contents
+ - [Requirements](#requirements)
  - [Installation](#installation)
  - [Usage](#usage)
+ - [Known Errors](#known-errors)
  - [Team](#team)
  - [Feedback](#feedback)
  - [Open Source Libraries](#open-source-libraries)
  - [License](#license)
 
+## Requirements
+Suggested Environment
+Samsung Galaxy S6: Android Version 6.0 API 23, 3072 MB RAM, 1440x2560 640 dpi, 4 processors
+
 ## Installation
-Currently Fapp only supports Android.
+Currently Fapp is only supported on Android.
 
 The application can be installed in two ways:
 
@@ -29,7 +35,12 @@ The application can be installed in two ways:
 4. The application should install and appear in your applications drawer.
 
 ## Usage
+Please refer to our extensive documentation.
+https://github.com/Johj/fapp/tree/master/artifacts
 
+## Known Errors
+1. If the application crashes during runtime, please kindly reload the application.
+2. The logout action does not take you back to the login scene. You must close the application and rerun.
 
 ## Team
 
