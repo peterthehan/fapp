@@ -40,9 +40,10 @@ Currently, Fapp is only supported on Android. The application can be installed i
 ## Usage
 Please refer to our extensive [documentation](https://github.com/Johj/fapp/tree/master/artifacts).
 
-## Known Errors
+## Known Issues
  - If the application crashes during runtime, please kindly reload the application.
  - The logout action does not take you back to the login scene. You must close the application and rerun.
+ - When creating a post, filtered images render on scroll causing lag and buggy images.
  - If you encounter any other issues, please let us know [here](https://github.com/Johj/fapp/issues).
 
 ## Team
