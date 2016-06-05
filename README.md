@@ -40,7 +40,7 @@ Currently, Fapp is only supported on Android. The application can be installed i
 ## Usage
 Please refer to our extensive [documentation](https://github.com/Johj/fapp/tree/master/artifacts).
 
-Test Account Credentials
+**Test Account Credentials**
 
 | User           | Email                      | Password    |
 |----------------|----------------------------|-------------|
