@@ -49,16 +49,16 @@ The application can be installed in two ways:
 ## Team
 
 ##### Team POOP (People Order Our Programs)
- - **Project Manager**: [Peter Han](https://github.com/Johj)
- - **Software Development Lead**: [Andrew Han](https://github.com/andrewthehan)
- - **Quality Assurance Lead**: [RJ Dioneda](https://github.com/dionedarj)
- - **Algorithm Specialist**: [Jessica Lin](https://github.com/jessicalin216)
- - **User Interface Specialist**: [Emma Li](https://github.com/emui1155665)
- - **Software Architect**: [Vinson Gong](https://github.com/vinsongong)
- - **Business Analyst**: [Ketan Kelkar](https://github.com/krkelkar)
- - **Senior System Analyst**: [David Le]()
- - **Database Specialist**: [Daniel Seong](https://github.com/thedseong)
- - **Database Specialist**: [Jonathan Shuai](https://github.com/jonathanshuai)
+ - Project Manager: **[Peter Han](https://github.com/Johj)**
+ - Software Development Lead: **[Andrew Han](https://github.com/andrewthehan)**
+ - Quality Assurance Lead: **[RJ Dioneda](https://github.com/dionedarj)**
+ - Algorithm Specialist: **[Jessica Lin](https://github.com/jessicalin216)**
+ - User Interface Specialist: **[Emma Li](https://github.com/emui1155665)**
+ - Software Architect: **[Vinson Gong](https://github.com/vinsongong)**
+ - Business Analyst: **[Ketan Kelkar](https://github.com/krkelkar)**
+ - Senior System Analyst: **[David Le]()**
+ - Database Specialist: **[Daniel Seong](https://github.com/thedseong)**
+ - Database Specialist: **[Jonathan Shuai](https://github.com/jonathanshuai)**
 
 ## Open Source Libraries
  - firebase 2.4.2
