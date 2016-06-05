@@ -12,8 +12,13 @@ Fapp is a new social media platform centered around a daily necessity ubiquitous
  - [License](#license)
 
 ## Requirements
-Suggested Environment
-Samsung Galaxy S6: Android Version 6.0 API 23, 3072 MB RAM, 1440x2560 640 dpi, 4 processors
+**Suggested Environment**
+
+Samsung Galaxy S6:
+ - Android Version 6.0 API 23
+ - 3072 MB RAM
+ - 1440x2560 640 dpi
+ - 4 processors
 
 ## Installation
 Currently Fapp is only supported on Android.
@@ -35,8 +40,7 @@ The application can be installed in two ways:
 4. The application should install and appear in your applications drawer.
 
 ## Usage
-Please refer to our extensive documentation.
-https://github.com/Johj/fapp/tree/master/artifacts
+[Please refer to our extensive documentation.](https://github.com/Johj/fapp/tree/master/artifacts)
 
 ## Known Errors
 1. If the application crashes during runtime, please kindly reload the application.
@@ -72,5 +76,4 @@ https://github.com/Johj/fapp/tree/master/artifacts
  - react-native-vector-icons 2.0.2
 
 ## License
-
 [Apache License](https://raw.githubusercontent.com/Johj/fapp/master/LICENSE)
