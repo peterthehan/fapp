@@ -179,7 +179,7 @@ class Profile extends Component {
         var postSnapshot = snapshot.child("posts/" + userPostSnapshot.val().postId);
         myBlob.push(postSnapshot);
       });
-      
+
       myBlob.sort((a, b) => {
         return b.val().date - a.val().date;
       });
@@ -453,6 +453,18 @@ class Profile extends Component {
           followData.forEach(function(follower) {
             if(follower.val().userId == self.props.state) {
               var toDelete = database.child("users/" + self.state.loggedUser + "/followingList/" + follower.key().toString() + "/userId");
+              toDelete.set(null);
+            }
+          });
+        }
+      });
+
+      //delete from your followersList
+      database.child("users/" + self.state.loggedUser + "/followersList").once("value", function(followData) {
+        if(typeof followData != 'undefined') {
+          followData.forEach(function(follower) {
+            if(follower.val().userId == self.props.state) {
+              var toDelete = database.child("users/" + self.state.loggedUser + "/followersList/" + follower.key().toString() + "/userId");
               toDelete.set(null);
             }
           });
